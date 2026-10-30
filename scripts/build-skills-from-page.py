@@ -95,6 +95,12 @@ The discovery plan template is in the discovery-plan skill's folder (it is the p
     t = rep(t, "The same with `Kicksaw What We Heard.template.html`", "The same with `templates/Kicksaw What We Heard.template.html`")
     t = rep(t, "Run the discovery plan skill (\"plan discovery for [Client]\")", "Run `/start-motion:discovery-plan` (\"plan discovery for [Client]\")")
     t = rep(t, "in this shape: a table of each document", "in the shape of `references/discovery-documents-note.md`: a table of each document")
+    t = rep(t, "6. Report the links and remind the SC to share the workflow and What we heard pages",
+            """   Then save the same note as a Google Doc, "Discovery documents: [Client]", in the client's Drive folder, in the same Discovery subfolder as the requirements list, so anyone on the client can find where everything is. The project copy is the one the skills work from; the Drive copy is updated whenever the project copy changes (a new link, a changed setting, a new person).
+6. Report the links and remind the SC to share the workflow and What we heard pages""")
+    t = rep(t, "If the note is missing, search the SC's artifacts and Drive for", "If the note is missing from the project, look for the Google Doc \"Discovery documents: [Client]\" in the client's Drive folder (the Discovery subfolder) and use it; it holds the same links. If neither exists, search the SC's artifacts and Drive for")
+    t = rep(t, "End the note with an internal \"Build notes\" section for things that are not requirements: data sources and export paths, environment facts, limits, approvals, risks. These never go in the client-facing documents.",
+            "End the note with an internal \"Build notes\" section for things that are not requirements: data sources and export paths, environment facts, limits, approvals, risks. These never go in the client-facing documents.\n\nSave the session note in the project, and also as a Google Doc with the same name in the client's Drive folder, in the Discovery subfolder next to the requirements list, so the PM and the SA can read it without the SC's project. The two copies say the same thing; the project copy is the one later runs read.")
     t = rep(t, "If the folder or one of its files cannot be opened, say which one and stop; do not rebuild a template from memory. If the folder is not visible to the person running this, they need view access to it from whoever owns the folder (Avi Rabinovitch today).",
             "If a template file cannot be opened, say which one and stop; do not rebuild a template from memory. If the requirements list template in Drive is not visible to the person running this, they need view access to the folder from whoever owns it (Avi Rabinovitch today).")
     t = rep(t, "the SC runs \"prep me for [Client] [session]\" from the discovery plan skill", "the SC runs `/start-motion:discovery-plan` (\"prep me for [Client] [session]\")")
@@ -233,7 +239,8 @@ When asked ("process today's [Client] readout dry run"): pull the dry run record
     t = rep(t, "Copy `Kicksaw Solution Readout.content-example.json` as the starting shape the first time", "Copy `references/content-example.json` from this skill's folder as the starting shape the first time")
     t = rep(t, "Download `Kicksaw Solution Readout.template.html` and `build-readout.py` from the Drive folder into the workspace, next to the saved page sources", "Copy `templates/Kicksaw Solution Readout.template.html` and `scripts/build-readout.py` from this skill's folder into the workspace, next to the saved page sources")
     t = rep(t, "First build: a new artifact, with the two logo files from the Drive folder passed in `files`", "First build: a new artifact, with the two logo files from this skill's `brand/` folder passed in `files`")
-    t = rep(t, "Only then does the user stories skill read the list.", "Only then does `/start-motion:user-stories` read the list.")
+    t = rep(t, "file the approval (or a link to it) in the client's Claude Project as readout/sign-off.md, and say so in the report. Only then does the user stories skill read the list.",
+            "file the approval (or a link to it) in the client's Claude Project as readout/sign-off.md and as a Google Doc \"Readout sign-off: [Client]\" in the client's Drive folder (the Discovery subfolder, next to the requirements list), so the PM has it without the SC's project, and say so in the report. Only then does `/start-motion:user-stories` read the list.")
     t = rep(t, "Then every CHECK the build printed that is not fixed, and every placeholder still to fill. No recap of steps.",
             """Then every CHECK the build printed that is not fixed, and every placeholder still to fill. No recap of steps.
 
@@ -393,6 +400,7 @@ Then read back what you heard in one line and run: "Finishing the Tog stories fo
 
 """
     t = rep(t, "## 0. Load the signed scope, the drafts and the calls\n", start + "## 0. Load the signed scope, the drafts and the calls\n")
+    t = rep(t, "(readout/content.json and readout/sign-off.md in the client's Claude Project)", "(readout/content.json and readout/sign-off.md in the client's Claude Project; when the sign-off file is not in the project, the Google Doc \"Readout sign-off: [Client]\" in the client's Drive folder holds the same record)")
     t = rep(t, "the Jira project key when none is found. Everything else comes from the documents.", "the Jira project key when none is found; and, when folding in a refinement session, which call, if more than one for the client happened that day. Everything else comes from the documents.")
     t = rep(t, "Before showing the SC anything for an epic, have a separate reviewer agent read that epic's stories cold against the transcripts and the readout and report defects only; reconcile first.",
             "Before showing the SC anything for an epic, have that epic's stories read cold against the transcripts and the readout for defects only (a separate reviewer agent where one is available, otherwise a second pass of your own from the transcripts, not from memory); reconcile first.")

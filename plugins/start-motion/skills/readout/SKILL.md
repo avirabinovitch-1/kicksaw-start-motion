@@ -214,7 +214,7 @@ When the SC says the review answers are in:
 
 When the written approval arrives:
 - Set `project.signed` to the date, the signer and the version, and rebuild, so the cover shows it.
-- Move the approved requirements to Approved in the requirements list, file the approval (or a link to it) in the client's Claude Project as readout/sign-off.md, and say so in the report. Only then does `/start-motion:user-stories` read the list.
+- Move the approved requirements to Approved in the requirements list, file the approval (or a link to it) in the client's Claude Project as readout/sign-off.md and as a Google Doc "Readout sign-off: [Client]" in the client's Drive folder (the Discovery subfolder, next to the requirements list), so the PM has it without the SC's project, and say so in the report. Only then does `/start-motion:user-stories` read the list.
 - A verbal yes, a chat message, or silence past the date is not a sign-off. Say so if asked to record one.
 
 ## 8. Report back
