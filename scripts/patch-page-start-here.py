@@ -56,10 +56,22 @@ CSS = """
 .sh-live > div { border-top: 4px solid var(--teal); padding-top: 12px; min-width: 0; }
 .sh-live b { display: block; color: var(--heading); font-size: 15.5px; margin-bottom: 4px; }
 .sh-live p { font-size: 14.5px; margin: 0; }
+.sh-paths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; max-width: 1100px; align-items: start; }
+.sh-path { border: 1.5px solid var(--rule-strong); border-top: 6px solid var(--teal); border-radius: 10px; padding: 18px 22px 20px; background: var(--bg); min-width: 0; }
+.sh-path.claude { border-top-color: var(--drive); }
+.sh-tag { font: 700 12px var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin: 0 0 4px; }
+.sh-path h3 { font-size: 22px; margin: 0 0 8px; }
+.sh-pick { font-size: 14.5px; color: var(--ink-2); margin: 0 0 16px; padding-bottom: 14px; border-bottom: 1px solid var(--rule); }
+.sh-pick b { color: var(--ink); }
+.sh-path .steps { gap: 12px; }
+.sh-path .steps li span { font-size: 14px; }
+.sh-path .note { margin-top: 16px; }
+.sh-path .peek { margin-top: 14px; }
 .band .req + .req { margin-top: 0; }
-@media (max-width: 760px) {
+@media (max-width: 900px) {
   .sh-live { grid-template-columns: minmax(0, 1fr); }
   .sh-list li { grid-template-columns: 34px minmax(0, 1fr); }
+  .sh-paths { grid-template-columns: minmax(0, 1fr); }
   .sh-list .cmd { grid-column: 2; align-items: flex-start; }
 }
 </style>
@@ -69,95 +81,86 @@ SLIDE = """
 <!-- START HERE -->
 <section class="slide" id="start" data-label="Start here" data-n="&#9654;">
   <p class="eyebrow">Start here</p>
-  <h2>Your first project with the kit</h2>
-  <p class="lead">The kit is seven stages. Each one has its method on this page and a skill that does the work in Claude. You can work from this page or straight from Claude; both run the same skill. This page gets you set up once, then started on a client in a few minutes.</p>
+  <h2>How to use the kit</h2>
+  <p class="lead">The kit is seven stages that take a project from a signed SOW to a build-ready backlog. For each stage, this page holds the method and what good looks like, and a skill in Claude does the work. There are two ways to run a stage, and you can switch between them at any time: <strong>from this page</strong>, where you read the stage and build your request with its builder, or <strong>in Claude</strong>, where you type the stage's command. Both run the same skill and make the same outputs.</p>
 
-  <div class="strip3 sh-ways">
-    <div><b>Page first</b><p>Open the stage, read how it runs and what good looks like, then use its builder or copy its prompt and paste it into Claude.</p></div>
-    <div><b>Claude first</b><p>Open Claude and type the stage's command, such as <code>/kickoff</code>. The skill says where the client stands, asks for its picks in one message, runs, and names the next command.</p></div>
-    <div><b>Either way, the same skill</b><p>The plugin installs the same skill text the copy boxes on each stage hand out. This page stays the place to read the method, the examples and the bar.</p></div>
-  </div>
-
-  <div class="sh-h"><h3>Set up once</h3><p>About ten minutes, on your own Claude account. After this, every stage command works.</p></div>
+  <div class="sh-h"><h3>Set up once</h3><p>Five minutes, on your own Claude account. Both ways need this. The kit's code is public on GitHub, so there is nothing to request and no GitHub account needed.</p></div>
   <ol class="path">
     <li>
       <div class="path-n">1</div>
       <div class="path-body">
-        <p class="path-when">Once</p>
-        <h3>Get access to the kit's repo</h3>
-        <p>The kit lives in a private GitHub repo. If you do not have a GitHub account, make a free one at github.com. Send Avi your GitHub username; he adds you to the repo. Accept the invitation from the email GitHub sends you.</p>
+        <h3>Install the plugin in Claude</h3>
+        <p>In Claude, open <b>Settings</b>, then <b>Plugins</b> (under Customize). Click <b>Add</b> at the top right, then <b>Add marketplace</b>, then <b>Add from a repository</b>. In the URL box type <code>__MARKET__</code> and click <b>Sync</b>. Back on the Plugins page, <b>Start motion</b> now shows under "From marketplaces you added": open it and click <b>Add</b>. One install covers chat, Cowork and Claude Code on the same account. The code is at <a href="https://github.com/__MARKET__" target="_blank" rel="noopener">github.com/__MARKET__ &#8599;</a> if you want to look.</p>
       </div>
     </li>
     <li>
       <div class="path-n">2</div>
       <div class="path-body">
-        <p class="path-when">Once</p>
-        <h3>Install the plugin in Claude</h3>
-        <p>In Claude, open Customize, then Plugins, then Add marketplace. Enter <code>__MARKET__</code> and add it. Install <b>Kicksaw Project Start Motion</b> from that marketplace, and turn on <b>Sync automatically</b> so each weekly release reaches you without doing anything. One install covers chat, Cowork and Claude Code on the same account.</p>
+        <h3>Leave updates on</h3>
+        <p>On the Plugins page, click <b>Add</b>, then <b>Manage marketplaces</b>, then the three dots next to kicksaw-start-motion. <b>Sync automatically</b> should be on; it is on by default. Each weekly release then reaches you without doing anything, and <b>Check for updates</b> there pulls one early.</p>
       </div>
     </li>
     <li>
       <div class="path-n">3</div>
       <div class="path-body">
-        <p class="path-when">Once</p>
         <h3>Connect the tools the stages read</h3>
-        <p>In Claude's settings, under Connectors, connect Google Drive (the client folder, the templates and the requirements list), Gmail and Slack (what the client and the team said between calls), tl;dv (call transcripts) and Jira (user stories). Notion is useful for the Closed Won task. A stage that finds one missing says so and carries on with what it has.</p>
+        <p>In Settings, under <b>Connectors</b>, connect Google Drive (the client folder, the templates and the requirements list), Gmail and Slack (what the client and the team said between calls), tl;dv (call transcripts) and Jira (user stories). A stage that finds one missing says so and carries on with what it has.</p>
       </div>
     </li>
     <li>
       <div class="path-n">4</div>
       <div class="path-body">
-        <p class="path-when">Check</p>
-        <h3>Type / in a new chat</h3>
-        <p>The commands appear: <code>/new-client</code>, <code>/handoff</code>, <code>/kickoff</code>, <code>/discovery-plan</code>, <code>/discovery-call</code>, <code>/readout</code>, <code>/design</code>, <code>/user-stories</code>. In Cowork and Claude Code the same commands carry the prefix, as in <code>/start-motion:kickoff</code>. If nothing appears, the marketplace did not add; check step 2 or ask Avi.</p>
+        <h3>Check it worked: type / in a new chat</h3>
+        <p>These commands appear: <code>/new-client</code>, <code>/handoff</code>, <code>/kickoff</code>, <code>/discovery-plan</code>, <code>/discovery-call</code>, <code>/readout</code>, <code>/design</code>, <code>/user-stories</code>. In Cowork and Claude Code the same commands carry a prefix, as in <code>/start-motion:kickoff</code>. If nothing appears, go back to step 1 or ask Avi.</p>
       </div>
     </li>
   </ol>
 
-  <div class="sh-h"><h3>Start a client</h3><p>Once per client. The signed SOW is the only thing you need in hand; everything else sales shared helps, and nothing waits for it.</p></div>
-  <ol class="path">
-    <li>
-      <div class="path-n">1</div>
-      <div class="path-body">
-        <p class="path-when">Per client</p>
-        <h3>Make a Claude Project for the client</h3>
-        <p>In Claude, make a new Project named for the client and add the signed SOW and anything sales shared that is a document. Run every stage command inside that Project: the working files the stages keep live there and are read back on every run. Strongly recommended, not required; the kit also runs outside a Project, and in Codex, with the Drive copies as the shared record.</p>
-      </div>
-    </li>
-    <li>
-      <div class="path-n">2</div>
-      <div class="path-body">
-        <p class="path-when">Per client</p>
-        <h3>Type <code>/new-client</code></h3>
-        <p>It finds the signed SOW and whatever sales shared, finds or makes the client's Drive folder and its Discovery subfolder, checks the Project and the connectors, offers to set up the discovery documents from the SOW, and names the first stage to run: <code>/handoff</code> when sales shared a packet, otherwise <code>/discovery-plan</code>. The same thing by hand: a Drive folder named for the client with a Discovery subfolder, the SOW inside it, then the first stage command; every stage offers to set up what it finds missing.</p>
-        <div class="path-actions">
-          <button type="button" class="btn primary" id="copyNewClientSkill">Copy the instructions</button>
-        </div>
-        <details class="peek"><summary>See the instructions</summary>
-        <pre class="code skill" id="newClientSkillText"><code>__SKILL__</code></pre>
-        </details>
-      </div>
-    </li>
-    <li>
-      <div class="path-n">3</div>
-      <div class="path-body">
-        <p class="path-when">Per client</p>
-        <h3>Run the stages in order</h3>
-        <p>Each command opens by saying where the client stands against the stage's checklist, asks for its picks in one message, shows its plan, and waits for your go. When it is done it names the next command. The order is below; the stage pages on this site hold the full method and what good looks like.</p>
-      </div>
-    </li>
-  </ol>
+  <div class="sh-h"><h3>Then pick how you want to work</h3><p>Each column is the whole way, from a new client to the last stage. Neither needs the other, and you can switch at any stage.</p></div>
+  <div class="sh-paths">
+    <div class="sh-path page">
+      <p class="sh-tag">Way 1</p>
+      <h3>Work from this page</h3>
+      <p class="sh-pick"><b>Pick this if</b> you are new to a stage, or you want to read how it runs and see what good looks like before you ask Claude for anything.</p>
+      <ol class="steps">
+        <li><div><b>Add your client once.</b><span>The bar at the top of this page ("Your client") takes the client's name and dates once; every prompt on every stage fills in from it.</span></div></li>
+        <li><div><b>Set the client up.</b><span>A Google Drive folder named for the client with a Discovery subfolder and the signed SOW inside it, and a Claude Project named for the client with the SOW added to its files. Or type <code>/new-client</code> in Claude and it checks and makes these for you.</span></div></li>
+        <li><div><b>Open the stage in the rail above.</b><span>Start at Stage 2, Discovery, to plan discovery from the SOW; Stage 0 is optional, for when sales shared a packet beyond the SOW. Read "How it runs" and "What good looks like".</span></div></li>
+        <li><div><b>Build your request on the stage's "How to create it" tab.</b><span>Pick the slides or sections you want, fill the blanks, then press Copy. The prompt names the stage's skill, so Claude knows what to run.</span></div></li>
+        <li><div><b>Paste it into Claude, inside the client's Project.</b><span>Claude runs the stage's skill, tells you where the client stands, shows its plan and waits for your go before it writes anything.</span></div></li>
+        <li><div><b>Check the result against the stage's bar here.</b><span>Every stage page ends with "done when" lines. When they hold, come back to this page for the next stage.</span></div></li>
+      </ol>
+      <p class="note">Cannot install the plugin? Each stage's step 1 has "Copy the instructions": paste that into Claude and say "save this as a skill". The prompts then work the same way; Claude will ask for the templates from the <a href="https://drive.google.com/drive/folders/12FPcdOBwsCyCN42FsbRB7GW0DdJ2QDmh" target="_blank" rel="noopener">Kicksaw Discovery Templates</a> folder in Drive when it needs them.</p>
+    </div>
+    <div class="sh-path claude">
+      <p class="sh-tag">Way 2</p>
+      <h3>Work in Claude</h3>
+      <p class="sh-pick"><b>Pick this if</b> you know the stages and want to get on with the work. Nothing to copy; the skill asks you for what it needs.</p>
+      <ol class="steps">
+        <li><div><b>Open Claude in a Project named for the client.</b><span>Make the Project if it does not exist yet and add the signed SOW to its files. Every command runs inside it.</span></div></li>
+        <li><div><b>The first time for a client, type <code>/new-client</code>.</b><span>It finds the SOW and whatever sales shared, finds or makes the client's Drive folder and Discovery subfolder, checks your connectors, offers to set up the discovery documents, and tells you which command to run first.</span></div></li>
+        <li><div><b>Type the stage's command.</b><span>Usually <code>/discovery-plan</code>; <code>/handoff</code> is optional, for when sales shared a packet beyond the SOW. The commands in order are below.</span></div></li>
+        <li><div><b>Answer one message of picks.</b><span>The skill says where the client stands, then asks for everything it needs in one message (the slides, the sections, the few blanks). You answer once.</span></div></li>
+        <li><div><b>Say go.</b><span>It reads your answer back in one line, shows its plan and waits. On your go it builds, saves the outputs where the team can find them, and reports what it made and what to check.</span></div></li>
+        <li><div><b>Run the next command it names.</b><span>Every report ends with the command that follows. Come to this page whenever you want the why, an example, or the full bar for a stage.</span></div></li>
+      </ol>
+      <details class="peek"><summary>See the new-client instructions</summary>
+      <div class="path-actions"><button type="button" class="btn primary" id="copyNewClientSkill">Copy the instructions</button></div>
+      <pre class="code skill" id="newClientSkillText"><code>__SKILL__</code></pre>
+      </details>
+    </div>
+  </div>
 
-  <div class="sh-h"><h3>Where things live</h3><p>So anyone on the client can find the outputs without your Claude Project.</p></div>
+  <div class="sh-h"><h3>Where things end up</h3><p>The same places whichever way you work, so anyone on the client can find the outputs without your Claude Project.</p></div>
   <div class="sh-live">
     <div><b>Your Claude Project</b><p>The working files the stages read back: the Discovery documents note, the session notes, the readout content. One Project per client.</p></div>
     <div><b>The client's Drive folder</b><p>The outputs the team needs, in the Discovery subfolder next to the requirements list: the Discovery documents note, every session note and the readout sign-off record, saved there as they are written. The SOW and whatever sales shared sit in the client folder too.</p></div>
-    <div><b>Shared artifacts, linked in Slack</b><p>The kickoff deck, the discovery pages, the readout and its deck, and the solution design are Claude pages and decks, shared with the team and linked in the client's Slack channel.</p></div>
+    <div><b>Shared pages and decks, linked in Slack</b><p>The kickoff deck, the discovery pages, the readout and its deck, and the solution design are Claude pages and decks, shared with the team and linked in the client's Slack channel.</p></div>
   </div>
 
-  <div class="sh-h"><h3>The stages, in order</h3><p>Select a stage to open it. Stage 4 is a meeting; the readout command carries its record.</p></div>
+  <div class="sh-h"><h3>The stages, in order</h3><p>Select a stage to open its page. Stage 4 is a meeting; the readout command carries its record.</p></div>
   <ol class="sh-list">
-    <li><span class="n">0</span><div><b>SOW and handoff</b><span>The handoff document on DJ's standard and delivery's questions for sales. Here for visibility; a project never waits for it.</span></div><div class="cmd"><code>/handoff</code><button class="go" type="button" data-go="handoff">Open the stage</button></div></li>
+    <li><span class="n">0</span><div><b>SOW and handoff</b><span>Optional. When sales shared a packet beyond the SOW: the handoff document on DJ's standard and delivery's questions. Nothing downstream waits for it.</span></div><div class="cmd"><code>/handoff</code><button class="go" type="button" data-go="handoff">Open the stage</button></div></li>
     <li><span class="n">1</span><div><b>Kickoff</b><span>The client-facing kickoff deck from the finished slide templates; you pick the slides, it shows the plan first.</span></div><div class="cmd"><code>/kickoff</code><button class="go" type="button" data-go="kickoff">Open the stage</button></div></li>
     <li><span class="n">2</span><div><b>Discovery</b><span>The discovery plan from the SOW before kickoff and prep before each session; then every call processed the same day into the requirements list, the workflow document and What we heard, with a draft story for every requirement.</span></div><div class="cmd"><code>/discovery-plan</code><code>/discovery-call</code><button class="go" type="button" data-go="discovery">Open the stage</button></div></li>
     <li><span class="n">3</span><div><b>Readout</b><span>The solution readout from the discovery documents: section plan, build, dry run, deck, the readout call and the sign-off request.</span></div><div class="cmd"><code>/readout</code><button class="go" type="button" data-go="readout">Open the stage</button></div></li>
