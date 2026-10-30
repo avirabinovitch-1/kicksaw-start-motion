@@ -1,0 +1,543 @@
+<title>Kicksaw Discovery Plan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,700&family=JetBrains+Mono:wght@500&display=swap">
+<!--
+  HOW THIS PAGE WORKS
+  Everything on this page is drawn from the data in the <script id="dp-data" type="application/json"> block at the
+  bottom: the SOW lines and what we already know about each, the people, the risks, the sessions, the questions,
+  the inputs and the decisions. The discovery plan skill writes that data before kickoff; the discovery call skill
+  updates it after every call (coverage, answered questions, moved sessions). Nobody edits the markup by hand.
+  This is an internal Kicksaw document. The client-facing session list and the inputs request are produced from it.
+-->
+<style>
+:root{
+  --navy:#03355E; --cyan:#44C8F5; --blue:#0071B9; --orange:#DD6443; --smoke:#EFEFEF; --charcoal:#414042; --white:#FFFFFF;
+  --bg:#F6F7F8; --paper:#FFFFFF; --ink:#1B2A36; --ink-2:#4B5A66; --ink-3:#76838E; --line:#D9DEE3; --lane:#EFF2F5; --lane-2:#E6EAEE;
+  --accent:#0071B9; --accent-ink:#FFFFFF; --accent-soft:#E3F1FA; --heading:#03355E;
+  --known:#1F7A4D; --known-bg:#E6F4EC; --conf:#9A6B00; --conf-bg:#FBF3DC; --unk:#C75A3C; --unk-bg:#FBEEE9; --warn:#DD6443;
+  --display:"Inter", Arial, sans-serif; --sans:"Source Sans 3", "Source Sans Pro", Arial, sans-serif; --mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E161D; --paper:#15202A; --ink:#E6ECF1; --ink-2:#B3BEC8; --ink-3:#85929D; --line:#2C3A46; --lane:#19252F; --lane-2:#1E2B36;
+  --accent:#5DB9F0; --accent-ink:#06202F; --accent-soft:#163142; --heading:#D7E8F5;
+  --known:#7FD3A3; --known-bg:#1A3326; --conf:#E6C25A; --conf-bg:#3A3118; --unk:#F0957A; --unk-bg:#34221B; --warn:#F0957A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E161D; --paper:#15202A; --ink:#E6ECF1; --ink-2:#B3BEC8; --ink-3:#85929D; --line:#2C3A46; --lane:#19252F; --lane-2:#1E2B36;
+  --accent:#5DB9F0; --accent-ink:#06202F; --accent-soft:#163142; --heading:#D7E8F5;
+  --known:#7FD3A3; --known-bg:#1A3326; --conf:#E6C25A; --conf-bg:#3A3118; --unk:#F0957A; --unk-bg:#34221B; --warn:#F0957A; color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+.deck{min-height:100%;display:flex;flex-direction:column;gap:14px;max-width:1500px;margin:0 auto;padding-block:14px 24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font:700 18px var(--display);color:var(--heading);letter-spacing:-.01em}
+.brand img{height:22px;width:auto}
+.brand .lt{display:block}.brand .dk{display:none}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .brand .lt{display:none}:root:not([data-theme="light"]) .brand .dk{display:block}}
+:root[data-theme="dark"] .brand .lt{display:none}:root[data-theme="dark"] .brand .dk{display:block}
+.kind{font:700 11.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.tpl{display:flex;gap:10px;align-items:center;background:var(--unk-bg);border:1px solid var(--warn);color:var(--ink);border-radius:8px;padding:10px 14px;font-size:14px}
+.bar{display:flex;flex-wrap:wrap;gap:4px;border-bottom:1px solid var(--line);padding-bottom:10px;align-items:center}
+.bar .sep{width:1px;height:18px;background:var(--line);margin:0 4px}
+.tab{font:600 13px var(--sans);color:var(--ink-2);background:none;border:0;border-radius:6px;padding:6px 11px;cursor:pointer}
+.tab:hover{color:var(--ink);background:var(--lane)}
+.tab[aria-current="true"]{color:var(--white);background:var(--navy)}
+.tab.s{font-family:var(--mono);font-size:12px;padding:6px 8px}
+:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+.stage{flex:1;min-width:0}
+.slide{display:flex;flex-direction:column;gap:16px;min-width:0}
+.eyebrow{font:500 11.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sw{width:22px;height:4px;border-radius:2px;background:var(--accent)}
+h1,h2{font-family:var(--display);font-weight:700;color:var(--heading);text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(30px,4vw,46px);line-height:1.08;max-width:22ch;margin-top:6px}
+h2{font-size:clamp(24px,2.8vw,34px);line-height:1.12;margin-top:4px}
+.lede{color:var(--ink-2);max-width:78ch;font-size:16px;margin-top:6px}
+h3{font:700 11px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:7px}
+h4{font:700 15px var(--sans);color:var(--ink)}
+.hint{font-size:13px;color:var(--ink-3)}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:980px){.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.card.acc{border-top:3px solid var(--accent)}
+.card.must{border-left:4px solid var(--orange)}
+.card.warn{background:var(--unk-bg);border-color:var(--warn)}
+.card.soft{background:var(--accent-soft);border-color:transparent}
+.card p{font-size:14px;color:var(--ink-2)}
+.card ul,.card ol{padding-left:18px;display:grid;gap:4px;font-size:14px;color:var(--ink-2)}
+.card li b{color:var(--ink)}
+.stat{display:grid;gap:2px}
+.stat .n{font:700 30px/1 var(--display);color:var(--heading)}
+.stat .l{font-size:13px;color:var(--ink-2)}
+.stat .m{font:500 11px var(--mono);color:var(--ink-3)}
+.idx{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:900px){.idx{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.idx a{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:8px;padding:12px 14px;height:100%;cursor:pointer}
+.idx a:hover{border-color:var(--accent)}
+.idx .n{grid-row:span 2;font:600 13px var(--mono);color:var(--accent);padding-top:3px}
+.idx b{font-size:15px}.idx .d{font-size:13px;color:var(--ink-2)}
+.badge{display:inline-block;font:700 10.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;border-radius:4px;padding:2px 7px;white-space:nowrap}
+.badge.known{color:var(--known);background:var(--known-bg)}
+.badge.confirm{color:var(--conf);background:var(--conf-bg)}
+.badge.unknown{color:var(--unk);background:var(--unk-bg)}
+.badge.blocks{color:var(--unk);background:var(--unk-bg)}
+.badge.ok{color:var(--known);background:var(--known-bg)}
+.badge.plain{color:var(--ink-2);background:var(--lane)}
+.badge.acc{color:var(--accent-ink);background:var(--accent)}
+.chip{display:inline-block;font:500 11.5px var(--mono);color:var(--accent);background:var(--accent-soft);border-radius:4px;padding:1px 6px;margin:2px 3px 0 0;cursor:pointer;border:0}
+.chip.sow{color:var(--ink-2);background:var(--lane)}
+.chips{display:flex;flex-wrap:wrap}
+table{width:100%;border-collapse:collapse;background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:14px}
+th{text-align:left;font:700 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding:10px 12px;border-bottom:1px solid var(--line);background:var(--lane)}
+td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink-2)}
+td b,td .id{color:var(--ink)}
+tr:last-child td{border-bottom:0}
+.id{font:500 12px var(--mono);color:var(--accent);white-space:nowrap}
+.twrap{overflow-x:auto;border-radius:10px}
+.q{font-size:14px;color:var(--ink);font-style:italic}
+.q::before{content:"\201C"}.q::after{content:"\201D"}
+.src{font:500 11px var(--mono);color:var(--ink-3);display:block;margin-top:3px}
+.area{display:grid;gap:8px}
+.row{display:grid;grid-template-columns:118px minmax(0,1.1fr) minmax(0,1.3fr) 150px;gap:12px;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px}
+@media (max-width:900px){.row{grid-template-columns:1fr}}
+.row .t{color:var(--ink)}.row .r{font:500 11px var(--mono);color:var(--ink-3)}
+.sum{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink-2);align-items:center}
+.sum b{font-family:var(--display);font-size:20px;color:var(--heading);margin-right:4px}
+.cal{display:grid;gap:6px}
+.cal .wk{font:700 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:6px}
+.cal .days{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+@media (max-width:900px){.cal .days{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.cal .day{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-height:92px;display:grid;gap:4px;align-content:start}
+.cal .day .dn{font:500 11px var(--mono);color:var(--ink-3)}
+.cal .ev{font-size:13px;border-left:3px solid var(--accent);padding-left:7px;cursor:pointer;color:var(--ink)}
+.cal .ev.held{border-color:var(--known)}.cal .ev.partly{border-color:var(--conf)}.cal .ev.moved{border-color:var(--unk);text-decoration:line-through;color:var(--ink-3)}
+.cal .ev .m{font:500 11px var(--mono);color:var(--ink-3)}
+.cal .kick{font:600 12px var(--sans);color:var(--ink-3)}
+.slist{display:grid;gap:8px}
+.srow{display:grid;grid-template-columns:70px minmax(0,2fr) minmax(0,2fr) 90px;gap:12px;align-items:start;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px;cursor:pointer}
+.srow:hover{border-color:var(--accent)}
+@media (max-width:900px){.srow{grid-template-columns:1fr}}
+.srow .nm{color:var(--ink);font-weight:600}.srow .who{color:var(--ink-2);font-size:13px}
+.agenda{display:grid;gap:0;background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.agenda div{display:grid;grid-template-columns:64px 1fr;gap:12px;padding:9px 14px;border-bottom:1px solid var(--line);font-size:14px}
+.agenda div:last-child{border-bottom:0}
+.agenda .m{font:500 12px var(--mono);color:var(--ink-3);padding-top:2px}
+.agenda .c{color:var(--ink-2);font-size:13px}
+.ppl{display:grid;gap:6px;font-size:14px}
+.ppl div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:start}
+.ppl .w{font:500 11px var(--mono);color:var(--ink-3);white-space:nowrap;padding-top:4px}
+.heard{display:grid;gap:8px}
+.heard .h{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--known);border-radius:8px;padding:10px 12px;font-size:14px}
+.heard .h .p{color:var(--ink);font-weight:600}
+.ql{display:grid;gap:6px}
+.ql div{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:14px;align-items:start}
+.ql .a{grid-column:2;color:var(--known);font-size:13px}
+.ql .a::before{content:"Answered: ";font-weight:700}
+.ql .answered{opacity:.75}
+.upd{background:var(--accent-soft);border-radius:10px;padding:12px 14px}
+.upd b{display:block;font:700 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:5px}
+.upd ul{padding-left:18px;font-size:14px;display:grid;gap:3px;color:var(--ink)}
+.ctl{display:flex;gap:8px;align-items:center;justify-content:flex-end;font:500 12px var(--mono);color:var(--ink-3)}
+.ctl button{font:600 14px var(--sans);background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:4px 12px;cursor:pointer;color:var(--ink)}
+.ctl button:hover{border-color:var(--accent)}
+.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:10px}
+.pill{display:inline-block;font:500 11px var(--mono);color:var(--ink-2);background:var(--lane);border-radius:999px;padding:2px 9px}
+.two{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px}
+@media (max-width:980px){.two{grid-template-columns:1fr}}
+.must li{color:var(--ink);font-weight:600}
+.flag{font-size:13px;color:var(--unk)}
+.empty{background:var(--paper);border:1px dashed var(--line);border-radius:10px;padding:18px;color:var(--ink-3);font-size:14px}
+</style>
+
+<div class="deck">
+  <header class="top">
+    <div class="brand"><img class="lt" src="brand/primary-full-color.svg" alt="Kicksaw"><img class="dk" src="brand/primary-inverse.svg" alt="Kicksaw"></div>
+    <span class="kind">Discovery plan · internal</span>
+  </header>
+  <div class="tpl" id="tpl" hidden><b>Template.</b><span>Do not edit this page. To start a client's discovery plan, run the planning prompt from the Kicksaw Delivery Start Motion page and Claude makes a copy for the client.</span></div>
+  <nav class="bar" id="bar" aria-label="Screens"></nav>
+  <main class="stage" id="stage"></main>
+  <div class="ctl" id="ctl"><span id="pos"></span><button type="button" id="prev" aria-label="Previous screen">&larr;</button><button type="button" id="next" aria-label="Next screen">&rarr;</button></div>
+  <footer class="foot"><span id="footl"></span><span id="footr"></span></footer>
+</div>
+
+<script id="dp-data" type="application/json">
+{
+  "project": {
+    "template": true,
+    "client": "[Client]",
+    "engagement": "Sales Cloud implementation",
+    "updated": "before the first session",
+    "builtFrom": ["SOW v1 (signed)", "S-01 Sales discovery call, Jun 3", "S-02 Scope call, Jun 18", "Handoff packet"],
+    "lede": "[Client] is moving its sales team from spreadsheets and a shared inbox onto Sales Cloud so that every lead is captured, routed to the right rep by territory, and reported on. Discovery runs three weeks from kickoff; sign-off needs confirmed workflows for lead intake, lead conversion and opportunity management, a prioritized requirements list with stories, and four decisions the SOW leaves to discovery.",
+    "window": {"weeks": 3, "days": "Tuesdays and Thursdays", "mode": "remote", "signoff": "Discovery playback, week 3 Thursday"},
+    "signoff": {
+      "deliverables": ["Confirmed workflow document (lead intake, conversion, opportunity management)", "Requirements list with a draft story for every requirement", "What we heard page played back to the sponsor", "Sprint 1 backlog"],
+      "decisions": ["Territory model (state, region or named accounts)", "Which spreadsheet columns migrate", "Whether the newsletter form creates a lead", "Who owns lead assignment rules after go-live"]
+    },
+    "changes": [
+      {"when": "Before the first session", "items": ["Plan built from the SOW and the two sales calls. Nothing has been covered yet."]}
+    ]
+  },
+  "areas": [
+    {"id": "A1", "name": "Lead intake", "ref": "SOW §3.1"},
+    {"id": "A2", "name": "Lead conversion and territories", "ref": "SOW §3.2"},
+    {"id": "A3", "name": "Reporting and data", "ref": "SOW §3.4, §5"}
+  ],
+  "sow": [
+    {"id": "S-01", "area": "A1", "text": "Every website form submission creates one lead", "ref": "§3.1", "state": "known", "heard": {"quote": "Every form on the site should land as a lead, we lose them in the inbox today", "who": "Jordan Lee, Sales Operations Manager", "src": "S-01, 00:12:40"}, "sessions": ["D2"]},
+    {"id": "S-02", "area": "A1", "text": "Leads are deduplicated before a new record is created", "ref": "§3.1", "state": "confirm", "heard": {"quote": "We get the same person three times a week from different forms", "who": "Jordan Lee", "src": "S-01, 00:14:05"}, "sessions": ["D2"]},
+    {"id": "S-03", "area": "A1", "text": "The newsletter form may or may not create a lead (decision required)", "ref": "§3.1", "state": "unknown", "sessions": ["D2"]},
+    {"id": "S-04", "area": "A2", "text": "Leads are assigned to a rep by territory", "ref": "§3.2", "state": "confirm", "heard": {"quote": "Right now it's whoever picks it up first; we want it by state, probably", "who": "Sam Ortiz, VP Sales", "src": "S-02, 00:08:15"}, "sessions": ["D1", "D3"]},
+    {"id": "S-05", "area": "A2", "text": "Qualified leads convert to a contact, account and opportunity", "ref": "§3.2", "state": "known", "heard": {"quote": "Once they take a demo they're an opportunity, full stop", "who": "Sam Ortiz", "src": "S-02, 00:21:30"}, "sessions": ["D3"]},
+    {"id": "S-06", "area": "A3", "text": "Pipeline report by rep and stage, and a lead source report", "ref": "§3.4", "state": "confirm", "heard": {"quote": "I want to open one dashboard on Monday and see the pipeline by rep", "who": "Sam Ortiz", "src": "S-02, 00:30:02"}, "sessions": ["D4"]},
+    {"id": "S-07", "area": "A3", "text": "Migrate the lead and account spreadsheets", "ref": "§5", "state": "unknown", "sessions": ["D4"]}
+  ],
+  "people": [
+    {"name": "Sam Ortiz", "role": "VP Sales", "side": "client", "met": true, "decides": "Territory model, priorities, sign-off", "cares": "Seeing the pipeline without asking anyone", "quote": "I want to open one dashboard on Monday and see the pipeline by rep", "src": "S-02", "sessions": ["D1", "D3", "D4", "D5"]},
+    {"name": "Jordan Lee", "role": "Sales Operations Manager", "side": "client", "met": true, "decides": "Day-to-day process, data cleanup", "cares": "Leads lost in the shared inbox; duplicates", "quote": "We get the same person three times a week from different forms", "src": "S-01", "sessions": ["D1", "D2", "D3", "D4", "D5"]},
+    {"name": "Two sales reps", "role": "The people who work the leads", "side": "client", "met": false, "why": "The reverse demo has to come from the people who do the work, not their manager", "sessions": ["D1", "D2"]},
+    {"name": "Marketing lead", "role": "Owns the website forms", "side": "client", "met": false, "why": "Decides what the forms capture and whether the newsletter form is a lead", "sessions": ["D2"]}
+  ],
+  "risks": [
+    {"t": "The territory decision is not made", "d": "Everything in lead routing depends on it, and the VP said \"probably\" by state. If it slips past D3, the routing stories cannot be written.", "handled": "Framed in D1, options on the table in D3, decision owner named (Sam Ortiz). Flagged as blocking on Q-03."},
+    {"t": "The spreadsheets are messier than described", "d": "Nobody has opened them yet. Migration scope is unknown until we see the columns and the row counts.", "handled": "Sample files requested before D4; D4 opens with the real files on screen."}
+  ],
+  "sessions": [
+    {"id": "D1", "name": "Reverse demo: how a lead is worked today", "when": {"week": 1, "day": 2, "slot": "am"}, "length": 90, "status": "planned",
+     "purpose": "Watch the team work real leads in the spreadsheet and the inbox, from the moment one arrives to the moment it is handed to a rep. Nothing is designed yet.",
+     "covers": ["S-01", "S-04"],
+     "attendees": {"client": [{"who": "Sam Ortiz, VP Sales", "why": "decides"}, {"who": "Jordan Lee, Sales Ops", "why": "knows"}, {"who": "Two sales reps", "why": "does the work"}], "kicksaw": ["SC", "SA", "PM"]},
+     "heard": [{"point": "Leads arrive by website form and a shared inbox", "quote": "Every form on the site should land as a lead, we lose them in the inbox today", "who": "Jordan Lee", "src": "S-01, 00:12:40"}],
+     "must": ["The list of processes to map, in the client's words", "Who actually assigns a lead today, and how", "The first draft of W-01 on the whiteboard"],
+     "agenda": [{"min": 10, "item": "How discovery runs and what sign-off needs", "note": "Set the three weeks, the weekly playback and the Tuesday/Thursday rhythm"}, {"min": 45, "item": "Reverse demo: a rep works three real leads from arrival to handoff", "note": "Screen share; we ask, we do not design"}, {"min": 20, "item": "Where it breaks: the inbox, duplicates, the handoff", "note": "Doers first, then the manager"}, {"min": 15, "item": "Name the processes to map and who owns each", "note": "Becomes the deep-dive list; confirm D2 to D4 attendees"}],
+     "questions": ["Q-01", "Q-02"],
+     "inputs": [{"item": "Read access to the shared inbox and the lead spreadsheet", "owner": "Jordan Lee", "by": "Before D1"}],
+     "dependsOn": [], "feeds": ["Workflow document W-01 draft", "Session plan (D2 to D4 confirmed)"],
+     "updates": []},
+    {"id": "D2", "name": "Lead intake deep dive", "when": {"week": 1, "day": 4, "slot": "am"}, "length": 60, "status": "planned",
+     "purpose": "Map lead intake end to end: every form, the inbox, deduplication and what the newsletter form should do.",
+     "covers": ["S-01", "S-02", "S-03"],
+     "attendees": {"client": [{"who": "Jordan Lee, Sales Ops", "why": "knows"}, {"who": "Marketing lead", "why": "decides on forms"}, {"who": "One sales rep", "why": "does the work"}], "kicksaw": ["SC", "SA"]},
+     "heard": [{"point": "Duplicates are a daily problem", "quote": "We get the same person three times a week from different forms", "who": "Jordan Lee", "src": "S-01, 00:14:05"}],
+     "must": ["Every form listed with the fields it captures", "The dedupe rule in plain words (match on what?)", "The newsletter form decision, or its owner and date"],
+     "agenda": [{"min": 5, "item": "Confirm what we heard on S-01 about forms and duplicates"}, {"min": 25, "item": "Walk each form: fields, where it lands, who sees it first"}, {"min": 15, "item": "Duplicates: how they are spotted today, what should happen at launch"}, {"min": 15, "item": "The newsletter form: lead or not, and what a lead from it would need"}],
+     "questions": ["Q-03", "Q-04"],
+     "inputs": [{"item": "List of website forms with screenshots", "owner": "Marketing lead", "by": "Before D2"}],
+     "dependsOn": ["D1"], "feeds": ["W-01 confirmed", "Requirements E1"],
+     "updates": []},
+    {"id": "D3", "name": "Territories, assignment and conversion", "when": {"week": 2, "day": 2, "slot": "am"}, "length": 90, "status": "planned",
+     "purpose": "Settle the territory model and map how a lead becomes an opportunity.",
+     "covers": ["S-04", "S-05"],
+     "attendees": {"client": [{"who": "Sam Ortiz, VP Sales", "why": "decides"}, {"who": "Jordan Lee, Sales Ops", "why": "knows"}], "kicksaw": ["SC", "SA"]},
+     "heard": [{"point": "Territory is probably by state", "quote": "Right now it's whoever picks it up first; we want it by state, probably", "who": "Sam Ortiz", "src": "S-02, 00:08:15"}, {"point": "A demo makes an opportunity", "quote": "Once they take a demo they're an opportunity, full stop", "who": "Sam Ortiz", "src": "S-02, 00:21:30"}],
+     "must": ["The territory model decided, or the decision date", "The conversion trigger confirmed", "W-02 drafted"],
+     "agenda": [{"min": 10, "item": "Confirm: whoever-picks-it-up today; demo converts"}, {"min": 35, "item": "Territory options: by state, by region, by named accounts. Who owns which, what happens at the edges"}, {"min": 30, "item": "Conversion: what is created, what is carried over, who owns the opportunity"}, {"min": 15, "item": "What a rep sees: only their territory, or everything"}],
+     "questions": ["Q-05", "Q-06"],
+     "inputs": [{"item": "Current rep list with the states each covers", "owner": "Sam Ortiz", "by": "Before D3"}],
+     "dependsOn": ["D1"], "feeds": ["W-02", "Requirements E2", "Decision 1"],
+     "updates": []},
+    {"id": "D4", "name": "Reporting and the spreadsheets", "when": {"week": 2, "day": 4, "slot": "am"}, "length": 60, "status": "planned",
+     "purpose": "What leaders watch each week, and what moves from the spreadsheets into Salesforce.",
+     "covers": ["S-06", "S-07"],
+     "attendees": {"client": [{"who": "Sam Ortiz, VP Sales", "why": "decides"}, {"who": "Jordan Lee, Sales Ops", "why": "owns the spreadsheets"}], "kicksaw": ["SA", "SC"]},
+     "heard": [{"point": "One Monday dashboard", "quote": "I want to open one dashboard on Monday and see the pipeline by rep", "who": "Sam Ortiz", "src": "S-02, 00:30:02"}],
+     "must": ["The reports list for launch", "The spreadsheet columns that migrate, and the ones that do not", "Row counts and the cleanup the client owns"],
+     "agenda": [{"min": 20, "item": "The Monday view: pipeline by rep and stage, lead source"}, {"min": 30, "item": "The spreadsheets on screen: columns, counts, what is stale"}, {"min": 10, "item": "What the client cleans up before migration"}],
+     "questions": ["Q-07"],
+     "inputs": [{"item": "The lead and account spreadsheets (copies)", "owner": "Jordan Lee", "by": "Before D4"}],
+     "dependsOn": ["D2", "D3"], "feeds": ["Reports list", "Migration list", "Decision 2"],
+     "updates": []},
+    {"id": "D5", "name": "Discovery playback", "when": {"week": 3, "day": 4, "slot": "am"}, "length": 120, "status": "planned",
+     "purpose": "Walk the sponsor through the workflows, coverage and open questions. Corrections now, before the readout.",
+     "covers": [],
+     "attendees": {"client": [{"who": "Sam Ortiz, VP Sales", "why": "signs off"}, {"who": "Jordan Lee, Sales Ops", "why": "confirms the detail"}], "kicksaw": ["SC", "SA", "PM"]},
+     "heard": [], "must": ["Every workflow confirmed or corrected", "Every blocking question answered or dated", "Sign-off on the discovery documents"],
+     "agenda": [{"min": 60, "item": "The workflows, one by one"}, {"min": 30, "item": "What we heard and the requirements by priority"}, {"min": 30, "item": "Open questions and decisions still to close"}],
+     "questions": [], "inputs": [], "dependsOn": ["D2", "D3", "D4"], "feeds": ["Confirmed discovery documents; Stage 3 begins"], "updates": []}
+  ],
+  "questions": [
+    {"id": "Q-01", "q": "Who assigns a lead to a rep today, and how do they decide?", "who": "Jordan Lee", "target": "D1", "blocks": true, "status": "open"},
+    {"id": "Q-02", "q": "How many leads arrive in a week, by form and by the inbox?", "who": "Jordan Lee", "target": "D1", "blocks": false, "status": "open"},
+    {"id": "Q-03", "q": "Does the newsletter form create a lead?", "who": "Marketing lead", "target": "D2", "blocks": true, "status": "open"},
+    {"id": "Q-04", "q": "What makes two leads the same person: email, phone, or both?", "who": "Jordan Lee", "target": "D2", "blocks": true, "status": "open"},
+    {"id": "Q-05", "q": "Territory by state, region or named accounts?", "who": "Sam Ortiz", "target": "D3", "blocks": true, "status": "open"},
+    {"id": "Q-06", "q": "Should a rep see leads outside their territory?", "who": "Sam Ortiz", "target": "D3", "blocks": false, "status": "open"},
+    {"id": "Q-07", "q": "Which spreadsheet columns are still used?", "who": "Jordan Lee", "target": "D4", "blocks": false, "status": "open"}
+  ],
+  "inputs": [
+    {"item": "Read access to the shared inbox and the lead spreadsheet", "owner": "Jordan Lee", "by": "Before D1", "usedIn": ["D1"], "status": "requested"},
+    {"item": "List of website forms with screenshots", "owner": "Marketing lead", "by": "Before D2", "usedIn": ["D2"], "status": "requested"},
+    {"item": "Current rep list with the states each covers", "owner": "Sam Ortiz", "by": "Before D3", "usedIn": ["D3"], "status": "requested"},
+    {"item": "The lead and account spreadsheets (copies)", "owner": "Jordan Lee", "by": "Before D4", "usedIn": ["D4"], "status": "requested"}
+  ],
+  "decisions": [
+    {"id": 1, "d": "Territory model", "owner": "Sam Ortiz", "target": "D3", "status": "open", "note": "By state is the working assumption (S-02)"},
+    {"id": 2, "d": "Which spreadsheet columns migrate", "owner": "Jordan Lee", "target": "D4", "status": "open"},
+    {"id": 3, "d": "Whether the newsletter form creates a lead", "owner": "Marketing lead", "target": "D2", "status": "open"},
+    {"id": 4, "d": "Who owns assignment rules after go-live", "owner": "Sam Ortiz", "target": "D5", "status": "open"}
+  ]
+}
+</script>
+
+<script>
+(function(){
+  var DATA = JSON.parse(document.getElementById('dp-data').textContent);
+  var P = DATA.project, SOW = DATA.sow || [], AREAS = DATA.areas || [], PEOPLE = DATA.people || [], RISKS = DATA.risks || [];
+  var SESS = DATA.sessions || [], QS = DATA.questions || [], INP = DATA.inputs || [], DEC = DATA.decisions || [];
+  var esc = function(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); };
+  var byId = function(arr, id){ for (var i = 0; i < arr.length; i++) if (arr[i].id === id) return arr[i]; return null; };
+  var STATE = {known: 'Known', confirm: 'Needs confirming', unknown: 'Unknown'};
+  var SSTAT = {planned: 'Planned', held: 'Held', partly: 'Partly covered', moved: 'Moved', cancelled: 'Dropped'};
+
+  if (P.template) { document.getElementById('tpl').hidden = false; }
+  document.title = (P.template ? 'Kicksaw Discovery Plan' : P.client + ' Discovery Plan');
+
+  function badge(state){ return '<span class="badge ' + esc(state) + '">' + esc(STATE[state] || state) + '</span>'; }
+  function sbadge(st){ var cls = st === 'held' ? 'ok' : st === 'partly' ? 'confirm' : st === 'moved' || st === 'cancelled' ? 'unknown' : 'plain'; return '<span class="badge ' + cls + '">' + esc(SSTAT[st] || st) + '</span>'; }
+  function chip(id, cls){ return '<button type="button" class="chip ' + (cls || '') + '" data-go="' + esc(id) + '">' + esc(id) + '</button>'; }
+  function sowChips(ids){ return '<span class="chips">' + (ids || []).map(function(i){ return chip(i, 'sow'); }).join('') + '</span>'; }
+  function sessChips(ids){ return '<span class="chips">' + (ids || []).map(function(i){ return chip(i); }).join('') + '</span>'; }
+  function src(s){ return s ? '<span class="src">' + esc(s) + '</span>' : ''; }
+  function whenText(w){ if (!w) return 'Not scheduled'; return 'Week ' + w.week + ', day ' + w.day + (w.slot ? (w.slot === 'am' ? ', morning' : ', afternoon') : '') + (w.date ? ' (' + esc(w.date) + ')' : ''); }
+
+  /* ---------- counts ---------- */
+  function counts(){
+    var c = {known: 0, confirm: 0, unknown: 0};
+    SOW.forEach(function(s){ c[s.state] = (c[s.state] || 0) + 1; });
+    var held = SESS.filter(function(s){ return s.status === 'held'; }).length;
+    var live = SESS.filter(function(s){ return s.status !== 'cancelled'; }).length;
+    var qa = QS.filter(function(q){ return q.status === 'answered'; }).length;
+    var qb = QS.filter(function(q){ return q.blocks && q.status !== 'answered'; }).length;
+    var ir = INP.filter(function(i){ return i.status === 'received'; }).length;
+    var dc = DEC.filter(function(d){ return d.status === 'closed'; }).length;
+    return {sow: c, held: held, live: live, qa: qa, qb: qb, ir: ir, dc: dc};
+  }
+
+  /* ---------- screens ---------- */
+  var screens = [];
+  function add(id, tab, title, html, cls){ screens.push({id: id, tab: tab, title: title, html: html, cls: cls || ''}); }
+
+  function cover(){
+    var c = counts();
+    var h = '<section class="slide cover"><div class="eyebrow"><span class="sw"></span>Discovery plan · internal · updated ' + esc(P.updated) + '</div>';
+    h += '<h1>' + esc(P.client) + ' discovery plan</h1>';
+    h += '<p class="lede">' + esc(P.lede) + '</p>';
+    h += '<div class="grid g4">';
+    h += '<div class="card stat"><span class="n">' + c.held + '<span style="font-size:16px;color:var(--ink-3)"> / ' + c.live + '</span></span><span class="l">Sessions held</span><span class="m">' + esc((P.window && P.window.weeks) ? P.window.weeks + ' weeks, ' + P.window.days : '') + '</span></div>';
+    h += '<div class="card stat"><span class="n">' + c.sow.known + '<span style="font-size:16px;color:var(--ink-3)"> / ' + c.sow.confirm + ' / ' + c.sow.unknown + '</span></span><span class="l">SOW lines known / to confirm / unknown</span><span class="m">' + SOW.length + ' lines in all</span></div>';
+    h += '<div class="card stat"><span class="n">' + c.qa + '<span style="font-size:16px;color:var(--ink-3)"> / ' + QS.length + '</span></span><span class="l">Questions answered</span><span class="m">' + c.qb + ' still open that block design</span></div>';
+    h += '<div class="card stat"><span class="n">' + c.dc + '<span style="font-size:16px;color:var(--ink-3)"> / ' + DEC.length + '</span></span><span class="l">Decisions closed</span><span class="m">' + c.ir + ' of ' + INP.length + ' client inputs received</span></div>';
+    h += '</div>';
+    if (P.changes && P.changes.length) {
+      var ch = P.changes[0];
+      h += '<div class="upd"><b>Changes since the last call · ' + esc(ch.when) + '</b><ul>' + ch.items.map(function(i){ return '<li>' + esc(i) + '</li>'; }).join('') + '</ul></div>';
+    }
+    h += '<div class="two"><div class="card acc"><h3>Sign-off requires</h3><div class="grid g2"><div><h4>Deliverables</h4><ul>' + (P.signoff.deliverables || []).map(function(d){ return '<li>' + esc(d) + '</li>'; }).join('') + '</ul></div><div><h4>Decisions the SOW leaves to discovery</h4><ul>' + (P.signoff.decisions || []).map(function(d){ return '<li>' + esc(d) + '</li>'; }).join('') + '</ul></div></div></div>';
+    h += '<div class="card"><h3>Built from</h3><ul>' + (P.builtFrom || []).map(function(b){ return '<li>' + esc(b) + '</li>'; }).join('') + '</ul><p style="margin-top:10px">' + esc(P.window ? 'Discovery runs ' + P.window.weeks + ' weeks, sessions on ' + P.window.days + ', ' + P.window.mode + '. Sign-off: ' + P.window.signoff + '.' : '') + '</p></div></div>';
+    h += '<div><h3>Screens</h3><ul class="idx" id="idx"></ul></div>';
+    h += '<div class="card soft"><h3>How to read this plan</h3><p>Start with <b>What we know</b>: every SOW line is marked known (we have the client’s words), needs confirming (heard once, from one person) or unknown. The unknowns became the questions, the questions became the sessions. Each session says what it must leave with; cut anything else when time runs short. After every call the plan is updated: coverage, answered questions, moved sessions, inputs received. The cover always shows the latest changes.</p></div>';
+    h += '</section>';
+    return h;
+  }
+
+  function knowScreen(){
+    var c = counts().sow;
+    var h = '<section class="slide"><div class="eyebrow"><span class="sw"></span>What we walk in knowing</div><h2>Every SOW line, and what the sales calls already told us</h2>';
+    h += '<div class="sum"><span><b>' + c.known + '</b>' + badge('known') + '</span><span><b>' + c.confirm + '</b>' + badge('confirm') + '</span><span><b>' + c.unknown + '</b>' + badge('unknown') + '</span><span class="hint">Known: the client said it, with a quote. Needs confirming: heard once, or from one person, or sales said it for them. Unknown: nothing on the calls; discovery has to find out.</span></div>';
+    AREAS.forEach(function(a){
+      var rows = SOW.filter(function(s){ return s.area === a.id; });
+      if (!rows.length) return;
+      h += '<div class="area"><h3>' + esc(a.name) + ' <span class="pill">' + esc(a.ref || '') + '</span></h3>';
+      rows.forEach(function(s){
+        h += '<div class="row" id="sow-' + esc(s.id) + '"><div>' + badge(s.state) + '<div class="r" style="margin-top:6px">' + esc(s.id) + ' · ' + esc(s.ref || '') + '</div></div>';
+        h += '<div class="t">' + esc(s.text) + (s.note ? '<div class="hint" style="margin-top:4px">' + esc(s.note) + '</div>' : '') + '</div>';
+        h += '<div>' + (s.heard ? '<span class="q">' + esc(s.heard.quote) + '</span>' + src((s.heard.who || '') + (s.heard.src ? ' · ' + s.heard.src : '')) : '<span class="hint">Nothing on the calls yet</span>') + '</div>';
+        h += '<div>' + (s.sessions && s.sessions.length ? sessChips(s.sessions) : '<span class="flag">No session covers this</span>') + '</div></div>';
+      });
+      h += '</div>';
+    });
+    h += '</section>';
+    return h;
+  }
+
+  function peopleScreen(){
+    var met = PEOPLE.filter(function(p){ return p.met; }), not = PEOPLE.filter(function(p){ return !p.met; });
+    var h = '<section class="slide"><div class="eyebrow"><span class="sw"></span>The people</div><h2>Who we have met, and who we still need in the room</h2>';
+    h += '<h3>Met on the sales calls</h3><div class="grid g3">';
+    met.forEach(function(p){
+      h += '<div class="card acc"><h4>' + esc(p.name) + '</h4><p>' + esc(p.role) + (p.side === 'client' ? '' : ' · ' + esc(p.side)) + '</p>';
+      if (p.decides) h += '<p style="margin-top:6px"><b>Decides on:</b> ' + esc(p.decides) + '</p>';
+      if (p.cares) h += '<p style="margin-top:6px"><b>Cares about:</b> ' + esc(p.cares) + '</p>';
+      if (p.quote) h += '<p style="margin-top:6px"><span class="q">' + esc(p.quote) + '</span>' + src(p.src) + '</p>';
+      if (p.sessions && p.sessions.length) h += '<p style="margin-top:8px">' + sessChips(p.sessions) + '</p>';
+      h += '</div>';
+    });
+    h += '</div>';
+    if (not.length) {
+      h += '<h3 style="margin-top:8px">Not met yet</h3><div class="grid g3">';
+      not.forEach(function(p){
+        h += '<div class="card"><h4>' + esc(p.name) + '</h4><p>' + esc(p.role) + '</p>' + (p.why ? '<p style="margin-top:6px"><b>Why we need them:</b> ' + esc(p.why) + '</p>' : '') + (p.sessions && p.sessions.length ? '<p style="margin-top:8px">' + sessChips(p.sessions) + '</p>' : '') + '</div>';
+      });
+      h += '</div>';
+    }
+    h += '</section>';
+    return h;
+  }
+
+  function risksScreen(){
+    var h = '<section class="slide"><div class="eyebrow"><span class="sw"></span>What could derail discovery</div><h2>The risks we plan around, and how the plan handles each</h2><div class="grid g2">';
+    RISKS.forEach(function(r){ h += '<div class="card warn"><h4>' + esc(r.t) + '</h4><p style="margin-top:4px">' + esc(r.d) + '</p><p style="margin-top:8px"><b>How the plan handles it:</b> ' + esc(r.handled) + '</p></div>'; });
+    if (!RISKS.length) h += '<div class="empty">No risks recorded yet.</div>';
+    h += '</div></section>';
+    return h;
+  }
+
+  function sessionsScreen(){
+    var h = '<section class="slide"><div class="eyebrow"><span class="sw"></span>The sessions</div><h2>' + SESS.filter(function(s){ return s.status !== 'cancelled'; }).length + ' sessions over ' + esc(P.window ? P.window.weeks + ' weeks' : 'discovery') + '</h2>';
+    /* calendar */
+    var weeks = {}; var maxDay = 5;
+    SESS.forEach(function(s){ if (s.when) { weeks[s.when.week] = weeks[s.when.week] || {}; (weeks[s.when.week][s.when.day] = weeks[s.when.week][s.when.day] || []).push(s); maxDay = Math.max(maxDay, s.when.day); } });
+    var wkeys = Object.keys(weeks).map(Number).sort(function(a, b){ return a - b; });
+    if (wkeys.length) {
+      h += '<div class="cal">';
+      wkeys.forEach(function(w){
+        h += '<div class="wk">Week ' + w + '</div><div class="days">';
+        for (var d = 1; d <= maxDay; d++) {
+          var evs = (weeks[w] && weeks[w][d]) || [];
+          h += '<div class="day"><span class="dn">Day ' + d + '</span>' + evs.map(function(s){ return '<div class="ev ' + esc(s.status) + '" data-go="' + esc(s.id) + '"><span class="m">' + esc(s.id) + ' · ' + (s.when.slot === 'pm' ? 'pm' : 'am') + ' · ' + s.length + ' min</span><br>' + esc(s.name) + '</div>'; }).join('') + '</div>';
+        }
+        h += '</div>';
+      });
+      h += '</div>';
+    }
+    h += '<div class="hint">' + esc(P.window && P.window.flex ? P.window.flex : 'Mornings and afternoons are indicative; exact times are set with the client lead. Kicksaw working time between sessions is not shown.') + '</div>';
+    h += '<h3 style="margin-top:6px">Every session</h3><div class="slist">';
+    SESS.forEach(function(s){
+      var roles = (s.attendees && s.attendees.client || []).map(function(a){ return a.who.split(',')[0]; }).join(', ');
+      h += '<div class="srow" data-go="' + esc(s.id) + '"><div><span class="id">' + esc(s.id) + '</span><br><span class="hint">' + s.length + ' min</span></div><div><span class="nm">' + esc(s.name) + '</span><br><span class="hint">' + esc(whenText(s.when)) + '</span></div><div class="who">' + esc(roles) + '</div><div>' + sbadge(s.status) + '</div></div>';
+    });
+    h += '</div>';
+    /* time asked */
+    var hrs = {};
+    SESS.forEach(function(s){ if (s.status === 'cancelled') return; (s.attendees && s.attendees.client || []).forEach(function(a){ var k = a.who.split(',')[0]; hrs[k] = hrs[k] || {m: 0, s: []}; hrs[k].m += s.length; hrs[k].s.push(s.id); }); });
+    var keys = Object.keys(hrs).sort(function(a, b){ return hrs[b].m - hrs[a].m; });
+    if (keys.length) {
+      h += '<h3 style="margin-top:6px">Time asked of each person</h3><div class="twrap"><table><thead><tr><th>Who</th><th>Hours</th><th>Sessions</th></tr></thead><tbody>';
+      keys.forEach(function(k){ h += '<tr><td><b>' + esc(k) + '</b></td><td>' + (Math.round(hrs[k].m / 30) / 2) + '</td><td>' + sessChips(hrs[k].s) + '</td></tr>'; });
+      h += '</tbody></table></div>';
+    }
+    h += '</section>';
+    return h;
+  }
+
+  function sessionScreen(s){
+    var h = '<section class="slide"><div class="eyebrow"><span class="sw"></span>' + esc(s.id) + ' · ' + esc(whenText(s.when)) + ' · ' + s.length + ' min · ' + sbadge(s.status) + '</div>';
+    h += '<h2>' + esc(s.name) + '</h2><p class="lede">' + esc(s.purpose) + '</p>';
+    if (s.updates && s.updates.length) { var u = s.updates[0]; h += '<div class="upd"><b>Updated after ' + esc(u.when) + '</b><ul>' + u.items.map(function(i){ return '<li>' + esc(i) + '</li>'; }).join('') + '</ul></div>'; }
+    h += '<div class="two"><div style="display:grid;gap:14px">';
+    h += '<div class="card must"><h3>Must leave with</h3><ul class="must">' + (s.must || []).map(function(m){ return '<li>' + esc(m) + '</li>'; }).join('') + '</ul></div>';
+    h += '<div><h3>Agenda</h3><div class="agenda">' + (s.agenda || []).map(function(a){ return '<div><span class="m">' + a.min + ' min</span><span><b>' + esc(a.item) + '</b>' + (a.note ? '<br><span class="c">' + esc(a.note) + '</span>' : '') + '</span></div>'; }).join('') + '</div></div>';
+    if (s.heard && s.heard.length) {
+      h += '<div><h3>What we already heard (confirm, do not re-ask)</h3><div class="heard">' + s.heard.map(function(x){ return '<div class="h"><span class="p">' + esc(x.point) + '</span><br><span class="q">' + esc(x.quote) + '</span>' + src((x.who || '') + (x.src ? ' · ' + x.src : '')) + '</div>'; }).join('') + '</div></div>';
+    }
+    var qs = (s.questions || []).map(function(id){ return byId(QS, id); }).filter(Boolean);
+    if (qs.length) {
+      h += '<div><h3>Questions this session answers</h3><div class="ql">' + qs.map(function(q){ return '<div class="' + (q.status === 'answered' ? 'answered' : '') + '"><span class="id">' + esc(q.id) + '</span><span>' + esc(q.q) + '<span class="src">' + esc(q.who || '') + '</span></span><span>' + (q.blocks ? '<span class="badge blocks">Blocks design</span>' : '') + (q.status === 'answered' ? ' <span class="badge ok">Answered</span>' : q.status === 'moved' ? ' <span class="badge confirm">Moved</span>' : '') + '</span>' + (q.answer ? '<span class="a">' + esc(q.answer) + '</span>' : '') + '</div>'; }).join('') + '</div></div>';
+    }
+    h += '</div><div style="display:grid;gap:14px;align-content:start">';
+    h += '<div class="card"><h3>Who is in the room</h3><div class="ppl">' + (s.attendees && s.attendees.client || []).map(function(a){ return '<div><span>' + esc(a.who) + '</span><span class="w">' + esc(a.why || '') + '</span></div>'; }).join('') + '</div>' + (s.attendees && s.attendees.kicksaw ? '<p style="margin-top:8px"><b>Kicksaw:</b> ' + esc(s.attendees.kicksaw.join(', ')) + '</p>' : '') + '</div>';
+    h += '<div class="card"><h3>Covers</h3>' + (s.covers && s.covers.length ? sowChips(s.covers) : '<span class="flag">No SOW line mapped</span>') + '</div>';
+    if (s.inputs && s.inputs.length) h += '<div class="card"><h3>Needed before the session</h3><ul>' + s.inputs.map(function(i){ return '<li><b>' + esc(i.item) + '</b><br><span class="hint">' + esc(i.owner) + ' · ' + esc(i.by) + '</span></li>'; }).join('') + '</ul></div>';
+    h += '<div class="card"><h3>Depends on · feeds</h3>' + (s.dependsOn && s.dependsOn.length ? '<p><b>After:</b> ' + sessChips(s.dependsOn) + '</p>' : '<p class="hint">No earlier session needed</p>') + (s.feeds && s.feeds.length ? '<p style="margin-top:6px"><b>Feeds:</b> ' + esc(s.feeds.join('; ')) + '</p>' : '') + '</div>';
+    if (s.coverage) h += '<div class="card"><h3>Coverage</h3><p>' + esc(s.coverage) + '</p></div>';
+    h += '</div></div></section>';
+    return h;
+  }
+
+  function questionsScreen(){
+    var h = '<section class="slide"><div class="eyebrow"><span class="sw"></span>Questions</div><h2>Every question, who answers it, and where</h2><p class="hint">These numbers are the same as the Open items numbers in the requirements list.</p><div class="twrap"><table><thead><tr><th>ID</th><th>Question</th><th>Who answers</th><th>Session</th><th>Status</th></tr></thead><tbody>';
+    QS.forEach(function(q){ h += '<tr><td><span class="id">' + esc(q.id) + '</span></td><td><b>' + esc(q.q) + '</b>' + (q.answer ? '<br><span style="color:var(--known)">Answered: ' + esc(q.answer) + '</span>' + src(q.src) : '') + '</td><td>' + esc(q.who || '') + '</td><td>' + (q.target ? chip(q.target) : '') + '</td><td>' + (q.blocks && q.status !== 'answered' ? '<span class="badge blocks">Blocks design</span> ' : '') + (q.status === 'answered' ? '<span class="badge ok">Answered</span>' : q.status === 'moved' ? '<span class="badge confirm">Moved</span>' : '<span class="badge plain">Open</span>') + '</td></tr>'; });
+    h += '</tbody></table></div></section>';
+    return h;
+  }
+
+  function inputsScreen(){
+    var h = '<section class="slide"><div class="eyebrow"><span class="sw"></span>Inputs</div><h2>What we need from the client, and by when</h2><p class="hint">Ready to paste into the request email. Overdue items are the ones whose session is next.</p><div class="twrap"><table><thead><tr><th>Item</th><th>Owner</th><th>Needed by</th><th>Used in</th><th>Status</th></tr></thead><tbody>';
+    INP.forEach(function(i){ h += '<tr><td><b>' + esc(i.item) + '</b></td><td>' + esc(i.owner) + '</td><td>' + esc(i.by) + '</td><td>' + sessChips(i.usedIn) + '</td><td>' + (i.status === 'received' ? '<span class="badge ok">Received</span>' : i.status === 'overdue' ? '<span class="badge unknown">Overdue</span>' : '<span class="badge plain">' + esc(i.status || 'Requested') + '</span>') + '</td></tr>'; });
+    h += '</tbody></table></div></section>';
+    return h;
+  }
+
+  function decisionsScreen(){
+    var h = '<section class="slide"><div class="eyebrow"><span class="sw"></span>Decisions</div><h2>Decisions to close before sign-off</h2><div class="twrap"><table><thead><tr><th>#</th><th>Decision</th><th>Owner</th><th>Target session</th><th>Status</th></tr></thead><tbody>';
+    DEC.forEach(function(d){ h += '<tr><td><span class="id">' + esc(d.id) + '</span></td><td><b>' + esc(d.d) + '</b>' + (d.note ? '<br><span class="hint">' + esc(d.note) + '</span>' : '') + (d.outcome ? '<br><span style="color:var(--known)">' + esc(d.outcome) + '</span>' : '') + '</td><td>' + esc(d.owner) + '</td><td>' + (d.target ? chip(d.target) : '') + '</td><td>' + (d.status === 'closed' ? '<span class="badge ok">Closed</span>' : d.status === 'slipping' ? '<span class="badge unknown">Slipping</span>' : '<span class="badge plain">Open</span>') + '</td></tr>'; });
+    h += '</tbody></table></div></section>';
+    return h;
+  }
+
+  function coverageScreen(){
+    var unmapped = SOW.filter(function(s){ return !(s.sessions && s.sessions.length); });
+    var orphan = SESS.filter(function(s){ return s.status !== 'cancelled' && !(s.covers && s.covers.length) && !/playback|kickoff|close/i.test(s.name); });
+    var h = '<section class="slide"><div class="eyebrow"><span class="sw"></span>Coverage</div><h2>No SOW line without a session, no session without a reason</h2>';
+    h += '<div class="grid g2"><div class="card ' + (unmapped.length ? 'warn' : 'acc') + '"><h3>SOW lines with no session</h3>' + (unmapped.length ? '<ul>' + unmapped.map(function(s){ return '<li>' + chip(s.id, 'sow') + ' ' + esc(s.text) + '</li>'; }).join('') + '</ul>' : '<p>None. Every SOW line is covered.</p>') + '</div>';
+    h += '<div class="card ' + (orphan.length ? 'warn' : 'acc') + '"><h3>Sessions with no SOW line</h3>' + (orphan.length ? '<ul>' + orphan.map(function(s){ return '<li>' + chip(s.id) + ' ' + esc(s.name) + '</li>'; }).join('') + '</ul>' : '<p>None. Every working session traces to the SOW.</p>') + '</div></div>';
+    h += '<div class="twrap"><table><thead><tr><th>SOW line</th><th>State</th><th>Sessions</th><th>Covered</th></tr></thead><tbody>';
+    SOW.forEach(function(s){
+      var held = (s.sessions || []).map(function(id){ return byId(SESS, id); }).filter(Boolean);
+      var cov = s.covered ? s.covered : (held.length && held.every(function(x){ return x.status === 'held'; }) ? 'done' : held.some(function(x){ return x.status === 'held' || x.status === 'partly'; }) ? 'partly' : 'not yet');
+      h += '<tr><td><span class="id">' + esc(s.id) + '</span> ' + esc(s.text) + '</td><td>' + badge(s.state) + '</td><td>' + sessChips(s.sessions) + '</td><td>' + (cov === 'done' ? '<span class="badge ok">Done</span>' : cov === 'partly' ? '<span class="badge confirm">Partly</span>' : '<span class="badge plain">Not yet</span>') + '</td></tr>';
+    });
+    h += '</tbody></table></div></section>';
+    return h;
+  }
+
+  add('start', 'Start', 'Start', cover(), 'cover');
+  add('know', 'What we know', 'What we know', knowScreen());
+  add('people', 'People', 'The people', peopleScreen());
+  add('risks', 'Risks', 'Risks', risksScreen());
+  add('sessions', 'Sessions', 'The sessions', sessionsScreen());
+  SESS.forEach(function(s){ add(s.id, s.id, s.id + ' ' + s.name, sessionScreen(s), 's'); });
+  add('questions', 'Questions', 'Questions', questionsScreen());
+  add('inputs', 'Inputs', 'Inputs', inputsScreen());
+  add('decisions', 'Decisions', 'Decisions', decisionsScreen());
+  add('coverage', 'Coverage', 'Coverage', coverageScreen());
+
+  /* ---------- shell ---------- */
+  var bar = document.getElementById('bar'), stage = document.getElementById('stage'), cur = 0;
+  screens.forEach(function(s, i){
+    if (i && s.cls === 's' && screens[i - 1].cls !== 's') { var sp = document.createElement('span'); sp.className = 'sep'; bar.appendChild(sp); }
+    if (i && s.cls !== 's' && screens[i - 1].cls === 's') { var sp2 = document.createElement('span'); sp2.className = 'sep'; bar.appendChild(sp2); }
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'tab' + (s.cls === 's' ? ' s' : ''); b.textContent = s.tab; b.title = s.title; b.setAttribute('data-i', i);
+    b.addEventListener('click', function(){ go(i); }); bar.appendChild(b);
+  });
+  function go(i){
+    cur = Math.max(0, Math.min(screens.length - 1, i));
+    stage.innerHTML = screens[cur].html;
+    Array.prototype.forEach.call(bar.querySelectorAll('.tab'), function(b){ b.setAttribute('aria-current', Number(b.getAttribute('data-i')) === cur ? 'true' : 'false'); });
+    document.getElementById('pos').textContent = (cur + 1) + ' / ' + screens.length;
+    if (cur === 0) {
+      var idx = document.getElementById('idx');
+      screens.slice(1).forEach(function(s, k){ if (s.cls === 's' && k > 0 && screens[k].cls === 's') return; var li = document.createElement('li'); var a = document.createElement('a'); a.innerHTML = '<span class="n">' + (k + 2) + '</span><b>' + esc(s.cls === 's' ? 'Session cards' : s.title) + '</b><span class="d">' + esc(s.cls === 's' ? 'One screen per session: purpose, must leave with, agenda, questions, inputs' : {know: 'Every SOW line marked known, needs confirming or unknown, with the quote', people: 'Who we met, what they care about, who is still missing', risks: 'What could derail discovery and how the plan handles it', sessions: 'Calendar, the list, and the time asked of each person', questions: 'Every question with its owner and its session', inputs: 'What to request from the client, by when', decisions: 'Decisions to close before sign-off', coverage: 'SOW lines against sessions, with gaps flagged'}[s.id] || '') + '</span>'; a.addEventListener('click', function(){ go(k + 1); }); li.appendChild(a); idx.appendChild(li); });
+    }
+    try { localStorage.setItem('dp.screen', String(cur)); } catch (e) {}
+    window.scrollTo(0, 0);
+  }
+  stage.addEventListener('click', function(e){
+    var t = e.target.closest('[data-go]'); if (!t) return;
+    var id = t.getAttribute('data-go');
+    for (var i = 0; i < screens.length; i++) if (screens[i].id === id) { go(i); return; }
+    if (/^S-/.test(id)) { go(1); var el = document.getElementById('sow-' + id); if (el) el.scrollIntoView({block: 'center'}); }
+  });
+  document.getElementById('prev').addEventListener('click', function(){ go(cur - 1); });
+  document.getElementById('next').addEventListener('click', function(){ go(cur + 1); });
+  document.addEventListener('keydown', function(e){ if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return; if (e.key === 'ArrowRight') go(cur + 1); if (e.key === 'ArrowLeft') go(cur - 1); });
+  document.getElementById('footl').textContent = P.client + ' · ' + P.engagement + ' · Discovery plan';
+  document.getElementById('footr').textContent = 'Internal to Kicksaw · updated ' + P.updated;
+  var start = 0; try { start = Number(localStorage.getItem('dp.screen')) || 0; } catch (e) {}
+  go(start < screens.length ? start : 0);
+})();
+</script>

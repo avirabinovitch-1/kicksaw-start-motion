@@ -1,0 +1,191 @@
+<title>Kicksaw What We Heard</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400;1,700&family=JetBrains+Mono:wght@500&display=swap">
+<!--
+  HOW THIS PAGE WORKS
+  Everything on this page is drawn from the data in the <script id="wwh-data" type="application/json"> block at the bottom:
+  themes, pain points, numbers, systems, what gets replaced, what stays, and the hard constraints. The discovery call skill
+  edits that data after every call (a theme heard again gets its second quote on the same card, not a new card); the page draws it.
+  Readout sections 2, 3 and 4 are built from this page. To start a new project: copy this page and replace the data block.
+-->
+<style>
+/* Layout: one printed-report column, Kicksaw Brand Playbook V2 tokens. Themes as a table, pain points as today/arrow/future rows, numbers as tiles. */
+:root{
+  --navy:#03355E; --cyan:#44C8F5; --blue:#0071B9; --orange:#DD6443; --smoke:#EFEFEF; --charcoal:#414042; --white:#FFFFFF;
+  --bg:#F6F7F8; --paper:#FFFFFF; --sunk:#EFF2F5; --line:#D9DEE3; --line-2:#E8ECF0;
+  --ink:#1B2A36; --ink-2:#4B5A66; --ink-3:#76838E; --heading:#03355E; --thead:#03355E; --thead-ink:#FFFFFF;
+  --accent:#0071B9; --accent-soft:#E3F1FA; --warn:#C75A3C; --warn-bg:#FBEEE9; --warn-line:#EFC3B3;
+  --display:"Inter", Arial, sans-serif; --sans:"Source Sans 3", "Source Sans Pro", Arial, sans-serif; --mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+  --shadow:0 1px 2px rgba(3,53,94,.05),0 10px 30px -14px rgba(3,53,94,.2);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E161D; --paper:#15202A; --sunk:#1B2731; --line:#2C3A46; --line-2:#22303B; --ink:#E6ECF1; --ink-2:#B3BEC8; --ink-3:#85929D;
+  --heading:#D7E8F5; --thead:#163E63; --thead-ink:#EAF2FA; --accent:#5DB9F0; --accent-soft:#163142; --warn:#F0957A; --warn-bg:#34221B; --warn-line:#5A382C;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E161D; --paper:#15202A; --sunk:#1B2731; --line:#2C3A46; --line-2:#22303B; --ink:#E6ECF1; --ink-2:#B3BEC8; --ink-3:#85929D;
+  --heading:#D7E8F5; --thead:#163E63; --thead-ink:#EAF2FA; --accent:#5DB9F0; --accent-soft:#163142; --warn:#F0957A; --warn-bg:#34221B; --warn-line:#5A382C;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6); color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.55 var(--sans);-webkit-font-smoothing:antialiased;padding-block:0 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3,h4,p{margin:0}
+.doc{max-width:980px;margin:24px auto 0;background:var(--paper);border-radius:14px;box-shadow:var(--shadow);padding:clamp(22px,5vw,56px) clamp(18px,6vw,64px) 40px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.brand img{height:22px;width:auto;display:block}
+.brand .dk{display:none}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .brand .lt{display:none}:root:not([data-theme="light"]) .brand .dk{display:block}}
+:root[data-theme="dark"] .brand .lt{display:none}:root[data-theme="dark"] .brand .dk{display:block}
+.kind{font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.cover{padding:34px 0 8px}
+.eyebrow{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.eyebrow span{width:28px;height:3px;background:var(--accent);border-radius:2px}
+h1{font:700 clamp(28px,4.4vw,40px)/1.12 var(--display);color:var(--heading);margin-top:18px;letter-spacing:-.01em;text-wrap:balance}
+.sub{color:var(--ink-2);font-size:16.5px;max-width:62ch;margin-top:14px}
+.meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:12px;margin-top:26px;background:var(--paper)}
+.meta div{padding:14px 16px;min-width:0}.meta div+div{border-left:1px solid var(--line)}
+.meta span{display:block;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:5px}
+.meta b{font-weight:600;font-size:14.5px;line-height:1.35}
+@media(max-width:700px){.meta{grid-template-columns:1fr 1fr}.meta div:nth-child(3){border-left:0}.meta div:nth-child(n+3){border-top:1px solid var(--line)}}
+section{padding-top:44px}
+section h2{display:flex;align-items:baseline;gap:14px;font:700 clamp(21px,3vw,26px)/1.2 var(--display);color:var(--heading);padding-bottom:10px;border-bottom:1.5px solid var(--heading);margin-bottom:18px}
+.sn{font:500 14px var(--mono);color:var(--accent)}
+.lede{color:var(--ink-2);max-width:68ch;margin-bottom:20px}
+.lede q{font-style:italic;color:var(--ink)}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:620px}
+thead th{background:var(--thead);color:var(--thead-ink);text-align:left;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:12px 16px}
+tbody th,tbody td{padding:13px 16px;vertical-align:top;text-align:left;border-top:1px solid var(--line)}
+tbody tr:nth-child(even){background:var(--sunk)}
+tbody th{font-weight:700;width:24%;color:var(--ink)}
+tbody td{color:var(--ink-2)}
+td.src{font:500 11px var(--mono);color:var(--ink-3);white-space:nowrap}
+.q{display:block;font-style:italic;color:var(--ink);margin-top:6px}
+.q small{display:block;font-style:normal;font:500 11px var(--mono);color:var(--ink-3);margin-top:2px}
+.impl{color:var(--ink)}
+.prow{display:grid;grid-template-columns:180px minmax(0,1fr) 22px minmax(0,1fr) 70px;gap:12px;padding:13px 0;border-top:1px solid var(--line);font-size:14px;align-items:start}
+.prow.hd{border-top:0;padding-bottom:6px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.prow b{font-weight:700}.prow .pt{color:var(--ink-2)}.prow .pf{color:var(--ink);font-weight:500}.prow i{font-style:normal;color:var(--accent);font-weight:700}
+.prow .ids{font:500 11px var(--mono);color:var(--accent)}
+@media(max-width:640px){.prow{grid-template-columns:1fr}.prow i,.prow.hd{display:none}.prow .pf::before{content:"Future state: ";color:var(--accent);font-weight:600}}
+.callout{display:flex;gap:14px;margin-top:18px;background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:10px;padding:14px 16px}
+.callout>b{flex:none;width:26px;height:26px;border-radius:50%;background:var(--warn);color:var(--white);display:flex;align-items:center;justify-content:center}
+.callout h4{font-size:15px;color:var(--warn)}.callout p{font-size:14px;color:var(--ink-2);margin-top:2px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:4px 0 22px}
+@media(max-width:640px){.stats{grid-template-columns:1fr 1fr}}
+.stats>div{border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.stats b{display:block;font:700 26px/1.1 var(--display);color:var(--heading);font-variant-numeric:tabular-nums}
+.stats span{display:block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-top:6px}
+.stats small{display:block;font-size:12.5px;color:var(--ink-2);margin-top:3px}
+.stats em{display:block;font:500 10.5px var(--mono);color:var(--ink-3);font-style:normal;margin-top:6px}
+.subh{font:700 17px var(--display);color:var(--heading);margin:28px 0 8px}
+.repl{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.rr{display:grid;grid-template-columns:170px minmax(0,1fr) 24px minmax(0,1.2fr);gap:12px;align-items:center;padding:12px 16px;font-size:14px}
+.rr+.rr{border-top:1px solid var(--line)}
+.rr:nth-child(even){background:var(--sunk)}
+.rl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.ro{color:var(--ink-3)}.rr i{font-style:normal;color:var(--accent);font-weight:700}.rn{font-weight:600;color:var(--heading)}
+@media(max-width:640px){.rr{grid-template-columns:1fr;gap:4px}.rr i{display:none}}
+.stays{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px;font-size:13px}
+.stays b{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-right:4px}
+.stays span{border:1px solid var(--line);border-radius:999px;padding:4px 12px;color:var(--ink-2)}
+.upd{margin-top:22px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:10px 14px;background:var(--paper)}
+.upd h4{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px}
+.upd ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);display:grid;gap:3px}.upd li::marker{color:var(--accent)}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-3)}
+.tpl{background:var(--navy);color:var(--white);border-radius:8px;padding:10px 14px;font-size:13.5px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.tpl b{color:var(--cyan)}
+</style>
+
+<div class="doc" id="doc"></div>
+
+<script id="wwh-data" type="application/json">
+{
+  "project": {
+    "template": true,
+    "client": "[Client]",
+    "engagement": "Sales Cloud implementation",
+    "platforms": "Sales Cloud · Website forms · Marketing tool",
+    "date": "September 2026",
+    "version": "v0.3, after the September 22 session",
+    "preparedBy": "Kicksaw",
+    "intro": "What we have heard so far in discovery: the themes that came up on every call, the pain points as [Client] described them, the real numbers behind the work, and the systems in play today. This is the working record behind the readout. Every line names the call it came from.",
+    "lede": "Discovery so far describes a sales team that works hard around its tools rather than with them. <q>We know who our customers are. The system doesn't.</q> The opportunity is one lead list, one owner per lead and no retyping.",
+    "quoteSource": "Jordan Lee, S-02",
+    "updated": {"when": "September 22 session", "items": [
+      "Theme 2 (routing by territory) gained a second quote from the sales manager and is now confirmed",
+      "New pain point: untouched leads have no owner until someone notices",
+      "Numbers: 2,400 web leads a year, confirmed from the marketing tool export (S-03)"
+    ]}
+  },
+  "themes": [
+    {"theme": "Leads are keyed in by hand", "heard": "Every website form arrives as an email. Someone copies it into Salesforce when they get to it, and about a third never make it in.", "quote": "Right now someone copies the form email into Salesforce by hand, and about a third of them never make it in.", "speaker": "Jordan Lee, Sales Operations Manager", "source": "S-02", "reqs": ["E1.1"], "implication": "Every form submission creates one lead on its own, with the form fields and the page it came from."},
+    {"theme": "Who works a lead is a judgment call", "heard": "Territories are by state in principle, but assignment happens in a weekly meeting and leads sit until then. International leads have no clear home.", "quote": "Territories are by state. Anything outside the US goes to Priya's team for now.", "speaker": "Jordan Lee, Sales Operations Manager", "source": "S-02", "reqs": ["E1.2"], "implication": "Leads are assigned by territory the moment they are created. International leads land in one queue the international team works."},
+    {"theme": "Nothing tells anyone a lead is going cold", "heard": "A lead that nobody touches stays untouched until a manager runs a report, usually at the end of the month.", "quote": "I find out a lead went nowhere when I pull the month-end list. By then it's been three weeks.", "speaker": "Sam Ortiz, Sales Manager", "source": "S-04", "reqs": ["E1.3"], "implication": "A lead with no activity for two business days is flagged to the sales manager."},
+    {"theme": "Converting a lead means retyping it", "heard": "Reps create the account, the contact and the opportunity by hand after a lead qualifies, and sometimes create an account that already exists.", "quote": "We have at least four versions of some accounts because everyone creates their own.", "speaker": "Sam Ortiz, Sales Manager", "source": "S-04", "reqs": ["E2.2", "E2.3"], "implication": "Marking a lead qualified creates the contact, account and opportunity in one step, after checking for an existing account."}
+  ],
+  "pains": [
+    {"pain": "Leads lost between the form and Salesforce", "today": "Form emails are copied in by hand; about a third are never entered.", "future": "Every form submission creates one lead automatically.", "reqs": ["E1.1"]},
+    {"pain": "Leads wait for the weekly meeting", "today": "Assignment happens once a week; leads sit unowned until then.", "future": "Assigned by territory the moment the lead is created.", "reqs": ["E1.2"]},
+    {"pain": "Cold leads go unnoticed", "today": "No alert; managers find them in the month-end report.", "future": "Untouched leads are flagged to the manager after two business days.", "reqs": ["E1.3"]},
+    {"pain": "Duplicate accounts", "today": "Each rep creates their own account record on conversion.", "future": "Conversion checks for an existing account by domain and name first.", "reqs": ["E2.3"]}
+  ],
+  "constraint": {"title": "One marketing tool stays", "text": "Newsletter sign-ups stay in the marketing tool and never become leads. Only the contact and demo request forms create leads, which is the line [Client] drew on September 22."},
+  "numbers": [
+    {"value": "~2,400", "label": "web leads a year", "detail": "about 200 a month, from two forms", "source": "S-03, marketing tool export"},
+    {"value": "~1 in 3", "label": "never entered", "detail": "estimate from Sales Operations", "source": "S-02"},
+    {"value": "7 days", "label": "typical wait to assignment", "detail": "leads wait for the weekly meeting", "source": "S-02"},
+    {"value": "4", "label": "versions of one account", "detail": "the worst case the manager has seen", "source": "S-04"}
+  ],
+  "replaced": [
+    {"area": "Lead capture", "today": "Form emails copied in by hand", "future": "Website forms create leads directly"},
+    {"area": "Lead assignment", "today": "Weekly assignment meeting", "future": "Assignment by territory on creation"},
+    {"area": "Lead follow-up", "today": "Month-end report", "future": "Two-day untouched flag to the manager"},
+    {"area": "Conversion", "today": "Account, contact and opportunity created by hand", "future": "One-step conversion with account matching"}
+  ],
+  "stays": ["The marketing tool for newsletters", "The two website forms as they are", "The quarterly territory review"]
+}
+</script>
+
+<script>
+(function(){
+  var D = JSON.parse(document.getElementById('wwh-data').textContent), P = D.project;
+  var esc = function(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); };
+  var ids = function(a){ return (a || []).join(', '); };
+  var h = [];
+  if (P.template) h.push('<div class="tpl"><b>Template.</b><span>Do not edit this page. To start a client\'s What we heard page, run the setup prompt from the Kicksaw Delivery Start Motion page and Claude makes a copy for the client.</span></div>');
+  h.push('<header class="top"><div class="brand"><img class="lt" src="brand/primary-full-color.svg" alt="Kicksaw"><img class="dk" src="brand/primary-inverse.svg" alt="Kicksaw"></div><span class="kind">What we heard</span></header>');
+  h.push('<div class="cover"><p class="eyebrow"><span></span>' + esc(P.platforms) + '</p><h1>What we heard from ' + esc(P.client) + '</h1><p class="sub">' + esc(P.intro) + '</p>');
+  h.push('<div class="meta"><div><span>Prepared for</span><b>' + esc(P.client) + '</b></div><div><span>Prepared by</span><b>' + esc(P.preparedBy) + '</b></div><div><span>Engagement</span><b>' + esc(P.engagement) + '</b></div><div><span>Version</span><b>' + esc(P.version) + '</b></div></div>');
+  if (P.updated && P.updated.items && P.updated.items.length) h.push('<aside class="upd"><h4>Updated from the ' + esc(P.updated.when) + '</h4><ul>' + P.updated.items.map(function(t){ return '<li>' + esc(t) + '</li>'; }).join('') + '</ul></aside>');
+  h.push('</div>');
+
+  /* 1 Themes */
+  h.push('<section id="themes"><h2><span class="sn">01</span>Themes</h2><p class="lede">' + P.lede.replace(/<q>/g, '<q>').replace(/<\/q>/g, '</q>') + (P.quoteSource ? ' <small style="font:500 11px var(--mono);color:var(--ink-3)">(' + esc(P.quoteSource) + ')</small>' : '') + '</p>');
+  h.push('<div class="tw"><table><thead><tr><th>Theme</th><th>What we heard</th><th>Solution implication</th><th>Source</th></tr></thead><tbody>');
+  D.themes.forEach(function(t){
+    h.push('<tr><th>' + esc(t.theme) + '</th><td>' + esc(t.heard) + (t.quote ? '<span class="q">“' + esc(t.quote) + '”<small>' + esc(t.speaker) + '</small></span>' : '') + '</td><td class="impl">' + esc(t.implication) + (t.reqs && t.reqs.length ? '<br><span style="font:500 11px var(--mono);color:var(--accent)">' + esc(ids(t.reqs)) + '</span>' : '') + '</td><td class="src">' + esc(t.source) + '</td></tr>');
+  });
+  h.push('</tbody></table></div></section>');
+
+  /* 2 Pain points */
+  h.push('<section id="pains"><h2><span class="sn">02</span>Pain points and the response</h2><p class="lede">The problems raised most often, and what the new system does about each one.</p>');
+  h.push('<div class="prow hd"><span>Pain point</span><span>Today</span><i></i><span>At launch</span><span>Answered by</span></div>');
+  D.pains.forEach(function(p){ h.push('<div class="prow"><b>' + esc(p.pain) + '</b><span class="pt">' + esc(p.today) + '</span><i>→</i><span class="pf">' + esc(p.future) + '</span><span class="ids">' + esc(ids(p.reqs)) + '</span></div>'); });
+  if (D.constraint) h.push('<div class="callout"><b>!</b><div><h4>' + esc(D.constraint.title) + '</h4><p>' + esc(D.constraint.text) + '</p></div></div>');
+  h.push('</section>');
+
+  /* 3 Numbers and systems */
+  h.push('<section id="today"><h2><span class="sn">03</span>The numbers and the systems today</h2><p class="lede">Only figures ' + esc(P.client) + ' gave us or we read from their own exports. Each tile names its source.</p><div class="stats">');
+  D.numbers.forEach(function(n){ h.push('<div><b>' + esc(n.value) + '</b><span>' + esc(n.label) + '</span><small>' + esc(n.detail) + '</small><em>' + esc(n.source) + '</em></div>'); });
+  h.push('</div><h3 class="subh">What gets replaced</h3><div class="repl">');
+  D.replaced.forEach(function(r){ h.push('<div class="rr"><span class="rl">' + esc(r.area) + '</span><span class="ro">' + esc(r.today) + '</span><i>→</i><span class="rn">' + esc(r.future) + '</span></div>'); });
+  h.push('</div>');
+  if (D.stays && D.stays.length) h.push('<div class="stays"><b>Stays as it is</b>' + D.stays.map(function(s){ return '<span>' + esc(s) + '</span>'; }).join('') + '</div>');
+  h.push('</section>');
+
+  h.push('<footer class="foot"><span>' + esc(P.client) + ' × Kicksaw · What we heard</span><span>' + esc(P.version) + '</span></footer>');
+  document.getElementById('doc').innerHTML = h.join('');
+})();
+</script>
+

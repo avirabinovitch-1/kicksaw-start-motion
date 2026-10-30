@@ -1,0 +1,11 @@
+{
+  "name": "start-motion",
+  "version": "0.1.0",
+  "description": "Kicksaw Project Start Motion: the seven delivery stages (handoff, kickoff, discovery plan, discovery call, readout, design, user stories) as skills, with the templates, logos and scripts they build from. The method stays on the Start Motion page; this plugin is where the work runs.",
+  "author": {
+    "name": "Avi Rabinovitch, Kicksaw"
+  },
+  "homepage": "https://claude.ai/artifact/7FURp3rBMYHuqmor99zi6S",
+  "repository": "https://github.com/avirabinovitch-1/kicksaw-start-motion",
+  "keywords": ["kicksaw", "salesforce", "delivery", "discovery", "readout", "user-stories"]
+}

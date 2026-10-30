@@ -1,0 +1,477 @@
+<title>Kicksaw Workflow Document</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,700&family=JetBrains+Mono:wght@500&display=swap">
+<!--
+  HOW THIS PAGE WORKS
+  Every workflow on this page is drawn from the data in the <script id="wf-data" type="application/json"> block at the
+  bottom. The discovery call skill edits that data (adds a step, changes a lane, tags a requirement ID); the page draws it.
+  Nobody edits the SVG by hand, so every diagram looks the same here, in the readout and in the deck.
+  To start a new project: copy this page, replace the "project" block and the two example workflows with the client's.
+-->
+<style>
+/* Layout: one screen per workflow behind a quiet tab bar; the diagram owns the middle of each screen. Kicksaw Brand Playbook V2 tokens. */
+:root{
+  --navy:#03355E; --cyan:#44C8F5; --blue:#0071B9; --orange:#DD6443; --smoke:#EFEFEF; --charcoal:#414042; --white:#FFFFFF;
+  --bg:#F6F7F8; --paper:#FFFFFF; --ink:#1B2A36; --ink-2:#4B5A66; --ink-3:#76838E; --line:#D9DEE3; --lane:#EFF2F5; --lane-2:#E6EAEE;
+  --sys:#E9EDF1; --accent:#0071B9; --accent-ink:#FFFFFF; --accent-soft:#E3F1FA; --heading:#03355E; --end:#03355E; --end-ink:#FFFFFF;
+  --open:#C75A3C; --open-bg:#FBEEE9; --warn:#DD6443;
+  --display:"Inter", Arial, sans-serif; --sans:"Source Sans 3", "Source Sans Pro", Arial, sans-serif; --mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E161D; --paper:#15202A; --ink:#E6ECF1; --ink-2:#B3BEC8; --ink-3:#85929D; --line:#2C3A46; --lane:#19252F; --lane-2:#1E2B36;
+  --sys:#243240; --accent:#5DB9F0; --accent-ink:#06202F; --accent-soft:#163142; --heading:#D7E8F5; --end:#44C8F5; --end-ink:#03355E;
+  --open:#F0957A; --open-bg:#34221B; --warn:#F0957A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E161D; --paper:#15202A; --ink:#E6ECF1; --ink-2:#B3BEC8; --ink-3:#85929D; --line:#2C3A46; --lane:#19252F; --lane-2:#1E2B36;
+  --sys:#243240; --accent:#5DB9F0; --accent-ink:#06202F; --accent-soft:#163142; --heading:#D7E8F5; --end:#44C8F5; --end-ink:#03355E;
+  --open:#F0957A; --open-bg:#34221B; --warn:#F0957A; color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+.deck{min-height:100%;display:flex;flex-direction:column;gap:14px;max-width:1500px;margin:0 auto;padding-block:14px 24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font:700 18px var(--display);color:var(--heading);letter-spacing:-.01em}
+.brand img{height:22px;width:auto}
+.brand .lt{display:block}.brand .dk{display:none}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .brand .lt{display:none}:root:not([data-theme="light"]) .brand .dk{display:block}}
+:root[data-theme="dark"] .brand .lt{display:none}:root[data-theme="dark"] .brand .dk{display:block}
+.kind{font:700 11.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.bar{display:flex;flex-wrap:wrap;gap:4px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.tab{font:600 13px var(--sans);color:var(--ink-2);background:none;border:0;border-radius:6px;padding:6px 11px;cursor:pointer}
+.tab:hover{color:var(--ink);background:var(--lane)}
+.tab[aria-current="true"]{color:var(--white);background:var(--navy)}
+:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+.stage{flex:1;min-width:0}
+.slide{display:flex;flex-direction:column;gap:16px;min-width:0}
+.eyebrow{font:500 11.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);display:flex;align-items:center;gap:8px}
+.sw{width:22px;height:4px;border-radius:2px;background:var(--accent)}
+h1,h2{font-family:var(--display);font-weight:700;color:var(--heading);text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(30px,4vw,46px);line-height:1.08;max-width:22ch;margin-top:6px}
+h2{font-size:clamp(24px,2.8vw,34px);line-height:1.12;margin-top:4px}
+.lede{color:var(--ink-2);max-width:78ch;font-size:16px;margin-top:6px}
+h3{font:700 11px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:7px}
+.cover{padding-top:clamp(8px,4vh,40px);gap:22px}
+.idx{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;max-width:1180px}
+.idx a{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:8px;padding:14px 16px;height:100%}
+.idx a:hover{border-color:var(--accent)}
+.idx .n{grid-row:span 2;font:600 13px var(--mono);color:var(--accent);padding-top:3px}
+.idx b{font-size:16px}.idx .d{font-size:13.5px;color:var(--ink-2)}
+.hint{font-size:13px;color:var(--ink-3)}
+.how{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px 18px;max-width:1180px}
+.how ol{padding-left:18px;display:grid;gap:4px;font-size:14px;color:var(--ink-2)}
+.how li b{color:var(--ink)}
+/* figure */
+.dg{margin:0;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px}
+.sc{overflow-x:auto}
+.sc svg{display:block;width:100%;min-width:var(--minw,900px);height:auto}
+.fl text{font-family:var(--sans)}
+.fl .lane{fill:var(--lane)}.fl .lane.alt{fill:var(--lane-2)}
+.fl .lnl{font-size:12px;font-weight:700;fill:var(--ink-2)}
+.fl .ed{fill:none;stroke:var(--ink-3);stroke-width:1.5;stroke-linejoin:round}
+.fl .ed.dsh{stroke-dasharray:5 4}
+.fl .ahd{fill:var(--ink-3)}
+.fl .el{font-size:11px;font-weight:600;fill:var(--ink-2);paint-order:stroke;stroke:var(--paper);stroke-width:4px}
+.fl .nd{fill:var(--paper);stroke:var(--line);stroke-width:1.2}
+.fl .nd.step{stroke:var(--accent);stroke-width:1.6}
+.fl .nd.sys{fill:var(--sys);stroke:var(--line)}
+.fl .nd.new{fill:var(--accent);stroke:var(--accent)}
+.fl .nd.open{fill:var(--open-bg);stroke:var(--open);stroke-width:1.5;stroke-dasharray:5 4}
+.fl .nd.end{fill:var(--end);stroke:var(--end)}
+.fl .nt{font-size:13.5px;font-weight:700;fill:var(--ink);text-anchor:middle}
+.fl .ns{font-size:11.5px;fill:var(--ink-2);text-anchor:middle}
+.fl .nt.inv{fill:var(--accent-ink)}.fl .ns.inv{fill:var(--accent-ink);opacity:.9}
+.fl .nt.endt{fill:var(--end-ink)}.fl .ns.endt{fill:var(--end-ink);opacity:.9}
+.fl .nt.opent{fill:var(--open)}
+.fl .dm{fill:var(--paper);stroke:var(--accent);stroke-width:1.6}
+.fl .dm.open{fill:var(--open-bg);stroke:var(--open);stroke-dasharray:5 4}
+.fl .dt{font-size:12.5px;font-weight:700;fill:var(--ink);text-anchor:middle}
+.fl .sb{fill:var(--navy)}.fl .sbt{font-size:10.5px;font-weight:700;fill:var(--white);text-anchor:middle}
+/* overview */
+.ov .colh{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;fill:var(--ink-3);text-anchor:middle}
+.ov .rule{stroke:var(--line);stroke-width:1.2}
+.ov .wbox{fill:var(--navy);stroke:var(--navy)}
+.ov .wt{fill:var(--white);font-size:14px;font-weight:700;text-anchor:middle}
+.ov .wid{fill:var(--cyan);font-size:10.5px;font-weight:600;text-anchor:middle;font-family:var(--mono)}
+.ov a.go{cursor:pointer}.ov a.go:hover .wbox{opacity:.85}
+.ov .pill{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1}
+.ov .pill.none{fill:var(--lane);stroke:var(--line)}
+.ov .pt{font-size:11.5px;font-weight:600;fill:var(--ink);text-anchor:middle}.ov .pt.none{fill:var(--ink-2)}
+/* legend */
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:12.5px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.k{display:inline-block;width:20px;height:13px;border-radius:3px;border:1.5px solid var(--line);background:var(--paper)}
+.k.step{border-color:var(--accent)}.k.sys{background:var(--sys)}.k.new{background:var(--accent);border-color:var(--accent)}
+.k.dm{width:12px;height:12px;transform:rotate(45deg);border-radius:1px;border-color:var(--accent)}
+.k.open{background:var(--open-bg);border:1.5px dashed var(--open)}
+.k.end{background:var(--end);border-color:var(--end)}
+.k.num{width:16px;height:16px;border-radius:50%;background:var(--navy);border:0}
+/* blocks under a workflow */
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px 28px}
+@media (max-width:860px){.grid2{grid-template-columns:1fr}.idx{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.idx{grid-template-columns:1fr}.tab{padding:5px 8px;font-size:12px}}
+.upd{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:10px 14px}
+.upd ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:4px 26px}
+.upd li{font-size:13.5px;color:var(--ink);position:relative;padding-left:16px}
+.upd li::before{content:"\2713";position:absolute;left:0;top:0;color:var(--accent);font-weight:700;font-size:12px}
+.chs ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.chc{background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:8px;padding:10px 13px;min-width:0}
+.chc.open{border-top-color:var(--open)}
+.chc b{display:block;font-size:14px;margin-bottom:5px}
+.chc dl{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;font-size:12.5px;line-height:1.35}
+.chc dt{font:500 10.5px/1.6 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3)}
+.chc dd{color:var(--ink-2);min-width:0}
+.chn{margin-top:7px;font-size:12px;font-weight:600;color:var(--open)}
+.facts ul{list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.facts li{font-size:13px;border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:3px 11px;color:var(--ink-2)}
+.reqs{list-style:none;display:grid;gap:0}
+.reqs li{display:grid;grid-template-columns:56px 1fr;gap:6px;padding:9px 0;border-top:1px solid var(--line);font-size:14px}
+.reqs li span.id{font:600 12.5px var(--mono);color:var(--accent);padding-top:2px}
+.stp{font-style:normal;font-size:11.5px;font-weight:600;color:var(--navy);background:var(--smoke);border-radius:999px;padding:1px 8px;margin-left:6px;white-space:nowrap}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .stp{background:var(--sys);color:var(--cyan)}}
+:root[data-theme="dark"] .stp{background:var(--sys);color:var(--cyan)}
+.settle{border-left:3px solid var(--open);padding:2px 0 2px 16px}
+.settle ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:6px 28px}
+.settle li{font-size:13.5px;color:var(--ink-2)}.settle li b{display:block;color:var(--ink);font-weight:600}
+.same{border-left:3px solid var(--navy);padding:2px 0 2px 16px}
+.same ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:6px 28px}
+.same li{font-size:13.5px;color:var(--ink-2);position:relative;padding-left:14px}
+.same li::before{content:"";position:absolute;left:0;top:.6em;width:6px;height:6px;border-radius:50%;background:var(--navy)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .same{border-left-color:var(--cyan)}:root:not([data-theme="light"]) .same li::before{background:var(--cyan)}}
+:root[data-theme="dark"] .same{border-left-color:var(--cyan)}:root[data-theme="dark"] .same li::before{background:var(--cyan)}
+.ctl{display:flex;align-items:center;justify-content:flex-end;gap:10px;font:500 12.5px var(--mono);color:var(--ink-3)}
+.ctl button{font:600 16px var(--sans);width:38px;height:34px;border-radius:7px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+.ctl button:hover{border-color:var(--ink-3)}
+.ctl button:disabled{opacity:.35;cursor:default}
+.foot{font-size:12.5px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:10px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.tpl{background:var(--navy);color:var(--white);border-radius:8px;padding:10px 14px;font-size:13.5px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.tpl b{color:var(--cyan)}
+@media (prefers-reduced-motion:no-preference){.slide:not([hidden]){animation:in .22s ease-out}@keyframes in{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:none}}}
+</style>
+
+<div class="deck">
+  <header class="top">
+    <div class="brand"><img class="lt" src="brand/primary-full-color.svg" alt="Kicksaw"><img class="dk" src="brand/primary-inverse.svg" alt="Kicksaw"></div>
+    <span class="kind">Workflow document</span>
+  </header>
+  <div class="tpl" id="tpl" hidden><b>Template.</b><span>Do not edit this page. To start a client's workflow document, run the setup prompt from the Kicksaw Delivery Start Motion page and Claude makes a copy for the client.</span></div>
+  <nav class="bar" id="bar" aria-label="Screens"></nav>
+  <main class="stage" id="stage"></main>
+  <div class="ctl" id="ctl"><span id="pos"></span><button type="button" id="prev" aria-label="Previous screen">&larr;</button><button type="button" id="next" aria-label="Next screen">&rarr;</button></div>
+  <footer class="foot"><span id="footl"></span><span id="footr"></span></footer>
+</div>
+
+<script id="wf-data" type="application/json">
+{
+  "project": {
+    "template": true,
+    "client": "[Client]",
+    "engagement": "Sales Cloud implementation",
+    "updated": "after the September 22 session",
+    "sessionNote": "These are the workflows we walked through on September 15 and 22, updated with [Client]'s corrections. Each one lists what changed.",
+    "title": "How the work runs, step by step",
+    "lede": "Every lead, whatever its source, becomes one lead record and is worked the same way. The source decides how the lead opens. The rep's territory decides who works it. What is in blue is new at launch; what is dashed is still to be decided with [Client].",
+    "sameOnEvery": [
+      "One lead record per person, matched on email before a new one is created",
+      "Lead Status moves through one shared list, from New to Converted or Closed",
+      "Every owner change is kept in the record's history",
+      "Reps see only their own territory; managers see their team"
+    ],
+    "alsoRaised": [
+      {"t": "Event leads from the scanner app", "d": "Today they arrive as a CSV a week later. [Client] asked whether the scanner can post straight to Salesforce. Kicksaw to check the app's options."},
+      {"t": "Duplicate leads across regions", "d": "A lead can exist in both the US and international lists. To discuss with [Client] once the territory decision (open item 1) is made."}
+    ],
+    "legend": "Someone does it"
+  },
+  "workflows": [
+    {
+      "id": "W-01",
+      "name": "Web lead intake and routing",
+      "short": "A website form becomes one lead, lands with the right rep by territory, and is worked or closed within two days.",
+      "lede": "A website form submission creates exactly one lead, assigned by territory. The rep works it from the lead record and either qualifies it or closes it with a reason.",
+      "updated": {"when": "September 22 session", "items": [
+        "Confirmed: leads outside the United States go to the international queue, not to a named rep",
+        "Added: a lead not touched within two business days is flagged to the sales manager",
+        "The newsletter form does not create a lead (open item 2 closed)"
+      ]},
+      "starts": [
+        {"title": "Contact form", "rows": [["Arrives", "Submitted on the website's contact page"], ["Lands", "Created as a lead with the form fields and the page it was on"], ["Opens", "Assigned by territory the moment it is created"]]},
+        {"title": "Demo request", "rows": [["Arrives", "Submitted on the pricing page"], ["Lands", "Created as a lead, Lead Source = Demo request"], ["Opens", "Assigned by territory; flagged as high priority"]], "note": "Priority rule to confirm (open item 3)", "open": true},
+        {"title": "Newsletter sign-up", "rows": [["Arrives", "Submitted in the footer"], ["Lands", "Stays in the marketing tool"], ["Opens", "No lead is created"]]}
+      ],
+      "after": ["Qualified leads convert to a contact, an account and an opportunity (W-02)", "Closed leads keep their closed reason for reporting", "Untouched leads are flagged to the manager after two business days"],
+      "lanes": ["Website", "Salesforce", "Sales rep", "Sales manager"],
+      "nodes": [
+        {"id": "a", "lane": 0, "col": 0, "type": "sys", "title": "Form submitted", "sub": "contact or demo request page", "step": 1},
+        {"id": "b", "lane": 1, "col": 1, "type": "new", "title": "Lead created", "sub": "form fields and page filled in; matched on email", "step": 2},
+        {"id": "c", "lane": 1, "col": 2, "type": "decision", "title": "US address?", "step": 3},
+        {"id": "d", "lane": 1, "col": 3, "type": "new", "title": "Assigned by territory", "sub": "the rep who owns the state", "step": 4},
+        {"id": "e", "lane": 1, "col": 3, "type": "open", "title": "International queue", "sub": "worked by the international team", "step": 5, "rowOffset": 1},
+        {"id": "f", "lane": 2, "col": 4, "type": "step", "title": "Works the lead", "sub": "calls or emails from the record within two business days", "step": 6},
+        {"id": "g", "lane": 2, "col": 5, "type": "decision", "title": "Qualified?", "step": 7},
+        {"id": "h", "lane": 2, "col": 6, "type": "end", "title": "Converts the lead", "sub": "continues in W-02", "step": 8},
+        {"id": "i", "lane": 2, "col": 6, "type": "step", "title": "Closes with a reason", "sub": "reason required", "step": 9, "rowOffset": 1},
+        {"id": "j", "lane": 3, "col": 5, "type": "new", "title": "Flagged untouched", "sub": "no activity in two business days", "step": 10}
+      ],
+      "edges": [
+        {"from": "a", "to": "b"}, {"from": "b", "to": "c"}, {"from": "c", "to": "d", "label": "Yes"}, {"from": "c", "to": "e", "label": "No", "via": "bottom"},
+        {"from": "d", "to": "f"}, {"from": "e", "to": "f", "dashed": true}, {"from": "f", "to": "g"}, {"from": "g", "to": "h", "label": "Yes"}, {"from": "g", "to": "i", "label": "No", "via": "bottom"},
+        {"from": "f", "to": "j", "label": "No activity in 2 days", "via": "bottom", "dashed": true}
+      ],
+      "reqs": [
+        {"id": "E1.1", "text": "Every submission on the website's contact form creates exactly one lead with the form's fields filled in, including which page the form was on.", "steps": [1, 2]},
+        {"id": "E1.2", "text": "When a lead is created with a state in the United States, it is assigned to the rep who owns that state's territory. Leads outside the United States go to the international queue.", "steps": [3, 4, 5]},
+        {"id": "E1.3", "text": "A lead with no activity for two business days is flagged to the sales manager.", "steps": [6, 10]},
+        {"id": "E2.1", "text": "A rep closes a lead only with a closed reason from the agreed list.", "steps": [9]}
+      ],
+      "settle": [
+        {"t": "International leads", "d": "a shared queue or assignment straight to the international lead (open item 1)"},
+        {"t": "Demo request priority", "d": "whether demo requests jump the rep's list or are worked in order (open item 3)"}
+      ]
+    },
+    {
+      "id": "W-02",
+      "name": "Lead qualification and conversion",
+      "short": "A qualified lead becomes a contact, an account and an opportunity in one step, with nothing retyped.",
+      "lede": "When a rep marks a lead qualified, Salesforce creates the contact, the account and the opportunity from the lead's fields. The rep checks for an existing account before anything is created.",
+      "updated": {"when": "September 22 session", "items": [
+        "Confirmed: the opportunity opens at the Discovery stage with the close date 60 days out",
+        "Added: an existing account is matched on website domain before a new one is created"
+      ]},
+      "after": ["The opportunity follows the sales process in W-03", "The lead record stays, marked Converted, for reporting"],
+      "lanes": ["Sales rep", "Salesforce"],
+      "nodes": [
+        {"id": "a", "lane": 0, "col": 0, "type": "step", "title": "Marks the lead qualified", "sub": "Lead Status = Qualified", "step": 1},
+        {"id": "b", "lane": 1, "col": 1, "type": "new", "title": "Finds a matching account", "sub": "by website domain, then by name", "step": 2},
+        {"id": "c", "lane": 1, "col": 2, "type": "decision", "title": "Account exists?", "step": 3},
+        {"id": "d", "lane": 1, "col": 3, "type": "new", "title": "Creates the account", "sub": "from the lead's company fields", "step": 4, "rowOffset": 1},
+        {"id": "e", "lane": 1, "col": 3, "type": "new", "title": "Creates the contact", "sub": "under the account", "step": 5},
+        {"id": "f", "lane": 1, "col": 4, "type": "new", "title": "Opens the opportunity", "sub": "Discovery stage; close date 60 days out", "step": 6},
+        {"id": "g", "lane": 0, "col": 5, "type": "end", "title": "Works the opportunity", "sub": "continues in W-03", "step": 7}
+      ],
+      "edges": [
+        {"from": "a", "to": "b"}, {"from": "b", "to": "c"}, {"from": "c", "to": "e", "label": "Yes"}, {"from": "c", "to": "d", "label": "No", "via": "bottom"},
+        {"from": "d", "to": "e", "via": "up"}, {"from": "e", "to": "f"}, {"from": "f", "to": "g"}
+      ],
+      "reqs": [
+        {"id": "E2.2", "text": "Marking a lead qualified creates the contact, the account and the opportunity from the lead's fields, with nothing retyped.", "steps": [1, 4, 5, 6]},
+        {"id": "E2.3", "text": "Before an account is created, Salesforce looks for an existing account by website domain, then by name, and uses it when one is found.", "steps": [2, 3]},
+        {"id": "E3.1", "text": "A new opportunity opens at the Discovery stage with a close date 60 days from creation.", "steps": [6]}
+      ],
+      "settle": [
+        {"t": "Matching rule", "d": "whether a name match alone is enough to reuse an account, or only a domain match (open item 4)"}
+      ]
+    }
+  ]
+}
+</script>
+
+<script>
+(function(){
+  var DATA = JSON.parse(document.getElementById('wf-data').textContent);
+  var P = DATA.project, WFS = DATA.workflows;
+  var esc = function(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); };
+
+  /* ---------- text wrapping ---------- */
+  function wrap(text, max){
+    var words = String(text || '').split(/\s+/).filter(Boolean), lines = [], cur = '';
+    words.forEach(function(w){
+      if ((cur + ' ' + w).trim().length > max && cur) { lines.push(cur); cur = w; } else { cur = (cur + ' ' + w).trim(); }
+    });
+    if (cur) lines.push(cur);
+    return lines;
+  }
+
+  /* ---------- swimlane renderer: data in, one SVG out ---------- */
+  var COLW = 172, NODEW = 140, LANEH = 128, PADX = 150, TOP = 26, GAP = COLW - NODEW; /* GAP = 32 */
+  function renderFlow(wf){
+    var lanes = wf.lanes, nodes = wf.nodes, edges = wf.edges || [];
+    var byId = {}, maxCol = 0;
+    /* measure */
+    nodes.forEach(function(n){
+      n.tl = wrap(n.title, 17); n.sl = n.sub ? wrap(n.sub, 21) : [];
+      if (n.type === 'decision') { n.w = 128; n.h = 88; }
+      else { n.w = NODEW; n.h = 16 + n.tl.length * 17 + (n.sl.length ? 4 + n.sl.length * 15 : 0) + 10; }
+      maxCol = Math.max(maxCol, n.col);
+      byId[n.id] = n;
+    });
+    /* lanes may need to grow when two nodes sit stacked (rowOffset) */
+    var laneH = lanes.map(function(){ return LANEH; });
+    nodes.forEach(function(n){ if (n.rowOffset) { laneH[n.lane] = Math.max(laneH[n.lane], LANEH + n.h + 24); } });
+    var laneY = [], y = TOP; lanes.forEach(function(l, i){ laneY.push(y); y += laneH[i] + 6; });
+    var H = y + 6, W = PADX + (maxCol + 1) * COLW + 20;
+    /* place */
+    nodes.forEach(function(n){
+      n.x = PADX + n.col * COLW + (NODEW - n.w) / 2;
+      var cy = laneY[n.lane] + LANEH / 2 + (n.rowOffset ? (LANEH / 2 + n.h / 2 + 12) * n.rowOffset : 0);
+      n.cx = n.x + n.w / 2; n.cy = cy; n.y = cy - n.h / 2;
+      n.left = n.x; n.right = n.x + n.w; n.top = n.y; n.bottom = n.y + n.h;
+    });
+    var s = [];
+    var mid = 'ah' + wf.id.replace(/\W/g, '');
+    s.push('<svg viewBox="0 0 ' + W + ' ' + H + '" class="fl" role="img" aria-label="' + esc(wf.name) + ' workflow, by role: ' + esc(nodes.map(function(n){ return n.title; }).join('; ')) + '">');
+    s.push('<defs><marker id="' + mid + '" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ahd"/></marker></defs>');
+    lanes.forEach(function(l, i){
+      s.push('<rect x="0" y="' + laneY[i] + '" width="' + W + '" height="' + laneH[i] + '" rx="10" class="lane' + (i % 2 ? ' alt' : '') + '"/>');
+      var ll = wrap(l, 14), ly = laneY[i] + laneH[i] / 2 - (ll.length - 1) * 8;
+      ll.forEach(function(t, k){ s.push('<text x="16" y="' + (ly + k * 16 + 4) + '" class="lnl">' + esc(t) + '</text>'); });
+    });
+    /* edges */
+    edges.forEach(function(e){
+      var a = byId[e.from], b = byId[e.to]; if (!a || !b) return;
+      var d, lx, ly, anchor = 'start';
+      var via = e.via || (a.cy === b.cy ? 'right' : 'right');
+      if (via === 'right') {
+        if (Math.abs(a.cy - b.cy) < 1) { d = 'M' + a.right + ',' + a.cy + ' L' + b.left + ',' + b.cy; }
+        else { var kx = a.right + GAP / 2; d = 'M' + a.right + ',' + a.cy + ' L' + kx + ',' + a.cy + ' L' + kx + ',' + b.cy + ' L' + b.left + ',' + b.cy; }
+        lx = a.right + 5; ly = a.cy - 7;
+      } else if (via === 'bottom') {
+        if (b.left > a.right) { d = 'M' + a.cx + ',' + a.bottom + ' L' + a.cx + ',' + b.cy + ' L' + b.left + ',' + b.cy; }
+        else { d = 'M' + a.cx + ',' + a.bottom + ' L' + a.cx + ',' + b.top; }
+        lx = a.cx + 6; ly = a.bottom + 14;
+      } else if (via === 'up') {
+        /* from a stacked node up into a node in the same column above, or to the right */
+        if (b.left > a.right) { var kx2 = a.right + GAP / 2; d = 'M' + a.right + ',' + a.cy + ' L' + kx2 + ',' + a.cy + ' L' + kx2 + ',' + b.cy + ' L' + b.left + ',' + b.cy; lx = a.right + 5; ly = a.cy - 7; }
+        else { d = 'M' + a.cx + ',' + a.top + ' L' + a.cx + ',' + b.bottom; lx = a.cx + 6; ly = a.top - 6; }
+      } else if (via === 'top') {
+        var rail = 10; d = 'M' + a.cx + ',' + a.top + ' L' + a.cx + ',' + rail + ' L' + b.cx + ',' + rail + ' L' + b.cx + ',' + b.top; lx = (a.cx + b.cx) / 2; ly = rail - 3; anchor = 'middle';
+      }
+      s.push('<path d="' + d + '" class="ed' + (e.dashed ? ' dsh' : '') + '" marker-end="url(#' + mid + ')"/>');
+      if (e.label) s.push('<text x="' + lx + '" y="' + ly + '" class="el" text-anchor="' + anchor + '">' + esc(e.label) + '</text>');
+    });
+    /* nodes */
+    nodes.forEach(function(n){
+      if (n.type === 'decision') {
+        s.push('<path d="M' + n.cx + ',' + n.top + ' L' + n.right + ',' + n.cy + ' L' + n.cx + ',' + n.bottom + ' L' + n.left + ',' + n.cy + ' Z" class="dm' + (n.open ? ' open' : '') + '"/>');
+        var ty = n.cy - (n.tl.length - 1) * 7.5 + 4;
+        n.tl.forEach(function(t, k){ s.push('<text x="' + n.cx + '" y="' + (ty + k * 15) + '" class="dt">' + esc(t) + '</text>'); });
+      } else {
+        s.push('<rect x="' + n.x + '" y="' + n.y + '" width="' + n.w + '" height="' + n.h + '" rx="8" class="nd ' + n.type + '"/>');
+        var inv = n.type === 'new' ? ' inv' : n.type === 'end' ? ' endt' : n.type === 'open' ? ' opent' : '';
+        var yy = n.y + 22;
+        n.tl.forEach(function(t){ s.push('<text x="' + n.cx + '" y="' + yy + '" class="nt' + inv + '">' + esc(t) + '</text>'); yy += 17; });
+        yy += 1;
+        n.sl.forEach(function(t){ s.push('<text x="' + n.cx + '" y="' + yy + '" class="ns' + (n.type === 'new' ? ' inv' : n.type === 'end' ? ' endt' : '') + '">' + esc(t) + '</text>'); yy += 15; });
+      }
+      if (n.step) { var bx = n.type === 'decision' ? n.cx - 46 : n.left, by = n.type === 'decision' ? n.top + 10 : n.top; s.push('<circle cx="' + bx + '" cy="' + by + '" r="9" class="sb"/><text x="' + bx + '" y="' + (by + 3.5) + '" class="sbt">' + n.step + '</text>'); }
+    });
+    s.push('</svg>');
+    return { svg: s.join(''), minw: Math.min(W, 1200) };
+  }
+
+  /* ---------- overview renderer ---------- */
+  function renderOverview(){
+    var top = 40, W = 1180, mid = 'ahov';
+    /* measure each row first */
+    var rows = WFS.map(function(wf){
+      var after = (wf.after || []).slice(0, 3).map(function(a){ return wrap(a, 50).slice(0, 2); });
+      var pillH = after.map(function(l){ return 16 + l.length * 14; });
+      var total = pillH.reduce(function(a, b){ return a + b; }, 0) + Math.max(0, after.length - 1) * 5;
+      return { wf: wf, after: after, pillH: pillH, h: Math.max(92, total + 24) };
+    });
+    var H = top + rows.reduce(function(a, r){ return a + r.h + 8; }, 0) + 10;
+    var s = ['<svg viewBox="0 0 ' + W + ' ' + H + '" class="fl ov" role="img" aria-label="Every workflow on one screen: how it starts, what the work is, and what happens after.">'];
+    s.push('<defs><marker id="' + mid + '" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ahd"/></marker></defs>');
+    [['Workflow', 10, 180], ['The work', 216, 740], ['After it', 776, 1172]].forEach(function(c){
+      s.push('<text x="' + ((c[1] + c[2]) / 2) + '" y="22" class="colh">' + c[0] + '</text><path d="M' + c[1] + ',32 L' + c[2] + ',32" class="rule"/>');
+    });
+    var y = top;
+    rows.forEach(function(r, i){
+      var wf = r.wf, rowH = r.h, cy = y + rowH / 2;
+      s.push('<rect x="4" y="' + y + '" width="' + (W - 8) + '" height="' + rowH + '" rx="12" class="lane' + (i % 2 ? ' alt' : '') + '"/>');
+      s.push('<a href="#' + wf.id.toLowerCase() + '" class="go" data-go="' + wf.id.toLowerCase() + '"><rect x="14" y="' + (cy - 28) + '" width="166" height="56" rx="9" class="nd wbox"/><text x="97" y="' + (cy - 8) + '" class="wid">' + esc(wf.id) + '</text>');
+      var nl = wrap(wf.name, 22); nl.slice(0, 2).forEach(function(t, k){ s.push('<text x="97" y="' + (cy + 9 + k * 15) + '" class="wt">' + esc(t) + '</text>'); });
+      s.push('</a>');
+      s.push('<path d="M180,' + cy + ' L206,' + cy + '" class="ed" marker-end="url(#' + mid + ')"/>');
+      var work = wf.nodes.filter(function(n){ return n.type !== 'decision'; }).slice(0, 4);
+      var bw = Math.floor((740 - 216 - (work.length - 1) * 14) / work.length);
+      work.forEach(function(n, k){
+        var x = 216 + k * (bw + 14);
+        s.push('<rect x="' + x + '" y="' + (cy - 26) + '" width="' + bw + '" height="52" rx="8" class="nd ' + n.type + '"/>');
+        var tl = wrap(n.title, Math.floor(bw / 7.4)).slice(0, 2);
+        var inv = n.type === 'new' ? ' inv' : n.type === 'end' ? ' endt' : n.type === 'open' ? ' opent' : '';
+        var ty = cy + 4 - (tl.length - 1) * 7;
+        tl.forEach(function(t, q){ s.push('<text x="' + (x + bw / 2) + '" y="' + (ty + q * 14) + '" class="nt' + inv + '" style="font-size:12.5px">' + esc(t) + '</text>'); });
+        s.push('<circle cx="' + x + '" cy="' + (cy - 26) + '" r="8" class="sb"/><text x="' + x + '" y="' + (cy - 23) + '" class="sbt" style="font-size:9.5px">' + n.step + '</text>');
+        if (k < work.length - 1) s.push('<path d="M' + (x + bw) + ',' + cy + ' L' + (x + bw + 12) + ',' + cy + '" class="ed" marker-end="url(#' + mid + ')"/>');
+      });
+      s.push('<path d="M742,' + cy + ' L768,' + cy + '" class="ed" marker-end="url(#' + mid + ')"/>');
+      if (!r.after.length) { s.push('<rect x="776" y="' + (cy - 10.5) + '" width="396" height="21" rx="10.5" class="pill none"/><text x="974" y="' + (cy + 4) + '" class="pt none">Nothing after</text>'); }
+      var total = r.pillH.reduce(function(a, b){ return a + b; }, 0) + Math.max(0, r.after.length - 1) * 5, py = cy - total / 2;
+      r.after.forEach(function(lines, k){
+        var ph = r.pillH[k];
+        s.push('<rect x="776" y="' + py + '" width="396" height="' + ph + '" rx="' + Math.min(10.5, ph / 2) + '" class="pill"/>');
+        lines.forEach(function(t, q){ s.push('<text x="974" y="' + (py + 15 + q * 14) + '" class="pt">' + esc(t) + '</text>'); });
+        py += ph + 5;
+      });
+      y += rowH + 8;
+    });
+    s.push('</svg>');
+    return s.join('');
+  }
+
+  /* ---------- screens ---------- */
+  var screens = [];
+  screens.push({ id: 'start', title: 'Start', html: function(){
+    var h = '<section class="slide cover" id="start"><p class="eyebrow">' + esc(P.client) + ' &middot; ' + esc(P.engagement) + ' &middot; Updated ' + esc(P.updated) + '</p><h1>' + esc(P.title) + '</h1><p class="lede">' + esc(P.sessionNote) + '</p><ol class="idx">';
+    WFS.forEach(function(wf){ h += '<li><a href="#' + wf.id.toLowerCase() + '" class="go" data-go="' + wf.id.toLowerCase() + '"><span class="n">' + esc(wf.id) + '</span><b>' + esc(wf.name) + '</b><span class="d">' + esc(wf.short) + '</span></a></li>'; });
+    h += '</ol><div class="how"><h3>How to read a workflow</h3><ol><li><b>Lanes are who does it.</b> A person, a team or Salesforce itself. Read left to right.</li><li><b>Numbered steps are the work.</b> The requirements under each diagram point at these numbers, so you can see which step each requirement lives in.</li><li><b>Diamonds are decisions.</b> Blue boxes are new at launch. Dashed boxes are still to be decided with ' + esc(P.client) + '.</li><li><b>Each workflow lists what changed</b> after the last session, so you only need to check what moved.</li></ol></div><p class="hint">Use the arrow keys or the buttons below to move between screens.</p></section>';
+    return h;
+  }});
+  screens.push({ id: 'overview', title: 'Overview', html: function(){
+    var h = '<section class="slide" id="overview"><header><p class="eyebrow">The whole picture</p><h2>Every workflow, from start to finish</h2><p class="lede">' + esc(P.lede) + ' Select a workflow to open it.</p></header>';
+    h += '<figure class="dg"><div class="sc" style="--minw:1000px">' + renderOverview() + '</div></figure>';
+    h += legend();
+    if (P.sameOnEvery && P.sameOnEvery.length) { h += '<aside class="same"><h3>The same on every workflow</h3><ul>' + P.sameOnEvery.map(function(t){ return '<li>' + esc(t) + '</li>'; }).join('') + '</ul></aside>'; }
+    if (P.alsoRaised && P.alsoRaised.length) { h += '<aside class="settle"><h3>Also raised in discovery</h3><ul>' + P.alsoRaised.map(function(a){ return '<li><b>' + esc(a.t) + '</b><span>' + esc(a.d) + '</span></li>'; }).join('') + '</ul></aside>'; }
+    h += '</section>'; return h;
+  }});
+  function legend(){
+    return '<div class="legend" aria-label="Key"><span><i class="k step"></i>Someone does it</span><span><i class="k sys"></i>Salesforce does it today</span><span><i class="k new"></i>New at launch</span><span><i class="k dm"></i>Decision</span><span><i class="k open"></i>Not decided yet</span><span><i class="k end"></i>Ends, or continues in another workflow</span><span><i class="k num"></i>Step number</span></div>';
+  }
+  WFS.forEach(function(wf, i){
+    screens.push({ id: wf.id.toLowerCase(), title: wf.id + ' ' + wf.name, html: function(){
+      var h = '<section class="slide" id="' + wf.id.toLowerCase() + '"><header><p class="eyebrow"><span class="sw"></span>Workflow ' + (i + 1) + ' of ' + WFS.length + ' &middot; ' + esc(wf.id) + '</p><h2>' + esc(wf.name) + '</h2><p class="lede">' + esc(wf.lede) + '</p></header>';
+      if (wf.updated && wf.updated.items && wf.updated.items.length) { h += '<aside class="upd"><h3>Updated from the ' + esc(wf.updated.when) + '</h3><ul>' + wf.updated.items.map(function(t){ return '<li>' + esc(t) + '</li>'; }).join('') + '</ul></aside>'; }
+      if (wf.starts && wf.starts.length) {
+        h += '<div class="chs"><h3>How it starts</h3><ul>';
+        wf.starts.forEach(function(c){ h += '<li class="chc' + (c.open ? ' open' : '') + '"><b>' + esc(c.title) + '</b><dl>' + c.rows.map(function(r){ return '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('') + '</dl>' + (c.note ? '<p class="chn">' + esc(c.note) + '</p>' : '') + '</li>'; });
+        h += '</ul></div>';
+      }
+      var f = renderFlow(wf);
+      h += '<figure class="dg"><div class="sc" style="--minw:' + f.minw + 'px">' + f.svg + '</div></figure>' + legend();
+      h += '<div class="grid2">';
+      h += '<div><h3>Key business requirements</h3><ul class="reqs">' + (wf.reqs || []).map(function(r){ return '<li><span class="id">' + esc(r.id) + '</span><div>' + esc(r.text) + (r.steps && r.steps.length ? ' <em class="stp">step' + (r.steps.length > 1 ? 's' : '') + ' ' + r.steps.join(', ') + '</em>' : '') + '</div></li>'; }).join('') + '</ul></div>';
+      h += '<div>';
+      if (wf.after && wf.after.length) h += '<div class="facts"><h3>After this workflow</h3><ul>' + wf.after.map(function(t){ return '<li>' + esc(t) + '</li>'; }).join('') + '</ul></div>';
+      if (wf.settle && wf.settle.length) h += '<aside class="settle" style="margin-top:16px"><h3>To settle with ' + esc(P.client) + '</h3><ul>' + wf.settle.map(function(a){ return '<li><b>' + esc(a.t) + '</b><span>' + esc(a.d) + '</span></li>'; }).join('') + '</ul></aside>';
+      h += '</div></div></section>';
+      return h;
+    }});
+  });
+
+  /* ---------- navigation ---------- */
+  var bar = document.getElementById('bar'), stage = document.getElementById('stage'), pos = document.getElementById('pos');
+  screens.forEach(function(sc){ var b = document.createElement('button'); b.type = 'button'; b.className = 'tab'; b.textContent = sc.title; b.setAttribute('data-go', sc.id); bar.appendChild(b); });
+  document.getElementById('tpl').hidden = !P.template;
+  document.getElementById('footl').textContent = P.client + ' × Kicksaw · Workflow document';
+  document.getElementById('footr').textContent = 'Updated ' + P.updated;
+  var cur = 0;
+  function show(id){
+    var idx = Math.max(0, screens.findIndex(function(s){ return s.id === id; }));
+    cur = idx; stage.innerHTML = screens[idx].html();
+    Array.prototype.forEach.call(bar.children, function(b, k){ if (k === idx) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
+    pos.textContent = (idx + 1) + ' / ' + screens.length;
+    document.getElementById('prev').disabled = idx === 0; document.getElementById('next').disabled = idx === screens.length - 1;
+    try { if (location.hash !== '#' + screens[idx].id) history.replaceState(null, '', '#' + screens[idx].id); } catch (e) {}
+    window.scrollTo(0, 0);
+  }
+  document.addEventListener('click', function(ev){ var t = ev.target.closest('[data-go]'); if (t) { ev.preventDefault(); show(t.getAttribute('data-go')); } });
+  document.getElementById('prev').addEventListener('click', function(){ if (cur > 0) show(screens[cur - 1].id); });
+  document.getElementById('next').addEventListener('click', function(){ if (cur < screens.length - 1) show(screens[cur + 1].id); });
+  document.addEventListener('keydown', function(ev){ if (ev.target.tagName === 'INPUT' || ev.target.tagName === 'TEXTAREA') return; if (ev.key === 'ArrowRight' && cur < screens.length - 1) show(screens[cur + 1].id); if (ev.key === 'ArrowLeft' && cur > 0) show(screens[cur - 1].id); });
+  window.addEventListener('hashchange', function(){ var id = location.hash.replace('#', ''); if (screens.some(function(s){ return s.id === id; })) show(id); });
+  var start = location.hash.replace('#', ''); show(screens.some(function(s){ return s.id === start; }) ? start : 'start');
+})();
+</script>

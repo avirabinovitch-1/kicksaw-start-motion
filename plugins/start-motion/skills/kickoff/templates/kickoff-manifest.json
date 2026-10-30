@@ -1,0 +1,212 @@
+{
+ "order": [
+  "cover",
+  "agenda",
+  "why",
+  "goals",
+  "team-kicksaw",
+  "team-client",
+  "building",
+  "timeline",
+  "how-we-work",
+  "discovery",
+  "communication",
+  "risks",
+  "next-steps",
+  "thanks",
+  "readback",
+  "readout-preview",
+  "time",
+  "win-themes",
+  "terms",
+  "screenshot",
+  "alternates",
+  "cover-b",
+  "agenda-b",
+  "divider",
+  "why-b",
+  "statement",
+  "team-kicksaw-b",
+  "team-client-b",
+  "timeline-b",
+  "timeline-c",
+  "how-we-work-b",
+  "risks-b",
+  "next-steps-b",
+  "thanks-b"
+ ],
+ "meta": {
+  "cover": {
+   "family": "Cover",
+   "variant": "A",
+   "note": ""
+  },
+  "agenda": {
+   "family": "Agenda",
+   "variant": "A",
+   "note": ""
+  },
+  "why": {
+   "family": "Why we are here",
+   "variant": "A",
+   "note": ""
+  },
+  "goals": {
+   "family": "Goals and success",
+   "variant": "A",
+   "note": ""
+  },
+  "team-kicksaw": {
+   "family": "Kicksaw team",
+   "variant": "A",
+   "note": ""
+  },
+  "team-client": {
+   "family": "Client team",
+   "variant": "A",
+   "note": ""
+  },
+  "building": {
+   "family": "What we are building",
+   "variant": "A",
+   "note": ""
+  },
+  "timeline": {
+   "family": "Timeline",
+   "variant": "A",
+   "note": ""
+  },
+  "how-we-work": {
+   "family": "How we work",
+   "variant": "A",
+   "note": ""
+  },
+  "discovery": {
+   "family": "Discovery sessions",
+   "variant": "A",
+   "note": ""
+  },
+  "communication": {
+   "family": "Communication",
+   "variant": "A",
+   "note": ""
+  },
+  "risks": {
+   "family": "Risks",
+   "variant": "A",
+   "note": ""
+  },
+  "next-steps": {
+   "family": "Next steps",
+   "variant": "A",
+   "note": ""
+  },
+  "thanks": {
+   "family": "Closing",
+   "variant": "A",
+   "note": ""
+  },
+  "readback": {
+   "family": "Pre-discovery readback",
+   "variant": "A",
+   "note": ""
+  },
+  "readout-preview": {
+   "family": "Discovery readback preview",
+   "variant": "A",
+   "note": ""
+  },
+  "time": {
+   "family": "Client time commitments",
+   "variant": "A",
+   "note": ""
+  },
+  "win-themes": {
+   "family": "Win themes",
+   "variant": "A",
+   "note": ""
+  },
+  "terms": {
+   "family": "Salesforce terms",
+   "variant": "A",
+   "note": ""
+  },
+  "screenshot": {
+   "family": "What it can look like",
+   "variant": "A",
+   "note": ""
+  },
+  "alternates": {
+   "family": "Library divider",
+   "variant": "A",
+   "note": ""
+  },
+  "cover-b": {
+   "family": "Cover",
+   "variant": "B",
+   "note": ""
+  },
+  "agenda-b": {
+   "family": "Agenda",
+   "variant": "B",
+   "note": ""
+  },
+  "divider": {
+   "family": "Section divider",
+   "variant": "A",
+   "note": ""
+  },
+  "why-b": {
+   "family": "Why we are here",
+   "variant": "B",
+   "note": ""
+  },
+  "statement": {
+   "family": "Statement",
+   "variant": "A",
+   "note": ""
+  },
+  "team-kicksaw-b": {
+   "family": "Kicksaw team",
+   "variant": "B",
+   "note": ""
+  },
+  "team-client-b": {
+   "family": "Client team",
+   "variant": "B",
+   "note": ""
+  },
+  "timeline-b": {
+   "family": "Timeline",
+   "variant": "B",
+   "note": ""
+  },
+  "timeline-c": {
+   "family": "Timeline",
+   "variant": "C",
+   "note": ""
+  },
+  "how-we-work-b": {
+   "family": "How we work",
+   "variant": "B",
+   "note": ""
+  },
+  "risks-b": {
+   "family": "Risks",
+   "variant": "B",
+   "note": ""
+  },
+  "next-steps-b": {
+   "family": "Next steps",
+   "variant": "B",
+   "note": ""
+  },
+  "thanks-b": {
+   "family": "Closing",
+   "variant": "B",
+   "note": ""
+  }
+ },
+ "showcase": 14,
+ "optional": 6
+}

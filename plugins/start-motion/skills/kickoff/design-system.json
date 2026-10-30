@@ -1,0 +1,124 @@
+{
+ "v": 3,
+ "layout": "files",
+ "createdOnFiles": {
+  "v": 1,
+  "at": "2026-10-25T04:54:38Z"
+ },
+ "title": "Kicksaw Slides",
+ "namespace": "kicksaw-slides",
+ "libraries": [],
+ "sections": {},
+ "groups": [
+  "Marks",
+  "Logos",
+  "Patterns",
+  "Icons",
+  "Illustrations"
+ ],
+ "assetGroups": {
+  "Marks": {
+   "name": "Marks",
+   "tile": "l",
+   "order": [
+    "icon-mark.svg",
+    "chevron-bullet.svg"
+   ],
+   "files": {
+    "icon-mark.svg": {
+     "name": "icon-mark.svg",
+     "blob": "41b8d6cddb79f33bf872a8f7121ad815",
+     "size": 576,
+     "type": "image/svg+xml"
+    },
+    "chevron-bullet.svg": {
+     "name": "chevron-bullet.svg",
+     "blob": "316f7bdfbfca8b2f91be9a95b824acef",
+     "size": 212,
+     "type": "image/svg+xml"
+    }
+   }
+  },
+  "Logos": {
+   "name": "Logos",
+   "tile": "l",
+   "order": [
+    "primary-full-color.svg",
+    "primary-inverse.svg",
+    "stacked-full-color.svg",
+    "stacked-inverse.svg"
+   ],
+   "files": {
+    "primary-full-color.svg": {
+     "name": "primary-full-color.svg",
+     "blob": "2d3e822fa46b7bee170c38d9300651c7",
+     "size": 4362,
+     "type": "image/svg+xml"
+    },
+    "primary-inverse.svg": {
+     "name": "primary-inverse.svg",
+     "blob": "8e267edc6bbca9e04a95b2b3d32eea74",
+     "size": 4362,
+     "type": "image/svg+xml"
+    },
+    "stacked-full-color.svg": {
+     "name": "stacked-full-color.svg",
+     "blob": "5fd44dba4213088583e0e3f48aaa2358",
+     "size": 3459,
+     "type": "image/svg+xml"
+    },
+    "stacked-inverse.svg": {
+     "name": "stacked-inverse.svg",
+     "blob": "4226d254ef514b248c436f783e2487da",
+     "size": 3459,
+     "type": "image/svg+xml"
+    }
+   }
+  },
+  "Patterns": {
+   "name": "Patterns",
+   "tile": "l",
+   "order": [
+    "topo-pattern-white.png",
+    "topo-pattern-navy.png"
+   ],
+   "files": {
+    "topo-pattern-white.png": {
+     "name": "topo-pattern-white.png",
+     "blob": "878d175a1e2b4ea47d152c9ff43b11cc",
+     "size": 441881,
+     "type": "image/png"
+    },
+    "topo-pattern-navy.png": {
+     "name": "topo-pattern-navy.png",
+     "blob": "c6ff3af07439fef23520bfe57f70b37a",
+     "size": 447194,
+     "type": "image/png"
+    }
+   }
+  },
+  "Icons": {
+   "name": "Icons",
+   "tile": "m",
+   "order": [],
+   "files": {}
+  },
+  "Illustrations": {
+   "name": "Illustrations",
+   "tile": "l",
+   "order": [],
+   "files": {}
+  }
+ },
+ "blobs": {},
+ "docs": {
+  "readme": "project/README.md",
+  "sections": []
+ },
+ "lastChange": {
+  "by": "Avi Rabinovitch",
+  "at": "2026-10-25T05:09:32Z",
+  "via": "Claude (cloud session)",
+  "note": "Added the four wordmark lockups and the two topographic pattern files from the Brand Playbook."
+ }
+}

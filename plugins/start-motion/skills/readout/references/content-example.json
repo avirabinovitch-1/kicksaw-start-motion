@@ -1,0 +1,158 @@
+{
+  "project": {
+    "template": true,
+    "client": "[Client]",
+    "clientDetail": "[One line on who the client is, if the name alone does not say it]",
+    "engagement": "Sales Cloud implementation",
+    "platforms": "Sales Cloud · Website forms · Marketing tool",
+    "title": "[Client] Sales Cloud",
+    "description": "What we learned in discovery, what we will build together, and the path to go-live. This is the full written version of the readout presentation.",
+    "preparedBy": "Kicksaw",
+    "presentedBy": "[SC name], Solution Consultant",
+    "date": "October 2026",
+    "version": "v1.0",
+    "status": "draft",
+    "signed": null,
+    "requirementsList": {"label": "[Client] Requirements List", "url": "https://docs.google.com/spreadsheets/d/[id]"},
+    "workflowDocument": {"label": "[Client] Workflows", "url": "https://claude.ai/artifact/[id]"},
+    "updated": {"version": "", "items": []}
+  },
+  "include": {"02": true, "03": true, "04": true, "07": false, "10": true, "journeys": true, "A": false},
+  "s01": {
+    "paragraphs": [
+      "[Client] sells to mid-market manufacturers through a team of eight reps and two sales managers, with about 2,400 leads a year coming in from the website.",
+      "Today every website form arrives as an email that someone copies into Salesforce by hand. About a third never make it in, assignment waits for a weekly meeting, and nothing tells a manager a lead has gone cold until the month-end report.",
+      "This project sets up Sales Cloud so that every lead is captured, owned and followed up from the moment it arrives, and converts into an account, contact and opportunity without retyping."
+    ],
+    "pillars": [
+      {"t": "Every lead captured", "d": "Website forms create leads directly, one per person, with the page they came from."},
+      {"t": "Owned from the first minute", "d": "Leads are assigned by territory the moment they are created, and untouched leads are flagged after two business days."},
+      {"t": "One step from lead to opportunity", "d": "Qualifying a lead creates the account, contact and opportunity, matched to existing accounts first."}
+    ],
+    "approve": {
+      "items": [
+        "The recommended build in section 05, as the scope of this phase",
+        "The workflows in section 08 as the way the work will run at launch",
+        "The items set aside in sections 09 and 10 as out of this phase"
+      ],
+      "definition": "Sign-off is a written reply from [sponsor name] confirming this version (v1.0) of the readout as the project scope. Build starts after it arrives.",
+      "by": "[Date]"
+    },
+    "figure": {
+      "caption": "The system at a glance. Leads arrive from the website, live in Sales Cloud, and leave as opportunities and reports.",
+      "core": {"t": "Salesforce Sales Cloud", "s": "leads, accounts, contacts, opportunities"},
+      "left": [{"t": "Website forms", "s": "contact and demo request", "e": "creates leads"}, {"t": "Marketing tool", "s": "newsletter stays here", "e": "no leads"}],
+      "right": [{"t": "Sales reps", "s": "work leads by territory", "e": "assigned"}, {"t": "Sales managers", "s": "flags and pipeline reports", "e": "reports"}]
+    }
+  },
+  "s02": {"lede": ""},
+  "s05": {
+    "lede": "The launch includes everything [Client] needs to capture, assign and convert leads on day one.",
+    "groups": [
+      {"name": "Lead capture and assignment", "rows": [
+        {"cap": "Web-to-lead", "build": "The contact and demo request forms create one lead each, matched on email before a new one is created, with the form page recorded.", "solves": "Ends copying form emails by hand and the leads lost on the way."},
+        {"cap": "Territory assignment", "build": "Leads in the United States go to the rep who owns the state; others go to the international queue.", "solves": "Removes the weekly assignment meeting."},
+        {"cap": "Untouched lead flag", "build": "A lead with no activity in two business days is flagged to the sales manager.", "solves": "Managers see cold leads in days, not at month end."}
+      ]},
+      {"name": "Conversion", "rows": [
+        {"cap": "One-step conversion", "build": "Qualifying a lead creates the contact, account and opportunity from its fields; the opportunity opens at Discovery with a close date 60 days out.", "solves": "Ends retyping on conversion."},
+        {"cap": "Account matching", "build": "Conversion looks for an existing account by website domain, then by name, before creating one.", "solves": "Stops new duplicate accounts."}
+      ]},
+      {"name": "Reporting", "rows": [
+        {"cap": "Lead and pipeline dashboards", "build": "Leads by source and territory, time to first touch, and conversion by rep.", "solves": "Managers see the funnel without exports."}
+      ]}
+    ]
+  },
+  "s06": {
+    "lede": "The build is sequenced so each layer rests on the one before it.",
+    "layers": [
+      {"t": "Foundation", "d": "Users, roles and territories, so every record has an owner and a team."},
+      {"t": "The lead and the workspace", "d": "Lead fields, statuses and the closed reasons list, with the web forms connected."},
+      {"t": "Assignment and conversion", "d": "Territory assignment, the untouched flag and one-step conversion with account matching."},
+      {"t": "Reporting", "d": "Dashboards for managers and reps, built on the data the first three layers produce."}
+    ]
+  },
+  "s07": {"lede": "", "rows": []},
+  "s08": {
+    "lede": "The workflows follow the way the work runs. Each one was played back in discovery and updated with [Client]'s corrections.",
+    "draw": ["W-01", "W-02"],
+    "notes": {
+      "W-01": {"today": "Form emails are copied into Salesforce by hand when someone gets to them, and leads wait for the weekly meeting to be assigned.", "changes": "Each form creates a lead on its own and it is assigned by territory the moment it lands."},
+      "W-02": {"today": "Reps create the account, contact and opportunity by hand, sometimes duplicating an account that exists.", "changes": "Qualifying the lead creates all three in one step, matched to an existing account first."}
+    },
+    "journeys": [
+      {"name": "A demo request from Ohio", "steps": [
+        {"role": "Prospect", "t": "Fills in the demo request form on the pricing page"},
+        {"role": "Salesforce", "t": "Creates the lead and assigns it to the Ohio rep"},
+        {"role": "Sales rep", "t": "Calls the same day, qualifies the lead and converts it"},
+        {"role": "Salesforce", "t": "Finds the existing account by domain and opens the opportunity at Discovery"}
+      ], "outcome": "From form to opportunity in one day, with nothing retyped and no duplicate account."}
+    ]
+  },
+  "s09": {
+    "lede": "This project delivers what [Client] needs to capture, assign and convert leads at launch.",
+    "inScope": ["Web-to-lead for the contact and demo request forms", "Territory assignment and the international queue", "The two-day untouched flag", "One-step conversion with account matching", "Lead and pipeline dashboards", "Migration of open leads and active accounts"],
+    "setAside": ["Event leads from the scanner app", "Lead scoring", "Newsletter sign-ups as leads", "Forecasting"]
+  },
+  "s10": {
+    "lede": "Ideas raised in discovery that go beyond this phase, listed so [Client] can weigh each one against budget.",
+    "groups": [
+      {"name": "Lead capture", "rows": [
+        {"item": "Event leads from the scanner app", "adds": "Scanned badges post straight to Salesforce instead of arriving as a CSV a week later.", "size": "To size"},
+        {"item": "Lead scoring", "adds": "Reps see which leads to call first, from fit and activity.", "size": "Medium"}
+      ]}
+    ],
+    "note": "None of these touch the committed go-live without [Client]'s approval."
+  },
+  "s11": {
+    "intro": "Most of what we heard sits inside the agreed scope. A few points differ from the SOW, and we list them here so everyone works from the same picture.",
+    "deviations": [
+      {"t": "Newsletter sign-ups", "d": "stay in the marketing tool and do not become leads, as [Client] decided on September 22."},
+      {"t": "Data migration", "d": "covers open leads and active accounts only, rather than all historical leads."}
+    ],
+    "principle": "If [Client] needs it to capture, assign and convert leads on day one, it is in this project. Anything beyond that is set aside for a future phase unless it is explicitly pulled into scope."
+  },
+  "s12": {
+    "lede": "How [Client] and Kicksaw will know the project succeeded.",
+    "rows": [
+      {"measure": "No lead is lost", "how": "Every contact and demo request form submission is in Salesforce, with no manual entry."},
+      {"measure": "Leads are owned at once", "how": "Every new lead has an owner within minutes of arriving."},
+      {"measure": "Cold leads are caught early", "how": "Managers act on untouched leads within the week instead of at month end."},
+      {"measure": "Reps stop retyping", "how": "Conversions happen in one step, and new duplicate accounts stop appearing."}
+    ]
+  },
+  "s13": {
+    "rows": [
+      {"area": "International leads", "status": "open", "decision": "A shared international queue, or assignment straight to the international lead.", "why": "Sets how the assignment rule is built.", "who": "[Client] sales leadership"},
+      {"area": "Newsletter sign-ups", "status": "closed", "decision": "Stay in the marketing tool; no leads are created.", "why": "Keeps the lead list to people who asked to talk to sales.", "who": ""},
+      {"area": "Account matching", "status": "open", "decision": "Whether a name match alone is enough to reuse an account.", "why": "Too loose a match merges different companies.", "who": "[Client] sales operations"}
+    ]
+  },
+  "s14": {
+    "lede": "These feed directly into the build.",
+    "items": [
+      {"text": "The territory list: which rep owns which states", "owner": "[Name]"},
+      {"text": "The closed reasons list reps will choose from", "owner": "[Name]"},
+      {"text": "A sample export of open leads for migration", "owner": "[Name]"}
+    ]
+  },
+  "s15": {
+    "strip": [
+      {"when": "This week", "t": "Readout", "d": "Walk through this document together"},
+      {"when": "Review", "t": "Feedback", "d": "Questions answered and folded in"},
+      {"when": "Sign-off", "t": "Scope confirmed", "d": "Written approval of the updated readout"},
+      {"when": "Build", "t": "Sprints with demos", "d": "Stories refined with the product owner"},
+      {"when": "Go-live", "t": "Training and cutover", "d": "Date set once the build plan is confirmed", "golive": true}
+    ],
+    "steps": [
+      {"t": "Review the readout and share feedback.", "d": "Mark each requirement in the requirements list as right or needing a change."},
+      {"t": "Confirm the scope in writing.", "d": "A reply from [sponsor name] naming this version, once the feedback is folded in."},
+      {"t": "Turn the scope into build.", "d": "The confirmed scope becomes Jira epics and user stories, refined with [Client]'s product owner before each sprint."}
+    ]
+  },
+  "sB": {"note": "Every requirement behind this readout, with the client's words and the call it came from, is in the requirements list. It is a reference for this document, not part of it."},
+  "internal": {
+    "s05": ["Example internal note: the SA to confirm the account matching approach before the dry run."],
+    "s13": ["Example internal note: international queue owner not named on any call yet."]
+  }
+}
