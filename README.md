@@ -7,12 +7,16 @@ Two ways to work, both supported:
 - **Page first.** Read the stage on Start Motion, use its builder or copy its prompt, paste into Claude. The page's copy boxes and prompts stay; the same skill text the page hands out is what this plugin installs.
 - **Claude first.** Open Claude and type the stage's command. The skill says where the client stands, asks for its picks in one message, runs, and names the next command.
 
+## What delivery can count on
+
+The signed SOW, and whatever else is in the client's Drive folder. Nothing more. Sales call transcripts, a handoff doc, contracts and client documents make every stage more specific when they are there; no stage waits for them, no skill looks for them in a folder with a particular name, and none of them missing is reported as a gap.
+
 ## The commands
 
 | Stage | Command | What it does |
 |---|---|---|
 | Setup | `/start-motion:new-client` | Sets a new client up once: finds the SOW and whatever sales shared, finds or makes the client's Drive folder and its Discovery subfolder, checks the Claude Project and connectors, offers the discovery documents, names the first stage |
-| 0 SOW and handoff | `/start-motion:handoff` | Builds the handoff document on DJ's standard from the SOW, contracts and whatever sales shared; drafts delivery's questions; folds in the handoff call |
+| 0 SOW and handoff (optional) | `/start-motion:handoff` | When sales shares a packet beyond the SOW: builds the handoff document on DJ's standard, drafts delivery's questions, folds in the handoff call. Nothing downstream waits for it |
 | 1 Kickoff | `/start-motion:kickoff` | Builds the kickoff deck from the finished slide templates, shows the plan first |
 | 2 Discovery | `/start-motion:discovery-plan` | Plans discovery from the SOW and the sales calls before kickoff; preps each session |
 | 2 Discovery | `/start-motion:discovery-call` | Sets up the discovery documents; processes every call into them, drafting a story for every requirement |
@@ -53,12 +57,13 @@ plugins/start-motion/                 the plugin
 scripts/refresh-page-skills.py        writes the eight skill texts into a saved copy of the Start Motion page
 scripts/patch-page-work-in-claude.py  added the Work in Claude box to each stage (applied Oct 30, 2026; kept to rebuild the page)
 scripts/patch-page-start-here.py      added the Start here page and the new-client row (applied Oct 30, 2026; kept to rebuild the page)
+scripts/edits_0_2_0.py                the Oct 30 reading-rule and handoff-optional edits, applied in place (the record of what changed and why)
 CHANGELOG.md                          what changed in each release
 ```
 
 ## Standing rules every skill keeps
 
-- The signed SOW is the only required input at every stage. Transcripts, the handoff doc and client documents make the work more specific; nothing stops without them.
+- The signed SOW is the only required input at every stage. Everything else in the client's folder is read when it is there and never asked for when it is not.
 - Plain consultant language on everything shared; no invented terms; no em dashes.
 - Nothing is invented: no figure, name, date, owner or quote that was not said or is not in the SOW.
 - The SC reviews every change before the client sees it.

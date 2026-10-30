@@ -1,5 +1,7 @@
 # SOW and handoff: what this stage is for
 
+This stage is optional. Delivery cannot count on more than the signed SOW and whatever files sales shares, so nothing downstream waits for a handoff; `/start-motion:new-client` starts a client from the SOW alone. The stage is here so the process is visible and sales can adopt it. When a packet beyond the SOW arrives, this is the standard for handling it.
+
 Give delivery everything sales learned before we meet the client. The team walks in prepared, and the client never has to repeat themselves. Sales builds and shares the packet (every sales call transcript, the signed SOW and contracts, the handoff document on DJ's standard); delivery reads it, sends its questions ahead of the call, and accepts the packet on a recorded handoff call. Every gap goes back to sales with an owner and a date.
 
 ## What makes the handoff work

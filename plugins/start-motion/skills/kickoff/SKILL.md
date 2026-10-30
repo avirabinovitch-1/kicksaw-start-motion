@@ -1,6 +1,6 @@
 ---
 name: kickoff
-description: Start Motion stage 1 (/start-motion:kickoff). Builds or updates a client-facing Kicksaw project kickoff deck as a Slides artifact by copying the finished kickoff templates and filling them from the SOW, the handoff packet and the sales calls, with real headshots and screenshots from the Kicksaw deck library. Use whenever someone asks for a kickoff deck, kickoff slides, or a change to one, including a layout swap.
+description: Start Motion stage 1 (/start-motion:kickoff). Builds or updates a client-facing Kicksaw project kickoff deck as a Slides artifact by copying the finished kickoff templates and filling them from the SOW and whatever else is in the client's folder (sales calls, a handoff packet, client documents), with real headshots and screenshots from the Kicksaw deck library. Use whenever someone asks for a kickoff deck, kickoff slides, or a change to one, including a layout swap.
 ---
 
 # Kicksaw kickoff deck
@@ -15,7 +15,7 @@ Where the templates live: this skill's folder carries `templates/kickoff/` (ever
 
 Read `references/method.md` in this skill's folder at the start of every run: what the stage is for, the calls the stage asks you to make, the bar, and the link to the full method on the Start Motion page.
 
-Look before you ask. The client's name comes from the request; if it is missing, that is the one thing to ask before looking anywhere. Then report what you found against the stage's readiness list, in a few lines, before doing anything else: the signed SOW (found, and its date); the handoff packet (found or none); the Kicksaw team (who is named, and where); the client team (sponsor, champion, SMEs named or not); the discovery plan (built, with how many sessions, or not yet); the phase plan (go-live and break weeks firm or not); images (client logo in the folder or not; headshots from the deck library); the kickoff date (set or not); and whether a kickoff deck already exists for this client (then the request is a change to it, section 1). For example: "Tog. Signed SOW: found (Oct 3). Handoff packet: none. Kicksaw team: four people named in the SOW. Client team: sponsor and champion named; no SMEs yet. Discovery plan: built, nine sessions. Phase plan: go-live in the SOW, break weeks not set. Images: client logo in the Drive folder. Kickoff date: not set. No kickoff deck yet."
+Look before you ask. The client's name comes from the request; if it is missing, that is the one thing to ask before looking anywhere. Then report what you found against the stage's readiness list, in a few lines, before doing anything else: the signed SOW (found, and its date); what else is in the client's folder beyond the SOW (transcripts, a handoff doc, client documents, in one clause; nothing beyond the SOW is not a gap, it is the normal case); the Kicksaw team (who is named, and where); the client team (sponsor, champion, SMEs named or not); the discovery plan (built, with how many sessions, or not yet); the phase plan (go-live and break weeks firm or not); images (client logo in the folder or not; headshots from the deck library); the kickoff date (set or not); and whether a kickoff deck already exists for this client (then the request is a change to it, section 1). For example: "Tog. Signed SOW: found (Oct 3). Beyond the SOW: three transcripts, no handoff doc. Kicksaw team: four people named in the SOW. Client team: sponsor and champion named; no SMEs yet. Discovery plan: built, nine sessions. Phase plan: go-live in the SOW, break weeks not set. Images: client logo in the Drive folder. Kickoff date: not set. No kickoff deck yet."
 
 If no discovery plan exists, say that the Discovery sessions slide (the one slide that is never dropped) will carry placeholders, and offer to run `/start-motion:discovery-plan` first. If nothing at all turns up for the client (no Drive folder, no SOW), offer `/start-motion:new-client` first: it sets the client up and names the stage to run next.
 
@@ -61,8 +61,8 @@ Read the answer back in one line ("Tog kickoff, Monday Nov 10. 14 slides: the co
 ## 1. Start from whatever was given
 
 Any of these is a valid start. Combine them when more than one is given.
-- **Only a client name.** Ask for the picks as in "What to ask" above, then look up the signed SOW first, then the handoff packet if there is one (the client's Drive folder, "01. Sales Handoff" when it exists), the Notion Closed Won task, any client documents in the folder, and the client's Claude Project. The SOW is enough to build from.
-- **The handoff packet or SOW,** attached or linked.
+- **Only a client name.** Ask for the picks as in "What to ask" above, then look up the signed SOW first, then everything else in the client's Drive folder, every subfolder included (sales call transcripts, a handoff packet if sales shared one, client documents; subfolder names vary by client), the Notion Closed Won task, and the client's Claude Project. The SOW is enough to build from.
+- **The SOW,** attached or linked, with or without anything else from the folder.
 - **An outline:** one numbered line per slide, presenter in brackets, tables as rows. Build it as written, choosing the template that fits each line.
 - **A picked slide list,** usually the prompt from the slide picker on the Start Motion page: numbered slides with an owner role in brackets ([PM], [SC], [All]), sometimes a layout ("3. Why we're here · layout B (icon rings) [SC]"), sometimes core slides left out on purpose, and notes. No layout means A. Build exactly those slides in exactly that order with exactly those layouts. Don't add or drop slides by the rules in section 3; if a pick looks wrong for this client (a timeline with no dates, "What it can look like" with no screenshots in the library), say so in the plan and let the person decide. Draft the content from the sources.
 - **An existing kickoff deck to change.** Read it by its URL, change only what was asked, keep its layouts. Never rebuild it. A layout swap follows section 9.
@@ -105,7 +105,7 @@ Optional slides. When no slide list was given, add one when its reason holds or 
 - **Week by week calendar** (after the timeline): `timeline-c`. The first weeks are actually scheduled.
 - **Salesforce terms in plain language** (after 8): `terms`. The client is new to Salesforce.
 - **Client time commitments by role** (before 9): `time`. The client is new to a project this size, or the SOW lists client responsibilities.
-- **Pre-discovery playback** (before 9): `readback`. The handoff packet gives enough real understanding to play back what we reviewed, what is still needed and our current read.
+- **Pre-discovery playback** (before 9): `readback`. The sales calls and anything else in the folder give enough real understanding to play back what we reviewed, what is still needed and our current read.
 - **Discovery playback preview** (after 9): `readout-preview`. The person asks for it, or the client needs to know discovery ends in a playback they confirm.
 - **Section dividers**: `divider`, only in decks over 15 slides.
 

@@ -48,6 +48,17 @@ Claude cannot make a Project for the person; say what to do instead, in plain st
 1. In Claude, make a new Project named for the client (the client's name alone, as it appears on the SOW).
 2. Add the signed SOW to the Project's files, and anything sales shared that is a document (the handoff doc, the contracts). Call transcripts stay in tl;dv; the stages read them from there.
 3. Run every stage command inside that Project. The working files the stages keep (the Discovery documents note, the session notes, the readout content) live there and are read back on every run.
+4. Paste this into the Project's instructions, filled in from what the Start found (give it in the report, filled in, so it is a paste and not a form):
+
+```
+Client: [short name] ([legal name from the SOW]). Engagement: [SOW title], signed [date].
+Kicksaw team: [names and roles from the SOW]. Client contacts: [names and roles from the SOW].
+Client Drive folder: [link]. Signed SOW: [link]. Discovery subfolder: [link].
+Discovery documents: the note "Discovery documents: [short name]" in this project (the same text is the Google Doc in the Discovery subfolder) links the requirements list, the discovery plan, the workflow document and the What we heard page.
+This project runs on the Kicksaw Project Start Motion plugin. Start each stage with its command (/start-motion:kickoff, discovery-plan, discovery-call, readout, design, user-stories); every command reads the documents above before it asks for anything.
+```
+
+When the conversation is already inside the client's Project, still check that its instructions carry the folder, the SOW and the note, and hand over the block when they do not.
 
 If the person says they will not use a Project (Codex, or a shared account), say that the kit still runs: every stage reads the Drive copies when there is no project copy, and the outputs the team needs are always in the Drive folder.
 
@@ -63,7 +74,7 @@ A few short lines: what exists now and where (the folder and subfolder with link
 
 End with one line naming what comes next, picked from what exists:
 
-- Sales shared a packet (calls, contracts, a handoff doc): `/start-motion:handoff` drafts delivery's questions for the handoff call.
+- Sales shared a packet beyond the SOW (calls, contracts, a handoff doc) and the team wants it on DJ's standard: `/start-motion:handoff`. It is optional; nothing downstream waits for it.
 - Only the SOW: `/start-motion:discovery-plan` plans discovery from it before kickoff, then `/start-motion:kickoff` builds the deck.
 
 ## Log the run

@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: Start Motion stage 0 (/start-motion:handoff). Builds the sales-to-delivery handoff document for a new Kicksaw project on DJ's standard, from the signed SOW and contracts and the sales call transcripts, then draft delivery's questions for the salesperson. Use whenever someone says "build the handoff for [client]", "draft the handoff doc", or shares a sales handoff folder.
+description: Start Motion stage 0 (/start-motion:handoff). Builds the sales-to-delivery handoff document for a new Kicksaw project on DJ's standard, from the signed SOW and contracts and the sales call transcripts, then draft delivery's questions for the salesperson. Use whenever someone says "build the handoff for [client]", "draft the handoff doc", or shares a sales handoff folder. This stage is optional: it runs when sales shares a packet beyond the SOW, and nothing downstream waits for it.
 ---
 
 # Kicksaw sales handoff builder
@@ -9,21 +9,25 @@ description: Start Motion stage 0 (/start-motion:handoff). Builds the sales-to-d
 
 Read `references/method.md` in this skill's folder at the start of every run: what the stage is for, the calls the stage asks you to make, the bar, and the link to the full method on the Start Motion page.
 
+This stage is optional. Delivery cannot count on more than the signed SOW and whatever else sales shares into the client's folder; `/start-motion:new-client` starts a client from the SOW without any of this, and no later stage waits for a handoff. The stage is here so the process is visible and sales can adopt it; when a packet beyond the SOW arrives, this is how it is handled.
+
 This skill covers three moves that are three separate prompts on the page: building the handoff document (sales), drafting delivery's questions (the SC, PM, SA and EM/DM), and updating the document from the recorded handoff call. Work out which one is next from what exists, and propose it.
 
-Look before you ask. The client's name comes from the request; if it is missing, that is the one thing to ask before looking anywhere. Then report what you found against the stage's readiness list, in a few lines, before doing anything else: the sales call transcripts (how many, in which folder, named by date and call or not, and any recording with no transcript); the signed SOW (found, and whether it is the countersigned final); the contractual documents (MSA, order form, BAA when PHI is in scope, NDAs, amendments: which are there); the handoff doc (exists on DJ's standard, exists in another shape, or none); named client contacts; the handoff call (booked, and whether it is at least 24 hours after the packet). For example: "Tog. Transcripts: three Chorus exports in 02 Sales calls, one MP4 with no transcript. SOW: countersigned Oct 3. Contracts: MSA and order form present; BAA not in the folder and PHI is in scope. Handoff doc: none. Contacts: sponsor named in the SOW. Handoff call: not booked. Next: build the handoff document." If nothing at all turns up for the client (no Drive folder, no SOW), offer `/start-motion:new-client` first: it sets the client up and names the stage to run next.
+Look before you ask. The client's name comes from the request; if it is missing, that is the one thing to ask before looking anywhere. Then report what you found against the stage's readiness list, in a few lines, before doing anything else: the sales call transcripts (how many, named by date and call or not, and any recording with no transcript); the signed SOW (found, and whether it is the countersigned final); the contractual documents (MSA, order form, BAA when PHI is in scope, NDAs, amendments: which are there); the handoff doc (exists on DJ's standard, exists in another shape, or none); named client contacts; the handoff call (booked, and whether it is at least 24 hours after the packet). For example: "Tog. Transcripts: three Chorus exports, one MP4 with no transcript. SOW: countersigned Oct 3. Contracts: MSA and order form present; BAA not in the folder and PHI is in scope. Handoff doc: none. Contacts: sponsor named in the SOW. Handoff call: not booked. Next: build the handoff document." If nothing at all turns up for the client (no Drive folder, no SOW), offer `/start-motion:new-client` first: it sets the client up and names the stage to run next.
+
+When the folder holds nothing beyond the SOW (no transcripts, no contracts past the SOW itself, no IKT, no client documents), say so in one line and stop: "Tog. Only the SOW in the folder; nothing to hand off yet. `/start-motion:new-client` starts from the SOW." A handoff document that restates the SOW is not worth anyone's reading time, and nothing downstream is waiting for it.
 
 ## What to ask: one message
 
-Ask once, in one message, and only for what the Start did not find: the client's handoff folder when none turns up under the client's name, the transcript of any recording that has none, and a readable copy of any packet file that cannot be opened (section 0 stops on those). Nothing else; the document is built from what is there, and the gaps are flagged in it.
+Ask once, in one message, and only for what the Start did not find: the client's Drive folder, only when none turns up under the client's name, the transcript of any recording that has none, and a readable copy of any packet file that cannot be opened (section 0 stops on those). Nothing else; the document is built from what is there, and the gaps are flagged in it.
 
 Then read back what you heard in one line and run: "Building the Tog handoff document from the SOW, the order form and three transcripts. The BAA and one transcript are flagged as missing."
 
 ## 0. Gather the packet
 
 Look in this order, and record where each item came from:
-1. The client's handoff folder, if sales shared one: transcripts, signed SOW, contracts.
-2. The client's Google Drive folder ("01. Sales Handoff" subfolder when it exists).
+1. The client's Google Drive folder and everything in it, every subfolder included: the signed SOW, and whatever sales shared (transcripts, contracts, a handoff doc). Subfolder names vary by client; read them all rather than looking for one by name.
+2. A separate handoff folder, if sales shared one outside the client's folder.
 3. Salesforce Opportunity Files for the signed SOW and contracts, when a Salesforce connector is available.
 4. The Closed Won record or task (amount, opportunity ID, start date, lead source).
 
@@ -37,7 +41,7 @@ Stop and build nothing if:
 
 In each case say exactly what is missing and where it should be, and ask sales to share the folder with the person running this.
 
-No sales call transcripts is not a stop. Build the document from the SOW, the contracts, the Closed Won record and anything else in the folder. Sections that need the calls (why they bought, client expectations, what was promised) read "No sales transcript provided". Put a line under the title saying which packet items sales did not provide. The delivery questions get longer, because the handoff call is now where those answers come from.
+No sales call transcripts is not a stop, as long as there is something beyond the SOW to hand off (contracts, an IKT, the deal's Slack thread, client documents). Build the document from the SOW, the contracts, the Closed Won record and anything else in the folder. Sections that need the calls (why they bought, client expectations, what was promised) read "No sales transcript provided". Put a line under the title saying which packet items sales did not provide. The delivery questions get longer, because the handoff call is now where those answers come from.
 
 ## 1. Read everything
 
@@ -97,11 +101,11 @@ When the SC, PM, SA or EM/DM asks ("read the [Client] handoff packet and draft t
 
 ## 5. Deliver
 
-Save the doc as a Google Doc in the client's Drive folder ("01. Sales Handoff" when it exists) unless the team asks for another format. Reply briefly: what is in it, the flags, and the sections marked "Not discussed in sales". Remind sales to share the packet at least 24 hours before the handoff call. End with one line naming what comes next: delivery reads the packet and runs `/start-motion:handoff` to draft its questions for sales; after the recorded call, `/start-motion:handoff` folds the answers in.
+Save the doc as a Google Doc in the client's Drive folder, in the Discovery subfolder (or the Engagement docs subfolder when that is the one the client folder has; never at the top level), unless the team asks for another format. Reply briefly: what is in it, the flags, and the sections marked "Not discussed in sales". Remind sales to share the packet at least 24 hours before the handoff call. End with one line naming what comes next: delivery reads the packet and runs `/start-motion:handoff` to draft its questions for sales; after the recorded call, `/start-motion:handoff` folds the answers in.
 
 ## 6. After the handoff call
 
-When asked ("update the [Client] handoff from today's call"): pull the recorded call, fold sales' answers into the doc, and mark each question answered or owned with a name and a date. If the client's Claude Project exists, add the call to it as a source, numbered by date after the sales calls; if it does not, tell the PM it needs creating. End with one line naming what comes next: once the SC and PM accept the packet, `/start-motion:kickoff` builds the kickoff deck, and `/start-motion:discovery-plan` plans discovery from the same folder.
+When asked ("update the [Client] handoff from today's call"): pull the recorded call, fold sales' answers into the doc, and mark each question answered or owned with a name and a date. If the client's Claude Project exists, add the call to it as a source, numbered by date after the sales calls; if there is no project, add the call to the Discovery documents Google Doc in the client's Drive folder instead. End with one line naming what comes next: once the SC and PM accept the packet, `/start-motion:kickoff` builds the kickoff deck, and `/start-motion:discovery-plan` plans discovery from the same folder.
 
 ## Log the run
 

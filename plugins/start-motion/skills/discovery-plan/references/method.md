@@ -13,7 +13,7 @@ Decide which sessions discovery needs, who has to be in each, and what each one 
 
 ## Calls the SC makes
 
-- What do we already know? Read the SOW and the sales calls before planning anything
+- What do we already know? Read the SOW and whatever else was shared before planning anything
 - Which processes go first? The ones with the most volume or the most pain; the reverse demo usually makes this obvious
 - Who is in the room? The person who does the work, not only their manager
 - What must this session leave with? Decide before the call, not during it
