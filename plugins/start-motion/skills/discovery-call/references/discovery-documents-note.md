@@ -9,7 +9,7 @@ The note the discovery call skill writes into the client's Claude Project as "Di
 | Workflow document | [Claude page link] | this skill's `templates/Kicksaw Workflow Document.template.html` (preview: https://claude.ai/artifact/Wf4xButSon8AJ5kshaoTe4) |
 | What we heard | [Claude page link] | this skill's `templates/Kicksaw What We Heard.template.html` (preview: https://claude.ai/artifact/TkQsg9GZsDn7zGq1Vnpcqo) |
 | SOW and handoff packet | [Drive link] | From sales |
-| Sales and pre-kickoff calls | [Drive folder link: Sales Notes] | From sales; tl;dv where recorded there |
+| Sales and pre-kickoff calls | [Drive link to what sales shared, if any] | From sales; tl;dv where recorded there |
 | Session notes | discovery-<n>-<topic>-<date>.md in this project | Written by the discovery call skill |
 | Solution readout | [Claude page link, once built] | the readout skill; readout/content.json and readout/manifest.md in this project |
 

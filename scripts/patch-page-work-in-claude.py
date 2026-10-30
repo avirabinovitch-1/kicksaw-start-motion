@@ -1,7 +1,7 @@
 """Add the "Work in Claude" line to each stage's step 1 on a saved copy of the Start Motion page, and the plugin
 line to the kit inventory. Takes nothing away: the copy boxes, prompts and builders stay as the page door.
 
-Staged, not applied: run it when the plugin ships. Usage:
+Applied Oct 30, 2026 (kept so the page can be rebuilt). Run it before scripts/patch-page-start-here.py. Usage:
   python3 -I scripts/patch-page-work-in-claude.py --page "start-motion.html" --out "start-motion.patched.html"
 
 Run scripts/refresh-page-skills.py on the output afterwards (or before; the two are independent) and publish the
@@ -44,18 +44,20 @@ for heading, cmds in STEPS:
     m = re.search(r'<h3>%s</h3>\s*<p>.*?</p>' % re.escape(heading), page, re.S)
     if not m:
         sys.exit('step 1 not found: ' + heading)
-    cmd_html = ' or '.join('<code>%s</code>' % c for c in cmds)
+    cmd_html = ' or '.join('<code>/%s</code>' % c.split(':', 1)[1] for c in cmds)
+    full_html = ' or '.join('<code>%s</code>' % c for c in cmds)
     box = ('\n<div class="wic"><b>Or work directly in Claude.</b> Install the Kicksaw Project Start Motion plugin once '
-           '(Customize, Plugins, Add marketplace: <code>%s</code>; turn on Sync automatically), then type %s. '
+           '(the steps are on <button class="go" type="button" data-go="start">Start here</button>; marketplace <code>%s</code>, Sync automatically on), then type %s '
+           '(in Cowork and Claude Code, %s). '
            'It is the same skill as the copy below, with nothing to paste: it tells you where the client stands, asks for its picks in one message, '
-           'and names the next command when it is done. Updates reach you with each weekly release.</div>' % (MARKET, cmd_html))
+           'and names the next command when it is done. Updates reach you with each weekly release.</div>' % (MARKET, cmd_html, full_html))
     page = page[:m.end()] + box + page[m.end():]
     print('patched:', heading)
 
 anchor = '<li><b>7 Kicksaw skills</b><span>Saved once in each person\'s Claude; each one reads what the stage before it made.</span></li>'
 if anchor not in page:
     sys.exit('kit inventory line not found')
-page = page.replace(anchor, '<li><b>7 Kicksaw skills</b><span>Saved once in each person\'s Claude from the copy boxes, or installed once as the Kicksaw Project Start Motion plugin (<span data-plugin-version="%s">v%s</span>, updates itself weekly); each one reads what the stage before it made.</span></li>' % (version, version))
+page = page.replace(anchor, '<li><b>7 Kicksaw skills</b><span>Saved once in each person\'s Claude from the copy boxes, or installed once as the Kicksaw Project Start Motion plugin (<i data-plugin-version="%s" style="font-style:normal">v%s</i>, updates itself weekly); each one reads what the stage before it made.</span></li>' % (version, version))
 print('patched: kit inventory')
 
 if '</head>' in page:

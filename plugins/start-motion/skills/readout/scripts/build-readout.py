@@ -90,7 +90,7 @@ for it in (C.get('s14') or {}).get('items', []):
         problems.append('Input "%s" has no owner' % it.get('text', '')[:50])
 
 blob = json.dumps(D, ensure_ascii=False)
-if '—' in blob:
+if '\u2014' in blob:
     problems.append('Em dashes found in the readout content')
 ph = sorted(set(re.findall(r'\[[A-Za-z][^\]\["{}\\]{0,120}\]', blob)))
 if ph and client_build:

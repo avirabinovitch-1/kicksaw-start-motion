@@ -25,7 +25,7 @@ Read `references/method.md` in this skill's folder at the start of every run: wh
 Look before you ask. The client's name comes from the request; if it is missing, that is the one thing to ask before looking anywhere.
 
 1. Read the Discovery documents note in the client's Claude Project (section 0 below). If it is there, read the plan's session list (the `dp-data` block) and the requirements list's Sessions and sources tab, and report in three lines before doing anything else: the last session processed (plan ID, name, date, S-ID); the next session on the plan; what is open (blocking questions, overdue inputs). For example: "Tog. Last processed: D3 Workflow deep dive, Oct 28 (S-05). Next on the plan: D4 Systems and data, Nov 3. Open: two blocking questions, one input overdue."
-2. If the note is not there and nothing turns up in the person's artifacts or Drive, say so and offer setup right there: "No discovery documents for [Client] yet. Want me to set them up from the SOW?" Setup is what this skill does when the documents do not exist; it is not a separate request anyone has to know about.
+2. If the note is not there and nothing turns up in the person's artifacts or Drive, say so and offer setup right there: "No discovery documents for [Client] yet. Want me to set them up from the SOW?" Setup is what this skill does when the documents do not exist; it is not a separate request anyone has to know about. If nothing at all turns up for the client (no Drive folder, no SOW), offer `/start-motion:new-client` first: it sets the client up and names the stage to run next.
 3. If the plan shows the call in the request already processed, say so. Never process a call twice.
 
 ## What to ask: one message

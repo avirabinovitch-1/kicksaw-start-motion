@@ -1,4 +1,4 @@
-"""Write the plugin's seven skill texts into a saved copy of the Start Motion page, so the page's copy boxes
+"""Write the plugin's eight skill texts into a saved copy of the Start Motion page, so the page's copy boxes
 hand out the same skill the plugin installs.
 
 Usage:
@@ -20,6 +20,7 @@ BLOCKS = {  # pre id on the page -> skill folder
     'roSkillText': 'readout',
     'desSkillText': 'design',
     'storySkillText': 'user-stories',
+    'newClientSkillText': 'new-client',
 }
 
 ap = argparse.ArgumentParser()

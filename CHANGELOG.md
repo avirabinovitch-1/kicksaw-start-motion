@@ -14,6 +14,10 @@ Skills built from the skill texts embedded in the live Start Motion page (versio
 
 - Shared outputs (Avi, Oct 30): the skills keep working out of the SC's Claude Project, and also save three things into the client's Drive folder (the Discovery subfolder, next to the requirements list) as they are written: the Discovery documents note as a Google Doc, every session note, and the readout sign-off record. The discovery call and user stories skills read those Drive copies when the project copy is not there, so anyone on the client can find the outputs.
 
-Commands: `/start-motion:handoff`, `kickoff`, `discovery-plan`, `discovery-call`, `readout`, `design`, `user-stories`.
+- New client setup (Avi, Oct 30): `/start-motion:new-client` sets a client up once before the first stage: finds the signed SOW and whatever sales shared, finds or makes the client's Drive folder and its Discovery subfolder, says whether the person is in a Claude Project for the client (strongly recommended, not required) and which connectors are missing, offers the discovery documents setup, and names the first stage. The stage commands point to it when nothing at all exists for a client. The Start here page on Start Motion is the page version of the same steps, with the one-time install.
+- Sales handoff (Avi, Oct 30): the kit assumes delivery gets the SOW plus whatever sales shared; no named sales calls folder and no transcript expectation. The discovery plan skill and the Discovery documents note no longer name a Sales Notes folder.
+- The em dash check in `build-readout.py` is written as a Python escape so the file carries none.
+
+Commands: `/start-motion:new-client`, `/start-motion:handoff`, `kickoff`, `discovery-plan`, `discovery-call`, `readout`, `design`, `user-stories`.
 
 Known gaps in this build: the kickoff brand folder has no topographic pattern PNGs (they live in the Kicksaw Slides design system; the skill builds without the pattern when it cannot read them). The kickoff icons were regenerated from Font Awesome Free (the same source the design system used), white on transparent, 256 px.

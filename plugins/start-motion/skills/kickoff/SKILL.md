@@ -17,7 +17,7 @@ Read `references/method.md` in this skill's folder at the start of every run: wh
 
 Look before you ask. The client's name comes from the request; if it is missing, that is the one thing to ask before looking anywhere. Then report what you found against the stage's readiness list, in a few lines, before doing anything else: the signed SOW (found, and its date); the handoff packet (found or none); the Kicksaw team (who is named, and where); the client team (sponsor, champion, SMEs named or not); the discovery plan (built, with how many sessions, or not yet); the phase plan (go-live and break weeks firm or not); images (client logo in the folder or not; headshots from the deck library); the kickoff date (set or not); and whether a kickoff deck already exists for this client (then the request is a change to it, section 1). For example: "Tog. Signed SOW: found (Oct 3). Handoff packet: none. Kicksaw team: four people named in the SOW. Client team: sponsor and champion named; no SMEs yet. Discovery plan: built, nine sessions. Phase plan: go-live in the SOW, break weeks not set. Images: client logo in the Drive folder. Kickoff date: not set. No kickoff deck yet."
 
-If no discovery plan exists, say that the Discovery sessions slide (the one slide that is never dropped) will carry placeholders, and offer to run `/start-motion:discovery-plan` first.
+If no discovery plan exists, say that the Discovery sessions slide (the one slide that is never dropped) will carry placeholders, and offer to run `/start-motion:discovery-plan` first. If nothing at all turns up for the client (no Drive folder, no SOW), offer `/start-motion:new-client` first: it sets the client up and names the stage to run next.
 
 ## What to ask: the slide list in one message
 
