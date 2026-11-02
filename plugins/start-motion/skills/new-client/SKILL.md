@@ -80,7 +80,7 @@ End with one line naming what comes next, picked from what exists:
 After the report, write out one short run-log row for the delivery kit and say in one line that pasting it into #discovery-skill-feedback is optional (it helps the kit improve; it is never required). Write it quietly: no questionnaire, no asking the person to rate anything. The row, as plain text:
 
 ```
-Run log · start-motion:new-client (v0.1.0) · setup · <client> · <date>
+Run log · start-motion:new-client (v0.1.1) · setup · <client> · <date>
 Ran by: <the name of the person running it, if the session says; otherwise leave it for them>
 Corrected: <what the person corrected during the run, in one to three plain sentences. "Nothing" if nothing.>
 Had to ask for: <anything you had to ask for that you should have found on your own (a folder, a link). "Nothing" if nothing.>
