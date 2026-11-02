@@ -84,31 +84,25 @@ SLIDE = """
   <h2>How to use the kit</h2>
   <p class="lead">The kit is seven stages that take a project from a signed SOW to a build-ready backlog. For each stage, this page holds the method and what good looks like, and a skill in Claude does the work. There are two ways to run a stage, and you can switch between them at any time: <strong>from this page</strong>, where you read the stage and build your request with its builder, or <strong>in Claude</strong>, where you type the stage's command. Both run the same skill and make the same outputs.</p>
 
-  <div class="sh-h"><h3>Set up once</h3><p>Five minutes, on your own Claude account. Both ways need this. The kit's code is public on GitHub, so there is nothing to request and no GitHub account needed.</p></div>
+  <div class="sh-h"><h3>Set up once</h3><p>Five minutes, on your own Claude account. Both ways need this. The kit installs straight from a public GitHub repo. No GitHub account needed.</p></div>
   <ol class="path">
     <li>
       <div class="path-n">1</div>
       <div class="path-body">
-        <h3>Install the plugin in Claude</h3>
-        <p>In Claude, open <b>Settings</b>, then <b>Plugins</b> (under Customize). Click <b>Add</b> at the top right, then <b>Add marketplace</b>, then <b>Add from a repository</b>. In the URL box type <code>__MARKET__</code> and click <b>Sync</b>. Back on the Plugins page, <b>Start motion</b> now shows under "From marketplaces you added": open it and click <b>Add</b>. One install covers chat, Cowork and Claude Code on the same account. The code is at <a href="https://github.com/__MARKET__" target="_blank" rel="noopener">github.com/__MARKET__ &#8599;</a> if you want to look.</p>
+        <h3>Install the plugin from GitHub</h3>
+        <p>In Claude, open <b>Customize</b> (top left, in the sidebar), then <b>Plugins</b>. Click <b>Add</b> &gt; <b>Add marketplace</b> &gt; <b>Add from a repository</b>, type <code>__MARKET__</code> and click <b>Sync</b>. <b>Start motion</b> appears on the Plugins page: click <b>Add</b>. Done. It works in chat, Cowork and Claude Code, and updates arrive on their own. Repo: <a href="https://github.com/__MARKET__" target="_blank" rel="noopener">github.com/__MARKET__ &#8599;</a></p>
+        <p>On Codex or another tool? <code>npx skills add __MARKET__</code> installs the same skills from the repo.</p>
       </div>
     </li>
     <li>
       <div class="path-n">2</div>
-      <div class="path-body">
-        <h3>Leave updates on</h3>
-        <p>On the Plugins page, click <b>Add</b>, then <b>Manage marketplaces</b>, then the three dots next to kicksaw-start-motion. <b>Sync automatically</b> should be on; it is on by default. Each weekly release then reaches you without doing anything, and <b>Check for updates</b> there pulls one early.</p>
-      </div>
-    </li>
-    <li>
-      <div class="path-n">3</div>
       <div class="path-body">
         <h3>Connect the tools the stages read</h3>
         <p>In Settings, under <b>Connectors</b>, connect Google Drive (the client folder, the templates and the requirements list), Gmail and Slack (what the client and the team said between calls), tl;dv (call transcripts) and Jira (user stories). A stage that finds one missing says so and carries on with what it has.</p>
       </div>
     </li>
     <li>
-      <div class="path-n">4</div>
+      <div class="path-n">3</div>
       <div class="path-body">
         <h3>Check it worked: type / in a new chat</h3>
         <p>These commands appear: <code>/new-client</code>, <code>/handoff</code>, <code>/kickoff</code>, <code>/discovery-plan</code>, <code>/discovery-call</code>, <code>/readout</code>, <code>/design</code>, <code>/user-stories</code>. In Cowork and Claude Code the same commands carry a prefix, as in <code>/start-motion:kickoff</code>. If nothing appears, go back to step 1 or ask Avi.</p>
