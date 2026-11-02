@@ -1,0 +1,81 @@
+<h2 class="sr-only">Kickoff slide picker: tick the slides you want, open a picture to compare layouts, then build the deck.</h2>
+<style>
+.row{display:grid;grid-template-columns:22px 128px minmax(0,1fr);gap:14px;align-items:center;padding:10px 4px;border-bottom:0.5px solid var(--border)}
+.row.off .th{opacity:.4}.row.off .nm{color:var(--text-secondary)}
+.th{width:128px;aspect-ratio:16/9;padding:0;border-radius:4px;overflow:hidden;border:0.5px solid var(--border-strong);display:block;cursor:zoom-in;background:none}
+.th img,.big img{width:100%;height:100%;object-fit:cover;display:block}
+.mini{width:100%;height:100%;display:flex;align-items:flex-end;padding:6px;box-sizing:border-box;font-size:11px;line-height:1.2;text-align:left}
+.nm{font-size:14px;font-weight:500}.ds{font-size:13px;color:var(--text-secondary);line-height:1.4}
+.why{font-size:12px;margin-top:3px}.sug{color:var(--text-success)}.hint{color:var(--text-muted)}
+.lay{display:inline-flex;gap:6px;margin-top:6px}.lay button{font-size:12px;padding:3px 10px;height:auto}
+.lay button.on,.pane button.on{background:var(--fill-accent)!important;color:var(--on-accent)!important;border-color:var(--fill-accent)!important}
+.pane{display:grid;gap:12px;padding:12px 4px 16px;border-bottom:0.5px solid var(--border)}
+.pane .big{aspect-ratio:16/9;border-radius:6px;overflow:hidden;border:0.5px solid var(--border-strong)}
+.pane .cap{display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:13px;color:var(--text-secondary)}
+</style>
+<div style="display:flex;justify-content:space-between;align-items:baseline;padding:0.5rem 0 0">
+<span id="hd" style="font-size:14px;color:var(--text-secondary)"></span>
+<span id="cnt" style="font-size:13px;color:var(--text-secondary)"></span>
+</div>
+<div id="list"></div>
+<div style="margin-top:1rem;display:grid;gap:8px">
+<input id="notes" type="text" placeholder="Anything else: who opens the call, how long, the sponsor">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+<span style="font-size:13px;color:var(--text-secondary)">Click a picture to see it full size</span>
+<button id="go">Build this deck ↗</button>
+</div>
+</div>
+<script>
+var CFG={client:'Harborlight Behavioral Health',date:'Monday Nov 16',add:{timeline:'The phase plan is firm, with go-live the week of Apr 12, 2027',time:'The SOW names a champion, six SMEs and four program directors'}};
+var CDN='https://cdn.jsdelivr.net/gh/avirabinovitch-1/kicksaw-start-motion@981061483d243dac910c59c204e599b413016fac/plugins/start-motion/skills/kickoff/thumbs/';
+var NAVY={cover:1,agenda:1,'team-client':1,communication:1,thanks:1,statement:1};
+var S=[
+['title','Title','Client name, date and both logos','PM','core',[['A','cover','navy with blades'],['B','cover-b','white with the mark']]],
+['agenda','Agenda','What the call covers','PM','core',[['A','agenda','navy list'],['B','agenda-b','white path']]],
+['why','Why we\'re here','The client\'s problems and the numbers behind them','SC','core',[['A','why','numbers and problems'],['B','why-b','icon rings']]],
+['goals','Goals and success','What success looks like at go-live','SC','core',[['A','goals','']]],
+['quote','A client quote','The sponsor\'s own words from the sales calls','SC','opt',[['A','statement','']],'Add if a sales call has a quote that frames the project'],
+['wins','Win themes','The priorities to decide trade-offs by','SC','opt',[['A','win-themes','']],'Add if the SOW or sales calls show clear priorities'],
+['team-ks','Meet the Kicksaw team','Who is on the project and what they do','PM','core',[['A','team-kicksaw','cards'],['B','team-kicksaw-b','table']]],
+['team-cl','Meet the client team','The client\'s people and their roles','PM','core',[['A','team-client','navy cards'],['B','team-client-b','who works with whom']]],
+['building','What we\'re building','This phase and what comes later','SC','core',[['A','building','']]],
+['screens','What it can look like','Screenshots of the product','SC','opt',[['A','screenshot','']],'Add if the deck library has screenshots for this product'],
+['timeline','Timeline','Phases and the go-live date','PM','opt',[['A','timeline','Gantt'],['B','timeline-b','phase band']],'Add if the SOW or the PM gives phase and go-live dates'],
+['weekly','Week by week calendar','The first weeks, day by day','PM','opt',[['A','timeline-c','']],'Add if the first weeks are already scheduled'],
+['how','How we work','Stories, acceptance criteria, sprints with demos','SC','core',[['A','how-we-work','flow and story'],['B','how-we-work-b','cycle']]],
+['terms','Salesforce terms in plain language','A short glossary','SC','opt',[['A','terms','']],'Add if the client is new to Salesforce'],
+['time','Client time commitments by role','Hours a week for each client role','PM','opt',[['A','time','']],'Add if the client is new to a project this size'],
+['readback','Pre-discovery playback','What we have already heard, played back','SC','opt',[['A','readback','']],'Add if there were pre-kickoff calls with the client'],
+['discovery','Discovery sessions','Each session, its focus and who attends','SC','lock',[['A','discovery','']]],
+['preview','Discovery playback preview','What the readout will look like','SC','opt',[['A','readout-preview','']],'Add if the client wants to see where discovery ends up'],
+['comms','Communication and tools','Slack, tl;dv, Jira and the meeting rhythm','PM','core',[['A','communication','']]],
+['risks','Risks and how the client can help','What could slow us down','PM','core',[['A','risks','rows'],['B','risks-b','cards']]],
+['next','Next steps','Action, owner and date','PM','core',[['A','next-steps','by date'],['B','next-steps-b','path']]],
+['thanks','Questions and thank you','Close','All','core',[['A','thanks','navy'],['B','thanks-b','white']]]
+];
+var st=S.map(function(s){return {on:s[4]!=='opt'||!!CFG.add[s[0]],lay:'A',open:false}});
+function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+function pic(t,name){var n=NAVY[t],fb='<div class=&quot;mini&quot; style=&quot;background:'+(n?'#03355E':'#fff')+';color:'+(n?'#fff':'#03355E')+'&quot;>'+esc(name)+'</div>';
+return '<img src="'+CDN+t+'.webp" alt="'+esc(name)+' slide" onerror="this.parentNode.innerHTML=\''+fb+'\'">'}
+function cur(i){var L=S[i][5];for(var k=0;k<L.length;k++){if(L[k][0]===st[i].lay)return L[k]}return L[0]}
+function chip(i,l){var on=st[i].lay===l[0];return '<button data-i="'+i+'" data-l="'+l[0]+'" class="'+(on?'on':'')+'">'+(on?'<i class="ti ti-check" aria-hidden="true" style="font-size:13px;margin-right:4px"></i>':'')+l[0]+' · '+l[2]+'</button>'}
+function render(){var h='';S.forEach(function(s,i){
+var L=s[5],lays=L.length>1?'<div class="lay">'+L.map(function(l){return chip(i,l)}).join('')+'</div>':'';
+var why=s[4]==='opt'?(CFG.add[s[0]]?'<div class="why sug">Suggested: '+esc(CFG.add[s[0]])+'</div>':'<div class="why hint">'+esc(s[6])+'</div>'):(s[4]==='lock'?'<div class="why hint">Always in</div>':'');
+h+='<div class="row'+(st[i].on?'':' off')+'"><input type="checkbox" data-c="'+i+'"'+(st[i].on?' checked':'')+(s[4]==='lock'?' disabled':'')+' aria-label="'+esc(s[1])+'">'
++'<button class="th" data-z="'+i+'" aria-label="See '+esc(s[1])+' full size">'+pic(cur(i)[1],s[1])+'</button>'
++'<div><div class="nm">'+esc(s[1])+(s[4]==='opt'?' <span style="font-size:11px;font-weight:400;color:var(--text-muted)">optional</span>':'')+'</div><div class="ds">'+esc(s[2])+'</div>'+why+lays+'</div></div>';
+if(st[i].open){h+='<div class="pane" style="grid-template-columns:repeat('+L.length+',minmax(0,1fr))">'+L.map(function(l){
+return '<div><div class="big">'+pic(l[1],s[1])+'</div><div class="cap"><span>'+(L.length>1?l[0]+' · '+esc(l[2]):'One layout')+'</span>'+(L.length>1?chip(i,l):'')+'</div></div>'}).join('')+'</div>'}
+});
+document.getElementById('list').innerHTML=h;
+document.getElementById('cnt').textContent=st.filter(function(x){return x.on}).length+' slides';}
+document.getElementById('hd').textContent=CFG.client+' · kickoff '+CFG.date;
+document.getElementById('list').addEventListener('click',function(e){var b=e.target.closest('button[data-l]');if(b){st[+b.dataset.i].lay=b.dataset.l;render();return}
+var z=e.target.closest('button[data-z]');if(z){var i=+z.dataset.z;st[i].open=!st[i].open;render()}});
+document.getElementById('list').addEventListener('change',function(e){var c=e.target.dataset.c;if(c!=null){st[+c].on=e.target.checked;render()}});
+document.getElementById('go').addEventListener('click',function(){var n=0,out=[];S.forEach(function(s,i){if(!st[i].on)return;n++;var L=cur(i);out.push(n+'. '+s[1]+(st[i].lay!=='A'?' · layout '+L[0]+' ('+L[2]+')':'')+' ['+s[3]+']')});
+var nt=document.getElementById('notes').value.trim();
+sendPrompt('Kickoff for '+CFG.client+', '+CFG.date+'. Build exactly these slides, in this order, each from its kickoff template. No layout means A.\n'+out.join('\n')+(nt?'\nNotes: '+nt:''))});
+render();
+</script>

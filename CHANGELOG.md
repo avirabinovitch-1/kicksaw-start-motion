@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Kickoff (Avi, Nov 2): picking slides in Claude no longer means reading a block of text. The skill looks at the SOW and the client's folder first, then proposes the deck: every core slide plus the optional slides whose reason holds, each with its reason. In Claude chat it shows a visual slide picker (`references/slide-picker.html`): a picture of every slide, tick boxes, A/B layout buttons, full-size pictures on click, and a Build this deck button that sends the picks back. Elsewhere it sends a short text version. Layouts start on A and can change after the build; owners stay out of the question and go in the plan and speaker notes.
+- Kickoff: 32 slide pictures added at `skills/kickoff/thumbs/`, served to the picker through jsDelivr.
+
 ## 0.1.0 (2026-10-30), first build, not yet released
 
 Skills built from the skill texts embedded in the live Start Motion page (version 1793311819-6881, Oct 30, 2026), one skill per stage command, with these additions on every skill:

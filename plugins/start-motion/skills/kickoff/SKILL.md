@@ -19,49 +19,44 @@ Look before you ask. The client's name comes from the request; if it is missing,
 
 If no discovery plan exists, say that the Discovery sessions slide (the one slide that is never dropped) will carry placeholders, and offer to run `/start-motion:discovery-plan` first. If nothing at all turns up for the client (no Drive folder, no SOW), offer `/start-motion:new-client` first: it sets the client up and names the stage to run next.
 
-## What to ask: the slide list in one message
+## What to ask: propose the deck, then let the person pick
 
-When no slide list was given, show the page's slide picker as one message and let the person answer once. Core slides are in unless they take them out; optional ones are out unless they add them; A is the standard layout and a letter changes it; the owner in brackets presents it.
+When no slide list was given, look first (section 0 and section 1), then propose the deck and let the person answer once. Every core slide is in. Of the optional slides, propose the ones whose reason holds for this client (section 3), each with a one-line reason drawn from the sources ("the phase plan is firm, with go-live the week of Apr 12, 2027"). The person has the final say. Every slide starts on its standard layout (A); layouts can be changed in the picker or after the deck is built (section 9). Don't ask who presents each slide: the owners go in the plan and the speaker notes.
+
+**In Claude chat, when you can show an interactive visual,** show the slide picker: `references/slide-picker.html`. Change only the `CFG` line at the top of its script: `client` (the client's name), `date` (the kickoff date, for example "Monday Nov 16"), and `add` (the optional slides you propose, keyed by their ids in the script's slide list, each with its reason). Send everything else as it is. The picker shows a picture of every slide, ticks the core slides and your proposals, lets the person switch layouts and open any picture full size, and sends the picks back in the picked-list format (section 1). Write one line above it, for example "Here's the deck I'd build for Harborlight. I added Timeline and Client time commitments; change anything, then press Build this deck."
+
+**Everywhere else** (Cowork, Claude Code, Codex, or a chat that can't show visuals), send this, filled in for the client:
 
 ```
-Kickoff date: a Monday.
+Here's the kickoff deck I'd build for [Client], Monday [date]: the 13 standard slides plus [n] optional ones.
 
-Slides, in deck order. Core slides are in unless you take them out; optional ones are out unless you add them. Where a slide has two layouts, A is the standard; name the letter to change it.
+Adding:
+- [Optional slide]: [reason from the sources, one line]
 
-1. Title: A navy with blades, B white with the mark [PM]
-2. Agenda: A navy list, B white path [PM]
-3. Why we're here: A numbers and problems, B icon rings [SC]
-4. Goals and success [SC]
-   optional: A client quote [SC]
-   optional: Win themes [SC]
-5. Meet the Kicksaw team: A cards, B table [PM]
-6. Meet the client team: A navy cards, B who works with whom [PM]
-7. What we're building [SC]
-   optional: What it can look like (screenshots) [SC]
-   optional: Timeline: A Gantt, B phase band [PM]
-   optional: Week by week calendar [PM]
-8. How we work: A flow and story, B cycle [SC]
-   optional: Salesforce terms in plain language [SC]
-   optional: Client time commitments by role [PM]
-   optional: Pre-discovery playback [SC]
-9. Discovery sessions, always in [SC]
-   optional: Discovery playback preview [SC]
-10. Communication and tools [PM]
-11. Risks and how the client can help: A rows, B cards [PM]
-12. Next steps: A by date, B path [PM]
-13. Questions and thank you: A navy, B white [All]
+Also available, if any of these fit:
+- A client quote: the sponsor's own words from a sales call
+- Win themes: the priorities to decide trade-offs by
+- What it can look like: product screenshots
+- Timeline: phases and the go-live date
+- Week by week calendar: the first weeks, day by day
+- Salesforce terms in plain language
+- Client time commitments by role
+- Pre-discovery playback: what we've already heard
+- Discovery playback preview: what the readout will look like
 
-To see every layout: the Kicksaw Kickoff Deck Library, https://claude.ai/artifact/EooMRC9rhebaLnRQzEBvce
+Every slide starts on its standard layout. You can switch any of them once you see the deck, or look through the options first in the Kicksaw Kickoff Deck Library: https://claude.ai/artifact/EooMRC9rhebaLnRQzEBvce
 
-Anything else I should know (who opens the call, how long, anything about the sponsor)?
+Want to add or drop anything? And who opens the call, and how long is it?
 ```
 
-Read the answer back in one line ("Tog kickoff, Monday Nov 10. 14 slides: the core 13 without Risks, plus A client quote and Timeline (B), Title in B. Plan next."), then show the plan (section 2) and build on a yes. Two stops, picks then plan, the same as the page.
+Leave out of "Also available" the slides already under "Adding". If the kickoff date isn't set, ask for it in the same message (it should be a Monday).
+
+Read the answer back in one line ("Harborlight kickoff, Monday Nov 16. 15 slides: the core 13 plus Timeline and Client time commitments, Title in B. Plan next."), then show the plan (section 2) and build on a yes. Two stops, picks then plan, the same as the page.
 
 ## 1. Start from whatever was given
 
 Any of these is a valid start. Combine them when more than one is given.
-- **Only a client name.** Ask for the picks as in "What to ask" above, then look up the signed SOW first, then everything else in the client's Drive folder, every subfolder included (sales call transcripts, a handoff packet if sales shared one, client documents; subfolder names vary by client), the Notion Closed Won task, and the client's Claude Project. The SOW is enough to build from.
+- **Only a client name.** Look up the signed SOW first, then everything else in the client's Drive folder, every subfolder included (sales call transcripts, a handoff packet if sales shared one, client documents; subfolder names vary by client), the Notion Closed Won task, and the client's Claude Project. The SOW is enough to build from. Then propose the deck as in "What to ask" above.
 - **The SOW,** attached or linked, with or without anything else from the folder.
 - **An outline:** one numbered line per slide, presenter in brackets, tables as rows. Build it as written, choosing the template that fits each line.
 - **A picked slide list,** usually the prompt from the slide picker on the Start Motion page: numbered slides with an owner role in brackets ([PM], [SC], [All]), sometimes a layout ("3. Why we're here · layout B (icon rings) [SC]"), sometimes core slides left out on purpose, and notes. No layout means A. Build exactly those slides in exactly that order with exactly those layouts. Don't add or drop slides by the rules in section 3; if a pick looks wrong for this client (a timeline with no dates, "What it can look like" with no screenshots in the library), say so in the plan and let the person decide. Draft the content from the sources.
