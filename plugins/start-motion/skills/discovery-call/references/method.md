@@ -2,7 +2,7 @@
 
 Discovery learns how the client works today and captures it as workflows and requirements the client has confirmed. Everything in the solution readout comes from here. The call processor turns every call, the same day, into the discovery documents: the requirements list, the workflow document, the What we heard page and the discovery plan, with a draft user story for every requirement. Nothing reaches the readout that the client has not seen in a weekly playback.
 
-## Before you accept a proposal
+## When you review the documents after a call
 
 - Each new requirement reads in plain language and says one thing
 - The workflow steps match how the client described the work, not how it is designed on paper

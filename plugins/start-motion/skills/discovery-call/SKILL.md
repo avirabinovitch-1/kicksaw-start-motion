@@ -1,6 +1,6 @@
 ---
 name: discovery-call
-description: Start Motion stage 2 (/start-motion:discovery-call). Processes a Kicksaw discovery call end to end. Pull the tl;dv transcript, write the session note, propose changes to the four discovery documents (the discovery plan, the requirements list, the workflow document and the What we heard page) in a fixed review shape, write what the SC accepts, draft or update the user story and acceptance criteria for every requirement heard, and update the plan for the next session. Use whenever someone says "process today's [client] call", "update discovery", "set up the discovery documents for [client]", or pastes a discovery transcript.
+description: Start Motion stage 2 (/start-motion:discovery-call). Processes a Kicksaw discovery call end to end. Pull the tl;dv transcript, write the session note, write the call into the four discovery documents (the discovery plan, the requirements list, the workflow document and the What we heard page), hand them to the SC to review in place, fold in the SC's comments, draft or update the user story and acceptance criteria for every requirement heard, and update the plan for the next session. Use whenever someone says "process today's [client] call", "update discovery", "set up the discovery documents for [client]", or pastes a discovery transcript.
 ---
 
 # Kicksaw discovery call
@@ -27,6 +27,7 @@ Look before you ask. The client's name comes from the request; if it is missing,
 1. Read the Discovery documents note in the client's Claude Project (section 0 below). If it is there, read the plan's session list (the `dp-data` block) and the requirements list's Sessions and sources tab, and report in three lines before doing anything else: the last session processed (plan ID, name, date, S-ID); the next session on the plan; what is open (blocking questions, overdue inputs). For example: "Tog. Last processed: D3 Workflow deep dive, Oct 28 (S-05). Next on the plan: D4 Systems and data, Nov 3. Open: two blocking questions, one input overdue."
 2. If the note is not there and nothing turns up in the person's artifacts or Drive, say so and offer setup right there: "No discovery documents for [Client] yet. Want me to set them up from the SOW?" Setup is what this skill does when the documents do not exist; it is not a separate request anyone has to know about. If nothing at all turns up for the client (no Drive folder, no SOW), offer `/start-motion:new-client` first: it sets the client up and names the stage to run next.
 3. If the plan shows the call in the request already processed, say so. Never process a call twice.
+4. Read the open comments on the workflow document and the What we heard page (the artifact comments tool). If the SC left any since the last run, fold them in first ("Comments and edits from the SC" below), and say how many in the Start.
 
 ## What to ask: one message
 
@@ -34,9 +35,9 @@ This stage has almost no picks. Ask once, in one message, and only for what the 
 - Processing a call: which call. Today's call is the default; a date or a pasted transcript overrides it. If tl;dv has more than one call for that client that day, list them and ask which.
 - Setup: the client's Drive folder (only if no folder named for the client turns up), and whether to build the discovery plan now or later.
 
-The standing instructions people used to paste from the page (propose every change before writing anything; flag anything past the SOW or at a SOW limit such as rule counts, integration endpoints, source files or licenses, with the quote and timestamp, so the SC can raise it with the PM that week) are rules of this skill below; nobody types them.
+The standing instructions people used to paste from the page (write the call into the documents, then hand them over for review in place; flag anything past the SOW or at a SOW limit such as rule counts, integration endpoints, source files or licenses, with the quote and timestamp, so the SC can raise it with the PM that week) are rules of this skill below; nobody types them.
 
-Then read back what you heard in one line and run: "Processing Tog, Oct 30, D4 Systems and data, S-06. Proposals first; nothing is written until you accept."
+Then read back what you heard in one line and run: "Processing Tog, Oct 30, D4 Systems and data, S-06. I'll write it into the documents and hand them to you to review."
 
 ## Setting up a new client (once, before the first discovery session)
 
@@ -89,9 +90,12 @@ End the note with an internal "Build notes" section for things that are not requ
 
 Save the session note in the project, and also as a Google Doc with the same name in the client's Drive folder, in the Discovery subfolder next to the requirements list, so the PM and the SA can read it without the SC's project. The two copies say the same thing; the project copy is the one later runs read.
 
-## 3. Propose the changes, then wait
+## 3. Work out the changes
 
-Read the transcript against the documents and reply with one list in this shape, every time. The SC reads it in a few minutes and answers accept, reject or change on each item. Write nothing until they do.
+Read the transcript against the documents and work out every change in the shape below. Then write them (step 4) without waiting for the SC: the SC reviews the call in the documents themselves, editing the requirements list directly and leaving comments on the workflow document and the What we heard page. Three kinds of change are never written silently:
+- **Conflicts.** A statement that disagrees with an earlier row or a closed decision does not replace it. Add the new quote under the earlier one, leave the row's statement as it was, and add a blocking open item naming both quotes and the session that will settle it. The SC decides.
+- **Past the SOW.** Written, always tagged Past SOW, and listed for the SC on the report so the PM hears about it this week.
+- **Session changes.** Adding, splitting, merging, moving or cancelling a session, and attendee changes, are suggestions on the report, never written to the plan. A session the client already has on their calendar is never moved without the SC.
 
 **Requirements**
 - New: the next ID in its epic, the statement in plain language, the quote, the speaker, the source, the workflow and steps it belongs to (or, when it is not part of a process, marked as not a workflow step with the reason: reporting, access or data). Priority only if it was said; otherwise leave it blank and say so. Then the story it gets: the user story sentence, and whether it is one story, split into more (and why), or folded into an existing story.
@@ -103,7 +107,7 @@ Read the transcript against the documents and reply with one list in this shape,
 
 **Workflows**
 - Steps added, changed or removed on an existing workflow, by W-ID and step number, and which requirement IDs now point at them.
-- A new workflow the call described that has no screen yet. Propose it; do not add it unasked.
+- A new workflow the call described that has no screen yet: add it.
 - Anything that moved from "not decided yet" to decided, so the dashed box becomes solid.
 - Coverage: any requirement with no workflow and no reason, and any step that does something new with no requirement behind it. Each one gets a home, a reason, or a question for the next session.
 
@@ -123,35 +127,43 @@ Read the transcript against the documents and reply with one list in this shape,
 - SOW lines this session covered (by S-ID on the plan): which moved from unknown or needs confirming to known, with the quote.
 
 **Session plan**
-- Sessions to add, split, merge, move or drop, each with the reason (a session whose date or time the client already has is not moved; propose the change for the SC to take to the client), and attendee changes (someone who should have been there, someone who need not come again).
+- Suggestions (not written): sessions to add, split, merge, move or drop, each with the reason (a session whose date or time the client already has is not moved; the SC takes the change to the client), and attendee changes (someone who should have been there, someone who need not come again).
 - Client inputs received on or before this call, and the ones now overdue against the session that needs them.
 - Decisions closed on this call, and decisions now slipping past their target session.
 - The next session's agenda, revised: the blocking questions first, then what this session left partly covered, then its own topics, timed, with who needs to attend.
 - Sign-off check: if a blocking question or an SOW decision is behind the session it was planned for and there is no later session to catch it, say that discovery is at risk and name the slot that would recover it. Say this on the day, not at the readout.
-- Anything heard that the plan does not have a line for: a new SOW-level topic, a new person, a new risk. Propose the line; do not add it unasked.
+- Anything heard that the plan does not have a line for: a new SOW-level topic, a new person, a new risk. Add the line and say so in the report.
 
-Rules for the proposals:
+Rules for the changes:
 - Only the client's statements become requirements: what they said on a call or wrote in an email. A Kicksaw suggestion goes to open items marked as ours. Internal Slack, the PM bot report and Jira are context only.
-- Before proposing anything as new, search the requirements list and the later sessions for the topic. If a row already covers it, propose the quote on that row instead.
-- Never invent a requirement, number, name, priority, owner or quote. If it was not said, it is not proposed.
+- Before adding anything as new, search the requirements list and the later sessions for the topic. If a row already covers it, add the quote to that row instead.
+- Never invent a requirement, number, name, priority, owner or quote. If it was not said, it is not written.
 
-## 4. Write what was accepted
+## 4. Write the changes
 
 - Requirements list (Google Sheets): add and edit rows in place; never rebuild the sheet, and keep its tabs, formulas and formatting as they are. The count on each epic's grey row ("· 2 requirements") is typed text, not a formula: whenever rows are added to an epic or withdrawn from it, update that count to the epic's rows that are not Withdrawn. A new row gets the status Heard. A second quote goes under the first in the same cell, each with its source. Open items keep their numbers; a closed one gets its answer and the date and stays. Update the Sessions and sources row for this call.
-- User stories (the User stories tab of the same sheet): draft the full story for every accepted new requirement and update every story the accepted changes touch, as "Drafting the user stories" below says. Write the story IDs in column Q of each requirement row.
+- User stories (the User stories tab of the same sheet): draft the full story for every new requirement and update every story the changes touch, as "Drafting the user stories" below says. Write the story IDs in column Q of each requirement row.
 - Workflow document (Artifact tool): read the page by URL, change only the `wf-data` block (nodes, edges, reqs, settle, updated, after), publish to the same URL. Put this call's changes in that workflow's "updated" list so the client sees what moved. Never edit the SVG; the page draws it.
 - What we heard (Artifact tool): the same, in the `wwh-data` block: themes, pains, numbers, replaced, stays, constraint, and the page's "updated" list.
-- Discovery plan (Artifact tool): the same, in the `dp-data` block, and only what was accepted:
+- Discovery plan (Artifact tool): the same, in the `dp-data` block, everything from step 3 except the session suggestions:
   - the session: `status` to held or partly, a `coverage` sentence, and an entry at the front of its `updates` list (when, what was covered, what moved);
   - questions: `status` answered with `answer` and `src`, or `target` changed when a question moved;
   - SOW lines: `state` to known with the `heard` quote when the client's words settled it;
   - inputs: `status` received or overdue; decisions: `status` closed with `outcome`, or slipping;
-  - sessions added, moved (new `when`), or cancelled (status, never deleted); attendees changed;
-  - new people on the people list; new risks only when accepted;
+  - new people on the people list; new risks;
   - `project.updated` to this session and a new entry at the front of `project.changes` listing what moved, so the cover shows it first.
   Keep every ID. Add new lines at the end. Publish to the same URL.
 - Each document's version or "updated after" line moves to this session.
 - Keep each document's tone, structure and look as it is. Add to it; never restyle it.
+- Before writing to a requirements row or a story, read it fresh: the SC may have edited it since the last run. Their edits stand; build on them and never overwrite them with an earlier version.
+
+### Comments and edits from the SC
+
+The SC reviews in the documents. When they say "fold in my comments" (or at the Start of the next run, if comments are open):
+- Read every open comment on the workflow document and the What we heard page. Make the change each one asks for in the page's data block, publish to the same URL, reply on the comment with what changed in one line, and resolve it. A comment that asks a question gets an answer, not a change.
+- A comment that would change a requirement or a story is applied in the requirements list too, so the documents agree.
+- Edits the SC made directly in the requirements list are theirs; read them and keep the stories and the workflow step links in step with them.
+- Report what was folded in, by document, and any comment you could not act on and why.
 
 When the SC says a workflow was played back to the client and confirmed, move its requirements from Heard to Confirmed.
 
@@ -188,18 +200,25 @@ The Session plan block above already revised the next session's agenda. Write it
 
 ## 6. Report back
 
-Three short paragraphs: what this call changed in our understanding, what moved in each document (with counts, including stories drafted and stories changed, questions answered, SOW lines now known), and what the SC should check or decide before the next session and the playback. Then the stories waiting for the SC's review, by ID, with the ones that went back to Draft marked. Then the sign-off check from the Session plan block, if anything is at risk. Then the items not applied and why, and any coverage gaps still open. No recap of steps.
+**In Claude chat, when you can show an interactive visual,** report with the review card: `references/start-card.html`. Change only the `CFG` object at the top of its script:
+- `client`; `stage` (the call: "D-01 Reverse demo, Tue Nov 17, S-04"); `sum` ("Written into the documents. Review them there.").
+- `items`, first the ones that need the SC's eyes, each `state: 'warn'` with a one-line `detail`: every conflict (both speakers and the open item it went to), every Past SOW row, every session suggestion, and the sign-off check if anything is at risk. Then one `state: 'ok'` item per document with its `url` and what moved in it (for example "Requirements list" · "4 new, 2 changed, 3 quotes added · 6 stories drafted, 1 back to Draft · Q-01 and Q-07 answered"). Set `okTitle` to "Updated".
+- `form` empty. `alt`: "Draft the client follow-up email" and "Draft the [next session] agenda for the client", each with its prompt. `button`: "Fold in my comments", and `send`: "Fold in my comments on the [Client] documents."
 
-End with one line naming what comes next: the day before the next session, `/start-motion:discovery-plan` preps it ("prep me for [Client] [session]"); when the bar in `references/method.md` is met and the discovery playback is held, `/start-motion:readout`.
+Write one line above the card: what this call changed in our understanding.
+
+**Everywhere else,** report in text: three short paragraphs: what this call changed in our understanding, what moved in each document (with links and counts, including stories drafted and stories changed, questions answered, SOW lines now known), and what the SC should check or decide before the next session and the playback. Then the conflicts, the Past SOW rows and the session suggestions. Then the sign-off check from the Session plan block, if anything is at risk. Then tell the SC to review in the documents (edit the requirements list directly, comment on the two pages) and say "fold in my comments" when done.
+
+Either way, end with one line naming what comes next: the day before the next session, `/start-motion:discovery-plan` preps it ("prep me for [Client] [session]"); when the bar in `references/method.md` is met and the discovery playback is held, `/start-motion:readout`.
 
 ## Log the run
 
 After the report, write out one short run-log row for the delivery kit and say in one line that pasting it into #discovery-skill-feedback is optional (it helps the kit improve; it is never required). Write it quietly: no questionnaire, no asking the person to rate anything. The row, as plain text:
 
 ```
-Run log · start-motion:discovery-call (v0.1.2) · discovery · <client> · <date>
+Run log · start-motion:discovery-call (v0.1.3) · discovery · <client> · <date>
 Ran by: <the name of the person running it, if the session says; otherwise leave it for them>
-Corrected: <what the person corrected during the run, in one to three plain sentences: an output they rewrote, a proposal they rejected and why, an assumption that was wrong. "Nothing" if nothing.>
+Corrected: <what the person corrected during the run, in one to three plain sentences: an output they rewrote, a change they reversed and why, an assumption that was wrong. "Nothing" if nothing.>
 Had to ask for: <anything you had to ask for that you should have found on your own (a folder, a link, a name already in a note). "Nothing" if nothing.>
 Restarted: <No, or Yes and why>
 Output: <the link to this run's main output, if there is one>

@@ -47,12 +47,13 @@ button:'Build the plan',
 alt:[]};
 var V={};CFG.form.forEach(function(f){V[f.id]=Array.isArray(f.value)?f.value.slice():f.value});
 var IC={ok:'ti-circle-check',miss:'ti-circle-x',warn:'ti-alert-circle',none:'ti-circle-dashed'};
+function lab(x){return x.url?'<a href="'+esc(x.url)+'" target="_blank">'+esc(x.label)+'</a>':esc(x.label)}
 function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
 function items(){var h='',bad=CFG.items.filter(function(x){return x.state==='miss'||x.state==='warn'}),ok=CFG.items.filter(function(x){return x.state==='ok'}),na=CFG.items.filter(function(x){return x.state==='none'});
-bad.forEach(function(x){h+='<div class="sc-row"><i class="ti '+IC[x.state]+' '+x.state+'" aria-hidden="true"></i><div><div class="sc-l">'+esc(x.label)+(x.need?'':' <span style="font-size:11px;font-weight:400;color:var(--text-muted)">helps, not needed</span>')+'</div><div class="sc-d">'+esc(x.detail)+'</div></div></div>'});
-if(ok.length)h+='<div class="fnd"><div class="fnd-t"><i class="ti ti-circle-check ok" aria-hidden="true" style="font-size:18px"></i>Found</div><div class="fnd-l">'+ok.map(function(x){return '<div><b>'+esc(x.label)+'</b> · '+esc(x.detail)+'</div>'}).join('')+'</div>'+(na.length?'<div class="na" style="padding-left:26px">Not here, and that\'s fine: '+na.map(function(x){return esc(x.detail)}).join('; ')+'.</div>':'')+'</div>';
+if(bad.length&&CFG.badTitle)h+='<div class="sc-grp">'+esc(CFG.badTitle)+'</div>';bad.forEach(function(x){h+='<div class="sc-row"><i class="ti '+IC[x.state]+' '+x.state+'" aria-hidden="true"></i><div><div class="sc-l">'+lab(x)+(x.need!==0?'':' <span style="font-size:11px;font-weight:400;color:var(--text-muted)">helps, not needed</span>')+'</div><div class="sc-d">'+esc(x.detail)+'</div></div></div>'});
+if(ok.length)h+='<div class="fnd"><div class="fnd-t"><i class="ti ti-circle-check ok" aria-hidden="true" style="font-size:18px"></i>'+esc(CFG.okTitle||'Found')+'</div><div class="fnd-l">'+ok.map(function(x){return '<div><b>'+lab(x)+'</b> · '+esc(x.detail)+'</div>'}).join('')+'</div>'+(na.length?'<div class="na" style="padding-left:26px">'+esc(CFG.naTitle||'Not here, and that\'s fine')+': '+na.map(function(x){return esc(x.detail)}).join('; ')+'.</div>':'')+'</div>';
 document.getElementById('items').innerHTML=h;var miss=bad.filter(function(x){return x.state==='miss'&&x.need}).length;
-document.getElementById('sum').textContent=miss?miss+' needed item'+(miss>1?'s':'')+' missing':'Everything needed is here';}
+document.getElementById('sum').textContent=CFG.sum?CFG.sum:miss?miss+' needed item'+(miss>1?'s':'')+' missing':'Everything needed is here';}
 function form(){if(!CFG.form.length){document.getElementById('form').innerHTML='';return}
 var h='<div class="sc-form"><div style="font-size:14px;font-weight:500">'+esc(CFG.formTitle)+'</div>';
 var open=false;CFG.form.forEach(function(f,i){if(f.half&&!open){h+='<div class="two">';open=true}h+='<div class="sc-f"><label for="f-'+f.id+'">'+esc(f.label)+'</label>';

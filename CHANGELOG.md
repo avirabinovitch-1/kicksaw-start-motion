@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.3 (2026-11-02)
+
+- Discovery call (Avi, Nov 2): the call is written straight into the four discovery documents, and the SC reviews it in the documents themselves (editing the requirements list directly, commenting on the workflow document and the What we heard page). "Fold in my comments" applies the comments, replies on each and resolves it, and the next run folds in any left open. Three kinds of change are never written silently: a conflict adds the new quote beside the old one and opens a blocking question instead of replacing anything; Past SOW items are written but tagged and listed for the PM; session adds, moves, splits, merges, cancellations and attendee changes stay suggestions. The SC's own edits in the sheet always stand. In Claude chat the report is a card (`references/start-card.html`): what needs the SC's eyes, then each document with its link and what moved, with buttons to fold in comments, draft the client follow-up email or draft the next session's agenda.
+- Start card: items can link (`url`); the found block, the "not here" line and the summary take their own headings (`okTitle`, `naTitle`, `badTitle`, `sum`).
+
 ## 0.1.2 (2026-11-02)
 
 - Discovery plan (Avi, Nov 2): in Claude chat the stage opens with a start card (`references/start-card.html`): what was found, with only missing items shown in full, and the intake questions as a short form prefilled from the client settings (kickoff Monday, length in weeks with the end date shown, session days, remote or on site, weeks that run differently, what the SC knows). Once built, the plan is reported as a review card (`references/plan-review.html`): the known, confirm and unknown counts, the coverage check, the risks, every session by week with who is in the room and what it must leave with, Change on any session, answer boxes for the SC-only questions, and buttons to put the sessions on the kickoff deck or draft the inputs request. Session prep uses the start card for its headlines with a Build the session deck button. Elsewhere the stage asks and reports in text as before.
