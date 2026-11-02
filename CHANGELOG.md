@@ -19,6 +19,7 @@ Skills built from the skill texts embedded in the live Start Motion page (versio
 - The reading rule across the kit (Avi, Oct 30): the handoff, kickoff, discovery plan and discovery call skills read the whole client folder, every subfolder included; "01. Sales Handoff" is gone with "Sales Notes"; the readiness reports say what is there beyond the SOW in one clause instead of listing a handoff packet or transcripts as missing (`scripts/edits_0_2_0.py` is the record).
 - Handoff is optional (Avi, Oct 30): it runs when sales shares a packet beyond the SOW; a folder holding only the SOW is reported as "nothing to hand off yet" and the skill stops; nothing downstream waits for it. The skill, its method reference and its description say so, and the handoff doc is saved in the Discovery subfolder, never at the top level. new-client hands back the text for the client Project's instructions.
 - The em dash check in `build-readout.py` is written as a Python escape so the file carries none.
+- Project instructions cut to three lines (Avi, Nov 2): the block new-client hands back now carries only the client, the Drive folder and the plugin line. The Kicksaw team, the client contacts and the document links were never read from the instructions; every stage reads them from the client folder and the Discovery documents note.
 
 Commands: `/start-motion:new-client`, `/start-motion:handoff`, `kickoff`, `discovery-plan`, `discovery-call`, `readout`, `design`, `user-stories`.
 
