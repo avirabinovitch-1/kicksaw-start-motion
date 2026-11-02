@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2 (2026-11-02)
+
+- Discovery plan (Avi, Nov 2): in Claude chat the stage opens with a start card (`references/start-card.html`): what was found, with only missing items shown in full, and the intake questions as a short form prefilled from the client settings (kickoff Monday, length in weeks with the end date shown, session days, remote or on site, weeks that run differently, what the SC knows). Once built, the plan is reported as a review card (`references/plan-review.html`): the known, confirm and unknown counts, the coverage check, the risks, every session by week with who is in the room and what it must leave with, Change on any session, answer boxes for the SC-only questions, and buttons to put the sessions on the kickoff deck or draft the inputs request. Session prep uses the start card for its headlines with a Build the session deck button. Elsewhere the stage asks and reports in text as before.
+
 ## 0.1.1 (2026-11-02)
 
 - Kickoff (Avi, Nov 2): picking slides in Claude no longer means reading a block of text. The skill looks at the SOW and the client's folder first, then proposes the deck: every core slide plus the optional slides whose reason holds, each with its reason. In Claude chat it shows a visual slide picker (`references/slide-picker.html`): a picture of every slide, tick boxes, A/B layout buttons, full-size pictures on click, and a Build this deck button that sends the picks back. Elsewhere it sends a short text version. Layouts start on A and can change after the build; owners stay out of the question and go in the plan and speaker notes.

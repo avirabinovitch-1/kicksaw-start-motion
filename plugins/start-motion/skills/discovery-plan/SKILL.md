@@ -25,10 +25,20 @@ Look before you ask. The client's name comes from the request; if it is missing,
 - "Prep me for [Client] [session]": the session on the plan (ID, name, date, attendees); the last call processed and whether anything since is unprocessed; inputs the session depends on and which have arrived; what the client has been told about it.
 - No discovery documents yet: say so and offer to set them up first (`/start-motion:discovery-call` does it from the SOW), because the plan seeds the requirements list's Open items and Sessions and sources tabs and cannot finish without the sheet. If nothing at all turns up for the client (no Drive folder, no SOW), offer `/start-motion:new-client` first: it sets the client up and names the stage to run next.
 
-## What to ask: one message
+## What to ask: one card, or one message
 
-Ask once, in one message, and only for what the Start did not find:
-- Building the plan: the discovery window (weeks or dates), the session days, remote or on site or mixed, and anything the SC already knows about the people, the politics and the constraints. The page prompt carried these as blanks; here they are the questions.
+Ask once, and only for what the Start did not find.
+
+**In Claude chat, when you can show an interactive visual,** show the Start and the ask together as one card: `references/start-card.html`. Change only the `CFG` object at the top of its script, never the rest:
+- `client`, `stage` ("Discovery plan").
+- `items`: one per readiness item from the Start, each with `need` (1 for needed, 0 for helps), `state` (`ok` found, `miss` missing, `warn` found with a problem, `none` not there and that is normal) and a one-line `detail` (where it was found, or what to do). A `none` item's `detail` is a short phrase ("no handoff doc from sales"); the card lists those on one quiet line.
+- `form`: building the plan asks for the kickoff Monday, the discovery length in weeks, the session days, the mode (remote, on site, mixed), weeks that run differently, and what the SC already knows about the people and the politics. Prefill every value you found (the Discovery documents note's client settings, the SOW's timeline); leave a field empty only when nothing says. Keep the field ids and types the template uses; `calcAfter: 'weeks'` shows when discovery ends.
+- `send` ("Plan discovery for [Client]."), `button` ("Build the plan").
+
+The card sends back one message with each field as "Label: value". Treat it as the answer to this ask.
+
+**Everywhere else** (Codex, Claude Code, or a chat that can't show visuals), report the Start in a few lines and ask in one message:
+- Building the plan: the discovery window (weeks or dates), the session days, remote or on site or mixed, and anything the SC already knows about the people, the politics and the constraints. Say what you found for each and ask the SC to confirm or correct it.
 - Prepping a session: nothing beyond the session, unless the request did not name one.
 
 Then read back what you heard in one line and run: "Planning Tog discovery: four weeks from Nov 10, Tuesdays and Thursdays, remote. Reading the SOW and three calls."
@@ -137,9 +147,19 @@ Before writing the page: every SOW line has at least one session; every working 
 
 ### 10. Report back
 
-Four short paragraphs: what we walk in knowing (the known / confirm / unknown counts and the three or four biggest unknowns); the risks the plan is built around; the sessions in one line each with who is in the room; and what the SC should settle before kickoff. Then the client-facing session list (ID, name, length, attendees by role) ready for the kickoff deck, and the inputs request ready to send. Then the three to five questions only the SC can answer: things the calls do not settle about politics, availability, on site or remote, and who really decides. Keep the plan's internal notes out of anything client-facing.
+**In Claude chat, when you can show an interactive visual,** report with the plan review card: `references/plan-review.html`. Write one line above it ("The Harborlight plan is built. Here it is to check.") and change only the `CFG` object at the top of its script:
+- `client`; `url` (the plan's link); `known`, `confirm`, `unknown` and `lines` (the SOW line counts); `qs` and `blocking` (questions, and how many block design).
+- `gaps`: every SOW line with no session, each with `id`, a short `text` and `why` (an intentional gap says so: "On purpose: introduced at kickoff, not a client question"). Empty when every line is covered.
+- `risks`: the risks' titles, one line each.
+- `weeks`: a label per week number ("Nov 23 to 27 · Thanksgiving week, sessions Mon and Tue only").
+- `sessions`: each with `id` (D-01 style), `wk`, `date`, `slot` (Morning or Afternoon), `len` (minutes), `name`, `who` (client attendees as on the plan), `room` (up to three first names and "+n", for example "Dana, Priya, Marcus +3"), `must` (the must-leave-with list) and `n` (SOW lines covered; 0 for the flex slot).
+- `scq`: the three to five questions only the SC can answer.
 
-End with one line naming what comes next: `/start-motion:kickoff` builds the kickoff deck, and its Discovery sessions slide takes the session list above; if the discovery documents are not set up yet, `/start-motion:discovery-call` sets them up from the SOW.
+The card sends back one of four messages: the plan looks right; session changes and answers to apply (show what changed, then update the plan and the requirements list); put the sessions on the kickoff deck's Discovery sessions slide (`/start-motion:kickoff` does it); or draft the inputs request. Below the card, give the inputs request ready to send only when asked.
+
+**Everywhere else,** reply in text: four short paragraphs: what we walk in knowing (the known / confirm / unknown counts and the three or four biggest unknowns); the risks the plan is built around; the sessions in one line each with who is in the room; and what the SC should settle before kickoff. Then the client-facing session list (ID, name, length, attendees by role) ready for the kickoff deck, and the inputs request ready to send. Then the three to five questions only the SC can answer: things the calls do not settle about politics, availability, on site or remote, and who really decides.
+
+Either way, keep the plan's internal notes out of anything client-facing, and end with one line naming what comes next: `/start-motion:kickoff` builds the kickoff deck, and its Discovery sessions slide takes the session list above; if the discovery documents are not set up yet, `/start-motion:discovery-call` sets them up from the SOW.
 
 ## Prepping for a session
 
@@ -176,7 +196,7 @@ A few lines, not a page:
 4. The two or three questions that matter most, and who in the room can answer each.
 5. Anything that differs from what the client was told.
 
-Then ask: "Do you want a deck for this session?" If the SC says no, the prep is done. If yes, build it as below.
+**In Claude chat, when you can show an interactive visual,** give the headlines as the start card (`references/start-card.html`) instead of lines: `stage` is the session ("D-04 Triage, assignment and the ownership line, Thu Nov 19"); `items` are the headlines (an input not arrived is `miss` with its fallback in `detail`; a change since the plan, or a difference from what the client was told, is `warn`; must leave with and the top questions are `ok`); `form` is empty; `alt` is one button, "Build the session deck", whose prompt asks for the deck; `button` is "I'm set, no deck" and `send` says so ("Prep for Harborlight D-04 is done; no deck."). Everywhere else, give the lines above and ask: "Do you want a deck for this session?" If the SC says no, the prep is done. If yes, build it as below.
 
 ### The session deck (only when the SC says yes)
 
@@ -195,7 +215,7 @@ Whether or not a deck was built, end the prep with one line naming what comes ne
 After the report, write out one short run-log row for the delivery kit and say in one line that pasting it into #discovery-skill-feedback is optional (it helps the kit improve; it is never required). Write it quietly: no questionnaire, no asking the person to rate anything. The row, as plain text:
 
 ```
-Run log · start-motion:discovery-plan (v0.1.1) · discovery · <client> · <date>
+Run log · start-motion:discovery-plan (v0.1.2) · discovery · <client> · <date>
 Ran by: <the name of the person running it, if the session says; otherwise leave it for them>
 Corrected: <what the person corrected during the run, in one to three plain sentences: an output they rewrote, a proposal they rejected and why, an assumption that was wrong. "Nothing" if nothing.>
 Had to ask for: <anything you had to ask for that you should have found on your own (a folder, a link, a name already in a note). "Nothing" if nothing.>

@@ -11,7 +11,7 @@
       "name": "start-motion",
       "source": "./plugins/start-motion",
       "description": "Kicksaw Project Start Motion: the seven delivery stages as skills, run as /start-motion:handoff, kickoff, discovery-plan, discovery-call, readout, design and user-stories, plus /start-motion:new-client to set a client up.",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "category": "delivery"
     }
   ]
