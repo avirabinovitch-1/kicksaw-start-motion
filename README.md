@@ -28,7 +28,7 @@ In chat the commands show as their bare names (`/kickoff`, `/new-client`); in Co
 
 Plain requests work too: "process today's Tog call", "make the kickoff deck for Tog", "build the readout for Tog".
 
-Scope sign-off (stage 4) is a meeting; the readout skill carries its record.
+Scope sign-off (stage 1.4) is a meeting; the readout skill carries its record.
 
 ## Install
 

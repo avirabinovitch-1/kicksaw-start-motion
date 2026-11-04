@@ -1,6 +1,6 @@
 ---
 name: discovery-call
-description: Start Motion stage 2 (/start-motion:discovery-call). Processes a Kicksaw discovery call end to end. Pull the tl;dv transcript, write the session note, write the call into the four discovery documents (the discovery plan, the requirements list, the workflow document and the What we heard page), hand them to the SC to review in place, fold in the SC's comments, draft or update the user story and acceptance criteria for every requirement heard, and update the plan for the next session. Use whenever someone says "process today's [client] call", "update discovery", "set up the discovery documents for [client]", or pastes a discovery transcript.
+description: Start Motion stage 1.2 (/start-motion:discovery-call). Processes a Kicksaw discovery call end to end. Pull the tl;dv transcript, write the session note, write the call into the four discovery documents (the discovery plan, the requirements list, the workflow document and the What we heard page), hand them to the SC to review in place, fold in the SC's comments, draft or update the user story and acceptance criteria for every requirement heard, and update the plan for the next session. Use whenever someone says "process today's [client] call", "update discovery", "set up the discovery documents for [client]", or pastes a discovery transcript.
 ---
 
 # Kicksaw discovery call
@@ -219,7 +219,7 @@ Either way, end with one line naming what comes next: the day before the next se
 After the report, write out one short run-log row for the delivery kit and say in one line that pasting it into #discovery-skill-feedback is optional (it helps the kit improve; it is never required). Write it quietly: no questionnaire, no asking the person to rate anything. The row, as plain text:
 
 ```
-Run log · start-motion:discovery-call (v0.1.4) · discovery · <client> · <date>
+Run log · start-motion:discovery-call (v0.1.5) · discovery · <client> · <date>
 Ran by: <the name of the person running it, if the session says; otherwise leave it for them>
 Corrected: <what the person corrected during the run, in one to three plain sentences: an output they rewrote, a change they reversed and why, an assumption that was wrong. "Nothing" if nothing.>
 Had to ask for: <anything you had to ask for that you should have found on your own (a folder, a link, a name already in a note). "Nothing" if nothing.>

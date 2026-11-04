@@ -1,6 +1,6 @@
 ---
 name: readout
-description: Start Motion stage 3 (/start-motion:readout). Builds, updates and presents a Kicksaw solution readout from the three discovery documents (the requirements list, the workflow document and the What we heard page). Proposes the cut, fills the readout template's content file, builds the page with the readout build script, cuts the readout deck from it, folds client review feedback back in, and finalizes and records written sign-off. Use whenever someone says "build the readout for [client]", "update the readout", "cut the deck", "fold in the readout feedback", "get the readout ready for sign-off" or pastes a section list from the Start Motion page.
+description: Start Motion stage 1.3 (/start-motion:readout). Builds, updates and presents a Kicksaw solution readout from the three discovery documents (the requirements list, the workflow document and the What we heard page). Proposes the cut, fills the readout template's content file, builds the page with the readout build script, cuts the readout deck from it, folds client review feedback back in, and finalizes and records written sign-off. Use whenever someone says "build the readout for [client]", "update the readout", "cut the deck", "fold in the readout feedback", "get the readout ready for sign-off" or pastes a section list from the Start Motion page.
 ---
 
 # Kicksaw solution readout
@@ -233,7 +233,7 @@ End with one line naming what comes next, by move:
 After the report, write out one short run-log row for the delivery kit and say in one line that pasting it into #discovery-skill-feedback is optional (it helps the kit improve; it is never required). Write it quietly: no questionnaire, no asking the person to rate anything. The row, as plain text:
 
 ```
-Run log · start-motion:readout (v0.1.4) · readout · <client> · <date>
+Run log · start-motion:readout (v0.1.5) · readout · <client> · <date>
 Ran by: <the name of the person running it, if the session says; otherwise leave it for them>
 Corrected: <what the person corrected during the run, in one to three plain sentences: an output they rewrote, a proposal they rejected and why, an assumption that was wrong. "Nothing" if nothing.>
 Had to ask for: <anything you had to ask for that you should have found on your own (a folder, a link, a name already in a note). "Nothing" if nothing.>

@@ -1,6 +1,6 @@
 ---
 name: discovery-plan
-description: Start Motion stage 2 (/start-motion:discovery-plan). Builds the discovery plan for a Kicksaw client before kickoff, from the SOW and whatever else is in the client's folder (sales and pre-kickoff calls, a handoff doc, client documents), and prep the SC before each session. The plan sorts every SOW line by what the client has already said (known, needs confirming, unknown), turns the gaps into questions, groups the questions into sessions with a timed agenda and a must-leave-with list, and checks that no SOW line is left without a session. Before each session it updates that session in the plan and, if the SC wants one, builds a client-facing session deck. Use whenever someone says "plan discovery for [client]", "build the discovery plan", "what sessions do we need", "prep me for [session]", "make the deck for [session]", or "what do we already know going into discovery".
+description: Start Motion stage 1.2 (/start-motion:discovery-plan). Builds the discovery plan for a Kicksaw client before kickoff, from the SOW and whatever else is in the client's folder (sales and pre-kickoff calls, a handoff doc, client documents), and prep the SC before each session. The plan sorts every SOW line by what the client has already said (known, needs confirming, unknown), turns the gaps into questions, groups the questions into sessions with a timed agenda and a must-leave-with list, and checks that no SOW line is left without a session. Before each session it updates that session in the plan and, if the SC wants one, builds a client-facing session deck. Use whenever someone says "plan discovery for [client]", "build the discovery plan", "what sessions do we need", "prep me for [session]", "make the deck for [session]", or "what do we already know going into discovery".
 ---
 
 # Kicksaw discovery plan
@@ -215,7 +215,7 @@ Whether or not a deck was built, end the prep with one line naming what comes ne
 After the report, write out one short run-log row for the delivery kit and say in one line that pasting it into #discovery-skill-feedback is optional (it helps the kit improve; it is never required). Write it quietly: no questionnaire, no asking the person to rate anything. The row, as plain text:
 
 ```
-Run log · start-motion:discovery-plan (v0.1.4) · discovery · <client> · <date>
+Run log · start-motion:discovery-plan (v0.1.5) · discovery · <client> · <date>
 Ran by: <the name of the person running it, if the session says; otherwise leave it for them>
 Corrected: <what the person corrected during the run, in one to three plain sentences: an output they rewrote, a proposal they rejected and why, an assumption that was wrong. "Nothing" if nothing.>
 Had to ask for: <anything you had to ask for that you should have found on your own (a folder, a link, a name already in a note). "Nothing" if nothing.>

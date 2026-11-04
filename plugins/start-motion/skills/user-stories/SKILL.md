@@ -1,6 +1,6 @@
 ---
 name: user-stories
-description: Start Motion stage 6 (/start-motion:user-stories). Finishes, refines, splits and pushes Kicksaw user stories and acceptance criteria from a signed scope, carrying the client's own words from the call transcripts into every story and every refinement update. Starts from the stories the discovery call skill already drafted on the requirements list's User stories tab, checks them against the signed solution readout and the tl;dv transcripts, proposes the epics, takes the stories to the SC one at a time, creates them in the client's Jira project, and preps and folds in refinement sessions with the client's product owner. Use whenever someone says "write the stories for [client]", "build the backlog", "push the stories", "draft AC", "split this story", "prep refinement" or "fold in today's refinement".
+description: Start Motion stage 2.2 (/start-motion:user-stories). Finishes, refines, splits and pushes Kicksaw user stories and acceptance criteria from a signed scope, carrying the client's own words from the call transcripts into every story and every refinement update. Starts from the stories the discovery call skill already drafted on the requirements list's User stories tab, checks them against the signed solution readout and the tl;dv transcripts, proposes the epics, takes the stories to the SC one at a time, creates them in the client's Jira project, and preps and folds in refinement sessions with the client's product owner. Use whenever someone says "write the stories for [client]", "build the backlog", "push the stories", "draft AC", "split this story", "prep refinement" or "fold in today's refinement".
 ---
 
 # Kicksaw user stories
@@ -182,7 +182,7 @@ End with one line naming what comes next, by move: after the epic plan, `/start-
 After the report, write out one short run-log row for the delivery kit and say in one line that pasting it into #discovery-skill-feedback is optional (it helps the kit improve; it is never required). Write it quietly: no questionnaire, no asking the person to rate anything. The row, as plain text:
 
 ```
-Run log · start-motion:user-stories (v0.1.4) · stories · <client> · <date>
+Run log · start-motion:user-stories (v0.1.5) · stories · <client> · <date>
 Ran by: <the name of the person running it, if the session says; otherwise leave it for them>
 Corrected: <what the person corrected during the run, in one to three plain sentences: an output they rewrote, a proposal they rejected and why, an assumption that was wrong. "Nothing" if nothing.>
 Had to ask for: <anything you had to ask for that you should have found on your own (a folder, a link, a name already in a note). "Nothing" if nothing.>

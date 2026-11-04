@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: Start Motion stage 0 (/start-motion:handoff). Builds the sales-to-delivery handoff document for a new Kicksaw project on DJ's standard, from the signed SOW and contracts and the sales call transcripts, then draft delivery's questions for the salesperson. Use whenever someone says "build the handoff for [client]", "draft the handoff doc", or shares a sales handoff folder. This stage is optional: it runs when sales shares a packet beyond the SOW, and nothing downstream waits for it.
+description: Start Motion stage 0 (/start-motion:handoff). Builds the sales-to-delivery handoff document for a new Kicksaw project on DJ's standard, from the signed SOW and contracts and the sales call transcripts, then draft delivery's questions for the salesperson. Use whenever someone says "build the handoff for [client]", "draft the handoff doc", or shares a sales handoff folder. The handoff call itself happens on every project; this command, which builds the document, runs when sales shares a packet beyond the SOW, and nothing downstream waits for it.
 ---
 
 # Kicksaw sales handoff builder
@@ -9,7 +9,7 @@ description: Start Motion stage 0 (/start-motion:handoff). Builds the sales-to-d
 
 Read `references/method.md` in this skill's folder at the start of every run: what the stage is for, the calls the stage asks you to make, the bar, and the link to the full method on the Start Motion page.
 
-This stage is optional. Delivery cannot count on more than the signed SOW and whatever else sales shares into the client's folder; `/start-motion:new-client` starts a client from the SOW without any of this, and no later stage waits for a handoff. The stage is here so the process is visible and sales can adopt it; when a packet beyond the SOW arrives, this is how it is handled.
+The handoff call with sales is held and recorded on every project; that discussion is what Kicksaw's Delivery Methodology requires. This command, which builds the handoff document, is optional. Delivery cannot count on more than the signed SOW and whatever else sales shares into the client's folder; `/start-motion:new-client` starts a client from the SOW without any of this, and no later stage waits for a handoff. The stage is here so the process is visible and sales can adopt it; when a packet beyond the SOW arrives, this is how it is handled.
 
 This skill covers three moves that are three separate prompts on the page: building the handoff document (sales), drafting delivery's questions (the SC, PM, SA and EM/DM), and updating the document from the recorded handoff call. Work out which one is next from what exists, and propose it.
 
@@ -112,7 +112,7 @@ When asked ("update the [Client] handoff from today's call"): pull the recorded 
 After the report, write out one short run-log row for the delivery kit and say in one line that pasting it into #discovery-skill-feedback is optional (it helps the kit improve; it is never required). Write it quietly: no questionnaire, no asking the person to rate anything. The row, as plain text:
 
 ```
-Run log · start-motion:handoff (v0.1.4) · handoff · <client> · <date>
+Run log · start-motion:handoff (v0.1.5) · handoff · <client> · <date>
 Ran by: <the name of the person running it, if the session says; otherwise leave it for them>
 Corrected: <what the person corrected during the run, in one to three plain sentences: an output they rewrote, a proposal they rejected and why, an assumption that was wrong. "Nothing" if nothing.>
 Had to ask for: <anything you had to ask for that you should have found on your own (a folder, a link, a name already in a note). "Nothing" if nothing.>

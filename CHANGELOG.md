@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.5 (2026-11-04)
+
+- Aligned with Kicksaw's Delivery Methodology (Avi, Nov 4): stages renumbered to sit inside the methodology's Implementation stages, names unchanged. Stage 0 (00 Pre-Sales); 1.1 Kickoff, 1.2 Discovery, 1.3 Readout, 1.4 Scope sign-off (01 Clarify & Align); 2.1 Solution design, 2.2 User stories (02 Design Foundation). Every skill description carries the new number.
+- Handoff: the recorded handoff call with sales is held on every project; the command that builds the handoff document stays optional.
+- Start Motion page v67: methodology panel on the Overview, handoff call required, SA accountable and SC responsible for user stories, Client Partner at the readout dry run, success criteria and communication plan at kickoff, client readiness before the kickoff deck, architecture diagram and delivery readiness in the design, change and adoption impacts as an optional design section, and five contradictions fixed.
+
 ## 0.1.4 (2026-11-02)
 
 - Discovery call (Avi, Nov 2): every run checks tl;dv for client calls since the last one processed. A missed call is shown before anything else (in Claude chat, on the start card with "Process all in order" or "Process today's only"); calls are processed oldest first, and none is skipped silently.

@@ -1,6 +1,6 @@
 ---
 name: kickoff
-description: Start Motion stage 1 (/start-motion:kickoff). Builds or updates a client-facing Kicksaw project kickoff deck as a Slides artifact by copying the finished kickoff templates and filling them from the SOW and whatever else is in the client's folder (sales calls, a handoff packet, client documents), with real headshots and screenshots from the Kicksaw deck library. Use whenever someone asks for a kickoff deck, kickoff slides, or a change to one, including a layout swap.
+description: Start Motion stage 1.1 (/start-motion:kickoff). Builds or updates a client-facing Kicksaw project kickoff deck as a Slides artifact by copying the finished kickoff templates and filling them from the SOW and whatever else is in the client's folder (sales calls, a handoff packet, client documents), with real headshots and screenshots from the Kicksaw deck library. Use whenever someone asks for a kickoff deck, kickoff slides, or a change to one, including a layout swap.
 ---
 
 # Kicksaw kickoff deck
@@ -166,7 +166,7 @@ When asked to swap a layout ("switch the timeline to B", "use the white cover"):
 After the report, write out one short run-log row for the delivery kit and say in one line that pasting it into #discovery-skill-feedback is optional (it helps the kit improve; it is never required). Write it quietly: no questionnaire, no asking the person to rate anything. The row, as plain text:
 
 ```
-Run log · start-motion:kickoff (v0.1.4) · kickoff · <client> · <date>
+Run log · start-motion:kickoff (v0.1.5) · kickoff · <client> · <date>
 Ran by: <the name of the person running it, if the session says; otherwise leave it for them>
 Corrected: <what the person corrected during the run, in one to three plain sentences: an output they rewrote, a proposal they rejected and why, an assumption that was wrong. "Nothing" if nothing.>
 Had to ask for: <anything you had to ask for that you should have found on your own (a folder, a link, a name already in a note). "Nothing" if nothing.>
