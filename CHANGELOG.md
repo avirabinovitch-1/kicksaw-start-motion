@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.4 (2026-11-02)
+
+- Discovery call (Avi, Nov 2): every run checks tl;dv for client calls since the last one processed. A missed call is shown before anything else (in Claude chat, on the start card with "Process all in order" or "Process today's only"); calls are processed oldest first, and none is skipped silently.
+- Start Motion page: "After every client call: /discovery-call [Client]" leads the Stage 2 after-every-call step, and the command card says setup happens once, through /new-client, and that the command asks before setting anything up.
+
 ## 0.1.3 (2026-11-02)
 
 - Discovery call (Avi, Nov 2): the call is written straight into the four discovery documents, and the SC reviews it in the documents themselves (editing the requirements list directly, commenting on the workflow document and the What we heard page). "Fold in my comments" applies the comments, replies on each and resolves it, and the next run folds in any left open. Three kinds of change are never written silently: a conflict adds the new quote beside the old one and opens a blocking question instead of replacing anything; Past SOW items are written but tagged and listed for the PM; session adds, moves, splits, merges, cancellations and attendee changes stay suggestions. The SC's own edits in the sheet always stand. In Claude chat the report is a card (`references/start-card.html`): what needs the SC's eyes, then each document with its link and what moved, with buttons to fold in comments, draft the client follow-up email or draft the next session's agenda.

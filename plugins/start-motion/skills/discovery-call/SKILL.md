@@ -28,10 +28,13 @@ Look before you ask. The client's name comes from the request; if it is missing,
 2. If the note is not there and nothing turns up in the person's artifacts or Drive, say so and offer setup right there: "No discovery documents for [Client] yet. Want me to set them up from the SOW?" Setup is what this skill does when the documents do not exist; it is not a separate request anyone has to know about. If nothing at all turns up for the client (no Drive folder, no SOW), offer `/start-motion:new-client` first: it sets the client up and names the stage to run next.
 3. If the plan shows the call in the request already processed, say so. Never process a call twice.
 4. Read the open comments on the workflow document and the What we heard page (the artifact comments tool). If the SC left any since the last run, fold them in first ("Comments and edits from the SC" below), and say how many in the Start.
+5. Check for missed calls. List the client's calls in tl;dv since the last one on the Sessions and sources tab, up to the call in the request: the planned discovery sessions on the plan, and any other call with the client's people on it (match by the client's email domain, the client team in the note, and the session dates). Leave out internal Kicksaw calls. Any client call in that window that is not on Sessions and sources has not been processed. Processing goes in date order, oldest first, because a later call can change what an earlier one said.
 
 ## What to ask: one message
 
-This stage has almost no picks. Ask once, in one message, and only for what the Start did not find:
+When the Start found calls that were not processed, ask about them before anything else. **In Claude chat, when you can show an interactive visual,** show the start card (`references/start-card.html`): `stage` is the call in the request; `badTitle` "Not processed yet"; one `state: 'warn'` item per missed call (date, the plan's session ID and name or the call's title, and its S-ID once assigned); `okTitle` "Ready" with one `ok` item for the call in the request; `sum` "[n] earlier call(s) not processed"; `alt` one button, "Process [date of the call in the request] only", whose prompt processes that call alone and leaves the missed ones open (the report lists them again); `button` "Process all [n+1] in order" and `send` "Process every unprocessed [Client] call in date order, oldest first, then today's." **Everywhere else,** list the missed calls and ask whether to process them first, in order. Never skip one silently; if the SC says to leave one out, say so in the report.
+
+This stage has almost no picks otherwise. Ask once, in one message, and only for what the Start did not find:
 - Processing a call: which call. Today's call is the default; a date or a pasted transcript overrides it. If tl;dv has more than one call for that client that day, list them and ask which.
 - Setup: the client's Drive folder (only if no folder named for the client turns up), and whether to build the discovery plan now or later.
 
@@ -216,7 +219,7 @@ Either way, end with one line naming what comes next: the day before the next se
 After the report, write out one short run-log row for the delivery kit and say in one line that pasting it into #discovery-skill-feedback is optional (it helps the kit improve; it is never required). Write it quietly: no questionnaire, no asking the person to rate anything. The row, as plain text:
 
 ```
-Run log · start-motion:discovery-call (v0.1.3) · discovery · <client> · <date>
+Run log · start-motion:discovery-call (v0.1.4) · discovery · <client> · <date>
 Ran by: <the name of the person running it, if the session says; otherwise leave it for them>
 Corrected: <what the person corrected during the run, in one to three plain sentences: an output they rewrote, a change they reversed and why, an assumption that was wrong. "Nothing" if nothing.>
 Had to ask for: <anything you had to ask for that you should have found on your own (a folder, a link, a name already in a note). "Nothing" if nothing.>
