@@ -7,7 +7,7 @@ Discovery learns how the client works today and captures it as workflows and req
 - Each new requirement reads in plain language and says one thing
 - The workflow steps match how the client described the work, not how it is designed on paper
 - Every open question has a person's name on it
-- Anything past the SOW is marked Past SOW and the PM hears about it this week, not at the readout
+- Anything beyond the SOW is marked Beyond SOW and the PM hears about it this week, not at the readout
 - Only the client's words become requirements; a Kicksaw suggestion is an open item marked as ours
 
 ## The bar: discovery is ready to close when
@@ -18,7 +18,7 @@ Discovery learns how the client works today and captures it as workflows and req
 - Every core workflow is mapped end to end, each step tracing to its requirements
 - Every workflow has been played back to the client lead
 - Every open question has a named owner and a date; anything that blocks design is flagged
-- Anything heard past the SOW is on the scope watch list and the PM knows
+- Anything heard beyond the SOW is on the scope watch list and the PM knows
 - The requirements list, its draft user stories and the workflows are current through the last call
 
 ## Calls the skill cannot make for you

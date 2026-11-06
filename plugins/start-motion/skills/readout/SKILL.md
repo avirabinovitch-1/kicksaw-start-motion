@@ -58,7 +58,7 @@ What we will build
 Example journeys inside 08, optional (when one journey carries the solution)
 Scope
 09 Scope at a glance
-10 Future phase: roadmap items, optional (when scope was split or something past the SOW came up)
+10 Future phase: roadmap items, optional (when scope was split or something beyond the SOW came up)
 The road ahead
 11 Aligning with the SOW
 12 Success measures
@@ -92,7 +92,7 @@ Use these copies, never anyone's artifact. The shared Drive folder **Kicksaw Dis
 
 Find them through the "Discovery documents" note in the client's Claude Project, which links them with the SOW and the handoff packet if there is one:
 
-- The requirements list (a Google Sheet, through the Sheets connector; read the Requirements, Open items, Sessions and sources and Integrations tabs to the end of their data, one tab per call). Only requirements with status Confirmed or Approved go into the readout as the build. Heard items are shown as provisional, and said so.
+- The requirements list (a Google Sheet, through the Sheets connector; read the Requirements, Open items, Sessions and sources and Integrations tabs to the end of their data, one tab per call). Only requirements with status Confirmed or Approved go into the readout as the build. Heard items are shown as provisional, and said so. Rows in Conflict are not built from until the SC settles them; list them for the SC. Find columns by their header names, not letters. An older sheet may still say Past SOW and have no Scope decision column: read Past SOW as Beyond SOW and a missing Scope decision as empty.
 - The workflow document (a Claude page, through the Artifact tool by URL). Save its page source to the workspace; the build script reads its `wf-data` block.
 - The What we heard page (a Claude page, the same way). Save its page source; the build script reads its `wwh-data` block.
 - The SOW, and the handoff packet if there is one, because section 11 lines the readout up with the SOW.
@@ -111,8 +111,8 @@ Where each readout section comes from:
 | 06 How it comes together | Epic order and the Integrations tab | Drafted by Claude, edited by the SC |
 | 07 Target operating model | The systems from What we heard and the Integrations tab | Drafted by Claude |
 | 08 Future state workflows | The workflow document | The build script copies the workflows; Claude writes the today and changes lines |
-| 09 Scope at a glance, 10 Future phase | Requirements by Scope and Priority, rows marked Past SOW | Drafted by Claude |
-| 11 Aligning with the SOW | The SOW against the rows marked Past SOW | Drafted by Claude; the scope principle is the SC's |
+| 09 Scope at a glance, 10 Future phase | Requirements by Scope, Scope decision and Priority, rows marked Beyond SOW | Drafted by Claude |
+| 11 Aligning with the SOW | The SOW against the rows marked Beyond SOW | Drafted by Claude; the scope principle is the SC's |
 | 12 Success measures | The pain points | Drafted by Claude, edited by the SC |
 | 13 Design decisions, 14 Inputs needed | The Open items tab | Drafted by Claude |
 | 15 Next steps | The sessions coverage and the SOW timeline | Drafted by Claude |
@@ -204,15 +204,18 @@ The deck is cut from the readout, never built separately. It orients the client 
 After the presentation:
 - Capture every client question and comment from the readout call transcript into the Open items tab with an owner (the SA takes the technical ones).
 - Draft the answers the SC and SA agree on; the two working sessions with the client lead are where they are settled. Fold them into the three documents and into content.json. Bump the version (v1.1), mark each changed row with `upd`, list the changes in `project.updated`, and rebuild.
-- Anything the client asked for that is past the SOW goes in the requirements list marked Past SOW, as a future phase or a change order; it never widens scope silently.
+- Anything the client asked for that is beyond the SOW goes in the requirements list with Scope set to Beyond SOW and Scope decision empty, for the PM to decide as a future phase or a change order; it never widens scope silently.
 
 ## 7. Finalize for sign-off and record it
 
 When the SC says the review answers are in:
-- Fold them in, bump the version, set `status` to "final", make the sign-off definition name that version and the signer, rebuild, and stop changing it. This version is the one the sign-off request names.
+- Read the Requirements tab fresh first. If any row's Status is Conflict, list those rows (ID, statement and the open item that settles each) and stop here: the readout is not finalized while a requirement is in Conflict.
+- List every Beyond SOW row with its Scope decision for the PM, and flag any whose Scope decision is still empty.
+- Then fold the answers in, bump the version, set `status` to "final", make the sign-off definition name that version and the signer, rebuild, and stop changing it. This version is the one the sign-off request names.
 - Draft the sign-off request email for the PM to send to the named sponsor (the EM/DM copied): the readout link, the version, the three approvals, and the ask for a written reply.
 
 When the written approval arrives:
+- Check the Requirements tab again. If any row is in Conflict, list it and do not record the sign-off until the SC settles it.
 - Set `project.signed` to the date, the signer and the version, and rebuild, so the cover shows it.
 - Move the approved requirements to Approved in the requirements list, file the approval (or a link to it) in the client's Claude Project as readout/sign-off.md and as a Google Doc "Readout sign-off: [Client]" in the client's Drive folder (the Discovery subfolder, next to the requirements list), so the PM has it without the SC's project, and say so in the report. Only then does `/start-motion:user-stories` read the list.
 - A verbal yes, a chat message, or silence past the date is not a sign-off. Say so if asked to record one.
@@ -233,7 +236,7 @@ End with one line naming what comes next, by move:
 After the report, write out one short run-log row for the delivery kit and say in one line that pasting it into #discovery-skill-feedback is optional (it helps the kit improve; it is never required). Write it quietly: no questionnaire, no asking the person to rate anything. The row, as plain text:
 
 ```
-Run log · start-motion:readout (v0.1.5) · readout · <client> · <date>
+Run log · start-motion:readout (v0.1.6) · readout · <client> · <date>
 Ran by: <the name of the person running it, if the session says; otherwise leave it for them>
 Corrected: <what the person corrected during the run, in one to three plain sentences: an output they rewrote, a proposal they rejected and why, an assumption that was wrong. "Nothing" if nothing.>
 Had to ask for: <anything you had to ask for that you should have found on your own (a folder, a link, a name already in a note). "Nothing" if nothing.>

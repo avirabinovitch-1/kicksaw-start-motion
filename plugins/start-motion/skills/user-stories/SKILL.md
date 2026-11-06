@@ -30,7 +30,7 @@ Then read back what you heard in one line and run: "Finishing the Tog stories fo
 Read these before anything else:
 - the "Discovery documents" note in the client's Claude Project: links to the requirements list, the workflow document, the What we heard page, the readout, and the client team with roles (the product owner for refinement is named here; if not, ask the SC who it is)
 - the signed solution readout, at the version that was signed (readout/content.json and readout/sign-off.md in the client's Claude Project; when the sign-off file is not in the project, the Google Doc "Readout sign-off: [Client]" in the client's Drive folder holds the same record): section 5 (Recommended build), section 8 (Future state workflows, with W-IDs and step numbers, and the requirement IDs behind each step when the readout shows them), section 9 (Scope at a glance) and section 13 (Key design decisions)
-- the requirements list (Google Sheet), to the end of its data: the Requirements tab (status, and column Q naming each requirement's stories), the User stories tab (one row per drafted story, in the shape Jira takes: Title, User story, Description, Acceptance criteria, Open questions, Story status, Jira), the Open items tab and the Sessions and sources tab with every call's tl;dv link. Only stories whose requirements are all Approved go to Jira; stories for Confirmed or Heard requirements are listed for the SC, not pushed
+- the requirements list (Google Sheet), to the end of its data: the Requirements tab (status, and the User stories column naming each requirement's stories), the User stories tab (one row per drafted story, in the shape Jira takes: Title, User story, Description, Acceptance criteria, Open questions, Story status, Jira), the Open items tab and the Sessions and sources tab with every call's tl;dv link. Only stories whose requirements are all Approved go to Jira; stories for Confirmed or Heard requirements are listed for the SC, not pushed
 - the session notes for every discovery call, as the index of what was said on which call
 - the calls themselves in tl;dv: the transcripts are read when a story needs them (see "The client's words"), not all at once up front
 - the solution design doc, if there is one: the data model and the objects and fields that already exist, so stories reference metadata by its real name
@@ -129,7 +129,7 @@ Build/Solution Details, Metadata, Test Steps and build or QA sub-tasks belong to
 - Only stories whose requirements are all approved go to Jira. Stories for confirmed or heard requirements stay on the sheet, on the SC's list.
 - No meta or framework stories ("a validation rule exists for every type"). Rules live in the AC of the functional story they belong to.
 - Build and data work are separate stories, and data work lives in the migration epic.
-- Anything the client said on a call is a requirement unless they said it is out or it is past the SOW. Never drop one silently; place it in another story by ID or keep it.
+- Anything the client said on a call is a requirement unless they said it is out or it is beyond the SOW. Never drop one silently; place it in another story by ID or keep it.
 - No stories for things Salesforce may not deliver; that is a nice-to-have or an open question for the architect.
 - Derive before you add: prefer roll-up and formula behavior over new keyed fields.
 - Never invent a value, a field name, a quote, a date or an owner. If it was not said or is not in the org, it is an open question.
@@ -164,7 +164,7 @@ When asked ("fold in today's [Client] refinement"), pull the tl;dv transcript fo
 
   Each bullet is one quote and, in plain words, what it changed: the criterion number added, changed or removed, the open question it closed, or the field it added. If a criterion changes, keep the new wording in the AC field only; the block records why it changed.
 - **Update the AC and the Open Questions fields** to match: rewrite the criteria that changed, add the new ones, remove the questions answered. A question the product owner raised and could not answer goes in as a new open question with their quote, and on the Open items tab.
-- **Anything the product owner asked for that is past the signed scope** goes in the requirements list marked Past SOW, with the quote and citation; it never widens a story silently. Tell the PM that week.
+- **Anything the product owner asked for that is beyond the signed scope** goes in the requirements list with Scope set to Beyond SOW and Scope decision empty, with the quote and citation; it never widens a story silently. Tell the PM that week.
 - **A story the product owner approved** moves to Pending Client Approval or Refined, per the project's workflow. Say which stories moved.
 - **Record new decisions in the Open items tab** with the quote, and update the Source footer line of the story to add the refinement call.
 - Keep the story's tone and structure; add to it, never rewrite the parts the SC already approved unless the product owner changed them.
@@ -182,7 +182,7 @@ End with one line naming what comes next, by move: after the epic plan, `/start-
 After the report, write out one short run-log row for the delivery kit and say in one line that pasting it into #discovery-skill-feedback is optional (it helps the kit improve; it is never required). Write it quietly: no questionnaire, no asking the person to rate anything. The row, as plain text:
 
 ```
-Run log · start-motion:user-stories (v0.1.5) · stories · <client> · <date>
+Run log · start-motion:user-stories (v0.1.6) · stories · <client> · <date>
 Ran by: <the name of the person running it, if the session says; otherwise leave it for them>
 Corrected: <what the person corrected during the run, in one to three plain sentences: an output they rewrote, a proposal they rejected and why, an assumption that was wrong. "Nothing" if nothing.>
 Had to ask for: <anything you had to ask for that you should have found on your own (a folder, a link, a name already in a note). "Nothing" if nothing.>

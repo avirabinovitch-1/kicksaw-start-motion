@@ -38,7 +38,7 @@ This stage has almost no picks otherwise. Ask once, in one message, and only for
 - Processing a call: which call. Today's call is the default; a date or a pasted transcript overrides it. If tl;dv has more than one call for that client that day, list them and ask which.
 - Setup: the client's Drive folder (only if no folder named for the client turns up), and whether to build the discovery plan now or later.
 
-The standing instructions people used to paste from the page (write the call into the documents, then hand them over for review in place; flag anything past the SOW or at a SOW limit such as rule counts, integration endpoints, source files or licenses, with the quote and timestamp, so the SC can raise it with the PM that week) are rules of this skill below; nobody types them.
+The standing instructions people used to paste from the page (write the call into the documents, then hand them over for review in place; flag anything beyond the SOW or at a SOW limit such as rule counts, integration endpoints, source files or licenses, with the quote and timestamp, so the SC can raise it with the PM that week) are rules of this skill below; nobody types them.
 
 Then read back what you heard in one line and run: "Processing Tog, Oct 30, D4 Systems and data, S-06. I'll write it into the documents and hand them to you to review."
 
@@ -76,7 +76,9 @@ The client's Claude Project has a short note called "Discovery documents" with t
 
 If the note is missing from the project, look for the Google Doc "Discovery documents: [Client]" in the client's Drive folder (the Discovery subfolder) and use it; it holds the same links. If neither exists, search the SC's artifacts and Drive for "[Client] Discovery Plan", "[Client] Requirements List", "[Client] Workflows" and "[Client] What We Heard" first. If you find documents, ask the SC to confirm them and write the note. Run the setup above only when nothing turns up. If there is no plan, say so and carry on with the other three; the Session plan block below then only reports coverage against the Sessions and sources tab. Never build a readout from memory or from transcripts in place of the documents.
 
-A client sheet made before the User stories tab existed has no such tab. Add it, copying the header row and the two description rows from the template's User stories tab, and point column Q on Requirements at it.
+A client sheet made before the User stories tab existed has no such tab. Add it, copying the header row and the two description rows from the template's User stories tab, and point the User stories column on Requirements at it.
+
+Find the Requirements tab's columns by their header names, never by letter: read its header row first. Older client sheets (Tog's, for one) were made before some of today's columns and values. If the sheet has no Scope decision column, insert it right of Scope with its dropdown (Raised with PM, Change order, Future phase, Dropped) and say so in the report. If the Scope column still says Past SOW, rename those values and the dropdown option to Beyond SOW and say so. If the Status dropdown has no Conflict option, add it.
 
 ## 1. Get the transcript
 
@@ -96,17 +98,17 @@ Save the session note in the project, and also as a Google Doc with the same nam
 ## 3. Work out the changes
 
 Read the transcript against the documents and work out every change in the shape below. Then write them (step 4) without waiting for the SC: the SC reviews the call in the documents themselves, editing the requirements list directly and leaving comments on the workflow document and the What we heard page. Three kinds of change are never written silently:
-- **Conflicts.** A statement that disagrees with an earlier row or a closed decision does not replace it. Add the new quote under the earlier one, leave the row's statement as it was, and add a blocking open item naming both quotes and the session that will settle it. The SC decides.
-- **Past the SOW.** Written, always tagged Past SOW, and listed for the SC on the report so the PM hears about it this week.
+- **Conflicts.** A statement that disagrees with an earlier row or a closed decision does not replace it. Set the row's Status to Conflict (for a closed decision, the requirement rows it decided), add the new quote under the earlier one, leave the row's statement as it was, and add a blocking open item naming both quotes and the session that will settle it. The SC decides. When the SC settles it, the row goes back to Heard or Confirmed with its statement updated to what was decided.
+- **Beyond the SOW.** Written, always tagged Beyond SOW in the Scope column with Scope decision left empty, and listed for the SC on the report so the PM hears about it this week. Scope decision is Raised with PM, Change order, Future phase or Dropped; empty on a Beyond SOW row means nobody has reviewed it yet. The SC or PM fills it; Claude never fills it unless told what was decided.
 - **Session changes.** Adding, splitting, merging, moving or cancelling a session, and attendee changes, are suggestions on the report, never written to the plan. A session the client already has on their calendar is never moved without the SC.
 
 **Requirements**
 - New: the next ID in its epic, the statement in plain language, the quote, the speaker, the source, the workflow and steps it belongs to (or, when it is not part of a process, marked as not a workflow step with the reason: reporting, access or data). Priority only if it was said; otherwise leave it blank and say so. Then the story it gets: the user story sentence, and whether it is one story, split into more (and why), or folded into an existing story.
 - Changed: which row, what changes, and the quote that changes it. Name the stories it touches.
 - Said again: which row gets a second quote (the same requirement heard on a later call is not a new row).
-- Conflicts: a statement that disagrees with an earlier row or a closed decision, with both quotes. The SC decides; nothing is overwritten on its own.
+- Conflicts: a statement that disagrees with an earlier row or a closed decision, with both quotes. The row's Status goes to Conflict. The SC decides; nothing is overwritten on its own.
 - Withdrawn: a requirement the client walked back, with the quote.
-- Past the SOW: anything outside the SOW's scope list. It goes in the list marked Past SOW, never silently in scope.
+- Beyond the SOW: anything outside the SOW's scope list. It goes in the list with Scope set to Beyond SOW and Scope decision empty, never silently in scope.
 
 **Workflows**
 - Steps added, changed or removed on an existing workflow, by W-ID and step number, and which requirement IDs now point at them.
@@ -144,8 +146,8 @@ Rules for the changes:
 
 ## 4. Write the changes
 
-- Requirements list (Google Sheets): add and edit rows in place; never rebuild the sheet, and keep its tabs, formulas and formatting as they are. The count on each epic's grey row ("· 2 requirements") is typed text, not a formula: whenever rows are added to an epic or withdrawn from it, update that count to the epic's rows that are not Withdrawn. A new row gets the status Heard. A second quote goes under the first in the same cell, each with its source. Open items keep their numbers; a closed one gets its answer and the date and stays. Update the Sessions and sources row for this call.
-- User stories (the User stories tab of the same sheet): draft the full story for every new requirement and update every story the changes touch, as "Drafting the user stories" below says. Write the story IDs in column Q of each requirement row.
+- Requirements list (Google Sheets): add and edit rows in place; never rebuild the sheet, and keep its tabs, formulas and formatting as they are. The count on each epic's grey row ("· 2 requirements") is typed text, not a formula: whenever rows are added to an epic or withdrawn from it, update that count to the epic's rows that are not Withdrawn. A new row gets the status Heard. A row a conflict touches gets the status Conflict until the SC settles it. A second quote goes under the first in the same cell, each with its source. Open items keep their numbers; a closed one gets its answer and the date and stays. Update the Sessions and sources row for this call.
+- User stories (the User stories tab of the same sheet): draft the full story for every new requirement and update every story the changes touch, as "Drafting the user stories" below says. Write the story IDs in the User stories column of each requirement row.
 - Workflow document (Artifact tool): read the page by URL, change only the `wf-data` block (nodes, edges, reqs, settle, updated, after), publish to the same URL. Put this call's changes in that workflow's "updated" list so the client sees what moved. Never edit the SVG; the page draws it.
 - What we heard (Artifact tool): the same, in the `wwh-data` block: themes, pains, numbers, replaced, stays, constraint, and the page's "updated" list.
 - Discovery plan (Artifact tool): the same, in the `dp-data` block, everything from step 3 except the session suggestions:
@@ -174,7 +176,7 @@ When the SC says a workflow was played back to the client and confirmed, move it
 
 Every requirement gets its user story and acceptance criteria in the same pass that adds it, written to the standard in `/start-motion:user-stories` (its SKILL.md is the full standard; it ships in the same plugin), so the stories are close to ready for Jira by sign-off. The rules below are the ones that matter at this stage. If the SC points you at stories already pushed to Jira on another project, match their granularity and tone.
 
-**How many stories.** Be thorough: every behavior the client described ends up in some story's acceptance criteria, and every requirement row except a withdrawn one names at least one story in column Q.
+**How many stories.** Be thorough: every behavior the client described ends up in some story's acceptance criteria, and every requirement row except a withdrawn one names at least one story in its User stories column.
 - One story per requirement is the default, and takes the requirement's ID (E1.2).
 - Split a requirement into more stories when it mixes a system build with data cleanup or migration (always two stories), when it covers two separate capabilities or two different roles, or when one story is doing more than one job (a long list of criteria is the usual sign; it is judgment, not a count). The stories take letters (E1.2a, E1.2b).
 - Fold requirements into one story when they are one behavior on the same record at the same step and would be built and tested together. The story takes the first requirement's ID and lists every requirement it covers in the Requirements column.
@@ -183,7 +185,7 @@ Every requirement gets its user story and acceptance criteria in the same pass t
 **The columns,** which map one to one to the Jira fields:
 - **Title**: `{Object or area}: {plain-language outcome}`, such as "Lead: assigned to a rep by territory". Match the client project's convention if it has one.
 - **User story**: one sentence, "As a/an [operational role], I should have the ability to [capability], so that [outcome]." The role is the client's own name for it, never "user". No technology (no flow, trigger, component). The sentence says in plain words what is built and why; the "so that" is the practical outcome for that person. No criteria detail in it.
-- **Description**: the business situation today and what this story does about it, in the client's vocabulary; short explainers only where a criterion would not make sense without one; where the neighboring stories hold the boundaries ("assigning the lead is E1.2"). Then a **Source traceability** block: the client's words verbatim from the tl;dv transcript or the client's own email, never from the session note, the requirement row or an internal message, lightly cleaned of filler and trimmed with "..." but never paraphrased, each cited with speaker, role, S-ID and call name, date, timestamp and the requirement ID it supports: "..." Jordan Lee, Sales Operations Manager, S-02 Discovery 1: lead intake, Sep 15 2026, 00:14:32 (E1.1). Then the footer lines: Source (S-IDs and dates, workflow and steps), Dependencies (story IDs), Priority (the requirement's Priority column: Launch, Future phase or Past SOW, or "not stated yet"). Jira priority and size are set later by the user stories skill.
+- **Description**: the business situation today and what this story does about it, in the client's vocabulary; short explainers only where a criterion would not make sense without one; where the neighboring stories hold the boundaries ("assigning the lead is E1.2"). Then a **Source traceability** block: the client's words verbatim from the tl;dv transcript or the client's own email, never from the session note, the requirement row or an internal message, lightly cleaned of filler and trimmed with "..." but never paraphrased, each cited with speaker, role, S-ID and call name, date, timestamp and the requirement ID it supports: "..." Jordan Lee, Sales Operations Manager, S-02 Discovery 1: lead intake, Sep 15 2026, 00:14:32 (E1.1). Then the footer lines: Source (S-IDs and dates, workflow and steps), Dependencies (story IDs), Priority (the requirement's Priority column: Launch or Future phase, or "not stated yet"), and Scope: Beyond SOW when the requirement is beyond the SOW. Jira priority and size are set later by the user stories skill.
 - **Acceptance criteria**: a plain numbered list, usually five to nine, each one true or false check. Each states the trigger and what the system then does: "When a lead is created with a State/Province in the United States, it is assigned to the rep who owns that state's territory." Keep each one short and simple; split a criterion rather than piling qualifiers into it. Name existing objects, fields and picklist values by their real names, but do not prescribe new components; the architect decides how to build. Checkable from outside by a tester; never an internal system step or a user action. Exact values and error behavior; a worked check with real numbers for any math or dates; the empty, error and cancel cases where the client described them. One behavior per criterion; field-level detail goes in a fields table at the end (Field label, Field type, Values, Notes), with the last criterion pointing at it. Never use should, might, could, may, usually, generally, appropriately, properly, quickly, seamlessly, user-friendly, intuitive, as needed or where applicable.
 - **Open questions**: every gap the story still has, one per line: a short name (bolded when it goes to Jira), the question, the Open items number, and "Affects AC #n". Where the client touched the point without settling it, add their quote. Never write a criterion around an unknown and never put "blocked" lines in the criteria; the gap goes here and on the Open items tab, so the two lists always match.
 - **Story status**: Draft when written or changed; the SC sets Reviewed by SC. In Jira and the key are set by the user stories skill when it pushes.
@@ -194,7 +196,7 @@ Every requirement gets its user story and acceptance criteria in the same pass t
 - An answered open question comes off the story's Open questions and goes into its criteria.
 - A story the SC already reviewed that changes goes back to Draft, and the report says so.
 - A withdrawn requirement sets its stories to Withdrawn; the rows stay. A story covering other live requirements loses only the withdrawn part.
-- A Past SOW requirement still gets its story, with "Priority: Past SOW" in the footer, so a change order or future phase has it ready.
+- A Beyond SOW requirement still gets its story, with "Scope: Beyond SOW" in the footer, so a change order or future phase has it ready.
 - Never fill the architect's fields (build or solution details, metadata, test steps), and never invent a value, field name, quote, date or owner: if it was not said or is not in the org, it is an open question.
 
 ## 5. Prep the next session
@@ -205,12 +207,12 @@ The Session plan block above already revised the next session's agenda. Write it
 
 **In Claude chat, when you can show an interactive visual,** report with the review card: `references/start-card.html`. Change only the `CFG` object at the top of its script:
 - `client`; `stage` (the call: "D-01 Reverse demo, Tue Nov 17, S-04"); `sum` ("Written into the documents. Review them there.").
-- `items`, first the ones that need the SC's eyes, each `state: 'warn'` with a one-line `detail`: every conflict (both speakers and the open item it went to), every Past SOW row, every session suggestion, and the sign-off check if anything is at risk. Then one `state: 'ok'` item per document with its `url` and what moved in it (for example "Requirements list" · "4 new, 2 changed, 3 quotes added · 6 stories drafted, 1 back to Draft · Q-01 and Q-07 answered"). Set `okTitle` to "Updated".
+- `items`, first the ones that need the SC's eyes, each `state: 'warn'` with a one-line `detail`: every row in Conflict (both speakers and the open item it went to), every Beyond SOW row whose Scope decision is still empty (from this call or earlier, for the SC to raise with the PM), every session suggestion, any column or value step 0 added or renamed on the sheet, and the sign-off check if anything is at risk. Then one `state: 'ok'` item per document with its `url` and what moved in it (for example "Requirements list" · "4 new, 2 changed, 3 quotes added · 6 stories drafted, 1 back to Draft · Q-01 and Q-07 answered"). Set `okTitle` to "Updated".
 - `form` empty. `alt`: "Draft the client follow-up email" and "Draft the [next session] agenda for the client", each with its prompt. `button`: "Fold in my comments", and `send`: "Fold in my comments on the [Client] documents."
 
 Write one line above the card: what this call changed in our understanding.
 
-**Everywhere else,** report in text: three short paragraphs: what this call changed in our understanding, what moved in each document (with links and counts, including stories drafted and stories changed, questions answered, SOW lines now known), and what the SC should check or decide before the next session and the playback. Then the conflicts, the Past SOW rows and the session suggestions. Then the sign-off check from the Session plan block, if anything is at risk. Then tell the SC to review in the documents (edit the requirements list directly, comment on the two pages) and say "fold in my comments" when done.
+**Everywhere else,** report in text: three short paragraphs: what this call changed in our understanding, what moved in each document (with links and counts, including stories drafted and stories changed, questions answered, SOW lines now known), and what the SC should check or decide before the next session and the playback. Then the rows in Conflict, the Beyond SOW rows whose Scope decision is still empty, the session suggestions, and any column or value step 0 added or renamed on the sheet. Then the sign-off check from the Session plan block, if anything is at risk. Then tell the SC to review in the documents (edit the requirements list directly, comment on the two pages) and say "fold in my comments" when done.
 
 Either way, end with one line naming what comes next: the day before the next session, `/start-motion:discovery-plan` preps it ("prep me for [Client] [session]"); when the bar in `references/method.md` is met and the discovery playback is held, `/start-motion:readout`.
 
@@ -219,7 +221,7 @@ Either way, end with one line naming what comes next: the day before the next se
 After the report, write out one short run-log row for the delivery kit and say in one line that pasting it into #discovery-skill-feedback is optional (it helps the kit improve; it is never required). Write it quietly: no questionnaire, no asking the person to rate anything. The row, as plain text:
 
 ```
-Run log · start-motion:discovery-call (v0.1.5) · discovery · <client> · <date>
+Run log · start-motion:discovery-call (v0.1.6) · discovery · <client> · <date>
 Ran by: <the name of the person running it, if the session says; otherwise leave it for them>
 Corrected: <what the person corrected during the run, in one to three plain sentences: an output they rewrote, a change they reversed and why, an assumption that was wrong. "Nothing" if nothing.>
 Had to ask for: <anything you had to ask for that you should have found on your own (a folder, a link, a name already in a note). "Nothing" if nothing.>

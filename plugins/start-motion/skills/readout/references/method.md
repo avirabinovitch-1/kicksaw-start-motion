@@ -18,13 +18,13 @@ Give me the high level, tell me what you heard, tell me what you will build, the
 - Workflows in the deck or the appendix? Played back in discovery means appendix; the deck keeps the overview and at most two journeys
 - Requirement IDs in the readout? Only when the client asked for the full list
 - Who has to be in the room? The business sponsor, who signs the scope. If they are out, move the readout
-- Something past the SOW came up? A roadmap item with a size and a trade-off; never widen scope on the call
+- Something beyond the SOW came up? A roadmap item with a size and a trade-off; never widen scope on the call
 
 ## The bar: ready to present when
 
 - Every pain point has a response, or the what-we-heard group was cut on purpose
 - Every confirmed requirement appears in a workflow or in scope-out
-- Anything past the SOW is named as a future phase or a change order
+- Anything beyond the SOW is named as a future phase or a change order
 - The three approvals and the sign-off date are at the top
 - The SA has reviewed the build, the system at a glance and the sequence
 - Every figure in the deck is identical to its figure in the readout

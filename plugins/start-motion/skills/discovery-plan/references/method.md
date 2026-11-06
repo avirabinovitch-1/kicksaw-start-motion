@@ -17,7 +17,7 @@ Decide which sessions discovery needs, who has to be in each, and what each one 
 - Which processes go first? The ones with the most volume or the most pain; the reverse demo usually makes this obvious
 - Who is in the room? The person who does the work, not only their manager
 - What must this session leave with? Decide before the call, not during it
-- Is this past the SOW? Log it on the scope watch list with the quote and tell the PM that week
+- Is this beyond the SOW? Log it on the scope watch list with the quote and tell the PM that week
 - What stays internal? Staffing, commercial and SOW risk stay on the plan and off anything client-facing
 
 ## The bar: the plan is ready when

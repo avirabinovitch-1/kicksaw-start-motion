@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.6 (2026-11-06)
+
+- Requirements list scope (Avi, Nov 6): the Scope column's values are In SOW and Beyond SOW (was Past SOW), in every skill, story footer ("Priority: Beyond SOW") and the discovery call's start card. A new Scope decision column sits right of Scope with Raised with PM, Change order, Future phase and Dropped; empty on a Beyond SOW row means not yet reviewed. The discovery call writes Beyond SOW rows with Scope decision empty and lists the undecided ones on its report for the PM. The SC or PM fills Scope decision; Claude never fills it unless told what was decided.
+- Conflict is a new Status value. When a call contradicts an earlier row or a closed decision, the discovery call sets the row to Conflict, keeps the earlier statement, adds the new quote under it and opens the blocking open item as before. When the SC settles it, the row goes back to Heard or Confirmed with the statement updated. Reports list the rows in Conflict.
+- Readout: nothing is finalized and no sign-off is recorded while a requirement row is in Conflict; the skill lists them and stops. Before sign-off it lists every Beyond SOW row with its Scope decision for the PM and flags any still empty.
+- Columns are found by header name, not letter ("the User stories column", not column Q). The discovery call reads the Requirements header row first; on an older sheet (Tog's, for one) it inserts a missing Scope decision column with its dropdown, renames Past SOW values to Beyond SOW, adds Conflict to the Status dropdown, and says so in the report.
+
 ## 0.1.5 (2026-11-04)
 
 - Aligned with Kicksaw's Delivery Methodology (Avi, Nov 4): stages renumbered to sit inside the methodology's Implementation stages, names unchanged. Stage 0 (00 Pre-Sales); 1.1 Kickoff, 1.2 Discovery, 1.3 Readout, 1.4 Scope sign-off (01 Clarify & Align); 2.1 Solution design, 2.2 User stories (02 Design Foundation). Every skill description carries the new number.
