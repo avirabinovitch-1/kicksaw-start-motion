@@ -1,0 +1,109 @@
+<h2 class="sr-only">Decision picker for the solution architect: each question says what is being decided, why it matters and what the client and the org say, then compares the options row by row so the SA can choose, ask for more, confirm Claude's recommendations and reopen Claude's own calls.</h2>
+<style>
+.sec{font-size:13px;color:var(--text-secondary);margin:1.25rem 0 .5rem;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:1rem 1.25rem;margin-bottom:12px}
+.q{font-size:15px;font-weight:500;line-height:1.4}.ask{font-size:14px;margin-top:6px;line-height:1.5}.why{font-size:13px;color:var(--text-secondary);margin:2px 0 0;line-height:1.5}
+.tag{font-size:11px;padding:2px 8px;border-radius:var(--radius);background:var(--surface-1);color:var(--text-secondary);margin-left:6px;font-weight:400;white-space:nowrap}
+.tag.w{background:var(--bg-warning);color:var(--text-warning)}
+.ctx{margin:10px 0 12px;padding:8px 12px;background:var(--surface-1);border-radius:var(--radius);font-size:12.5px;line-height:1.55;color:var(--text-secondary)}
+.ctx div+div{margin-top:3px}.ctx b{font-weight:500;color:var(--text-primary)}.said{font-style:italic;color:var(--text-primary)}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 8px}
+.opt{text-align:left;height:auto;padding:12px;border-radius:var(--radius);display:grid;grid-row:span 8;grid-template-rows:subgrid;row-gap:4px;line-height:1.45;white-space:normal;width:100%;align-content:start}
+.r{display:grid;grid-template-columns:70px minmax(0,1fr);gap:8px;font-size:12.5px;line-height:1.45}.r>span:first-child{color:var(--text-muted)}.r code{font-size:11px}.r.first{border-top:0.5px solid var(--border);padding-top:8px;margin-top:4px}
+.opt.on{border:2px solid var(--border-accent)!important;background:var(--bg-accent-muted,var(--bg-accent))!important;padding:11px}
+.on-n{font-size:14px;font-weight:500;display:flex;justify-content:space-between;gap:6px;align-items:baseline}
+.lean{font-size:11px;color:var(--text-accent);font-weight:400;white-space:nowrap}
+.osum{font-size:13px;color:var(--text-secondary)}
+.rec{font-size:13px;margin-top:10px;line-height:1.5}.rec b{font-weight:500}
+.links{display:flex;gap:16px;margin-top:8px;font-size:12px}.lk{background:none!important;border:none!important;padding:0!important;height:auto!important;color:var(--text-secondary);text-decoration:underline;text-underline-offset:2px;cursor:pointer;font-size:12px}
+.lk.on{color:var(--text-accent);font-weight:500}
+.inp{width:100%;margin-top:8px}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 4px;border-bottom:0.5px solid var(--border)}
+.row .q{font-size:14px}.row .why{margin-top:2px}.warn{color:var(--text-warning)}
+.seg{display:inline-flex;gap:6px}.seg button{font-size:12px;padding:3px 10px;height:auto}
+.seg button.on{background:var(--fill-accent)!important;color:var(--on-accent)!important;border-color:var(--fill-accent)!important}
+.err{font-size:13px;color:var(--text-danger);margin-top:6px}
+</style>
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:.5rem 0 0;flex-wrap:wrap">
+<span id="hd" style="font-size:14px;color:var(--text-secondary)"></span><span id="rv" style="font-size:13px"></span>
+</div>
+<div id="calls"></div>
+<div id="recs"></div>
+<div id="client"></div>
+<div id="clear"></div>
+<div id="appr"></div>
+<div style="margin-top:1rem;display:grid;gap:8px">
+<input id="notes" type="text" placeholder="Anything else for the log, for example who else weighed in">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+<span id="sum" style="font-size:13px;color:var(--text-secondary)"></span>
+<button id="go">Send decisions ↗</button>
+</div>
+<div id="err" class="err" hidden></div>
+</div>
+<script>
+var CFG={client:'Harborlight Behavioral Health',stage:'Build plan',review:'https://claude.ai/artifact/45C1mKqt45KW24HsKmsuMY#needs-you',approve:'Approve the build plan',
+calls:[{id:'D-07',q:'Crisis follow-up after a referral is closed',
+ ask:'When a client comes back through crisis after their referral was closed, do we reopen that referral or start a new one linked to it?',
+ why:'Holds task E1.3-T2 and the 7-day appointment report.',
+ said:'"If they come back through crisis, it\'s a new episode for us, but I need to see the history." Javier, S-03 00:18:54',
+ today:'Referral__c has two closed statuses and no link between referrals.',
+ reqs:'R-08: contact within one business day of discharge, appointment within seven days.',
+ opts:[{k:'A',name:'Reopen the closed referral',sum:'One record carries the whole history.',gain:'Everything for the client in one place',cost:'Closed dates move, so time-to-close reports must allow reopening',risk:'The seven-day rule needs a separate reopen date',builds:['Reopened_At__c','a Reopened status value','an after-save flow on Referral__c'],undo:'Hard once records reopen in production',effort:'Medium'},
+  {k:'B',name:'New referral, linked to the closed one',sum:'Each episode gets its own record.',gain:'Clean dates and reports; matches how Javier describes it',cost:'Two records per client; history is one click away',risk:'None beyond one more lookup',builds:['Follow_Up_Of__c, a lookup to Referral__c','a related list on the page'],undo:'Easy',effort:'Low'}],
+ lean:'B',lean_why:'It matches the client\'s own words and keeps every date clean.',change_if:'Harborlight reports episodes per client rather than per referral'}],
+recs:[{id:'D-05',q:'Two-business-day aging',pick:'Formula field, no automation',why:'Nothing to schedule or maintain, always current',alt:'a nightly flow stamping a number',built:'E1.1-T1'},
+ {id:'D-08',q:'Where Log Attempt lives',pick:'Screen flow as a quick action on Referral',why:'No code, staff stay on the record',alt:'a Lightning component',built:''}],
+withclient:[{id:'D-09',ref:'Q-14 with the SC',q:'Does a reply from another number count as an attempt?',why:'One branch of Log Attempt'}],
+clear:[{id:'D-01',q:'Referral object',chosen:'Custom object Referral__c',why:'No standard object fits intake, outreach and assignment'},
+ {id:'D-02',q:'Court date',chosen:'Date field on Referral__c',why:'The client sorts the work list by it'},
+ {id:'D-03',q:'Access',chosen:'Two permission sets, intake and site staff',why:'The two roles in the SOW; no profiles edited'}]};
+var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+var st={};function S(id){return st[id]||(st[id]={})}
+function nm(b){return esc(b).replace(/\b(\w+__(c|mdt|e))\b/g,'<code>$1</code>')}
+function opt(c,o,s){var rows=[['Gains',o.gain,'g'],['Costs',o.cost,''],['Risk',o.risk,'k'],['Builds',(o.builds||[]).map(nm).join('; '),'raw'],['Undo later',o.undo,''],['Effort',o.effort,'']];
+ return '<button class="opt'+(s.pick===o.k?' on':'')+'" aria-pressed="'+(s.pick===o.k)+'" data-c="'+esc(c.id)+'" data-k="'+esc(o.k)+'"><div class="on-n"><span>'+esc(o.k+' · '+o.name)+'</span>'+(c.lean===o.k?'<span class="lean">Recommended</span>':'')+'</div><div class="osum">'+esc(o.sum||'')+'</div>'+
+ rows.map(function(r,i){return '<div class="r'+(i?'':' first')+'"><span>'+r[0]+'</span><span>'+(r[1]?(r[2]==='raw'?r[1]:esc(r[1])):'<span style="color:var(--text-muted)">Not given</span>')+'</span></div>'}).join('')+'</button>'}
+function card(c){var s=S(c.id),h='<div class="card"><div class="q">'+esc(c.id+' · '+c.q)+'<span class="tag w">Needs you</span></div>'+(c.ask?'<div class="ask">'+esc(c.ask)+'</div>':'')+(c.why?'<div class="why">'+esc(c.why)+'</div>':'');
+ var ctx=[c.said?'<div><b>Client said</b> <span class="said">'+esc(c.said)+'</span></div>':'',c.today?'<div><b>In the org today</b> '+esc(c.today)+'</div>':'',c.reqs?'<div><b>Requirement</b> '+esc(c.reqs)+'</div>':''].join('');
+ if(ctx)h+='<div class="ctx">'+ctx+'</div>';
+ h+='<div class="opts">'+c.opts.map(function(o){return opt(c,o,s)}).join('')+'</div>';
+ if(c.lean_why){var L=c.opts.filter(function(o){return o.k===c.lean})[0];h+='<div class="rec"><b>Claude recommends '+esc(c.lean+(L?', '+L.name.toLowerCase():''))+'.</b> '+esc(c.lean_why)+(c.change_if?' This changes if '+esc(c.change_if)+'.':'')+'</div>'}
+ h+='<div class="links"><button class="lk'+(s.pick==='own'?' on':'')+'" data-c="'+esc(c.id)+'" data-k="own">Something else</button><button class="lk'+(s.pick==='more'?' on':'')+'" data-c="'+esc(c.id)+'" data-k="more">I need more first</button></div>';
+ if(s.pick==='own')h+='<input type="text" class="inp" data-f="own" data-c="'+esc(c.id)+'" placeholder="Your decision" value="'+esc(s.own||'')+'">';
+ if(s.pick==='more')h+='<input type="text" class="inp" data-f="more" data-c="'+esc(c.id)+'" placeholder="What you need: a sandbox test, a question to the client, a colleague\'s view" value="'+esc(s.more||'')+'">';
+ if(s.pick&&s.pick!=='more')h+='<input type="text" class="inp" data-f="why" data-c="'+esc(c.id)+'" placeholder="Why, for the log (optional)" value="'+esc(s.why||'')+'">';
+ return h+'</div>'}
+function draw(){document.getElementById('hd').textContent=CFG.client+' · '+CFG.stage;
+ document.getElementById('rv').innerHTML=CFG.review?'<a href="'+esc(CFG.review)+'">Full design and build review ↗</a>':'';
+ document.getElementById('calls').innerHTML=CFG.calls.length?'<div class="sec"><span>Needs your decision</span></div>'+CFG.calls.map(card).join(''):'';
+ document.getElementById('recs').innerHTML=CFG.recs.length?'<div class="sec"><span>I went ahead on these. Confirm or change</span><button class="lk" id="all">Confirm all</button></div>'+CFG.recs.map(function(r){var s=S(r.id);return '<div class="row"><div><div class="q">'+esc(r.id+' · '+r.q+': '+r.pick)+'</div><div class="why">'+esc(r.why)+(r.alt?'. The other way: '+esc(r.alt):'')+'.'+(r.built?' <span class="warn">Built in '+esc(r.built)+'; changing it means rework.</span>':'')+'</div>'+(s.v==='chg'?'<input type="text" class="inp" data-f="own" data-c="'+esc(r.id)+'" placeholder="What you want instead, and why" value="'+esc(s.own||'')+'">':'')+(s.v==='more'?'<input type="text" class="inp" data-f="more" data-c="'+esc(r.id)+'" placeholder="What you need to decide" value="'+esc(s.more||'')+'">':'')+'</div><div class="seg">'+['ok','chg','more'].map(function(v){return '<button data-r="'+esc(r.id)+'" data-v="'+v+'" class="'+(s.v===v?'on':'')+'">'+{ok:'Confirm',chg:'Change',more:'Need more'}[v]+'</button>'}).join('')+'</div></div>'}).join(''):'';
+ var wc=CFG.withclient||[];document.getElementById('client').innerHTML=wc.length?'<div class="sec"><span>With the client. A lean is optional</span></div>'+wc.map(function(r){var s=S(r.id);return '<div class="row" style="grid-template-columns:1fr"><div><div class="q">'+esc(r.id+' · '+r.q)+(r.ref?'<span class="tag">'+esc(r.ref)+'</span>':'')+'</div><div class="why">'+esc(r.why||'')+'</div><input type="text" class="inp" data-f="lean" data-c="'+esc(r.id)+'" placeholder="Your lean, if any" value="'+esc(s.lean||'')+'"></div></div>'}).join(''):'';
+ document.getElementById('clear').innerHTML=CFG.clear.length?'<div class="sec"><span>'+CFG.clear.length+' calls I made. Reopen any you want to weigh in on</span></div>'+CFG.clear.map(function(r){var s=S(r.id);return '<div class="row"><div><div class="q">'+esc(r.id+' · '+r.q+': '+r.chosen)+'</div><div class="why">'+esc(r.why||'')+'</div></div><div class="seg"><button data-o="'+esc(r.id)+'" class="'+(s.reo?'on':'')+'">'+(s.reo?'Reopened':'Reopen')+'</button></div></div>'}).join(''):'';
+ document.getElementById('appr').innerHTML=CFG.approve?'<div class="row" style="margin-top:.75rem;border-top:0.5px solid var(--border)"><div><div class="q">'+esc(CFG.approve)+'</div><div class="why">Work that waits on an open decision stays held either way.</div></div><div class="seg"><button data-a="yes" class="'+(st._ap==='yes'?'on':'')+'">Approve</button><button data-a="no" class="'+(st._ap==='no'?'on':'')+'">Not yet</button></div></div>':'';
+ summary()}
+function summary(){var d=0,m=0,o=0,c=0,ch=0,r=0;CFG.calls.forEach(function(x){var s=S(x.id);if(s.pick==='more')m++;else if(s.pick)d++;else o++});
+ CFG.recs.forEach(function(x){var s=S(x.id);if(s.v==='ok')c++;else if(s.v==='chg')ch++;else if(s.v==='more')m++;else o++});CFG.clear.forEach(function(x){if(S(x.id).reo)r++});
+ document.getElementById('sum').textContent=[d&&d+' decided',c&&c+' confirmed',ch&&ch+' changed',r&&r+' reopened',m&&m+' need more',o&&o+' still open'].filter(Boolean).join(' · ')||'Nothing picked yet'}
+document.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+ if(b.id==='all'){CFG.recs.forEach(function(r){S(r.id).v='ok'});draw();return}
+ if(b.dataset.c&&b.dataset.k){var s=S(b.dataset.c);s.pick=s.pick===b.dataset.k?undefined:b.dataset.k;draw();return}
+ if(b.dataset.r){var s2=S(b.dataset.r);s2.v=s2.v===b.dataset.v?undefined:b.dataset.v;draw();return}
+ if(b.dataset.o){S(b.dataset.o).reo=!S(b.dataset.o).reo;draw();return}
+ if(b.dataset.a){st._ap=st._ap===b.dataset.a?undefined:b.dataset.a;draw()}});
+document.addEventListener('input',function(e){var t=e.target;if(t.dataset&&t.dataset.f){S(t.dataset.c)[t.dataset.f]=t.value;document.getElementById('err').hidden=true;summary()}});
+document.getElementById('go').addEventListener('click',function(){var err=document.getElementById('err'),miss=[],out=[];
+ CFG.calls.forEach(function(c){var s=S(c.id);if((s.pick==='own'&&!(s.own||'').trim())||(s.pick==='more'&&!(s.more||'').trim()))miss.push(c.id)});
+ CFG.recs.forEach(function(r){var s=S(r.id);if((s.v==='chg'&&!(s.own||'').trim())||(s.v==='more'&&!(s.more||'').trim()))miss.push(r.id)});
+ if(miss.length){err.textContent='Say what you want for '+miss.join(', ')+' first';err.hidden=false;return}
+ CFG.calls.forEach(function(c){var s=S(c.id),w=(s.why||'').trim();
+  if(!s.pick)out.push(c.id+': still open');else if(s.pick==='more')out.push(c.id+': need more first: '+s.more.trim());
+  else if(s.pick==='own')out.push(c.id+': own answer: '+s.own.trim()+(w?' · why: '+w:''));
+  else out.push(c.id+': '+s.pick+' ('+c.opts.filter(function(o){return o.k===s.pick})[0].name+')'+(w?' · why: '+w:''))});
+ CFG.recs.forEach(function(r){var s=S(r.id);out.push(r.id+': '+(s.v==='ok'?'confirm':s.v==='chg'?'change: '+s.own.trim():s.v==='more'?'need more first: '+s.more.trim():'not confirmed yet'))});
+ (CFG.withclient||[]).forEach(function(r){var l=(S(r.id).lean||'').trim();if(l)out.push(r.id+': SA lean '+l+', still the client\'s call')});
+ var ro=CFG.clear.filter(function(r){return S(r.id).reo}).map(function(r){return r.id});out.push(ro.length?'Reopen: '+ro.join(', '):'Calls Claude made: accepted');
+ if(CFG.approve&&st._ap)out.push(CFG.approve+': '+(st._ap==='yes'?'yes':'not yet'));
+ var nt=document.getElementById('notes').value.trim();
+ sendPrompt('Decisions for '+CFG.client+' · '+CFG.stage+'. Write these to the Decisions tab, research what I asked for, and carry on with what they unblock.\n'+out.join('\n')+(nt?'\nNotes: '+nt:''))});
+draw();
+</script>

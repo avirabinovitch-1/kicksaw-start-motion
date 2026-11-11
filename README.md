@@ -30,7 +30,9 @@ Plain requests work too: "process today's Tog call", "make the kickoff deck for 
 
 Scope sign-off (stage 1.4) is a meeting; the readout skill carries its record.
 
-## The review agents (0.1.7)
+Build plan and build are a separate, private plugin, Start Motion Build (`kicksaw-start-motion-build`), installed only by the people Avi grants access. It runs in Claude Code against a sandbox and carries its own guardrails. With it installed, `/start-motion:design` also reads the client's org through its org reader.
+
+## The review agents
 
 A review agent is a separate checker with one job. A stage command starts it, hands it only what it needs, and gets back a short list of findings. It does not see the conversation that produced the work, so it reads a requirement the way someone holding only the recording will, and a story the way the architect and the tester will. Reviewers change nothing; the stage command fixes what is plainly wrong and takes the rest to the SC or SA.
 
@@ -38,11 +40,9 @@ A review agent is a separate checker with one job. A stage command starts it, ha
 |---|---|---|
 | `source-checker` | Checks every requirement and story quote against the call, SOW section or document it cites; reports only rows that do not say what the client said | `discovery-call`, `user-stories` |
 | `story-reviewer` | Reads each story with nothing but the story in hand; reports criteria that cannot be built or tested as written | `discovery-call`, `user-stories` |
-| `design-reviewer` | Checks the design against the requirements in scope and against what is already in the org | `design` |
+| `design-reviewer` | Checks the design against the requirements and workflows in scope, the org, the decisions already made and what later epics need | `design` |
 
-Each runs twice at most per run. Claude Code and Cowork start these as separate agents. Claude chat cannot always do that, so each skill carries a copy of the agents it starts at `references/agents/` and runs them as a second pass there, and says on its report which way the check ran. `agents/` is the home of the text; `scripts/sync-agents.py` writes the copies and `--check` fails when one is out of date.
-
-The build agents (org reader, builder, test writer, two build reviewers) and the org guard are on branch `agents-0.2.0` and come in a later release.
+Each runs twice at most per run. Claude Code and Cowork start these as separate agents. Claude chat cannot always do that, so each skill carries a copy of the agents it starts at `references/agents/` and runs them as a second pass there, and says on its report which way the check ran.
 
 ## Install
 
@@ -66,6 +66,7 @@ Uploading the `.plugin` file from a release also works, but does not update itse
 plugins/start-motion/                 the plugin
   .claude-plugin/plugin.json
   agents/<agent>.md                   the three review agents
+  shared/                             texts several skills carry copies of (decisions, the decision picker, where files live in Drive)
   skills/<command>/SKILL.md           the skill
   skills/<command>/references/agents/  copies of the agents that skill starts, written by scripts/sync-agents.py
   skills/<command>/references/        method.md (what the stage is for, the bar, the page link) and other reference files
@@ -73,7 +74,7 @@ plugins/start-motion/                 the plugin
 scripts/refresh-page-skills.py        writes the eight skill texts into a saved copy of the Start Motion page
 scripts/patch-page-work-in-claude.py  added the Work in Claude box to each stage (applied Oct 30, 2026; kept to rebuild the page)
 scripts/patch-page-start-here.py      added the Start here page and the new-client row (applied Oct 30, 2026; kept to rebuild the page)
-scripts/sync-agents.py                copies each agent into the skills that start it; --check fails on a stale copy
+scripts/sync-agents.py                copies each agent and shared text into the skills that use them; --check fails on a stale copy
 scripts/edits_0_2_0.py                the Oct 30 reading-rule and handoff-optional edits, applied in place (the record of what changed and why)
 CHANGELOG.md                          what changed in each release
 ```

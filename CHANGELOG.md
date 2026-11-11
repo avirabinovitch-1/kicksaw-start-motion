@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.8 (2026-11-11)
+
+Decisions, the whole-solution design and Drive copies (Avi, Nov 10 and 11). The build stages that were developed alongside these (build plan, build and their agents) moved to a separate private plugin, Start Motion Build, so only the people Avi grants access get them (Avi, Nov 11).
+
+- Decisions tab. Every design choice with a real alternative gets a row on a new Decisions tab of the requirements list: the question, the options and their trade-offs, Claude's pick or lean, what was chosen, why, who decided and when. Four kinds: Clear (Claude decides and logs it; the SA can reopen any), Recommended (the SA confirms before the design goes Final), SA call and Client call. A decision never stops a run: only the work that depends on it waits. `shared/decisions.md`.
+- Decision picker. In Claude chat, open decisions are put to the SA in one clickable picker (`shared/decision-picker.html`): what is being decided and why it matters, the options side by side with Claude's lean, write-your-own, Confirm or Change on recommendations, Reopen on Claude's calls, and "I need more first".
+- `/design` logs every choice as it drafts, writes a Key decisions section, marks Recommended and Open sections with their IDs, and will not go Final with an SA call open. `/discovery-call` and `/user-stories` refinement close a decision row when the client answers it.
+- Solution map. `/design` covers every epic in the signed scope and carries a Solution map (every object with the epics that use it, one automation owner per object and moment, shared values, sharing, permission set structure, naming, and the structural questions several epics depend on), so the build can go a slice at a time without boxing in the next.
+- Design reviewer, wider. It is handed the workflows, the decided rows and the later epics' requirements, and reports workflow steps the design gives no home, work against a decision, choices nobody logged, and choices that close a door on a later epic.
+- Design, readout and review page live in Drive. The master copy of each is an HTML file in the client's Drive folder with a PDF beside it, one running document saved as a new file per version, so none lives only in one person's Claude account. `shared/drive-copies.md`.
+- Reading the org. With Start Motion Build installed and a terminal, `/design` starts its org reader; otherwise it uses the org summary or build log in the client's folder and says so.
+
 ## 0.1.7 (2026-11-10)
 
 Review agents (Avi, Nov 10). The first phase of the agents: three reviewers, each with one job, a cold read and a fixed answer shape. Tested on Nov 10 against seeded fixtures (project doc `claude/agents-test-report-2026-11-10.md`); all three pass after one wording fix each.
