@@ -37,6 +37,14 @@ Publish the page as an artifact from the same HTML: the first time a new artifac
 
 At the start of every run, read the current version from the Drive subfolder (download it with the Google Drive connector), not from an artifact, not from the Claude Project and never from memory. If the artifact and the Drive file disagree, the Drive file wins; say so in the report. If there is no Drive copy yet but an artifact exists (a design or readout from before this rule), take the artifact's page, save it to Drive as the next version, and carry on from there.
 
+## The workflow document and What we heard
+
+These two stay Claude links owned by the SC who runs discovery; they are not copied into Drive. Their links are in the Google Doc "Discovery documents: [Client]" in the client's Drive folder (Discovery subfolder), which also names the SC. When a stage needs one of them:
+
+- Open it from the link in that note. If the note is missing, look in the client's Drive folder and the person's own artifacts for "[Client] Workflows" and "[Client] What We Heard".
+- If the link opens, use it. If it will not open because it was not shared with this person, or it cannot be found at all, say which one, name the SC who owns it (from the note), and ask the person to have the SC share it with them, or share all of the client's workflow diagrams if the person has none. Give them the exact link to ask about when there is one. Then carry on with everything that does not need it, and pick it up once they say it is shared.
+- Never rebuild a workflow or What we heard from memory, from the readout's copy of it or from transcripts in its place. The signed readout's PDF in Drive is the record of what the client signed, and a stage that only needs the signed workflows (build planning) may read them from that PDF and say so.
+
 ## When Drive cannot be reached
 
 Where the session has no Google Drive connector (Claude Code or Codex without it), save the files to `docs/` in the client's repo when there is one, and say plainly in the report that the Drive copy was not saved and needs saving from a session that has Drive. Never leave the only copy in a Claude Project or a local folder without saying so.
