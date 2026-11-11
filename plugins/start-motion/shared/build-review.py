@@ -492,6 +492,13 @@ def page(c, rows):
         nav.append('<a href="#%s">%s</a>' % (anchor, E(title)))
         body.append('<section id="%s"><h2>%s</h2>%s%s</section>' % (anchor, E(title), '<p class="sl">%s</p>' % md(lede) if lede else '', inner))
 
+    fn = c.get('functional') or {}
+    if fn:
+        who = ''.join('<div class="cap"><div class="capw">%s</div><ul>%s</ul></div>' % (md(r.get('who')), ''.join('<li>%s</li>' % md(x) for x in r.get('can') or []))
+                      for r in fn.get('roles') or [])
+        sec('what', 'What this build does', ('<p>%s</p>' % md(fn['overview']) if fn.get('overview') else '') +
+            ('<div class="caps">%s</div>' % who if who else '') +
+            ('<p class="muted">Not in this build: %s</p>' % md(fn['not_in']) if fn.get('not_in') else ''))
     sec('open', 'Open for the SA', table(['', 'What', 'Item'], openrows, 'open'),
         'Everything here is waiting on a person. Once the SA has worked through it, this section is gone and the decisions below are complete.')
     sec('stories', 'Stories this design serves', table(['Story', 'What the design gives it'],
@@ -632,6 +639,7 @@ td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid 
 tbody tr:hover td{background:var(--soft)}tr.gh:hover td{background:none}td .muted{font-size:14px;margin-top:2px}
 table.two td:first-child{width:32%}table.objt td:first-child,table.auto td:first-child{width:26%}table.open td:first-child{width:60px;font-weight:500}table.open td:nth-child(2){width:130px;color:var(--muted)}
 code{font:12.5px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--fg);background:rgba(135,131,120,.1);padding:1px 5px;border-radius:4px}
+.caps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:14px 0}.cap{border:1px solid var(--line);border-radius:8px;padding:14px 16px}.capw{font-weight:600;color:var(--ink);margin-bottom:4px}.cap ul{margin:0;padding-left:18px}.cap li{margin:3px 0}
 .rules{padding-left:22px}.rules li{margin:0 0 14px;padding-left:4px}.rules li::marker{color:var(--muted)}.rules .by{display:block;font-size:13.5px;margin-top:2px}
 .fig{margin:14px 0 10px;border:1px solid var(--line);border-radius:8px;padding:18px;overflow-x:auto;background:var(--bg)}
 figcaption{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13px;color:var(--muted);margin-top:10px}
