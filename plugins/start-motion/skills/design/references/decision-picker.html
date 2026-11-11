@@ -6,16 +6,14 @@
 .tag{font-size:11px;padding:2px 8px;border-radius:var(--radius);background:var(--surface-1);color:var(--text-secondary);margin-left:6px;font-weight:400;white-space:nowrap}
 .tag.w{background:var(--bg-warning);color:var(--text-warning)}
 .ctx{margin:10px 0 12px;padding:8px 12px;background:var(--surface-1);border-radius:var(--radius);font-size:12.5px;line-height:1.55;color:var(--text-secondary)}
-.ctx div+div{margin-top:3px}.ctx b{font-weight:500;color:var(--text-primary)}.said{font-family:var(--font-voice);color:var(--text-primary)}
+.ctx div+div{margin-top:3px}.ctx b{font-weight:500;color:var(--text-primary)}.said{font-style:italic;color:var(--text-primary)}
 .opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 8px}
-.opt{text-align:left;height:auto;padding:12px;border-radius:var(--radius);display:grid;grid-row:span 9;grid-template-rows:subgrid;row-gap:4px;line-height:1.45;white-space:normal;width:100%;align-content:start}
-.r{display:grid;grid-template-columns:62px minmax(0,1fr);gap:8px;font-size:12px}.r>span:first-child{color:var(--text-muted)}.r code{font-size:11px}.r.first{border-top:0.5px solid var(--border);padding-top:8px;margin-top:4px}
+.opt{text-align:left;height:auto;padding:12px;border-radius:var(--radius);display:grid;grid-row:span 8;grid-template-rows:subgrid;row-gap:4px;line-height:1.45;white-space:normal;width:100%;align-content:start}
+.r{display:grid;grid-template-columns:70px minmax(0,1fr);gap:8px;font-size:12.5px;line-height:1.45}.r>span:first-child{color:var(--text-muted)}.r code{font-size:11px}.r.first{border-top:0.5px solid var(--border);padding-top:8px;margin-top:4px}
 .opt.on{border:2px solid var(--border-accent)!important;background:var(--bg-accent-muted,var(--bg-accent))!important;padding:11px}
 .on-n{font-size:14px;font-weight:500;display:flex;justify-content:space-between;gap:6px;align-items:baseline}
 .lean{font-size:11px;color:var(--text-accent);font-weight:400;white-space:nowrap}
 .osum{font-size:13px;color:var(--text-secondary)}
-.g{color:var(--text-success)}.k{color:var(--text-warning)}
-.mini{color:var(--text-primary)}.mini text{fill:currentColor;font-size:10px}.mini rect{fill:none;stroke:currentColor;stroke-opacity:.4}
 .rec{font-size:13px;margin-top:10px;line-height:1.5}.rec b{font-weight:500}
 .links{display:flex;gap:16px;margin-top:8px;font-size:12px}.lk{background:none!important;border:none!important;padding:0!important;height:auto!important;color:var(--text-secondary);text-decoration:underline;text-underline-offset:2px;cursor:pointer;font-size:12px}
 .lk.on{color:var(--text-accent);font-weight:500}
@@ -50,8 +48,8 @@ calls:[{id:'D-07',q:'Crisis follow-up after a referral is closed',
  said:'"If they come back through crisis, it\'s a new episode for us, but I need to see the history." Javier, S-03 00:18:54',
  today:'Referral__c has two closed statuses and no link between referrals.',
  reqs:'R-08: contact within one business day of discharge, appointment within seven days.',
- opts:[{k:'A',name:'Reopen the closed referral',sum:'One record carries the whole history.',gain:'Everything for the client in one place',cost:'Closed dates move, so time-to-close reports must allow reopening',risk:'The seven-day rule needs a separate reopen date',builds:['Reopened_At__c','Reopened status value','After-save flow on Referral'],undo:'Hard once records reopen in production',effort:'Medium',model:[['Referral__c','Referral__c','reopened']]},
-  {k:'B',name:'New referral, linked to the closed one',sum:'Each episode gets its own record.',gain:'Clean dates and reports; matches how Javier describes it',cost:'Two records per client; history is one click away',risk:'None beyond one more lookup',builds:['Follow_Up_Of__c (lookup)','Related list on the page'],undo:'Easy',effort:'Low',model:[['Referral (new)','Referral (closed)','Follow Up Of']]}],
+ opts:[{k:'A',name:'Reopen the closed referral',sum:'One record carries the whole history.',gain:'Everything for the client in one place',cost:'Closed dates move, so time-to-close reports must allow reopening',risk:'The seven-day rule needs a separate reopen date',builds:['Reopened_At__c','a Reopened status value','an after-save flow on Referral__c'],undo:'Hard once records reopen in production',effort:'Medium'},
+  {k:'B',name:'New referral, linked to the closed one',sum:'Each episode gets its own record.',gain:'Clean dates and reports; matches how Javier describes it',cost:'Two records per client; history is one click away',risk:'None beyond one more lookup',builds:['Follow_Up_Of__c, a lookup to Referral__c','a related list on the page'],undo:'Easy',effort:'Low'}],
  lean:'B',lean_why:'It matches the client\'s own words and keeps every date clean.',change_if:'Harborlight reports episodes per client rather than per referral'}],
 recs:[{id:'D-05',q:'Two-business-day aging',pick:'Formula field, no automation',why:'Nothing to schedule or maintain, always current',alt:'a nightly flow stamping a number',built:'E1.1-T1'},
  {id:'D-08',q:'Where Log Attempt lives',pick:'Screen flow as a quick action on Referral',why:'No code, staff stay on the record',alt:'a Lightning component',built:''}],
@@ -61,11 +59,10 @@ clear:[{id:'D-01',q:'Referral object',chosen:'Custom object Referral__c',why:'No
  {id:'D-03',q:'Access',chosen:'Two permission sets, intake and site staff',why:'The two roles in the SOW; no profiles edited'}]};
 var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
 var st={};function S(id){return st[id]||(st[id]={})}
-function mini(m){if(!m||!m.length)return '';var o='<svg class="mini" viewBox="0 0 260 '+(m.length*28)+'" width="100%" role="img" aria-label="Data model for this option">';
- m.forEach(function(e,i){var y=i*28+2;o+='<rect x="1" y="'+y+'" width="100" height="22" rx="4"/><text x="51" y="'+(y+14)+'" text-anchor="middle">'+esc(e[0]).slice(0,18)+'</text><line x1="102" y1="'+(y+11)+'" x2="155" y2="'+(y+11)+'" stroke="currentColor" stroke-opacity=".5"/><path d="M150,'+(y+7)+' L157,'+(y+11)+' L150,'+(y+15)+'" fill="none" stroke="currentColor" stroke-opacity=".5"/><text x="129" y="'+(y+7)+'" text-anchor="middle" style="font-size:9px">'+esc(e[2]).slice(0,12)+'</text><rect x="158" y="'+y+'" width="100" height="22" rx="4"/><text x="208" y="'+(y+14)+'" text-anchor="middle">'+esc(e[1]).slice(0,18)+'</text>'});return o+'</svg>'}
-function opt(c,o,s){var rows=[['Gains',o.gain,'g'],['Costs',o.cost,''],['Risk',o.risk,'k'],['Builds',(o.builds||[]).map(function(b){return '<code>'+esc(b)+'</code>'}).join(', '),'raw'],['Undo later',o.undo,''],['Effort',o.effort,'']];
- return '<button class="opt'+(s.pick===o.k?' on':'')+'" aria-pressed="'+(s.pick===o.k)+'" data-c="'+esc(c.id)+'" data-k="'+esc(o.k)+'"><div class="on-n"><span>'+esc(o.k+' · '+o.name)+'</span>'+(c.lean===o.k?'<span class="lean">Recommended</span>':'')+'</div><div class="osum">'+esc(o.sum||'')+'</div><div>'+mini(o.model)+'</div>'+
- rows.map(function(r,i){return '<div class="r'+(i?'':' first')+'"><span>'+r[0]+'</span><span'+(r[2]&&r[2]!=='raw'?' class="'+r[2]+'"':'')+'>'+(r[1]?(r[2]==='raw'?r[1]:esc(r[1])):'<span style="color:var(--text-muted)">Not given</span>')+'</span></div>'}).join('')+'</button>'}
+function nm(b){return esc(b).replace(/\b(\w+__(c|mdt|e))\b/g,'<code>$1</code>')}
+function opt(c,o,s){var rows=[['Gains',o.gain,'g'],['Costs',o.cost,''],['Risk',o.risk,'k'],['Builds',(o.builds||[]).map(nm).join('; '),'raw'],['Undo later',o.undo,''],['Effort',o.effort,'']];
+ return '<button class="opt'+(s.pick===o.k?' on':'')+'" aria-pressed="'+(s.pick===o.k)+'" data-c="'+esc(c.id)+'" data-k="'+esc(o.k)+'"><div class="on-n"><span>'+esc(o.k+' · '+o.name)+'</span>'+(c.lean===o.k?'<span class="lean">Recommended</span>':'')+'</div><div class="osum">'+esc(o.sum||'')+'</div>'+
+ rows.map(function(r,i){return '<div class="r'+(i?'':' first')+'"><span>'+r[0]+'</span><span>'+(r[1]?(r[2]==='raw'?r[1]:esc(r[1])):'<span style="color:var(--text-muted)">Not given</span>')+'</span></div>'}).join('')+'</button>'}
 function card(c){var s=S(c.id),h='<div class="card"><div class="q">'+esc(c.id+' · '+c.q)+'<span class="tag w">Needs you</span></div>'+(c.ask?'<div class="ask">'+esc(c.ask)+'</div>':'')+(c.why?'<div class="why">'+esc(c.why)+'</div>':'');
  var ctx=[c.said?'<div><b>Client said</b> <span class="said">'+esc(c.said)+'</span></div>':'',c.today?'<div><b>In the org today</b> '+esc(c.today)+'</div>':'',c.reqs?'<div><b>Requirement</b> '+esc(c.reqs)+'</div>':''].join('');
  if(ctx)h+='<div class="ctx">'+ctx+'</div>';

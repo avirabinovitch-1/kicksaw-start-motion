@@ -309,8 +309,8 @@ def erd(rows, content):
         out.append('</g>')
     out.append('</svg>')
     return ('<figure class="fig">%s<figcaption><span class="key"><i class="kb bn"></i>New object</span><span class="key"><i class="kb bc"></i>Changed</span>'
-            '<span class="key"><i class="kb be"></i>Existing or standard</span><span class="key">+ new field · ~ changed field · grey: not built yet</span>'
-            '<span class="key">→ lookup · ⇒ master-detail; each line runs from the relationship field to its parent</span></figcaption></figure>') % ''.join(out)
+            '<span class="key"><i class="kb be"></i>Existing</span><span class="key">+ new field, ~ changed field, italic not built yet</span>'
+            '<span class="key">→ lookup, ⇒ master-detail</span></figcaption></figure>') % ''.join(out)
 
 
 def flow_svg(flow, i):
@@ -353,7 +353,7 @@ def flow_svg(flow, i):
             out.append('<text x="%d" y="%d" class="st2">%s</text>' % (x + 12, y + 42 + kk * 15, E(ln + ('…' if kk == 2 and len(lines) > 3 else ''))))
         out.append('</g>')
     out.append('</svg>')
-    return '<figure class="fig">%s<figcaption><span class="key"><i class="kb fp"></i>Done by a person</span><span class="key"><i class="kb fs"></i>Done by the system</span></figcaption></figure>' % ''.join(out)
+    return '<figure class="fig">%s<figcaption><span class="key"><i class="kb fp"></i>A person</span><span class="key"><i class="kb fs"></i>The system</span></figcaption></figure>' % ''.join(out)
 
 
 # ---------- the page ----------
@@ -403,15 +403,17 @@ def api(name):
 
 def logo():
     here = os.path.dirname(os.path.abspath(__file__))
-    for p in (os.path.join(here, '..', '..', 'kickoff', 'brand', 'logo-inverse.svg'), os.path.join(here, '..', 'skills', 'kickoff', 'brand', 'logo-inverse.svg')):
+    for p in (os.path.join(here, '..', '..', 'kickoff', 'brand', 'logo-full-color.svg'), os.path.join(here, '..', 'skills', 'kickoff', 'brand', 'logo-full-color.svg')):
         if os.path.exists(p):
             svg = open(p, encoding='utf-8').read()
             return svg.replace('<svg ', '<svg class="logo" role="img" aria-label="Kicksaw" ', 1)
     return '<span class="wordmark">kicksaw</span>'
 
 
-NEED_ORDER = {'SA call': 0, 'Decide': 0, 'Found in the build': 1, 'Removes': 2, 'Changes what exists': 3, 'Confirm': 4, 'Review': 5}
-NEED_CLS = {'SA call': 'nd', 'Decide': 'nd', 'Found in the build': 'nf', 'Removes': 'nf', 'Changes what exists': 'nx', 'Confirm': 'nc', 'Review': 'nc'}
+def plain_chip(sv):
+    if sv in ('Waits', 'Handed back'):
+        return '<span class="wt">%s</span>' % E(sv)
+    return '<span class="sv">%s</span>' % E(sv)
 
 
 def page(c, rows):
@@ -432,6 +434,13 @@ def page(c, rows):
     allrows = list(rows.values())
     count = lambda f: sum(1 for r in allrows if f(r))
 
+    # decisions: decided ones shape the design; open ones are what the SA still owes
+    decs = list(c.get('decisions') or [])
+    for r in c.get('rules') or []:  # older content files
+        decs.append(dict(r, status='Decided', chosen=r.get('rule'), q=r.get('q') or ''))
+    decided = [d for d in decs if d.get('status', 'Decided') == 'Decided']
+    open_ = [d for d in decs if d.get('status') == 'Proposed']
+
     # what the page finds on its own
     found, nofls = [], []
     granted = {f for r in allrows if r['type'] == 'PermissionSet' for f, _ in r.get('fields') or []}
@@ -444,7 +453,7 @@ def page(c, rows):
         if built and r['type'] == 'CustomObject' and r['change'] == 'New' and r['member'] not in obj_granted:
             found.append('`%s` is new and no permission set in this build grants read on it.' % r['member'])
     if nofls:
-        found.insert(0, '%d new field%s that no permission set in this build grants, so only administrators will see %s: %s.' % (
+        found.insert(0, '%d new field%s that no permission set in this build grants, so only administrators see %s: %s.' % (
             len(nofls), 's' if len(nofls) > 1 else '', 'them' if len(nofls) > 1 else 'it', ', '.join('`%s`' % f for f in nofls)))
     if c.get('planned'):
         orphan = [r['member'] for r in allrows if r['status'] in ('Built', 'Merged') and not r.get('story') and not r.get('task')
@@ -457,38 +466,40 @@ def page(c, rows):
             o, trig = k.split('|')
             found.append('%d active flows run on `%s` at the same moment (%s): %s. Say how they work together, or fold them into one.' % (
                 len(names), o, trig.strip(), ', '.join('`%s`' % n for n in names)))
-    need = list(c.get('needs_you') or []) + [{'kind': 'Found in the build', 'text': f} for f in found[:25]]
-    need.sort(key=lambda n: NEED_ORDER.get(n.get('kind'), 9))
 
-    groups, body = [], []
-    cur = []
+    openrows = []
+    KIND = {'SA call': 'Decide', 'Recommended': 'Confirm', 'Client call': 'With the client'}
+    for d in open_:
+        opts = ' or '.join(o.get('name') for o in d.get('options') or [] if o.get('name'))
+        lean = ' Claude recommends %s.' % d['recommended'] if d.get('recommended') else ''
+        openrows.append([dl(d.get('id')), KIND.get(d.get('kind'), 'Decide'), md(d.get('q')) + ('<div class="muted">%s.%s</div>' % (E(opts), E(lean)) if opts or lean else '')])
+    for n in c.get('needs_you') or []:
+        openrows.append(['', E(n.get('kind')), md(n.get('text'))])
+    for f in found:
+        openrows.append(['', '<span class="wt">Found in the build</span>', md(f)])
 
-    def group(title):
-        groups.append((title, []))
+    nav, body = [], []
 
-    def sec(anchor, title, inner, badge=None, lede=None):
+    def sec(anchor, title, inner, lede=None):
         if not inner:
             return
-        groups[-1][1].append('<a href="#%s">%s%s</a>' % (anchor, E(title), '<span class="nbg">%s</span>' % badge if badge else ''))
-        body.append('<section id="%s"><h2>%s</h2>%s%s</section>' % (anchor, E(title), '<p class="sl">%s</p>' % lede if lede else '', inner))
+        nav.append('<a href="#%s">%s</a>' % (anchor, E(title)))
+        body.append('<section id="%s"><h2>%s</h2>%s%s</section>' % (anchor, E(title), '<p class="sl">%s</p>' % md(lede) if lede else '', inner))
 
-    group('Review')
-    sec('needs-you', 'Needs you', ''.join(
-        '<div class="need %s"><div class="nk">%s</div><div class="nt2">%s%s</div></div>' % (
-            NEED_CLS.get(n.get('kind'), 'nc'), E(n.get('kind')), md(n.get('text')),
-            ' <a href="%s">Open</a>' % E(n['link']) if n.get('link') else '') for n in need) if need else
-        '<p class="muted">Nothing is waiting on the SA.</p>', len(need) or None, 'Decisions to make first, then anything the page found on its own, then what to confirm and review.')
-    sec('rules', 'Decisions that shape the design', '<ol class="rules">%s</ol>' % ''.join(
-        '<li><div class="rl">%s</div><div class="rw">%s</div><div class="rb">%s · %s%s</div></li>' % (md(r.get('rule')), md(r.get('why')), dl(r.get('id')),
-            E(r.get('by')), ', ' + E(r.get('date')) if r.get('date') else '') for r in c.get('rules') or []) if c.get('rules') else '',
-        None, 'Every decided row from the Decisions tab that this build stands on.')
-    sec('stories', 'Stories this serves', table(['Story', 'What the design gives it'],
-        [[jl(s.get('key')) + ' ' + md(s.get('title')), md(s.get('gives'))] for s in c.get('stories') or []], 'two'))
+    sec('open', 'Open for the SA', table(['', 'What', 'Item'], openrows, 'open'),
+        'Everything here is waiting on a person. Once the SA has worked through it, this section is gone and the decisions below are complete.')
+    sec('stories', 'Stories this design serves', table(['Story', 'What the design gives it'],
+        [[jl(s_.get('key')) + ' ' + md(s_.get('title')), md(s_.get('gives'))] for s_ in c.get('stories') or []], 'two'))
     sec('differences', 'Where the design differs from the stories', table(['#', 'Story says', 'The design does', 'Recommendation'],
         [[E(d.get('n')), md(d.get('says')), md(d.get('does')), md(d.get('rec'))] for d in c.get('differences') or []]),
-        len(c.get('differences') or []) or None)
-
-    group('Design')
+        'Each row is a story criterion the design does not meet as written. It closes when the story is reworded or the design changes.')
+    sec('decisions', 'Decisions that shape the design', '<ol class="rules">%s</ol>' % ''.join(
+        '<li><b>%s</b> %s%s <span class="muted">(%s%s%s)</span></li>' % (
+            md(d.get('chosen') or d.get('rule')), md(d.get('why') or ''),
+            ' Considered: %s.' % md(d['considered']) if d.get('considered') else '',
+            E(d.get('by') or ''), ', ' + E(d.get('date')) if d.get('date') else '', ', <span class="nw">%s</span>' % dl(d.get('id')) if d.get('id') else '')
+        for d in decided) if decided else '',
+        ('%d still open, listed under Open for the SA.' % len(open_)) if open_ else None)
     sec('today', 'Today and after', table(['Area', 'Today', 'After this build'],
         [[md(x.get('area')), md(x.get('today')), md(x.get('after'))] for x in c.get('today') or []]))
     objs = [r for r in allrows if r['type'] == 'CustomObject']
@@ -498,41 +509,36 @@ def page(c, rows):
             m = re.match(r'Master-detail to (\w+)', r['details'])
             if m:
                 children.setdefault(m.group(1), []).append(r['member'].split('.')[0])
-    sec('data-model', 'Data model', erd(rows, c) + table(['Object', 'Change', 'Relationships', 'Settings and notes'],
-        [['<b>%s</b><br>%s' % (E(r.get('label') or r['member']), api(r['member'])), chip(r['change']),
-          '<br>'.join(['%s %s' % (api(x['member'].split('.', 1)[1]), E((x.get('details') or '').split(';')[0].replace('Lookup to', '→').replace('Master-detail to', '⇒'))) for x in allrows if x['type'] == 'CustomField' and x['member'].startswith(r['member'] + '.') and
-                       re.match(r'(Lookup|Master-detail) to', x.get('details') or '')] + ['Parent of %s ⇒' % api(ch) for ch in children.get(r['member'], [])]) or '<span class="muted">None</span>',
+    sec('data-model', 'Data model', erd(rows, c) + table(['Object', 'Relationships', 'Notes'],
+        [['%s<br>%s' % (E(r.get('label') or r['member']), api(r['member'])),
+          '<br>'.join(['%s %s' % (api(x['member'].split('.', 1)[1]), E((x.get('details') or '').split(';')[0].replace('Lookup to', '→').replace('Master-detail to', '⇒')))
+                       for x in allrows if x['type'] == 'CustomField' and x['member'].startswith(r['member'] + '.') and re.match(r'(Lookup|Master-detail) to', x.get('details') or '')]
+                      + ['Parent of %s' % api(ch) for ch in children.get(r['member'], [])]) or '<span class="muted">None</span>',
           md(r.get('why') or '') + ('<div class="muted">%s</div>' % E(r.get('details')) if r.get('details') else '')] for r in objs], 'objt'))
-    flows = c.get('flows') or []
     sec('flows', 'How it works', ''.join(
         '<h3>%s</h3>%s%s' % (md(f.get('name')), flow_svg(f, i),
             table(['When', 'What happens'], [[md(o.get('when')), md(o.get('then'))] for o in f.get('outcomes') or []], 'two'))
-        for i, f in enumerate(flows)))
+        for i, f in enumerate(c.get('flows') or [])))
     autos = c.get('automation') or []
-    sec('automation', 'Automation', table(['Automation', 'Runs when', 'What it does', 'Beside it on the same object and moment', 'Status'],
-        [['<b>%s</b><br>%s<div class="muted">%s</div>' % (E((a.get('name') or '').replace('_', ' ')), api(a.get('name') or ''), E(a.get('type'))),
-          md(a.get('runs_when')), md(a.get('does')), md(a.get('beside') or 'Nothing'),
-          chip(rows.get('Flow/' + (a.get('name') or ''), {}).get('status') or a.get('status') or ('Existing' if 'xisting' in (a.get('type') or '') else 'Planned'))]
-         for a in autos] or
-        [['%s' % api(a['member']), E(a.get('trigger')), md(a.get('details')), '', chip(a['status'])] for a in allrows if group_of(a['type']) == 'Automation'], 'auto'))
+    sec('automation', 'Automation', table(['Automation', 'Type', 'Runs when', 'What it does', 'Beside it on the same object and moment'],
+        [['%s<div class="muted">%s</div>' % (api(a.get('name') or ''), E(rows.get('Flow/' + (a.get('name') or ''), {}).get('status') or a.get('status') or ('Existing' if 'xisting' in (a.get('type') or '') else 'Planned'))),
+          E(a.get('type')), md(a.get('runs_when')), md(a.get('does')), md(a.get('beside') or 'Nothing')] for a in autos], 'auto'))
     sec('pages', 'Pages, layouts and actions', table(['Page or action', 'Object', 'What the user sees'],
         [[md(p.get('name')), api(p.get('object') or ''), md(p.get('shows'))] for p in c.get('pages') or []]))
     ps = [r for r in allrows if r['type'] == 'PermissionSet' and r.get('objects')]
     acc = '<ul>%s</ul>' % ''.join('<li>%s</li>' % md(a) for a in c.get('access') or []) if c.get('access') else ''
     if ps:
         pobjs = sorted({o for r in ps for o, _ in r['objects']})
-        cell = lambda v: '<span class="cr2">%s</span>' % ' '.join('<i class="%s">%s</i>' % ('on' if l in v else 'off', l) for l in 'CRED')
-        acc += '<h3>Objects</h3>' + table(['Object'] + [r.get('label') or r['member'] for r in ps], [[api(o)] + [cell(dict(r['objects']).get(o, '')) for r in ps] for o in pobjs], 'mx')
+        acc += table(['Object'] + [r.get('label') or r['member'] for r in ps],
+                     [[api(o)] + [E(' '.join({'C': 'Create', 'R': 'Read', 'E': 'Edit', 'D': 'Delete'}[l] for l in dict(r['objects']).get(o, '')) or 'None') for r in ps] for o in pobjs], 'mx')
         newf = [r['member'] for r in allrows if r['type'] == 'CustomField' and r['change'] == 'New' and r['status'] in ('Built', 'Merged')]
         if newf:
-            acc += '<h3>New fields</h3>' + table(['Field'] + [r.get('label') or r['member'] for r in ps],
-                [[api(f)] + [(lambda v: '<span class="fa %s">%s</span>' % ('on' if v else 'off', v or 'No access'))(dict(r.get('fields') or []).get(f, '')) for r in ps] for f in newf], 'mx')
-        acc += '<p class="muted">Read from the permission set files in the repo. C create, R read, E edit, D delete.</p>'
+            acc += table(['New field'] + [r.get('label') or r['member'] for r in ps],
+                         [[api(f)] + [(lambda v: E(v) if v else '<span class="wt">None</span>')(dict(r.get('fields') or []).get(f, '')) for r in ps] for f in newf], 'mx')
+        acc += '<p class="muted">From the permission set files in the repo.</p>'
     sec('access', 'Who can do what', acc)
     sec('reporting', 'Reporting', '<ul>%s</ul>' % ''.join('<li>%s</li>' % md(x) for x in c.get('reporting') or []) if c.get('reporting') else '')
 
-    group('Build')
-    # every component, grouped by the object it belongs to
     byobj = {}
     for r in allrows:
         o = obj_of(r) or ('Access' if group_of(r['type']) == 'Access' else 'Reporting' if group_of(r['type']) == 'Reporting' else 'Other')
@@ -541,155 +547,104 @@ def page(c, rows):
     inv = []
     for o in order:
         items = sorted(byobj[o], key=lambda r: (ORDER_IN_OBJ.index(r['type']) if r['type'] in ORDER_IN_OBJ else 99, r['member'].lower()))
-        n_new = sum(1 for r in items if r['change'] == 'New')
-        inv.append('<tr class="gh" data-o="%s"><td colspan="5"><span class="gho">%s</span> <span class="muted">%d component%s · %d new</span></td></tr>' % (
-            E(o), api(o) if o not in ('Access', 'Reporting', 'Other') else E(o), len(items), '' if len(items) == 1 else 's', n_new))
+        lab = next((x.get('label') for x in items if x['type'] == 'CustomObject' and x.get('label')), None) or (o.replace('__c', '').replace('_', ' ') if o not in ('Access', 'Reporting', 'Other') else o)
+        inv.append('<tr class="gh" data-o="%s"><td colspan="5">%s%s</td></tr>' % (E(o), E(lab), ' <span class="muted">%s</span>' % api(o) if o not in ('Access', 'Reporting', 'Other') else ''))
         for r in items:
             label = r.get('label')
             nm = r['member'].split('.', 1)[1] if '.' in r['member'] and r['type'] != 'Report' else r['member']
-            name = ('<b>%s</b><br>' % E(label) if label and label != r['member'] else '') + api(nm)
-            trace = ' · '.join(x for x in [jl(r['story']) if r.get('story') else '', E(r.get('task') or ''), dl(r['decision']) if r.get('decision') else ''] if x)
+            name = ('%s<br>' % E(label) if label and label != r['member'] else '') + api(nm)
+            trace = ' · '.join('<span class="nw">%s</span>' % x for x in [jl(r['story']) if r.get('story') else '', E(r.get('task') or ''), dl(r['decision']) if r.get('decision') else ''] if x)
             det = md(r.get('why') or '') + ('<div class="muted">%s</div>' % md(r['details']) if r.get('details') and r.get('why') else md(r.get('details') or '') if not r.get('why') else '')
-            inv.append('<tr data-g="%s" data-c="%s" data-s="%s" data-o="%s"><td>%s<div class="ty">%s</div></td><td>%s</td><td>%s</td><td class="trc">%s</td><td>%s%s</td></tr>' % (
-                E(group_of(r['type'])), E(r['change']), E(r['status']), E(o), name, E(FRIENDLY.get(r['type'], r['type'])), chip(r['change']),
-                det, trace or '<span class="muted">Not in the plan</span>', chip(r['status']), '<div class="muted">waits on %s</div>' % E(r['waits']) if r.get('waits') else ''))
-    filt = '<div class="filt">%s%s%s<input id="q" type="search" placeholder="Search names, types and details"></div>' % (
+            st = r['status'] + (' on ' + r['waits'] if r.get('waits') else '')
+            inv.append('<tr data-g="%s" data-c="%s" data-s="%s" data-o="%s"><td>%s</td><td>%s%s</td><td>%s</td><td>%s</td><td>%s</td></tr>' % (
+                E(group_of(r['type'])), E(r['change']), E(r['status']), E(o), name, E(FRIENDLY.get(r['type'], r['type'])),
+                '' if r['change'] == 'New' else ', <span class="wt">%s</span>' % E(r['change'].lower()), det, trace or '<span class="wt">Not in the plan</span>', plain_chip(st)))
+    filt = '<div class="filt">%s%s<input id="q" type="search" placeholder="Search"></div>' % (
         '<select id="fg" aria-label="Kind"><option value="">Every kind</option>%s</select>' % ''.join('<option>%s</option>' % E(g) for g, _ in GROUPS),
-        '<select id="fc" aria-label="Change"><option value="">New, changed and removed</option><option>New</option><option>Changed</option><option>Removed</option></select>',
         '<select id="fs" aria-label="Status"><option value="">Any status</option><option>Planned</option><option>Waits</option><option>Built</option><option>Merged</option></select>')
-    st_ = {k: count(lambda r, k=k: r['status'] == k) for k in ('Merged', 'Built', 'Planned', 'Waits')}
-    sec('inventory', 'Every component', filt + '<div class="tw"><table id="inv"><colgroup><col style="width:27%%"><col style="width:9%%"><col><col style="width:16%%"><col style="width:10%%"></colgroup><thead><tr><th>Component</th><th>Change</th><th>Details</th><th>Story · task · decision</th><th>Status</th></tr></thead><tbody>%s</tbody></table></div>' % ''.join(inv) if allrows else '',
-        len(allrows), 'Grouped by object. Built and merged components are described from their metadata files; the rest from the build plan.')
+    sec('components', 'Fields, objects and settings', filt + '<div class="tw"><table id="inv"><colgroup><col style="width:24%%"><col style="width:14%%"><col><col style="width:17%%"><col style="width:11%%"></colgroup><thead><tr><th>Component</th><th>Type</th><th>Details</th><th>Story, task, decision</th><th>Status</th></tr></thead><tbody>%s</tbody></table></div>' % ''.join(inv) if allrows else '',
+        'Every component this build creates or changes, by object. Built ones are described from their metadata files; the rest from the build plan.')
     changed = [r for r in allrows if r['change'] in ('Changed', 'Removed')]
-    sec('changes', 'Changes to what is already in the org', table(['Component', 'Change', 'What changes, and what depends on it', 'Done by'],
-        [[api('%s/%s' % (r['type'], r['member'])), chip(r['change']), md(r.get('why') or r.get('details') or ''),
-          'A person, by hand' if r['change'] == 'Removed' else 'The build'] for r in changed]), len(changed) or None)
-    sec('build', 'Build tasks', table(['Task', 'Story', 'Holds', 'Waits on', 'Status'],
-        [['<b>%s</b>' % E(x.get('id')), jl(x.get('story')), md(x.get('holds')), md(x.get('waits') or 'Nothing'),
-          chip(x.get('status', 'Planned')) + (' <a href="%s">Pull request</a>' % E(x['pr']) if x.get('pr') else '')] for x in c.get('tasks') or []]))
-    sec('checks', 'Checks a person makes in the sandbox', '<ol class="checks">%s</ol>' % ''.join('<li>%s</li>' % md(v) for v in c.get('checks') or []) if c.get('checks') else '')
-
-    group('Reference')
+    sec('changes', 'Changes to what is already in the org', table(['Component', 'Change', 'What changes, and what depends on it'],
+        [[api('%s/%s' % (r['type'], r['member'])), E(r['change']) + (', by hand' if r['change'] == 'Removed' else ''), md(r.get('why') or r.get('details') or '')] for r in changed]))
+    sec('build', 'The build', table(['Task', 'Story', 'Holds', 'Waits on', 'Status'],
+        [[E(x.get('id')), jl(x.get('story')), md(x.get('holds')), md(x.get('waits') or 'Nothing'),
+          plain_chip(x.get('status', 'Planned')) + (' · <a href="%s">pull request</a>' % E(x['pr']) if x.get('pr') else '')] for x in c.get('tasks') or []]))
     sec('open-questions', 'Open questions', table(['#', 'Question', 'Owner', 'Blocks'],
         [[E(q.get('n')), md(q.get('q')), E(q.get('owner')), md(q.get('blocks'))] for q in c.get('open_questions') or []]))
+    sec('checks', 'Verification items', '<ol>%s</ol>' % ''.join('<li>%s</li>' % md(v) for v in c.get('checks') or []) if c.get('checks') else '',
+        'What a person checks by hand in the sandbox before the work is merged.')
     sec('not-built', 'Not built', '<ul>%s</ul>' % ''.join('<li>%s</li>' % md(v) for v in c.get('not_built') or []) if c.get('not_built') else '')
     sec('sources', 'Sources', '<ul>%s</ul>' % ''.join('<li>%s</li>' % md(v) for v in c.get('sources') or []) if c.get('sources') else '')
     sec('change-log', 'Change log', table(['Date', 'Change'], [[E(x.get('date')), md(x.get('change'))] for x in c.get('changelog') or []], 'two'))
 
-    nav = ''.join('<div class="ng"><div class="ngt">%s</div>%s</div>' % (E(t), ''.join(links)) for t, links in groups if links)
-    total = max(1, len(allrows))
-    bar = ''.join('<i class="%s" style="width:%.2f%%" title="%s: %d"></i>' % (k.lower(), 100.0 * v / total, k, v) for k, v in st_.items() if v)
-    legend = ''.join('<span><i class="%s"></i>%s %d</span>' % (k.lower(), k, v) for k, v in st_.items() if v)
-    stats = [('New objects', count(lambda r: r['type'] == 'CustomObject' and r['change'] == 'New')),
-             ('New fields', count(lambda r: r['type'] == 'CustomField' and r['change'] == 'New')),
-             ('Automation', count(lambda r: group_of(r['type']) == 'Automation')),
-             ('Pages and actions', count(lambda r: group_of(r['type']) == 'Pages and actions')),
-             ('Changes to what exists', count(lambda r: r['change'] == 'Changed')),
-             ('Removals', count(lambda r: r['change'] == 'Removed'))]
-    statbox = ''.join('<div class="st"><div class="sn">%d</div><div class="sl">%s</div></div>' % (b, E(a)) for a, b in stats)
-    band = ('<header class="band"><div class="bi">%s<div class="eyebrow">Design and build review · %s</div><h1>%s</h1><div class="rule"></div>'
-            '<p class="meta">%s</p></div></header>') % (
+    st_ = [(k, count(lambda r, k=k: r['status'] == k)) for k in ('Merged', 'Built', 'Planned', 'Waits')]
+    statline = '%d components: %s.' % (len(allrows), ', '.join('%d %s' % (v, k.lower() if k != 'Waits' else 'waiting') for k, v in st_ if v)) if allrows else ''
+    openline = ('<a href="#open">%d item%s open for the SA</a>' % (len(openrows), '' if len(openrows) == 1 else 's')) if openrows else 'Nothing open for the SA'
+    head = ('<header>%s<div class="eyebrow">Design and build review · %s</div><h1>%s</h1>'
+            '<p class="meta">%s</p><p class="lede">%s</p><p class="status">%s %s</p></header>') % (
         logo(), E(c.get('client')), E(c.get('title') or 'Design and build review'),
-        ' · '.join(md(x) for x in [c.get('status'), 'SA: ' + c['sa'] if c.get('sa') else '', 'as of ' + (c.get('as_of') or str(date.today())), c.get('links')] if x))
-    head = ('<div class="intro"><p class="lede">%s</p><div class="stats">%s</div>'
-            '<div class="prog"><div class="bar">%s</div><div class="lg">%s</div></div></div>') % (md(c.get('summary')), statbox, bar, legend)
+        ' · '.join(md(x) for x in [c.get('status'), 'SA: ' + c['sa'] if c.get('sa') else '', 'as of ' + (c.get('as_of') or str(date.today())), c.get('links')] if x),
+        md(c.get('summary')), E(statline), openline)
     return TEMPLATE.replace('%%TITLE%%', E('%s · %s' % (c.get('client'), c.get('title') or 'Design and build review'))).replace(
-        '%%NAV%%', nav).replace('%%HEAD_BAND%%', band).replace('%%HEAD%%', head).replace('%%BODY%%', ''.join(body))
+        '%%NAV%%', ''.join(nav)).replace('%%HEAD%%', head).replace('%%BODY%%', ''.join(body))
 
 
 TEMPLATE = r"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>%%TITLE%%</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#03355e;--cyan:#44c8f5;--blue:#0071b9;--orange:#dd6443;--charcoal:#414042;--muted:#676668;--card:#f4f4f4;--line:#d7d7d7;--soft:#e9f2f9;
---bg:#fff;--fg:#414042;--ink:#03355e;--panel:#fafafa;--grn:#2e7d32;--grnbg:#e6f2e6;--amb:#9a5b00;--ambbg:#fdf0dc;--red:#b23b22;--redbg:#fbe9e4;--cyanbg:#e3f6fd}
-@media (prefers-color-scheme:dark){:root{--bg:#0d1b2a;--fg:#d9e2ec;--ink:#ffffff;--muted:#9fb3c8;--card:#13283d;--line:#22405e;--panel:#10233a;--soft:#13324f;
---grn:#8fd694;--grnbg:#173322;--amb:#f2c072;--ambbg:#3a2a10;--red:#f4a08a;--redbg:#3d1c14;--cyanbg:#0f3550}}
+:root{--fg:#37352f;--ink:#03355e;--muted:#787774;--line:#e9e9e7;--soft:#f7f7f5;--blue:#0071b9;--warn:#b5532f;--bg:#fff}
+@media (prefers-color-scheme:dark){:root{--fg:#e3e2e0;--ink:#ffffff;--muted:#9b9a97;--line:#373737;--soft:#252525;--blue:#5aa9e6;--warn:#e8906f;--bg:#191919}}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 "Source Sans 3","Source Sans Pro",Arial,sans-serif}
-h1,h2,h3,.eyebrow,.ngt,.sn,.nk,th{font-family:Inter,Arial,sans-serif}
-.band{background:var(--navy);color:#fff;padding:28px 0 26px}.bi{max-width:1320px;margin:0 auto;padding:0 40px 0 320px}
-.logo{height:26px;width:auto;display:block;margin-bottom:22px}.wordmark{font:700 22px Inter;color:#fff;display:block;margin-bottom:18px}
-.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--cyan)}
-h1{font-size:30px;line-height:1.15;margin:6px 0 0;font-weight:700;color:#fff;letter-spacing:-.3px}
-.rule{width:72px;height:5px;background:var(--orange);margin:14px 0 12px}
-.band .meta{color:#b9d6ea;font-size:14px;margin:0}.band .meta a{color:#fff}
-.wrap{display:grid;grid-template-columns:260px minmax(0,1fr);max-width:1320px;margin:0 auto}
-nav{position:sticky;top:0;align-self:start;max-height:100vh;overflow:auto;padding:28px 18px 40px 40px;font-size:14px}
-.ng{margin-bottom:18px}.ngt{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin:0 0 6px 8px}
-nav a{display:flex;justify-content:space-between;align-items:center;color:var(--fg);text-decoration:none;padding:4px 8px;border-radius:6px;line-height:1.35}
-nav a:hover{background:var(--card)}nav a.cur{background:var(--soft);color:var(--ink);font-weight:600}
-.nbg{font:600 11px Inter;background:var(--card);color:var(--muted);border-radius:10px;padding:1px 7px;margin-left:8px}
-nav a[href="#needs-you"] .nbg{background:var(--orange);color:#fff}
-main{padding:0 40px 100px 20px;min-width:0}
-.intro{padding:24px 0 8px}.lede{font-size:18px;line-height:1.55;max-width:900px;margin:0 0 18px;color:var(--fg)}
-.stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
-.st{background:var(--card);border-radius:8px;padding:10px 14px}.sn{font-size:26px;font-weight:700;color:var(--ink);line-height:1.1}.sl{font-size:13px;color:var(--muted)}
-.prog{margin-top:14px}.bar{display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--card)}.bar i{display:block}
-.lg{display:flex;gap:16px;font-size:13px;color:var(--muted);margin-top:6px}.lg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
-i.merged{background:#2e7d32}i.built{background:var(--cyan)}i.planned{background:#b8c4ce}i.waits{background:var(--orange)}
-section{padding-top:30px;scroll-margin-top:12px}
-h2{font-size:22px;font-weight:700;color:var(--ink);margin:0 0 4px;letter-spacing:-.2px}
-h2::after{content:"";display:block;width:40px;height:3px;background:var(--orange);margin-top:8px}
-h3{font-size:16px;font-weight:600;color:var(--ink);margin:22px 0 8px}
-.sl{color:var(--muted);font-size:14px;margin:8px 0 12px}.muted{color:var(--muted)}
-a{color:var(--blue)}@media (prefers-color-scheme:dark){a{color:var(--cyan)}}
-.tw{overflow-x:auto;margin:10px 0}table{border-collapse:collapse;width:100%;font-size:14.5px}
-th{text-align:left;font-size:12px;font-weight:600;color:var(--ink);background:var(--card);padding:9px 12px;border-bottom:1px solid var(--line)}
-td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
-table.two td:first-child{width:30%}
-code{font:13px "JetBrains Mono",ui-monospace,Menlo,monospace;color:var(--ink);background:none;padding:0}
-.chip{display:inline-block;font:600 11.5px Inter;padding:2px 9px;border-radius:10px;white-space:nowrap;background:var(--card);color:var(--muted)}
-.cn{background:var(--soft);color:var(--blue)}.cc{background:var(--ambbg);color:var(--amb)}.cr{background:var(--redbg);color:var(--red)}
-.cb{background:var(--cyanbg);color:var(--blue)}.cm{background:var(--grnbg);color:var(--grn)}.cw{background:var(--ambbg);color:var(--orange)}
-.need{display:grid;grid-template-columns:150px minmax(0,1fr);gap:14px;padding:12px 16px;border:1px solid var(--line);border-left:4px solid var(--line);border-radius:0 8px 8px 0;margin:8px 0;background:var(--bg)}
-.nk{font-size:12px;font-weight:600;padding-top:2px}.need.nd{border-left-color:var(--orange)}.need.nd .nk{color:var(--orange)}
-.need.nf{border-left-color:var(--red);background:var(--redbg)}.need.nf .nk{color:var(--red)}
-.need.nx{border-left-color:var(--amb)}.need.nx .nk{color:var(--amb)}.need.nc{border-left-color:var(--blue)}.need.nc .nk{color:var(--blue)}
-.rules{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;counter-reset:r}
-.rules li{background:var(--card);border-radius:8px;padding:14px 16px}.rl{font-weight:600;color:var(--ink)}.rw{margin-top:4px}.rb{margin-top:8px;font-size:13px;color:var(--muted)}
-.fig{margin:14px 0 6px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto}
-figcaption{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted);margin-top:12px}
-.key i.kb{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px;border:1.5px solid}
-.dia{width:100%;height:auto;display:block;color:var(--fg)}.dia text{font-family:Inter,Arial,sans-serif;fill:var(--fg)}
-.dl{font-size:10.5px;font-weight:600;letter-spacing:.08em;fill:var(--muted)!important}
-.erd .box{fill:var(--bg);stroke:var(--line);stroke-width:1.2}.erd .hd{fill:var(--card)}
-.erd .bn .box{stroke:var(--blue);stroke-width:1.6}.erd .bn .hd{fill:var(--soft)}.erd .bc .box{stroke:var(--orange);stroke-width:1.6}.erd .bc .hd{fill:var(--ambbg)}
-.erd .bt{font-size:14px;font-weight:600;fill:var(--ink)!important}.erd .bs{font:11px "JetBrains Mono",monospace;fill:var(--muted)!important}
-.erd .tg{font-size:9.5px;font-weight:600;letter-spacing:.06em;fill:var(--muted)!important}.erd .bn .tg{fill:var(--blue)!important}.erd .bc .tg{fill:var(--orange)!important}
-.erd .fn{font:12px "JetBrains Mono",monospace}.erd .fw{fill:var(--muted)!important;font-style:italic}.erd .ft{font-size:11.5px;fill:var(--muted)!important}.erd .fe{font-size:11.5px;fill:var(--muted)!important;font-style:italic}
-.erd .fm{font-size:13px;font-weight:700}.erd .pn{fill:var(--blue)!important}.erd .pc{fill:var(--orange)!important}.erd .pr{fill:var(--red)!important}
-.rel{fill:none;stroke:var(--muted);stroke-width:1.3}.rel.md{stroke:var(--ink);stroke-width:2}
-.key .kb.bn{border-color:var(--blue);background:var(--soft)}.key .kb.bc{border-color:var(--orange);background:var(--ambbg)}.key .kb.be{border-color:var(--line);background:var(--card)}
-.flow rect{stroke-width:1.3}.flow .fp rect{fill:var(--bg);stroke:var(--line)}.flow .fs rect{fill:var(--soft);stroke:var(--blue)}
-.flow .nb{fill:var(--navy)}.flow .fs .nb{fill:var(--blue)}.flow .nt{font-size:11px;font-weight:700;fill:#fff!important}
-.flow .ac{font-size:10.5px;font-weight:600;letter-spacing:.06em;fill:var(--muted)!important}.flow .fs .ac{fill:var(--blue)!important}
-.flow .st2{font-size:13.5px}.flow .fl{stroke:var(--muted);stroke-width:1.5}.flow .ah{fill:var(--muted)}
-.key .kb.fp{border-color:var(--line);background:var(--bg)}.key .kb.fs{border-color:var(--blue);background:var(--soft)}
-table.objt td:first-child,table.auto td:first-child{width:26%}
-.cr2 i{font:600 11px Inter;font-style:normal;display:inline-block;width:20px;text-align:center;border-radius:4px;padding:1px 0;margin-right:2px}
-.cr2 i.on{background:var(--soft);color:var(--blue)}.cr2 i.off{color:var(--line)}
-.fa{font:600 12px Inter}.fa.on{color:var(--grn)}.fa.off{color:var(--red)}
-table.mx th:not(:first-child),table.mx td:not(:first-child){text-align:center}
-.filt{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px;position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:2}
-.filt select,.filt input{font:inherit;font-size:14px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)}
-.filt input{flex:1;min-width:200px}
-#inv{table-layout:fixed}#inv td{overflow-wrap:anywhere}
-tr.gh td{background:var(--card);padding:9px 12px;border-top:12px solid var(--bg)}.gho code{font-weight:600;font-size:14px}
-.ty{font-size:12.5px;color:var(--muted);margin-top:2px}.trc{font-size:13.5px}
-.checks li{margin:6px 0}
-@media (max-width:1000px){.wrap{grid-template-columns:1fr}nav{display:none}.bi{padding:0 22px}main{padding:0 22px 60px}.stats{grid-template-columns:repeat(3,1fr)}.need{grid-template-columns:1fr;gap:2px}}
-@media print{nav,.filt{display:none}.wrap{grid-template-columns:1fr}.band{-webkit-print-color-adjust:exact;print-color-adjust:exact}.bi{padding:0 24px}section{break-inside:avoid-page}}
-</style></head><body>%%HEAD_BAND%%
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+.wrap{display:grid;grid-template-columns:220px minmax(0,1fr);max-width:1240px;margin:0 auto}
+nav{position:sticky;top:0;align-self:start;max-height:100vh;overflow:auto;padding:56px 12px 40px 24px;font-size:13.5px}
+nav a{display:block;color:var(--muted);text-decoration:none;padding:3px 8px;border-radius:4px;line-height:1.4}nav a:hover{background:var(--soft);color:var(--fg)}
+nav a.cur{color:var(--fg);background:var(--soft)}
+main{padding:48px 48px 120px 24px;min-width:0;max-width:1000px}
+header{margin-bottom:8px}.logo{height:18px;width:auto;display:block;margin-bottom:28px}.wordmark{font-weight:700;color:var(--ink);display:block;margin-bottom:24px}
+.eyebrow{font-size:13px;color:var(--muted)}h1{font-size:32px;line-height:1.2;margin:4px 0 6px;color:var(--ink);font-weight:700}
+.meta{color:var(--muted);font-size:14px;margin:0 0 16px}.lede{font-size:17px;margin:0 0 12px}
+.status{font-size:14px;color:var(--muted);padding:10px 14px;background:var(--soft);border-radius:6px;margin:0}
+section{padding-top:28px;scroll-margin-top:16px}h2{font-size:22px;color:var(--ink);margin:0 0 6px;font-weight:600;padding-bottom:6px;border-bottom:1px solid var(--line)}
+h3{font-size:17px;color:var(--fg);margin:20px 0 6px;font-weight:600}.sl{color:var(--muted);font-size:14.5px;margin:6px 0 10px}.muted{color:var(--muted)}
+.nw{white-space:nowrap}a{color:var(--blue)}.wt{color:var(--warn)}.sv{color:var(--fg)}
+.tw{overflow-x:auto;margin:8px 0}table{border-collapse:collapse;width:100%;font-size:14.5px}
+th{text-align:left;font-weight:600;color:var(--muted);font-size:13px;padding:7px 10px;border-bottom:1px solid var(--line);background:var(--soft)}
+td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:1px solid var(--line)}
+table.two td:first-child{width:32%}table.objt td:first-child,table.auto td:first-child{width:26%}table.open td:first-child{width:56px}table.open td:nth-child(2){width:130px;color:var(--muted)}
+code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--fg);background:rgba(135,131,120,.13);padding:1px 4px;border-radius:3px}
+.rules{padding-left:22px}.rules li{margin:8px 0}
+.fig{margin:10px 0 4px;border:1px solid var(--line);border-radius:6px;padding:14px;overflow-x:auto}
+figcaption{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13px;color:var(--muted);margin-top:10px}
+.key i.kb{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:6px;vertical-align:-1px;border:1.5px solid}
+.dia{width:100%;height:auto;display:block}.dia text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;fill:var(--fg)}
+.dl{font-size:10.5px;font-weight:600;letter-spacing:.06em;fill:var(--muted)!important}
+.erd .box{fill:var(--bg);stroke:var(--line);stroke-width:1.2}.erd .hd{fill:var(--soft)}.erd .bn .box{stroke:var(--blue);stroke-width:1.5}
+.erd .bc .box{stroke:var(--warn);stroke-width:1.5}.erd .bt{font-size:14px;font-weight:600}.erd .bs{font:11px ui-monospace,Menlo,monospace;fill:var(--muted)!important}
+.erd .tg{font-size:9.5px;font-weight:600;letter-spacing:.06em;fill:var(--muted)!important}
+.erd .fn{font:12px ui-monospace,Menlo,monospace}.erd .fw{fill:var(--muted)!important;font-style:italic}.erd .ft,.erd .fe{font-size:11.5px;fill:var(--muted)!important}.erd .fe{font-style:italic}
+.erd .fm{font-size:13px;font-weight:700;fill:var(--muted)!important}
+.rel{fill:none;stroke:var(--muted);stroke-width:1.2}.rel.md{stroke:var(--fg);stroke-width:1.8}
+.key .kb.bn{border-color:var(--blue)}.key .kb.bc{border-color:var(--warn)}.key .kb.be{border-color:var(--line)}
+.flow rect{stroke-width:1.2;fill:var(--bg);stroke:var(--line)}.flow .fs rect{fill:var(--soft)}
+.flow .nb{fill:var(--muted)}.flow .nt{font-size:11px;font-weight:700;fill:var(--bg)!important}
+.flow .ac{font-size:10.5px;font-weight:600;letter-spacing:.05em;fill:var(--muted)!important}.flow .st2{font-size:13.5px}.flow .fl{stroke:var(--muted);stroke-width:1.3}.flow .ah{fill:var(--muted)}
+.key .kb.fp{border-color:var(--line)}.key .kb.fs{border-color:var(--line);background:var(--soft)}
+.filt{display:flex;gap:8px;margin:6px 0 8px}.filt select,.filt input{font:inherit;font-size:14px;padding:5px 8px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg)}.filt input{flex:1}
+#inv{table-layout:fixed}#inv td{overflow-wrap:anywhere}tr.gh td{padding:16px 10px 6px;border-bottom:1px solid var(--line);font-weight:600}tr.gh code{font-size:14px}
+table.mx td,table.mx th{white-space:nowrap}
+@media (max-width:900px){.wrap{grid-template-columns:1fr}nav{display:none}main{padding:28px 20px 80px}}
+@media print{nav,.filt{display:none}.wrap{grid-template-columns:1fr}}
+</style></head><body>
 <div class="wrap"><nav aria-label="Sections">%%NAV%%</nav><main>%%HEAD%%%%BODY%%</main></div>
 <script>
-(function(){var g=document.getElementById('fg'),c=document.getElementById('fc'),s=document.getElementById('fs'),q=document.getElementById('q');
+(function(){var g=document.getElementById('fg'),s=document.getElementById('fs'),q=document.getElementById('q');
 if(g){function f(){var t=(q.value||'').toLowerCase(),shown={};document.querySelectorAll('#inv tbody tr:not(.gh)').forEach(function(r){
-var ok=(!g.value||r.dataset.g===g.value)&&(!c.value||r.dataset.c===c.value)&&(!s.value||r.dataset.s===s.value)&&(!t||r.textContent.toLowerCase().indexOf(t)>-1);r.style.display=ok?'':'none';if(ok)shown[r.dataset.o]=1});
+var ok=(!g.value||r.dataset.g===g.value)&&(!s.value||r.dataset.s===s.value)&&(!t||r.textContent.toLowerCase().indexOf(t)>-1);r.style.display=ok?'':'none';if(ok)shown[r.dataset.o]=1});
 document.querySelectorAll('#inv tr.gh').forEach(function(h){h.style.display=shown[h.dataset.o]?'':'none'})}
-[g,c,s].forEach(function(e){e.addEventListener('change',f)});q.addEventListener('input',f)}
+[g,s].forEach(function(e){e.addEventListener('change',f)});q.addEventListener('input',f)}
 var links=[].slice.call(document.querySelectorAll('nav a'));if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.toggle('cur',a.getAttribute('href')==='#'+e.target.id)})}})},{rootMargin:'-10% 0px -80% 0px'});
 document.querySelectorAll('main section').forEach(function(sec){io.observe(sec)})}})();
 </script></body></html>"""

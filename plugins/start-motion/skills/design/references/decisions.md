@@ -69,7 +69,7 @@ At the end of a run that leaves rows Proposed (and at build plan approval, for t
 
 - `client` (the client's name), `stage` ("Solution design", "Build plan", "Build"), `review` (the link to the design and build review page, with `#needs-you`), and `approve` (the approval label, such as "Approve the build plan", only at a stage that has one; otherwise leave it out).
 - `calls`: SA calls, the one most other work waits on first. Each: `id`, `q` (a short title: "Crisis follow-up after a referral is closed"), `ask` (the question in one plain sentence, as you would ask it across a table: what is being decided, between what), `why` (what it holds up), `said` (the client's own words with speaker, call and timestamp, when a call touched it), `today` (what the org has now, from the org summary), `reqs` (the requirement IDs and statements), `opts`, `lean` (an option's `k`, or empty), `lean_why` (one sentence), `change_if` (the What would change it column).
-- each option in `opts`: `k` (A, B, C), `name`, `sum` (what the option is, in one short sentence), `gain`, `cost`, `risk`, `builds` (what it creates or changes, by real or design name, a few words each), `undo` ("Easy", "Hard once records exist in production"), `effort` ("Low", "Medium", "High"), and `model` when the choice changes the data model (each relationship as [child, parent, field or label]). The picker lines these up row by row across the options, so fill the same rows for every option; a row left out shows as "Not given".
+- each option in `opts`: `k` (A, B, C), `name`, `sum` (what the option is, in one short sentence), `gain`, `cost`, `risk`, `builds` (what it creates or changes, a few words each; API names are shown as code on their own), `undo` ("Easy", "Hard once records exist in production"), `effort` ("Low", "Medium", "High"). The picker lines these up row by row across the options, so fill the same rows for every option; a row left out shows as "Not given".
 - `recs`: Recommended rows: `id`, `q`, `pick`, `why`, `alt` (the other way, in a clause), and `built` (the task that already built on it, so the SA sees what changing it would cost).
 - `withclient`: Client calls: `id`, `q`, `ref` ("Q-14 with the SC"), `why`.
 - `clear`: Clear rows: `id`, `q`, `chosen`, `why`.
@@ -112,6 +112,7 @@ Client calls appear in the picker so the SA can see them, marked "Client call ·
 - "Reopen" on a Clear row: it becomes an SA call; write its options and put it in the next picker, or in this run if the person is still here.
 - A changed decision is never edited: write a new row, set the old one to Superseded with Superseded by. Then update everything in Affects.
 - Approval, when sent: record it as the stage says (the build plan's status line, the design's status), never on Claude's own say.
+- Rebuild the design and build review page from the updated log (`references/build-review.md`, "It follows the decisions") and republish it to the same link, once a build plan exists.
 - Then act on it in the same run: update the design section (remove the Open callout, fold the choice in), take the D-ID off the story's open question, mark the build tasks unblocked. Say in one line what changed because of it.
 
 ## How the agents use the log

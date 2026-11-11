@@ -8,7 +8,15 @@ The home of this text is `plugins/start-motion/shared/build-review.md`; skills c
 
 ## How it looks
 
-On the Kicksaw brand: a navy header band with the logo, a cyan eyebrow and the orange rule; Inter for headings, Source Sans 3 for text; orange only for what needs the SA. The side navigation groups the page into Review (Needs you, decisions, stories, differences), Design (today and after, data model, flows, automation, pages, access, reporting), Build (every component, changes to what exists, tasks, checks) and Reference. Needs you is sorted by urgency: decisions, then what the page found on its own, then changes to what exists, then what to confirm and review. The data model is an entity diagram: each object with its new and changed fields and their types, and each relationship drawn from its field to the parent. Every component is grouped by object, so the SA reviews one object at a time.
+A plain document in the style of Ben's Notion designs: a small Kicksaw logo, the title, one meta line, a short summary, and a one-line status (how many components are merged, built, planned and waiting, and how many items are open for the SA). Then sections in his order: Open for the SA (only while anything is open), Stories this design serves, Where the design differs from the stories, Decisions that shape the design, Today and after, Data model, How it works, Automation, Pages, Who can do what, Reporting, Fields, objects and settings, Changes to what is already in the org, The build, Open questions, Verification items, Not built, Sources, Change log. Light tables, plain text for status, color only for what is waiting or was found. Two diagrams, both muted: the data model (each object with its new and changed fields and types, each relationship drawn from its field to the parent) and one per flow.
+
+## It follows the decisions
+
+The page is rebuilt every time a decision is made, so it never shows a decision differently from the Decisions tab:
+- Proposed rows are listed under Open for the SA (SA calls as Decide, recommendations as Confirm, client calls as With the client), with their options and Claude's recommendation.
+- Decided rows are the numbered list under Decisions that shape the design: what was chosen, why, what else was considered, who decided and when, with the row's ID.
+- When the SA answers in the picker, update `content.json` before rebuilding: move the row to Decided with the chosen wording; change every story, planned component and task text that said it waited on that decision; drop the components of options that were not chosen; then republish to the same link.
+- Once nothing is Proposed and nothing else is waiting, Open for the SA disappears and the status line says so. The page then reads as the finished design, with every decision and its reason in place.
 
 ## When it is made and updated
 
@@ -33,10 +41,10 @@ Every field is optional except `client`. Text fields take `**bold**`, `` `code` 
 client, title, summary (two to four sentences: what is built and how it hangs together, in plain words),
 status ("Build plan draft, not approved" / "Approved by <SA> on <date> · 4 of 11 tasks built"), sa, as_of,
 links (design, build plan, Decisions tab, repo, as one line of links), jira_base, decisions_url,
-needs_you: [{kind: "SA call" | "Confirm" | "Review" | "Changes what exists" | "Removes", text, link}],
+needs_you: [{kind: "Review" | "Changes what exists" | "Removes", text}]   (anything else waiting on a person; open decisions come from decisions),
 stories: [{key (Jira key), title, gives (what the design gives this story)}],
 differences: [{n, says (story and AC), does (what the design does), rec (the recommended rewording or design change)}],
-rules: [{id (D-ID), rule, why, by, date}]   (Decided rows only),
+decisions: [{id, status (Decided | Proposed), kind (Clear | Recommended | SA call | Client call), q, chosen (the decision as a statement, for Decided), why, considered (the options not chosen, in a clause), by, date, options: [{k, name}] and recommended (for Proposed)}]   (every row of the Decisions tab this build touches),
 today: [{area, today, after}],
 flows: [{name, steps: [{actor ("System" for automation), text}], outcomes: [{when, then}]}],
 automation: [{name, type, runs_when, does, beside (what else runs on the same object and moment, from the org summary), status}],
