@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.7 (2026-11-10)
+
+Review agents (Avi, Nov 10). The first phase of the agents: three reviewers, each with one job, a cold read and a fixed answer shape. Tested on Nov 10 against seeded fixtures (project doc `claude/agents-test-report-2026-11-10.md`); all three pass after one wording fix each.
+
+- Source checker and story reviewer. `/discovery-call` runs both on the rows and stories a call added or changed (new step 4b). `/user-stories` runs both on an epic's stories before the SC sees them, and the story reviewer again before a story the SC edited goes to Jira. What the transcript plainly settles is fixed (a quote that differs from the transcript, a wrong timestamp or speaker, a missing trigger the client stated, a quote sitting inside the criteria). A requirement found narrower or broader than what the client said is never reworded on its own; it goes to the SC with the source lines beside it. Fixes may touch rows and stories the SC has edited: only what the finding names changes, each change is listed, and a reviewed story goes back to Draft. Two passes at most.
+- Design reviewer. `/design` has the design checked after a draft, after an update and before it is shared (new step 4b): requirements the design does not cover, collisions with what the org already has, anything beyond the confirmed scope, anything heavier than it needs to be, and detail presented as fact that nobody confirmed. The design starts from the most recent written record of the org when the client has one.
+- Simple and sound. `/design` has a new section 3b: only what the scope needs, standard before custom, configuration before code, one copy of every fact (a lookup, formula or roll-up before a flat field repeating another record, with the cases where a flat field is right), one automation per object and event, access through permission sets, nothing removed quietly. The design reviewer checks the same list.
+- Reports say whether each reviewer ran as a separate agent or as a second pass in the same conversation (Claude chat), and put the clear findings first.
+- Every skill that starts a reviewer carries a copy of it at `references/agents/`, written by `scripts/sync-agents.py`.
+
 ## 0.1.6 (2026-11-06)
 
 - Requirements list scope (Avi, Nov 6): the Scope column's values are In SOW and Beyond SOW (was Past SOW), in every skill, story footer ("Priority: Beyond SOW") and the discovery call's start card. A new Scope decision column sits right of Scope with Raised with PM, Change order, Future phase and Dropped; empty on a Beyond SOW row means not yet reviewed. The discovery call writes Beyond SOW rows with Scope decision empty and lists the undecided ones on its report for the PM. The SC or PM fills Scope decision; Claude never fills it unless told what was decided.

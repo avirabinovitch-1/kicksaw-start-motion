@@ -1,0 +1,74 @@
+"""Copies each agent's instructions into the skills that start it.
+
+Why: the agents live in plugins/start-motion/agents/, which Claude Code, Cowork and Codex load as separate agents.
+Claude chat cannot always start a separate agent, and a skill can only count on reading its own folder. So every
+skill that starts an agent carries a copy of that agent's instructions at references/agents/<agent>.md, and runs
+it as a second pass when no separate agent is available. The agents folder is the home of the text; the copies are
+written by this script and never edited by hand.
+
+Run:    python3 -I scripts/sync-agents.py          writes the copies
+Check:  python3 -I scripts/sync-agents.py --check  exits 1 if a copy is missing or out of date
+"""
+import os, sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PLUGIN = os.path.join(ROOT, 'plugins', 'start-motion')
+AGENTS = os.path.join(PLUGIN, 'agents')
+SKILLS = os.path.join(PLUGIN, 'skills')
+
+# which skill starts which agent
+STARTS = {
+    'discovery-call': ['source-checker', 'story-reviewer'],
+    'user-stories': ['source-checker', 'story-reviewer'],
+    'design': ['design-reviewer'],
+}
+
+NOTE = ('<!-- Copy of plugins/start-motion/agents/%s.md, written by scripts/sync-agents.py. Do not edit here. '
+        'This copy is for sessions that cannot start a separate agent: read it and run it as a second pass. -->\n\n')
+
+
+def body(agent):
+    path = os.path.join(AGENTS, agent + '.md')
+    if not os.path.exists(path):
+        return None
+    text = open(path, encoding='utf-8').read()
+    if not text.startswith('---\n'):
+        sys.exit('%s: no frontmatter' % path)
+    end = text.index('\n---\n', 4)
+    return NOTE % agent + text[end + 5:].lstrip('\n')
+
+
+def main():
+    check = '--check' in sys.argv
+    stale, written, skipped = [], [], []
+    for skill, agents in sorted(STARTS.items()):
+        if not os.path.isdir(os.path.join(SKILLS, skill)):
+            skipped.append(skill)
+            continue
+        for agent in agents:
+            want = body(agent)
+            if want is None:
+                skipped.append('%s (agent %s not written yet)' % (skill, agent))
+                continue
+            dest = os.path.join(SKILLS, skill, 'references', 'agents', agent + '.md')
+            have = open(dest, encoding='utf-8').read() if os.path.exists(dest) else None
+            if have == want:
+                continue
+            if check:
+                stale.append(os.path.relpath(dest, ROOT))
+            else:
+                os.makedirs(os.path.dirname(dest), exist_ok=True)
+                open(dest, 'w', encoding='utf-8').write(want)
+                written.append(os.path.relpath(dest, ROOT))
+    for s in skipped:
+        print('skipped: ' + s)
+    for w in written:
+        print('wrote: ' + w)
+    if stale:
+        print('out of date:\n  ' + '\n  '.join(stale))
+        sys.exit(1)
+    print('agent copies in step' if check else 'done')
+
+
+if __name__ == '__main__':
+    main()
