@@ -232,6 +232,12 @@ def erd(rows, content):
         ents[o]['fields'].append({'name': f, 'type': short_type(r), 'ref': ref, 'md': md_, 'change': r['change'], 'status': r['status']})
         if ref:
             ents.setdefault(ref, {'state': 'Existing', 'label': ref.replace('__c', '').replace('_', ' '), 'fields': []})
+    for m in content.get('solution_map') or []:
+        if m.get('later_only') and m.get('object'):
+            fl = []
+            if m.get('parent'):
+                fl.append({'name': m.get('parent_field') or m['parent'], 'type': '⇒ ' + m['parent'], 'ref': m['parent'], 'md': True, 'change': 'Later', 'status': 'Planned'})
+            ents.setdefault(m['object'], {'state': 'Later', 'label': m.get('label') or m['object'].replace('__c', '').replace('_', ' '), 'fields': fl})
     if not ents:
         return ''
     parents = {o: {f['ref'] for f in e['fields'] if f['ref'] and f['ref'] != o} for o, e in ents.items()}
@@ -287,20 +293,20 @@ def erd(rows, content):
                 mx = max(x1, x2) + 18 + (k % 4) * 9
                 d = 'M%d,%.1f H%d V%.1f H%d' % (x1, y1, mx, y2, x2)
             k += 1
-            out.append('<path d="%s" class="rel%s" marker-end="url(#one)"%s/>' % (d, ' md' if f['md'] else '', ' stroke-dasharray="4 3"' if f['change'] == 'Removed' else ''))
+            out.append('<path d="%s" class="rel%s" marker-end="url(#one)"%s/>' % (d, ' md' if f['md'] and f['change'] != 'Later' else '', ' stroke-dasharray="4 3"' if f['change'] in ('Removed', 'Later') else ''))
     for o, (x, y) in pos.items():
         e, h = ents[o], hgt(o)
-        cls = {'New': 'bn', 'Changed': 'bc'}.get(e['state'], 'be')
-        tag = {'New': 'NEW', 'Changed': 'CHANGED'}.get(e['state'], 'STANDARD' if not o.endswith('__c') else 'EXISTING')
+        cls = {'New': 'bn', 'Changed': 'bc', 'Later': 'bl'}.get(e['state'], 'be')
+        tag = {'New': 'NEW', 'Changed': 'CHANGED', 'Later': 'LATER EPIC'}.get(e['state'], 'STANDARD' if not o.endswith('__c') else 'EXISTING')
         out.append('<g class="%s"><rect x="%d" y="%d" width="%d" height="%d" rx="6" class="box"/><rect x="%d" y="%d" width="%d" height="%d" rx="6" class="hd"/><rect x="%d" y="%d" width="%d" height="8" class="hd"/>' % (cls, x, y, BW, h, x, y, BW, HH - 6, x, y + HH - 14, BW))
         out.append('<text x="%d" y="%d" class="bt">%s</text><text x="%d" y="%d" class="bs">%s</text><text x="%d" y="%d" class="tg" text-anchor="end">%s</text>' % (
             x + 10, y + 18, E(e['label'][:24]), x + 10, y + 32, E(o[:34]), x + BW - 10, y + 18, tag))
         fl = e['fields']
         if not fl:
-            out.append('<text x="%d" y="%d" class="fe">no new fields</text>' % (x + 10, y + HH + 14))
+            out.append('<text x="%d" y="%d" class="fe">%s</text>' % (x + 10, y + HH + 14, 'built in a later epic' if e['state'] == 'Later' else 'no new fields'))
         for i, f in enumerate(fl[:MAXF]):
             fy = y + HH + i * RH + 14
-            mark = {'New': '+', 'Changed': '~', 'Removed': '−'}.get(f['change'], '')
+            mark = {'New': '+', 'Changed': '~', 'Removed': '−', 'Later': '·'}.get(f['change'], '')
             out.append('<text x="%d" y="%d" class="fm %s">%s</text><text x="%d" y="%d" class="fn%s">%s</text><text x="%d" y="%d" class="ft" text-anchor="end">%s</text>' % (
                 x + 10, fy, {'New': 'pn', 'Changed': 'pc', 'Removed': 'pr'}.get(f['change'], ''), mark, x + 22, fy,
                 ' fw' if f['status'] in ('Planned', 'Waits') else '', E(f['name'] if len(f['name']) <= 27 else f['name'][:25] + '…'), x + BW - 10, fy, E(f['type'][:16])))
@@ -309,8 +315,8 @@ def erd(rows, content):
         out.append('</g>')
     out.append('</svg>')
     return ('<figure class="fig">%s<figcaption><span class="key"><i class="kb bn"></i>New object</span><span class="key"><i class="kb bc"></i>Changed</span>'
-            '<span class="key"><i class="kb be"></i>Existing</span><span class="key">+ new field, ~ changed field, italic not built yet</span>'
-            '<span class="key">→ lookup, ⇒ master-detail</span></figcaption></figure>') % ''.join(out)
+            '<span class="key"><i class="kb be"></i>Existing</span>%s<span class="key">+ new field, ~ changed field, italic not built yet</span>'
+            '<span class="key">→ lookup, ⇒ master-detail</span></figcaption></figure>') % (''.join(out), '<span class="key"><i class="kb bl"></i>Later epic</span>' if any(e['state'] == 'Later' for e in ents.values()) else '')
 
 
 def flow_svg(flow, i):
@@ -515,6 +521,16 @@ def page(c, rows):
                        for x in allrows if x['type'] == 'CustomField' and x['member'].startswith(r['member'] + '.') and re.match(r'(Lookup|Master-detail) to', x.get('details') or '')]
                       + ['Parent of %s' % api(ch) for ch in children.get(r['member'], [])]) or '<span class="muted">None</span>',
           md(r.get('why') or '') + ('<div class="muted">%s</div>' % E(r.get('details')) if r.get('details') else '')] for r in objs], 'objt'))
+    smap = c.get('solution_map') or []
+    if smap:
+        epics = []
+        for m in smap:
+            for e in m.get('epics') or {}:
+                if e not in epics:
+                    epics.append(e)
+        sec('solution-map', 'Across the whole solution', table(['Object'] + epics + ['Automation owner'],
+            [[api(m.get('object') or '')] + [md((m.get('epics') or {}).get(e, '')) for e in epics] + [md(m.get('owner') or '')] for m in smap], 'smap'),
+            'Every epic that uses the objects in this build, from the design\'s Solution map. This build takes only what its stories need, in the shape the later epics need.')
     sec('flows', 'How it works', ''.join(
         '<h3>%s</h3>%s%s' % (md(f.get('name')), flow_svg(f, i),
             table(['When', 'What happens'], [[md(o.get('when')), md(o.get('then'))] for o in f.get('outcomes') or []], 'two'))
@@ -627,7 +643,7 @@ figcaption{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13px;color:var(--m
 .erd .fn{font:12px ui-monospace,Menlo,monospace}.erd .fw{fill:var(--muted)!important;font-style:italic}.erd .ft,.erd .fe{font-size:11.5px;fill:var(--muted)!important}.erd .fe{font-style:italic}
 .erd .fm{font-size:13px;font-weight:700;fill:var(--muted)!important}
 .rel{fill:none;stroke:var(--muted);stroke-width:1.2}.rel.md{stroke:var(--fg);stroke-width:1.8}
-.key .kb.bn{border-color:var(--blue)}.key .kb.bc{border-color:var(--warn)}.key .kb.be{border-color:var(--line)}
+.erd .bl .box{stroke-dasharray:5 4}.key .kb.bl{border-style:dashed;border-color:var(--muted)}.key .kb.bn{border-color:var(--blue)}.key .kb.bc{border-color:var(--warn)}.key .kb.be{border-color:var(--line)}
 .flow rect{stroke-width:1.2;fill:var(--bg);stroke:var(--line)}.flow .fs rect{fill:var(--soft)}
 .flow .nb{fill:var(--muted)}.flow .nt{font-size:11px;font-weight:700;fill:var(--bg)!important}
 .flow .ac{font-size:10.5px;font-weight:600;letter-spacing:.05em;fill:var(--muted)!important}.flow .st2{font-size:13.5px}.flow .fl{stroke:var(--muted);stroke-width:1.3}.flow .ah{fill:var(--muted)}

@@ -11,6 +11,7 @@ You did not see the change being made. Review it as a senior solution architect 
 - The path to the client's repo, the task's branch, and the branch it will merge into.
 - `docs/org-summary.md`, so you know what the change sits beside.
 - `docs/house-rules.md`, when the team has one. House rules win over the defaults below where they differ.
+- The Solution map rows for the objects the change touches, when the design has one. A second flow on an object and moment the map gives to another flow, or a name or type that departs from the map, is a must-fix; say which flow or name the map gives.
 - The decisions that touch this task, when there are any: each with its ID, what was chosen and why. A built choice that a decision records is not a finding (the SA chose a flow over a formula for a reason); report it only when what was built contradicts the decision, citing its ID, or when it breaks a must-fix rule below, which no decision excuses.
 
 ## What you may read, and what you may not do

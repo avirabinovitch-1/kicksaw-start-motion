@@ -6,7 +6,7 @@ The home of this text is `plugins/start-motion/shared/build-review.md`; skills c
 
 ## How it looks
 
-A plain document in the style of Ben's Notion designs: a small Kicksaw logo, the title, one meta line, a short summary, and a one-line status (how many components are merged, built, planned and waiting, and how many items are open for the SA). Then sections in his order: Open for the SA (only while anything is open), Stories this design serves, Where the design differs from the stories, Decisions that shape the design, Today and after, Data model, How it works, Automation, Pages, Who can do what, Reporting, Fields, objects and settings, Changes to what is already in the org, The build, Open questions, Verification items, Not built, Sources, Change log. Light tables, plain text for status, color only for what is waiting or was found. Two diagrams, both muted: the data model (each object with its new and changed fields and types, each relationship drawn from its field to the parent) and one per flow.
+A plain document in the style of Ben's Notion designs: a small Kicksaw logo, the title, one meta line, a short summary, and a one-line status (how many components are merged, built, planned and waiting, and how many items are open for the SA). Then sections in his order: Open for the SA (only while anything is open), Stories this design serves, Where the design differs from the stories, Decisions that shape the design, Today and after, Data model, Across the whole solution, How it works, Automation, Pages, Who can do what, Reporting, Fields, objects and settings, Changes to what is already in the org, The build, Open questions, Verification items, Not built, Sources, Change log. Light tables, plain text for status, color only for what is waiting or was found. Two diagrams, both muted: the data model (each object with its new and changed fields and types, each relationship drawn from its field to the parent) and one per flow.
 
 ## It follows the decisions
 
@@ -50,6 +50,7 @@ pages: [{name, object, shows}],
 access: [lines], reporting: [lines],
 planned: [{type (metadata type), member (Object.Field and so on), change (New | Changed | Removed), label, details, why,
            story (Jira key), task, decision (D-ID), waits (D-ID or task)}],
+solution_map: [{object, epics: {"E1": "creates it", "E3": "adds Status values"}, owner (the one flow per object and moment), later_only (true for an object only later epics build), parent (its parent object, drawn dashed in the data model)}]   (from the design's Solution map, for the objects this build touches),
 tasks: [{id, story, holds, waits, status (Planned | Waits | Built | Merged | Handed back), pr}],
 open_questions: [{n, q, owner, blocks}],
 checks: [the by-hand checks a person makes in the sandbox, each with its worked example],

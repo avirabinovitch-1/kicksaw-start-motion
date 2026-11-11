@@ -50,6 +50,16 @@ The org reader commits what it retrieved on its own branch. Show the person its 
 
 Before breaking stories into tasks, start the story reviewer on the stories being planned, handing it the stories and the org summary's list of existing objects and fields. A story with a finding that would stop a builder (a criterion that cannot be tested, no trigger, a value that is not exact) is not planned: list it with the finding and send it back to the SC. A story too large to build safely in a few tasks goes back to be split. Do not rewrite a story here.
 
+## 3b. Look across the whole solution first
+
+An epic is planned in the context of every epic, never on its own. Before breaking the stories into tasks:
+
+- Read the design's Solution map, and for every object this epic touches, the requirements and stories of the other epics that touch it too, refined or not (the requirements list has them all).
+- For each structural choice this epic makes (an object, a relationship, a field type, a record type, a picklist value set, the sharing model, where automation runs, a name), ask whether a later epic needs it to be different. A text field a later epic will need as a lookup, a picklist a later epic will report on with other values, a second flow where the map names one owner, a private object a later epic must share: each is a door this epic would close.
+- When the map settles it, plan to the map's shape. When it does not, log it on the Decisions tab as an SA call, with the later epic named in Affects, and plan everything that does not depend on it.
+- Plan the shared pieces once, as foundation tasks: an object several epics use, the one flow per object and moment (built with room for the branches the map lists, such as a decision element per epic or a subflow per branch), the permission set structure. Build only what this epic's criteria need inside them.
+- If the design has no Solution map, or it does not cover an object this epic touches, say so and stop for that object: run `/start-motion:design` to add it first. Planning one epic blind is how rework starts.
+
 ## 4. Break the stories into tasks
 
 For each story that passed:
@@ -64,7 +74,8 @@ For each story that passed:
   - what it depends on (task IDs);
   - whether it has code (the test writer writes tests for it) or is configuration only;
   - any SOW limit it counts against, with the count before and after;
-  - the decisions it builds to (Decided rows, by ID) and any it waits on (Proposed rows).
+  - the decisions it builds to (Decided rows, by ID) and any it waits on (Proposed rows);
+  - the later epics that build on it, from the Solution map, so the builder and the reviewers keep its shape open for them.
 - **Only what the stories ask for.** A task with no criterion behind it does not go in the plan. Something useful nobody asked for is listed at the end under Suggestions for the SA.
 - **Manual steps are tasks too.** Anything metadata cannot carry (a setting switched on in Setup, a connected app's secret, a queue's members) is a task marked "by hand", with who does it.
 - **Removing something is its own task, and a person does the removing.** A task that deletes, renames, deactivates or narrows anything already in the org (a field, a flow, a rule, a picklist value, a permission) is marked "removes", names the exact item, lists everything in the org summary that refers to it, and says what happens to any data it holds. The builder may take the item out of the repo for such a task; taking it out of the org is done by hand by the person named on the task. The SA sees every "removes" task listed on its own at the top of the plan before approving.
@@ -82,6 +93,7 @@ Save `docs/build-plan.md` in the client's repo, on a branch named `build-plan/<d
 - A coverage list: every planned story with its criteria and the task that covers each. A criterion with no task is a defect in the plan; fix it before showing the SA.
 - Stories not planned, each with why (open question, a reviewer's finding, too large) and who it waits on.
 - Decisions: the open rows the plan waits on, each with the tasks it holds, and the Decided rows the plan builds to.
+- Later epics: for each object this plan touches, what the later epics will add to it, from the Solution map, and anything in this plan shaped for them.
 - SOW limits: each one with the count today and the count when the plan is built.
 - Suggestions: useful things nobody asked for, for the SA to raise or drop.
 

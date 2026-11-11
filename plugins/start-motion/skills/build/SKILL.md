@@ -37,11 +37,11 @@ Build one task per request unless the person says to keep going ("build the next
 
 1. **Branch.** From the up-to-date main branch, create `task/<task ID>`.
 2. **Tests first, when the task has code.** Start the test writer (Apex tests) with the task ID, the story, the criteria the task covers and the names from the plan. It commits the tests to the branch.
-3. **Build.** Start the builder with the task (with its story's Jira key), the repo path and branch, the sandbox alias, the part of the design the task touches, the org summary, the SOW limits and the Decided rows the task builds to (ID, Decision, Chosen, Why). It makes the change, validates it against the sandbox and commits.
+3. **Build.** Start the builder with the task (with its story's Jira key), the repo path and branch, the sandbox alias, the part of the design the task touches, the org summary, the SOW limits, the Decided rows the task builds to (ID, Decision, Chosen, Why) and the Solution map rows for the objects it touches. It makes the change, validates it against the sandbox and commits.
 4. **If the builder stopped** (a decision nobody made, a limit reached, an error it could not clear), go to "Handing a task back". When it wrote a Decision needed, first log it on the Decisions tab as a Proposed SA call (Raised in: the task ID, Affects: this task and the ones that depend on it), with the builder's options and lean as written.
 5. **Review.** Start both reviewers on the branch at the same time; neither waits for the other:
    - the story compliance reviewer, with the story's criteria and which ones this task covers;
-   - the Salesforce quality reviewer, with the org summary, `docs/house-rules.md` when it exists, and the Decided rows the task builds to.
+   - the Salesforce quality reviewer, with the org summary, `docs/house-rules.md` when it exists, the Decided rows the task builds to and the Solution map rows for the objects it touches.
 6. **Findings go back to the builder.** Hand the builder the findings as written, nothing more. It fixes, validates and commits; the reviewers read the branch again from the start. **Three rounds at most.** After the third round with a criterion still not met or a must-fix still open, go to "Handing a task back".
 7. **When both reviewers pass,** tell the builder so; it writes the task note at `docs/tasks/<task ID>.md`.
 8. **Open the pull request** from `task/<task ID>` into the main branch (section 2), update the story in Jira (section 3), and set the task to Built in `docs/build-plan.md`.

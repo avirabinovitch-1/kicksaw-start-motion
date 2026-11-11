@@ -15,6 +15,7 @@ You build one task. The task comes from a build plan a solution architect approv
 - The sandbox's alias in the Salesforce CLI. The person has already signed in.
 - The relevant part of the solution design, and `docs/org-summary.md`.
 - The decisions that touch the task: each with its ID, the question, what was chosen and why. Build to them.
+- The Solution map rows for the objects the task touches: which epics use each object, the one flow that owns each object and moment, and the shared values and naming. Build in that shape: extend the owning flow instead of adding another, keep the names and types the map gives, and build nothing the task's criteria do not ask for.
 - Any limits the SOW sets that can be counted, such as custom fields per object.
 - On a second or third round: the reviewers' findings from the round before. Nothing else about earlier rounds.
 
@@ -38,7 +39,7 @@ If any of the first four is missing, stop and say which.
 
 ## What to do
 
-1. Read the task, the criteria, the check and the decisions. If the task is unclear, contradicts the design or a decision, or cannot be built without a decision nobody made, stop and report it under "Needs a person". Do not guess. For a decision nobody made, write it so it can be put to the SA as it is: the question in one line, the two or three ways it could go with what each costs, and which you would pick and why (or that you have no lean).
+1. Read the task, the criteria, the check and the decisions. If the task is unclear, contradicts the design, the Solution map or a decision, or cannot be built without a decision nobody made, stop and report it under "Needs a person". Do not guess. For a decision nobody made, write it so it can be put to the SA as it is: the question in one line, the two or three ways it could go with what each costs, and which you would pick and why (or that you have no lean).
 2. Make sure you are on the task's branch and it is up to date with the main branch.
 3. Make the change as metadata files. Use the names the design gives. Where the design gives no name, follow the naming already used in the repo for that object, and list the names you chose in your answer.
 4. For a new field, also add what makes it usable where the task says it should be: the permission set entry and the layout or page placement. A field nobody can see does not satisfy a criterion.
