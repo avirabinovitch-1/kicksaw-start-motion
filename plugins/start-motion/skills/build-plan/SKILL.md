@@ -18,28 +18,23 @@ Three things stop the run, each with one line saying what is waiting and on whom
 - No design, or a design still marked Draft. The SA can say "plan from the draft"; that is recorded at the top of the plan.
 - No client repo. Offer to set one up (section 1).
 
-## What to ask: one message
+## What this run covers, and how to work
 
-After the mode is picked, ask once, in one message, and only for what the Start did not find: which stories to plan when the request did not say (all refined stories is the default); the sandbox alias when more than one is signed in; and whether the team wants the tasks as sub-tasks in Jira as well as in the repo. Then read back what you heard in one line and run.
+Right after the Start, settle two things with the SA together, as `references/working-mode.md` sets out: what this run plans (a sprint from Jira, an epic, or specific stories) and how they want to work (Build together, the default, or Run with it). Use their saved default when they have one and say in one line what it resolves to today; otherwise show the picker (`references/mode-picker.html` with `cmd: 'plan'`, or the pick tool where a visual cannot be shown). Whatever the slice, plan from the whole design, plan shared pieces once in the shape the Solution map gives them, and flag any story in the slice that depends on a story outside it (`references/working-mode.md`, section 3).
 
-## How do you want to work? Ask every run
+The mode changes how often you stop and how much you explain. It never changes what is planned, the sections below, the reviews, the Decisions tab, the review page or the rules. In both modes the SA approves the plan, and nothing is built from a plan the SA has not approved.
 
-Right after the Start, before anything else is asked, ask the SA how they want to work on this run. Ask it every time the command runs, whoever is running it and however many times they have run it before; the answer holds for this run only. Use the session's pick tool where there is one (a pick list in Claude Code and Cowork, the question card in Claude chat), otherwise one line with the two choices. Build together is the first choice and the default: if the person skips the question, or nobody is there to answer, plan in Build together.
-
-- **Build together (default).** "We plan one story at a time. I explain what each story needs and what I would build, and you confirm every call before I move on."
-- **Run with it.** "I plan the whole set, make the calls the sources settle and log why, and bring you only the real trade-offs, all together at the end."
-
-The person can switch at any point in the run by saying so ("slow down, one at a time", "just run with it"); switch from the next story on and say so in one line. Naming the mode in the request ("/build-plan Neo together", "build the plan for Neo, run with it") answers the question, so do not ask it.
-
-What the mode changes is how often you stop and how much you explain. It never changes what is planned, the order of the sections below, the reviews, the Decisions tab, the review page or the rules. In both modes the SA approves the whole plan at the end, and nothing is built from a plan the SA has not approved.
-
-**Build together.** Sections 0 to 3b run as written. Then, for each story in build order:
+**Build together.** Sections 0 to 3b run as written. Then, for each story in the slice, in build order:
 1. Before planning it, a few plain sentences: what the story needs, the tasks you would plan, and why, with the Salesforce reason in one sentence wherever there was a choice ("a lookup to Contact rather than a text field, because the referrals report in E3 groups by provider").
-2. Show the picker (`references/decisions.md`, stage "Build plan") for that story only, with every call the story's tasks make, including the ones the sources settle and you would otherwise make yourself. Those come pre-picked with the reason, so agreeing takes one click; the SA can change any of them or ask why. Real trade-offs are shown as the SA's calls, as always.
+2. Show the decision picker (`references/decisions.md`, stage "Build plan") for that story only, with every call the story's tasks make, including the ones the sources settle and you would otherwise make yourself. Those come pre-picked with the reason, so agreeing takes one click; the SA can change any of them or ask why. Real trade-offs are shown as the SA's calls, as always.
 3. Write the answers to the Decisions tab, add the story's tasks to the plan, and go on to the next story. A story the SA wants to come back to is left with its tasks marked "waits on" the open rows; carry on.
 At the end, write the plan and the review page (sections 5 and 5b) and report (section 7). The final picker then only holds what is still open, plus approving the plan.
 
-**Run with it.** The run as written: plan the whole set in one pass, log the calls the sources settle on the Decisions tab as your calls with the reason, log the real trade-offs as the SA's calls, and bring them all to the SA together in the picker at the end (section 7), where any of your calls can be reopened.
+**Run with it.** Plan the whole slice in one pass, log the calls the sources settle on the Decisions tab as your calls with the reason, log the real trade-offs as the SA's calls, and bring them all to the SA together in the decision picker at the end (section 7), where any of your calls can be reopened.
+
+## What else to ask: one message
+
+After the working choices are settled, ask once, in one message, and only for what the Start did not find: the sandbox alias when more than one is signed in; and whether the team wants the tasks as sub-tasks in Jira as well as in the repo. Then read back what you heard in one line and run.
 
 ## 0. Load what you need
 
@@ -75,7 +70,7 @@ Before breaking stories into tasks, start the story reviewer on the stories bein
 
 ## 3b. Look across the whole solution first
 
-An epic is planned in the context of every epic, never on its own. Before breaking the stories into tasks:
+A slice (a sprint or an epic) is planned in the context of every epic, never on its own. A sprint often holds part of one epic and part of another; plan the shared pieces those stories need once, as foundation tasks in the shape the map gives them for every story that will use them. Before breaking the stories into tasks:
 
 - Read the design's Solution map, and for every object this epic touches, the requirements and stories of the other epics that touch it too, refined or not (the requirements list has them all).
 - For each structural choice this epic makes (an object, a relationship, a field type, a record type, a picklist value set, the sharing model, where automation runs, a name), ask whether a later epic needs it to be different. A text field a later epic will need as a lookup, a picklist a later epic will report on with other values, a second flow where the map names one owner, a private object a later epic must share: each is a door this epic would close.
@@ -111,10 +106,12 @@ For each story that passed:
 
 Save `docs/build-plan.md` in the client's repo, on a branch named `build-plan/<date>`, in this shape:
 
-- A header: the client, the date, the stories planned (count, and the Jira filter or keys), the design version (with a link to its Drive file), the org summary date, and a status line: "Draft, not approved". When the SA approves, the line becomes "Approved by <name> on <date>"; you write that only when the SA says so in this conversation.
+- One running plan for the client. Each run adds its slice under a heading naming it ("Sprint 3, planned Nov 12", "Epic: Intake, planned Nov 12"); approval is per slice, and tasks from earlier slices are never re-planned.
+- A header: the client, the date, the stories planned (count, and the sprint, epic or keys), the design version (with a link to its Drive file), the org summary date, and a status line: "Draft, not approved". When the SA approves, the line becomes "Approved by <name> on <date>"; you write that only when the SA says so in this conversation.
 - A table of every task in build order: ID, story, what it creates or changes, criteria covered, check, depends on, code or configuration or by hand, status (Planned, Built, Merged, Handed back).
 - Under the table, one short block per task with the detail a builder needs: the names, the exact values from the criteria, the check in full.
 - A coverage list: every planned story with its criteria and the task that covers each. A criterion with no task is a defect in the plan; fix it before showing the SA.
+- Depends on work outside this slice: each story in the slice that depends on a story not in it, with both keys, for the SA and PM to settle (bring the other story in, or move this one out).
 - Stories not planned, each with why (open question, a reviewer's finding, too large) and who it waits on.
 - Decisions: the open rows the plan waits on, each with the tasks it holds, and the Decided rows the plan builds to.
 - Disagreements between the sources: each with what each source says and which one the plan followed.
@@ -158,7 +155,7 @@ After the report, write out one short run-log row for the delivery kit and say i
 
 ```
 Run log · start-motion:build-plan (v0.2.0) · build plan · <client> · <date>
-Mode: <Build together or Run with it, and any switch during the run>
+Slice and mode: <the sprint, epic or keys; Build together or Run with it; from a saved default or the picker; any switch during the run>
 Ran by: <the name of the person running it, if the session says; otherwise leave it for them>
 Corrected: <what the person corrected during the run, in one to three plain sentences. "Nothing" if nothing.>
 Had to ask for: <anything you had to ask for that you should have found on your own. "Nothing" if nothing.>

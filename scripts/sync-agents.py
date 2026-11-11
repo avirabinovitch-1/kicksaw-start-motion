@@ -30,6 +30,8 @@ SHARED_DIR = os.path.join(PLUGIN, 'shared')
 SHARED = {  # file -> [(skill, folder inside the skill)]
     'decisions.md': [('design', 'references'), ('build-plan', 'references'), ('build', 'references')],
     'decision-picker.html': [('design', 'references'), ('build-plan', 'references'), ('build', 'references')],
+    'mode-picker.html': [('build-plan', 'references'), ('build', 'references')],
+    'working-mode.md': [('build-plan', 'references'), ('build', 'references')],
     'build-review.md': [('design', 'references'), ('build-plan', 'references'), ('build', 'references')],
     'build-review.py': [('build-plan', 'scripts'), ('build', 'scripts')],
     'drive-copies.md': [('design', 'references'), ('build-plan', 'references'), ('build', 'references'),

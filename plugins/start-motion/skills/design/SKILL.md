@@ -94,9 +94,9 @@ Every section is written to these. The design reviewer checks them, and so does 
 
 When the simplest sound design and what the client asked for pull apart, say so as a Recommendation with the reason and what would change it. Do not quietly design the heavier thing, and do not quietly drop what they asked for.
 
-## 3c. The solution map: design the whole, build an epic at a time
+## 3c. The solution map: design the whole, build a slice at a time
 
-Stories are refined and built an epic at a time, but the data model, the automation on each object and the access model are shared by every epic. A choice that suits the first epic can force rework in the fourth. So the design covers every epic in the signed scope, even ones whose stories are not refined yet, and settles the structure all of them share. Later epics can be thinner on detail; they cannot be missing from the structure.
+Stories are refined and built a slice at a time (a sprint, which often holds part of one epic and part of another, or an epic), but the data model, the automation on each object and the access model are shared by every epic. A choice that suits the first epic can force rework in the fourth. So the design covers every epic in the signed scope, even ones whose stories are not refined yet, and settles the structure all of them share. Later epics can be thinner on detail; they cannot be missing from the structure.
 
 The design carries a **Solution map** section, after the data model:
 
