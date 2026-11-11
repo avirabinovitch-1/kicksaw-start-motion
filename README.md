@@ -23,8 +23,6 @@ The signed SOW, and whatever else is in the client's Drive folder. Nothing more.
 | 3 Readout | `/start-motion:readout` | Section plan, build, dry run, deck, readout call, sign-off |
 | 5 Design | `/start-motion:design` | Starts, updates and finalizes the solution design |
 | 6 User stories | `/start-motion:user-stories` | Epics, finishing the stories, Jira, refinement |
-| Build plan (0.2.0, not released) | `/start-motion:build-plan` | Turns approved stories and the approved design into ordered build tasks, each with the criteria it covers and the check that proves it. The SA approves it |
-| Build (0.2.0, not released) | `/start-motion:build` | Builds the approved plan one task at a time in a sandbox: a builder agent makes the change, two reviewer agents check it, and a person reviews and merges the pull request |
 
 In chat the commands show as their bare names (`/kickoff`, `/new-client`); in Cowork and Claude Code they carry the prefix.
 
@@ -32,28 +30,19 @@ Plain requests work too: "process today's Tog call", "make the kickoff deck for 
 
 Scope sign-off (stage 1.4) is a meeting; the readout skill carries its record.
 
-## The agents (0.2.0, not released)
+Build plan and build are a separate, private plugin, Start Motion Build (`kicksaw-start-motion-build`), installed only by the people Avi grants access. It runs in Claude Code against a sandbox and carries its own guardrails. With it installed, `/start-motion:design` also reads the client's org through its org reader.
 
-An agent is a separate worker with one job. A stage command starts it, hands it only what it needs, and gets back a short result. It does not see the conversation that produced the work it is checking: it reads a story the way the architect will, or a built field the way a tester will.
+## The review agents
+
+A review agent is a separate checker with one job. A stage command starts it, hands it only what it needs, and gets back a short list of findings. It does not see the conversation that produced the work, so it reads a requirement the way someone holding only the recording will, and a story the way the architect and the tester will. Reviewers change nothing; the stage command fixes what is plainly wrong and takes the rest to the SC or SA.
 
 | Agent | Its one job | Started by |
 |---|---|---|
-| `source-checker` | Checks every requirement and story against the call, SOW section or document it cites; reports only rows that do not match | `discovery-call`, `user-stories` |
-| `story-reviewer` | Reads each story with nothing but the story in hand; reports criteria that cannot be built or tested as written | `discovery-call`, `user-stories`, `build-plan` |
-| `org-reader` | Reads an org's configuration through the Salesforce CLI, pulls it into the client repo and writes the org summary. Never reads records | `design`, `build-plan` |
-| `design-reviewer` | Checks the design against the requirements in scope and against what is in the org | `design` |
-| `builder` | Builds one approved task as metadata in a branch and validates it against the sandbox | `build` |
-| `test-writer` | Writes Apex tests and UAT scripts from the acceptance criteria | `build` |
-| `story-compliance-reviewer` | Checks what was built against each acceptance criterion | `build` |
-| `salesforce-quality-reviewer` | Checks what was built against Salesforce practice and the team's house rules | `build` |
+| `source-checker` | Checks every requirement and story quote against the call, SOW section or document it cites; reports only rows that do not say what the client said | `discovery-call`, `user-stories` |
+| `story-reviewer` | Reads each story with nothing but the story in hand; reports criteria that cannot be built or tested as written | `discovery-call`, `user-stories` |
+| `design-reviewer` | Checks the design against the requirements and workflows in scope, the org, the decisions already made and what later epics need | `design` |
 
-Claude Code, Cowork and Codex start these as separate agents. Claude chat cannot always do that, so each skill carries a copy of the agents it starts at `references/agents/` and runs them as a second pass there, and says on its report which way the check ran. `agents/` is the home of the text; `scripts/sync-agents.py` writes the copies and `--check` fails when one is out of date.
-
-Rules no agent can break: configuration only, never client records; sandbox only, never production; nothing is deleted from an org, records or metadata; every change is a commit; a person merges; only what an approved task names, built the simplest sound way; SOW limits are counted; sign-ins stay in the Salesforce CLI on the person's computer.
-
-**The org guard.** The rules above are also enforced outside the agents' instructions. `hooks/org-guard.sh` runs before every shell command in Claude Code and Cowork. It blocks Salesforce CLI commands that change, load, export or delete records, run anonymous Apex, call the org's API directly, delete metadata, delete an org or uninstall a package, and any saving deploy aimed at an org that is not a sandbox (it asks the CLI what kind of org the alias is). It stops and shows the person the command, to confirm themselves, for a query that returns client records, a deploy that saves to a sandbox, and the undo of a rejected task. Retrieves, validations, dry runs, test runs and queries about configuration (`--use-tooling-api`) pass.
-
-**Undoing a rejected task.** `/build` asks, once a task has passed its reviews, whether to deploy it to the sandbox so the person can check it by hand before merging. If the pull request is then rejected, "undo <task ID>" takes the change back out. `skills/build/scripts/undo-task.sh` builds the list from git: only what that task's unmerged branch created is removed, what it changed is put back to the main branch's version, and the guard re-checks the list and the org before the person confirms. This is the only removal the kit runs.
+Each runs twice at most per run. Claude Code and Cowork start these as separate agents. Claude chat cannot always do that, so each skill carries a copy of the agents it starts at `references/agents/` and runs them as a second pass there, and says on its report which way the check ran.
 
 ## Install
 
@@ -76,9 +65,8 @@ Uploading the `.plugin` file from a release also works, but does not update itse
 .claude-plugin/marketplace.json       the marketplace this repo is
 plugins/start-motion/                 the plugin
   .claude-plugin/plugin.json
-  agents/<agent>.md                   the eight agents (0.2.0)
-  hooks/hooks.json, hooks/org-guard.sh  the org guard (0.2.0)
-  skills/build/scripts/undo-task.sh   builds and checks the undo list for a rejected task (0.2.0)
+  agents/<agent>.md                   the three review agents
+  shared/                             texts several skills carry copies of (decisions, the decision picker, where files live in Drive)
   skills/<command>/SKILL.md           the skill
   skills/<command>/references/agents/  copies of the agents that skill starts, written by scripts/sync-agents.py
   skills/<command>/references/        method.md (what the stage is for, the bar, the page link) and other reference files
@@ -86,7 +74,7 @@ plugins/start-motion/                 the plugin
 scripts/refresh-page-skills.py        writes the eight skill texts into a saved copy of the Start Motion page
 scripts/patch-page-work-in-claude.py  added the Work in Claude box to each stage (applied Oct 30, 2026; kept to rebuild the page)
 scripts/patch-page-start-here.py      added the Start here page and the new-client row (applied Oct 30, 2026; kept to rebuild the page)
-scripts/sync-agents.py                copies each agent into the skills that start it; --check fails on a stale copy
+scripts/sync-agents.py                copies each agent and shared text into the skills that use them; --check fails on a stale copy
 scripts/edits_0_2_0.py                the Oct 30 reading-rule and handoff-optional edits, applied in place (the record of what changed and why)
 CHANGELOG.md                          what changed in each release
 ```

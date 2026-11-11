@@ -1,6 +1,6 @@
 # Decisions: the log, the four kinds, and what waits
 
-How the kit records a design or build choice, who makes it, and what keeps moving while it is open. Used by `/start-motion:design`, `/start-motion:build-plan` and `/start-motion:build`. The home of this text is `plugins/start-motion/shared/decisions.md`; the copies in each skill's `references/` are written by `scripts/sync-agents.py`.
+How the kit records a design or build choice, who makes it, and what keeps moving while it is open. Used by `/start-motion:design`, and by the build plan and build stages of the separate Start Motion Build plugin (`/start-motion-build:build-plan`, `/start-motion-build:build`) for those who have it. The home of this text is `plugins/start-motion/shared/decisions.md`; the copies in each skill's `references/` are written by `scripts/sync-agents.py`.
 
 The rule behind all of it: anything that does not need a person moves forward, and anything that does is made plain, logged and put in front of the right person in one place. A decision never stops a whole run. Only the work that depends on it waits.
 
@@ -110,7 +110,7 @@ Client calls appear in the picker so the SA can see them, marked "Client call ·
 - "Reopen" on a Clear row: it becomes an SA call; write its options and put it in the next picker, or in this run if the person is still here.
 - A changed decision is never edited: write a new row, set the old one to Superseded with Superseded by. Then update everything in Affects.
 - Approval, when sent: record it as the stage says (the build plan's status line, the design's status), never on Claude's own say.
-- Rebuild the design and build review page from the updated log (`references/build-review.md`, "It follows the decisions") and republish it to the same link, once a build plan exists.
+- Rebuild the design and build review page from the updated log (Start Motion Build's `references/build-review.md`, "It follows the decisions") and republish it to the same link, once a build plan exists.
 - Then act on it in the same run: update the design section (remove the Open callout, fold the choice in), take the D-ID off the story's open question, mark the build tasks unblocked. Say in one line what changed because of it.
 
 ## How the agents use the log

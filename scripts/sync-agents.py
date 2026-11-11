@@ -16,26 +16,19 @@ PLUGIN = os.path.join(ROOT, 'plugins', 'start-motion')
 AGENTS = os.path.join(PLUGIN, 'agents')
 SKILLS = os.path.join(PLUGIN, 'skills')
 
-# which skill starts which agent
+# which skill starts which agent (the build agents live in the private Start Motion Build plugin, kicksaw-start-motion-build)
 STARTS = {
     'discovery-call': ['source-checker', 'story-reviewer'],
     'user-stories': ['source-checker', 'story-reviewer'],
-    'design': ['org-reader', 'design-reviewer'],
-    'build-plan': ['org-reader', 'story-reviewer'],
-    'build': ['builder', 'story-compliance-reviewer', 'salesforce-quality-reviewer', 'test-writer'],
+    'design': ['design-reviewer'],
 }
 
 # shared texts every skill in the list carries a copy of, at references/<file>
 SHARED_DIR = os.path.join(PLUGIN, 'shared')
 SHARED = {  # file -> [(skill, folder inside the skill)]
-    'decisions.md': [('design', 'references'), ('build-plan', 'references'), ('build', 'references')],
-    'decision-picker.html': [('design', 'references'), ('build-plan', 'references'), ('build', 'references')],
-    'mode-picker.html': [('build-plan', 'references'), ('build', 'references')],
-    'working-mode.md': [('build-plan', 'references'), ('build', 'references')],
-    'build-review.md': [('design', 'references'), ('build-plan', 'references'), ('build', 'references')],
-    'build-review.py': [('build-plan', 'scripts'), ('build', 'scripts')],
-    'drive-copies.md': [('design', 'references'), ('build-plan', 'references'), ('build', 'references'),
-                        ('readout', 'references'), ('user-stories', 'references')],
+    'decisions.md': [('design', 'references')],
+    'decision-picker.html': [('design', 'references')],
+    'drive-copies.md': [('design', 'references'), ('readout', 'references'), ('user-stories', 'references')],
 }
 SHARED_NOTE = {
     '.md': '<!-- Copy of plugins/start-motion/shared/%s, written by scripts/sync-agents.py. Do not edit here. -->\n\n',
