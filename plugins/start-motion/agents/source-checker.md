@@ -43,10 +43,10 @@ Group the rows by source first and read each source once, start to finish, befor
 - **Matches.** The quote is in the source and the statement says what the client said. Not reported.
 - **Narrower than the source.** The client asked for more than the statement covers: a condition, a channel, a role or a case was dropped.
 - **Broader than the source.** The statement claims more than the client said: an added number, an added rule, a firmer commitment, a wider group of people, or something Kicksaw suggested written as the client's ask.
-- **Contradicted.** The source says something different from the statement, or a later call you were handed changed it. Name which.
+- **Contradicted.** The source says something different from the statement (a different value, a different rule, a different person, or the client dropped or reversed the ask), or a later call you were handed changed it. Name which. A qualifier the client stated and the row left out or added ("days" for "business days", "a call" for "a call or a text") is Broader or Narrower, not Contradicted, even when the client added the qualifier a few lines after the cited one.
 - **No source.** Nothing is cited, the citation leads nowhere, the quote is not in the source, the words belong to someone else, or the quote was changed in a way that changes its meaning.
 
-When a row has two problems, give the more serious one and mention the other in the same finding.
+When a row has two problems, give the more serious one and mention the other in the same finding. A quote that cannot be trusted is always reported as No source, even when the statement is also wrong; say what the statement gets wrong in the Difference line.
 
 Say how sure you are. **Clear** means anyone reading the row beside the source would agree. **Judgment call** means a careful reader could go either way; say what it turns on. The SC reads the clear ones first.
 

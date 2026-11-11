@@ -18,7 +18,7 @@ You did not see the change being made. Review it as a senior solution architect 
 
 ## What you may read, and what you may not do
 
-Read the change (`git diff <main branch>...<task branch>`), the files it touches in full, and whatever else in the repo you need to judge it. Change nothing. Do not run commands against any org.
+Read the change (`git diff <main branch>...<task branch>`), the files it touches in full, and whatever else in the repo you need to judge it. Do not read `docs/tasks/` or the builder's answer: you judge what was built, and whether it covers the story is the compliance reviewer's job. Change nothing. Do not run commands against any org.
 
 ## What you check
 
@@ -81,7 +81,7 @@ Apply only the parts that match the files in the change.
 
 ## How to report severity
 
-- **Must fix.** It will fail in the org, lose or expose data, break at volume, or break another automation.
+- **Must fix.** It will fail in the org, lose or expose data, break at volume, or break another automation. Always must fix: an unnamed removal, a query or DML inside a loop, a hard-coded ID, and an Apex class with no sharing declaration (with none, the class can run without the person's sharing and show or change records they should not reach).
 - **Should fix.** It works today and will cost someone later: maintainability, a house rule, a missing description.
 
 Do not report personal taste. If the house rules or the repo's own conventions do not settle it and it does no harm, leave it out.

@@ -27,12 +27,17 @@ decide() {  # decide <deny|ask> <reason>
 
 # One command per line: split on &&, ||, ;, | and the escaped newlines inside the JSON. awk, because the sed
 # on a Mac does not take a newline in a replacement.
-segments="$(printf '%s' "$input" | awk '{gsub(/\\n/,"\n"); gsub(/&&|\|\||;|\|/,"\n"); print}')"
+# The JSON head up to the command's opening quote is dropped first, so every line starts where a command starts.
+segments="$(printf '%s' "$input" | awk '{sub(/^[{].*"command"[[:space:]]*:[[:space:]]*"/,""); gsub(/\\n/,"\n"); gsub(/&&|\|\||;|\|/,"\n"); print}')"
 
 # Not a Salesforce CLI command: nothing to say.
 printf '%s\n' "$segments" | grep -qE '(^|[^[:alnum:]_-])(sf|sfdx)[[:space:]]' || exit 0
 
-SF='(^|[^[:alnum:]_-])(sf|sfdx)[[:space:]]+'
+# sf or sfdx where a command starts: at the start of a line, after env assignments, after npx, exec, sudo, time,
+# command or xargs, by a path, or inside $( ), ( ), backticks or bash -c / sh -c. A message or path that only
+# mentions sf (a commit message, ls sf-project) is not a command.
+PRE='([A-Za-z_][A-Za-z0-9_]*=[^[:space:]]*[[:space:]]+)*((npx|exec|sudo|time|command|xargs)[[:space:]]+)*([^[:space:]"]*/)?'
+SF="(^[[:space:]]*|[\$]?[(][[:space:]]*|\`[[:space:]]*|(ba|z)?sh[[:space:]]+-c[[:space:]]+[\\]?[\"'][[:space:]]*)${PRE}(sf|sfdx)[[:space:]]+"
 has() { printf '%s\n' "$segments" | grep -qiE -- "$1"; }
 deny_if() { has "$1" && decide deny "$2"; }
 
@@ -93,7 +98,7 @@ fi
 saving=""
 s="$(printf '%s\n' "$segments" | grep -iE "${SF}project[[:space:]]+deploy[[:space:]]+start" | grep -ivE -- "--dry-run")"; [ -n "$s" ] && saving="$s"
 s="$(printf '%s\n' "$segments" | grep -iE "${SF}project[[:space:]]+deploy[[:space:]]+(quick|resume)")"; [ -n "$s" ] && saving="$s"
-s="$(printf '%s\n' "$segments" | grep -iE "${SF}(force:source:deploy|force:mdapi:deploy)" | grep -ivE -- "(--checkonly|[[:space:]]-c([[:space:]]|$))")"; [ -n "$s" ] && saving="$s"
+s="$(printf '%s\n' "$segments" | grep -iE "${SF}(force:source:deploy|force:mdapi:deploy)" | grep -ivE -- "(--checkonly|[[:space:]]-c([[:space:]]|[\\\"']|$))")"; [ -n "$s" ] && saving="$s"
 s="$(printf '%s\n' "$segments" | grep -iE "${SF}(force:source:push|package[[:space:]]+install|force:package:install)")"; [ -n "$s" ] && saving="$s"
 if [ -n "$saving" ]; then
   alias="$(org_alias "$(printf '%s\n' "$saving" | head -1)")"

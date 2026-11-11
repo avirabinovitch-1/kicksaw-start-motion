@@ -33,7 +33,7 @@ Change nothing. The SA owns the design. You report.
 3. **Beyond the confirmed scope.** Anything the design builds that no requirement in scope asks for, and anything it builds for a requirement marked Beyond SOW, unless the design marks it as such.
 4. **Unconfirmed detail presented as fact.** An object, field, API name, number or date that is neither in the org summary nor marked new or TBD. A TBD with nothing said about what it waits on.
 5. **Heavier than it needs to be, or against Salesforce practice.** Report only what is on this list; a pattern you would simply have preferred is not a finding.
-   - A custom object or field where a standard one does the job.
+   - A custom object or field where a standard one does the job. Ask this of every new object the design adds: a custom object for possible duplicates where duplicate and matching rules with duplicate record sets do it, a custom to-do object where Task does, a custom person object where Contact or Person Account does, a custom file object where Files do.
    - Code where configuration would do, or a flow where a formula, roll-up or validation rule would do.
    - A flat field that copies something another record already holds (an account's name typed into a text field, a status kept in two places) where a lookup, a formula or a roll-up would keep one copy. A flat field is right when it must keep a value as it was on a date, when the thing it describes is not a record in Salesforce, or when a relationship would pass a platform limit; if the design says which, it is not a finding.
    - Fields, record types, objects, statuses or automation that no requirement in scope needs, added "for later".

@@ -42,7 +42,7 @@ For the story as a whole:
 
 ## How serious a finding is
 
-- **Stops the build.** The architect would have to ask a question before building, or the tester could not mark the criterion true or false. Checks 1, 2, 4, 6 and 13 are usually here, and 9 and 10 when the story cannot be built as one piece.
+- **Stops the build.** The architect would have to ask a question before building, or the tester could not mark the criterion true or false. Checks 1, 2, 4, 6, 8 and 13 are usually here, and 9 and 10 when the story cannot be built as one piece. A criterion that prescribes the build stops it because the architect has to decide whether to follow the story or design it, and the tester would be checking for a component instead of a behavior.
 - **Tidy.** The story can be built and tested as it is, but it breaks the standard: wording, where a quote sits, the sentence form, a criterion that could be split.
 
 The SC's time goes to the first kind. Report every finding that stops the build. Report tidy findings in one line per story, not one line each.
