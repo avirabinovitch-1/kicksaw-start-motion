@@ -27,9 +27,28 @@ These stop the run, each with one line on what is waiting and on whom:
 
 ## What to ask: one message
 
-Ask only for what the Start did not find: which task, when the request did not say and more than one is ready (the next in build order is the default); the sandbox alias, when more than one is signed in. Then read back in one line and run: "Building E1.2-T1 for Neo in neo-dev: four fields on Referral, AC 1 to 3."
+After the mode is picked, ask only for what the Start did not find: which task, when the request did not say and more than one is ready (the next in build order is the default); the sandbox alias, when more than one is signed in. Then read back in one line and run: "Building E1.2-T1 for Neo in neo-dev: four fields on Referral, AC 1 to 3."
 
-Build one task per request unless the person says to keep going ("build the next five", "build the Referral epic"). Even then, each task gets its own branch, its own reviews and its own pull request. A task that needs a person is handed back (section 4) and the run carries on with the next task that does not depend on it; tasks that do depend on it are skipped and listed. The run stops early only for what stops every task: the org is not a sandbox, the main branch is not clean, or the CLI sign-in has expired.
+In Build together, build one task per request unless the person says to keep going ("build the next five", "build the Referral epic"). Even then, each task gets its own branch, its own reviews and its own pull request. A task that needs a person is handed back (section 4) and the run carries on with the next task that does not depend on it; tasks that do depend on it are skipped and listed. The run stops early only for what stops every task: the org is not a sandbox, the main branch is not clean, or the CLI sign-in has expired.
+
+## How do you want to work? Ask every run
+
+Right after the Start, before anything else is asked, ask the person how they want to work on this run. Ask it every time the command runs, whoever is running it and however many times they have run it before; the answer holds for this run only. Use the session's pick tool where there is one (a pick list in Claude Code and Cowork), otherwise one line with the two choices. Build together is the first choice and the default: if the person skips the question, or nobody is there to answer, build in Build together.
+
+- **Build together (default).** "I build one task at a time. Before each one I tell you what it will change; after it, I show you what was built and what the reviewers found, and wait for you before the next."
+- **Run with it.** "I build every ready task in the approved plan, set aside anything that needs you, and bring you everything to review together at the end."
+
+The person can switch at any point by saying so ("slow down, one at a time", "just run with it"); switch from the next task on and say so in one line. Naming the mode in the request ("/build Neo together", "build Neo, run with it") answers the question, so do not ask it.
+
+What the mode changes is how often you stop and how much you explain. It never changes what an agent may do: every task still gets its own branch, both reviews, at most three rounds, its own pull request, and a person merges. The org guard, the sandbox-only rule, the "removes" confirmation and every other rule below hold the same way in both modes. Only tasks in an approved build plan are built, in either mode.
+
+**Build together.** One task at a time, from section 1:
+1. Before step 1, a few plain sentences: the task, what it will create or change, the criteria it covers and the decisions it builds to. Wait for the person to say go.
+2. Steps 1 to 8 as written.
+3. After the pull request opens, show in plain words what was built, what each reviewer found and how it was fixed (with the Salesforce reason in one sentence), and the test results. Then ask the deploy question (step 9) for this task; once deployed, say where in the sandbox's Setup or app the person can look at it.
+4. Ask whether to go on to the next ready task, naming it. On a yes, carry on in the same run; otherwise report (section 8).
+
+**Run with it.** Build every task in the approved plan that is ready, in build order, as if the person had said "keep going": tasks that need a person are handed back (section 4) and the run carries on with what does not depend on them. Do not stop between tasks. Ask the deploy question once, at the end, listing every task that passed both reviews ("6 tasks passed. Deploy them to neo-dev, a sandbox, so you can check them by hand before you merge?"); on a yes, deploy each task's branch in turn, and the org guard confirms each command as usual. Then report the whole run (section 8), with the review page as the place to work through it.
 
 ## 1. One task, start to finish
 
@@ -157,6 +176,7 @@ After the report, write out one short run-log row for the delivery kit and say i
 
 ```
 Run log · start-motion:build (v0.2.0) · build · <client> · <date>
+Mode: <Build together or Run with it, and any switch during the run>
 Ran by: <the name of the person running it, if the session says; otherwise leave it for them>
 Tasks: <each task ID with its result: pull request opened, or handed back; and the rounds it took>
 Corrected: <what the person corrected during the run, in one to three plain sentences. "Nothing" if nothing.>

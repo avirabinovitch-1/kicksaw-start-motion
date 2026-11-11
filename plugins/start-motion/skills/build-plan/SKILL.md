@@ -20,7 +20,26 @@ Three things stop the run, each with one line saying what is waiting and on whom
 
 ## What to ask: one message
 
-Ask once, in one message, and only for what the Start did not find: which stories to plan when the request did not say (all refined stories is the default); the sandbox alias when more than one is signed in; and whether the team wants the tasks as sub-tasks in Jira as well as in the repo. Then read back what you heard in one line and run.
+After the mode is picked, ask once, in one message, and only for what the Start did not find: which stories to plan when the request did not say (all refined stories is the default); the sandbox alias when more than one is signed in; and whether the team wants the tasks as sub-tasks in Jira as well as in the repo. Then read back what you heard in one line and run.
+
+## How do you want to work? Ask every run
+
+Right after the Start, before anything else is asked, ask the SA how they want to work on this run. Ask it every time the command runs, whoever is running it and however many times they have run it before; the answer holds for this run only. Use the session's pick tool where there is one (a pick list in Claude Code and Cowork, the question card in Claude chat), otherwise one line with the two choices. Build together is the first choice and the default: if the person skips the question, or nobody is there to answer, plan in Build together.
+
+- **Build together (default).** "We plan one story at a time. I explain what each story needs and what I would build, and you confirm every call before I move on."
+- **Run with it.** "I plan the whole set, make the calls the sources settle and log why, and bring you only the real trade-offs, all together at the end."
+
+The person can switch at any point in the run by saying so ("slow down, one at a time", "just run with it"); switch from the next story on and say so in one line. Naming the mode in the request ("/build-plan Neo together", "build the plan for Neo, run with it") answers the question, so do not ask it.
+
+What the mode changes is how often you stop and how much you explain. It never changes what is planned, the order of the sections below, the reviews, the Decisions tab, the review page or the rules. In both modes the SA approves the whole plan at the end, and nothing is built from a plan the SA has not approved.
+
+**Build together.** Sections 0 to 3b run as written. Then, for each story in build order:
+1. Before planning it, a few plain sentences: what the story needs, the tasks you would plan, and why, with the Salesforce reason in one sentence wherever there was a choice ("a lookup to Contact rather than a text field, because the referrals report in E3 groups by provider").
+2. Show the picker (`references/decisions.md`, stage "Build plan") for that story only, with every call the story's tasks make, including the ones the sources settle and you would otherwise make yourself. Those come pre-picked with the reason, so agreeing takes one click; the SA can change any of them or ask why. Real trade-offs are shown as the SA's calls, as always.
+3. Write the answers to the Decisions tab, add the story's tasks to the plan, and go on to the next story. A story the SA wants to come back to is left with its tasks marked "waits on" the open rows; carry on.
+At the end, write the plan and the review page (sections 5 and 5b) and report (section 7). The final picker then only holds what is still open, plus approving the plan.
+
+**Run with it.** The run as written: plan the whole set in one pass, log the calls the sources settle on the Decisions tab as your calls with the reason, log the real trade-offs as the SA's calls, and bring them all to the SA together in the picker at the end (section 7), where any of your calls can be reopened.
 
 ## 0. Load what you need
 
@@ -139,6 +158,7 @@ After the report, write out one short run-log row for the delivery kit and say i
 
 ```
 Run log · start-motion:build-plan (v0.2.0) · build plan · <client> · <date>
+Mode: <Build together or Run with it, and any switch during the run>
 Ran by: <the name of the person running it, if the session says; otherwise leave it for them>
 Corrected: <what the person corrected during the run, in one to three plain sentences. "Nothing" if nothing.>
 Had to ask for: <anything you had to ask for that you should have found on your own. "Nothing" if nothing.>
