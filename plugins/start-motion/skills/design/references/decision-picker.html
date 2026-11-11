@@ -1,30 +1,34 @@
-<h2 class="sr-only">Decision picker for the solution architect: for each design question, see what each option builds, its trade-offs and a picture of the difference, then decide, ask for more, confirm Claude's recommendations and reopen any call Claude made.</h2>
+<h2 class="sr-only">Decision picker for the solution architect: each question says what is being decided, why it matters and what the client and the org say, then compares the options row by row so the SA can choose, ask for more, confirm Claude's recommendations and reopen Claude's own calls.</h2>
 <style>
-.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:.5rem 0 0;flex-wrap:wrap}
-.sec{font-size:13px;color:var(--text-secondary);margin:1.25rem 0 .5rem;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sec{font-size:13px;color:var(--text-secondary);margin:1.25rem 0 .5rem;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
 .card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:1rem 1.25rem;margin-bottom:12px}
-.q{font-size:15px;font-weight:500;line-height:1.4}.sub{font-size:13px;color:var(--text-secondary);line-height:1.5;margin-top:4px}
-.tag{font-size:11px;padding:2px 8px;border-radius:var(--radius);background:var(--surface-1);color:var(--text-secondary);font-weight:400;white-space:nowrap;margin-left:6px}
+.q{font-size:15px;font-weight:500;line-height:1.4}.ask{font-size:14px;margin-top:6px;line-height:1.5}.why{font-size:13px;color:var(--text-secondary);margin:2px 0 0;line-height:1.5}
+.tag{font-size:11px;padding:2px 8px;border-radius:var(--radius);background:var(--surface-1);color:var(--text-secondary);margin-left:6px;font-weight:400;white-space:nowrap}
 .tag.w{background:var(--bg-warning);color:var(--text-warning)}
-.ctx{display:grid;grid-template-columns:96px minmax(0,1fr);gap:4px 10px;font-size:13px;margin:10px 0;line-height:1.5}.ctx b{font-weight:500;color:var(--text-secondary)}
-.quote{font-family:var(--font-voice);font-size:14px}
-.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin-top:6px}
-.opt{text-align:left;height:auto;padding:10px 12px;border-radius:var(--radius);display:block;line-height:1.45;white-space:normal;width:100%}
-.opt.on{border:2px solid var(--border-accent)!important;background:var(--bg-accent-muted,var(--bg-accent))!important;padding:9px 11px}
+.ctx{margin:10px 0 12px;padding:8px 12px;background:var(--surface-1);border-radius:var(--radius);font-size:12.5px;line-height:1.55;color:var(--text-secondary)}
+.ctx div+div{margin-top:3px}.ctx b{font-weight:500;color:var(--text-primary)}.said{font-family:var(--font-voice);color:var(--text-primary)}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 8px}
+.opt{text-align:left;height:auto;padding:12px;border-radius:var(--radius);display:grid;grid-row:span 9;grid-template-rows:subgrid;row-gap:4px;line-height:1.45;white-space:normal;width:100%;align-content:start}
+.r{display:grid;grid-template-columns:62px minmax(0,1fr);gap:8px;font-size:12px}.r>span:first-child{color:var(--text-muted)}.r code{font-size:11px}.r.first{border-top:0.5px solid var(--border);padding-top:8px;margin-top:4px}
+.opt.on{border:2px solid var(--border-accent)!important;background:var(--bg-accent-muted,var(--bg-accent))!important;padding:11px}
 .on-n{font-size:14px;font-weight:500;display:flex;justify-content:space-between;gap:6px;align-items:baseline}
 .lean{font-size:11px;color:var(--text-accent);font-weight:400;white-space:nowrap}
-.pro,.con,.bl,.rk{font-size:12px;margin-top:4px}.pro{color:var(--text-success)}.con{color:var(--text-secondary)}.rk{color:var(--text-warning)}
-.bl{color:var(--text-secondary)}.bl code{font-size:11px}
-.meta{font-size:11px;color:var(--text-muted);margin-top:6px}
-.mini{margin-top:6px;color:var(--text-primary)}.mini text{fill:currentColor;font-size:10px}.mini rect{fill:none;stroke:currentColor;stroke-opacity:.45}
-.act{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.act button{font-size:12px;padding:3px 10px;height:auto}
-.act button.on,.seg button.on{background:var(--fill-accent)!important;color:var(--on-accent)!important;border-color:var(--fill-accent)!important}
-.why{width:100%;margin-top:8px}
-.row{padding:10px 4px;border-bottom:0.5px solid var(--border)}.row .q{font-size:14px}
-.seg{display:inline-flex;gap:6px;flex-wrap:wrap}.seg button{font-size:12px;padding:3px 10px;height:auto}
-.sum{font-size:13px;color:var(--text-secondary)}.err{font-size:13px;color:var(--text-danger);margin-top:6px}
+.osum{font-size:13px;color:var(--text-secondary)}
+.g{color:var(--text-success)}.k{color:var(--text-warning)}
+.mini{color:var(--text-primary)}.mini text{fill:currentColor;font-size:10px}.mini rect{fill:none;stroke:currentColor;stroke-opacity:.4}
+.rec{font-size:13px;margin-top:10px;line-height:1.5}.rec b{font-weight:500}
+.links{display:flex;gap:16px;margin-top:8px;font-size:12px}.lk{background:none!important;border:none!important;padding:0!important;height:auto!important;color:var(--text-secondary);text-decoration:underline;text-underline-offset:2px;cursor:pointer;font-size:12px}
+.lk.on{color:var(--text-accent);font-weight:500}
+.inp{width:100%;margin-top:8px}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 4px;border-bottom:0.5px solid var(--border)}
+.row .q{font-size:14px}.row .why{margin-top:2px}.warn{color:var(--text-warning)}
+.seg{display:inline-flex;gap:6px}.seg button{font-size:12px;padding:3px 10px;height:auto}
+.seg button.on{background:var(--fill-accent)!important;color:var(--on-accent)!important;border-color:var(--fill-accent)!important}
+.err{font-size:13px;color:var(--text-danger);margin-top:6px}
 </style>
-<div class="top"><span id="hd" style="font-size:14px;color:var(--text-secondary)"></span><span id="rv"></span></div>
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:.5rem 0 0;flex-wrap:wrap">
+<span id="hd" style="font-size:14px;color:var(--text-secondary)"></span><span id="rv" style="font-size:13px"></span>
+</div>
 <div id="calls"></div>
 <div id="recs"></div>
 <div id="client"></div>
@@ -33,81 +37,69 @@
 <div style="margin-top:1rem;display:grid;gap:8px">
 <input id="notes" type="text" placeholder="Anything else for the log, for example who else weighed in">
 <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
-<span id="sum" class="sum"></span>
-<button id="go">Send to Claude ↗</button>
+<span id="sum" style="font-size:13px;color:var(--text-secondary)"></span>
+<button id="go">Send decisions ↗</button>
 </div>
 <div id="err" class="err" hidden></div>
 </div>
 <script>
 var CFG={client:'Harborlight Behavioral Health',stage:'Build plan',review:'https://claude.ai/artifact/45C1mKqt45KW24HsKmsuMY#needs-you',approve:'Approve the build plan',
-calls:[{id:'D-07',q:'How does a crisis follow-up relate to a referral that is already closed?',
- why:'Holds E1.3-T2 and the 7-day appointment report. Every crisis discharge goes through it.',
- reqs:'R-08 contact within one business day of discharge, appointment within seven days',
+calls:[{id:'D-07',q:'Crisis follow-up after a referral is closed',
+ ask:'When a client comes back through crisis after their referral was closed, do we reopen that referral or start a new one linked to it?',
+ why:'Holds task E1.3-T2 and the 7-day appointment report.',
  said:'"If they come back through crisis, it\'s a new episode for us, but I need to see the history." Javier, S-03 00:18:54',
- today:'Referral__c has Status with two closed values and no link to another referral',
- holds:'1 task, 1 story, 1 report',
- opts:[{k:'A',name:'Reopen the closed referral',pro:'One record per client episode, the history is all in one place',con:'Closed dates move; time-to-close reports have to allow reopening',risk:'Reporting on the seven-day rule needs a reopen date field',reversible:'Hard to change once records reopen in production',
-   builds:['Reopened_At__c (Date/Time)','A Reopened value on Status__c','Flow on Referral__c, after save, update'],model:[['Referral__c','Referral__c','reopened']],effort:'Medium'},
-  {k:'B',name:'New referral linked to the closed one',pro:'Clean dates and reports; matches how Javier talks about a new episode',con:'Two records for one client; staff look at the link for history',risk:'None beyond one more lookup',reversible:'Easy to change later',
-   builds:['Follow_Up_Of__c (lookup to Referral__c)','Related list on the Referral page'],model:[['Referral__c (new)','Referral__c (closed)','Follow Up Of']],effort:'Low'}],
- lean:'B',lean_why:'Matches the client\'s own words at S-03 and keeps every date clean; the history is one click away.',change_if:'Harborlight reports episodes per client rather than per referral'}],
-recs:[{id:'D-05',q:'How is the two-business-day aging worked out?',pick:'A formula field, no automation',why:'Nothing to schedule or maintain, always current',alt:'A nightly scheduled flow stamping a number',built:'E1.1-T1 (merged)'},
- {id:'D-08',q:'Where does Log Attempt live?',pick:'A screen flow as a quick action on Referral',why:'No code, staff never leave the record',alt:'A Lightning component',built:''}],
-withclient:[{id:'D-09',ref:'Q-14 with the SC',q:'Does a text the client replies to from another number count as an attempt?',why:'One branch of Log Attempt'}],
-clear:[{id:'D-01',q:'Referral object',chosen:'Custom object Referral__c',why:'No standard object carries intake, outreach and assignment without bending Case'},
- {id:'D-02',q:'Court date',chosen:'Date field on Referral__c',why:'The client asked for it to sort the work list'},
+ today:'Referral__c has two closed statuses and no link between referrals.',
+ reqs:'R-08: contact within one business day of discharge, appointment within seven days.',
+ opts:[{k:'A',name:'Reopen the closed referral',sum:'One record carries the whole history.',gain:'Everything for the client in one place',cost:'Closed dates move, so time-to-close reports must allow reopening',risk:'The seven-day rule needs a separate reopen date',builds:['Reopened_At__c','Reopened status value','After-save flow on Referral'],undo:'Hard once records reopen in production',effort:'Medium',model:[['Referral__c','Referral__c','reopened']]},
+  {k:'B',name:'New referral, linked to the closed one',sum:'Each episode gets its own record.',gain:'Clean dates and reports; matches how Javier describes it',cost:'Two records per client; history is one click away',risk:'None beyond one more lookup',builds:['Follow_Up_Of__c (lookup)','Related list on the page'],undo:'Easy',effort:'Low',model:[['Referral (new)','Referral (closed)','Follow Up Of']]}],
+ lean:'B',lean_why:'It matches the client\'s own words and keeps every date clean.',change_if:'Harborlight reports episodes per client rather than per referral'}],
+recs:[{id:'D-05',q:'Two-business-day aging',pick:'Formula field, no automation',why:'Nothing to schedule or maintain, always current',alt:'a nightly flow stamping a number',built:'E1.1-T1'},
+ {id:'D-08',q:'Where Log Attempt lives',pick:'Screen flow as a quick action on Referral',why:'No code, staff stay on the record',alt:'a Lightning component',built:''}],
+withclient:[{id:'D-09',ref:'Q-14 with the SC',q:'Does a reply from another number count as an attempt?',why:'One branch of Log Attempt'}],
+clear:[{id:'D-01',q:'Referral object',chosen:'Custom object Referral__c',why:'No standard object fits intake, outreach and assignment'},
+ {id:'D-02',q:'Court date',chosen:'Date field on Referral__c',why:'The client sorts the work list by it'},
  {id:'D-03',q:'Access',chosen:'Two permission sets, intake and site staff',why:'The two roles in the SOW; no profiles edited'}]};
 var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
-var st={};
-function S(id){return st[id]||(st[id]={})}
-function mini(m){if(!m||!m.length)return '';var h=m.length*30+4,o='<svg class="mini" viewBox="0 0 260 '+h+'" width="100%" role="img" aria-label="Data model for this option">';
- m.forEach(function(e,i){var y=2+i*30;o+='<rect x="1" y="'+y+'" width="104" height="22" rx="4"/><text x="53" y="'+(y+14)+'" text-anchor="middle">'+esc(e[0]).slice(0,19)+'</text>'+
- '<line x1="106" y1="'+(y+11)+'" x2="152" y2="'+(y+11)+'" stroke="currentColor" stroke-opacity=".6"/><path d="M146,'+(y+7)+' L153,'+(y+11)+' L146,'+(y+15)+'" fill="none" stroke="currentColor" stroke-opacity=".6"/>'+
- '<text x="129" y="'+(y+7)+'" text-anchor="middle" style="font-size:9px">'+esc(e[2]).slice(0,14)+'</text><rect x="154" y="'+y+'" width="104" height="22" rx="4"/><text x="210" y="'+(y+14)+'" text-anchor="middle">'+esc(e[1]).slice(0,19)+'</text>'});
- return o+'</svg>'}
-function callCard(c){var s=S(c.id),h='<div class="card"><div class="q">'+esc(c.id+' · '+c.q)+'<span class="tag w">Needs you</span>'+(c.holds?'<span class="tag">Holds '+esc(c.holds)+'</span>':'')+'</div>';
- h+='<div class="ctx">'+(c.why?'<b>Why it matters</b><span>'+esc(c.why)+'</span>':'')+(c.reqs?'<b>Requirement</b><span>'+esc(c.reqs)+'</span>':'')+(c.said?'<b>Client said</b><span class="quote">'+esc(c.said)+'</span>':'')+(c.today?'<b>In the org</b><span>'+esc(c.today)+'</span>':'')+'</div><div class="opts">';
- c.opts.forEach(function(o){h+='<button class="opt'+(s.pick===o.k?' on':'')+'" aria-pressed="'+(s.pick===o.k)+'" data-c="'+esc(c.id)+'" data-k="'+esc(o.k)+'"><div class="on-n"><span>'+esc(o.k+' · '+o.name)+'</span>'+(c.lean===o.k?'<span class="lean">Claude leans this way</span>':'')+'</div>'+
-  mini(o.model)+'<div class="pro">+ '+esc(o.pro)+'</div><div class="con">− '+esc(o.con)+'</div>'+(o.risk?'<div class="rk">Risk: '+esc(o.risk)+'</div>':'')+
-  (o.builds&&o.builds.length?'<div class="bl">Builds: '+o.builds.map(function(b){return '<code>'+esc(b)+'</code>'}).join(', ')+'</div>':'')+
-  '<div class="meta">'+[o.effort?'Effort '+o.effort:'',o.reversible||''].filter(Boolean).map(esc).join(' · ')+'</div></button>'});
- h+='</div>'+(c.lean_why?'<div class="sub"><b style="font-weight:500">Claude\'s lean:</b> '+esc(c.lean_why)+(c.change_if?' Would change if '+esc(c.change_if)+'.':'')+'</div>':'');
- h+='<div class="act"><button data-c="'+esc(c.id)+'" data-k="own" class="'+(s.pick==='own'?'on':'')+'">Something else</button><button data-c="'+esc(c.id)+'" data-k="more" class="'+(s.pick==='more'?'on':'')+'">I need more first</button></div>';
- if(s.pick==='own')h+='<input type="text" class="why" data-f="own" data-c="'+esc(c.id)+'" placeholder="Your decision" value="'+esc(s.own||'')+'">';
- if(s.pick==='more')h+='<input type="text" class="why" data-f="more" data-c="'+esc(c.id)+'" placeholder="What you need: a test in the sandbox, a question to the client, Ben\'s view" value="'+esc(s.more||'')+'">';
- if(s.pick&&s.pick!=='more')h+='<input type="text" class="why" data-f="why" data-c="'+esc(c.id)+'" placeholder="Why, for the log (optional; left empty, the option\'s trade-off is used)" value="'+esc(s.why||'')+'">';
+var st={};function S(id){return st[id]||(st[id]={})}
+function mini(m){if(!m||!m.length)return '';var o='<svg class="mini" viewBox="0 0 260 '+(m.length*28)+'" width="100%" role="img" aria-label="Data model for this option">';
+ m.forEach(function(e,i){var y=i*28+2;o+='<rect x="1" y="'+y+'" width="100" height="22" rx="4"/><text x="51" y="'+(y+14)+'" text-anchor="middle">'+esc(e[0]).slice(0,18)+'</text><line x1="102" y1="'+(y+11)+'" x2="155" y2="'+(y+11)+'" stroke="currentColor" stroke-opacity=".5"/><path d="M150,'+(y+7)+' L157,'+(y+11)+' L150,'+(y+15)+'" fill="none" stroke="currentColor" stroke-opacity=".5"/><text x="129" y="'+(y+7)+'" text-anchor="middle" style="font-size:9px">'+esc(e[2]).slice(0,12)+'</text><rect x="158" y="'+y+'" width="100" height="22" rx="4"/><text x="208" y="'+(y+14)+'" text-anchor="middle">'+esc(e[1]).slice(0,18)+'</text>'});return o+'</svg>'}
+function opt(c,o,s){var rows=[['Gains',o.gain,'g'],['Costs',o.cost,''],['Risk',o.risk,'k'],['Builds',(o.builds||[]).map(function(b){return '<code>'+esc(b)+'</code>'}).join(', '),'raw'],['Undo later',o.undo,''],['Effort',o.effort,'']];
+ return '<button class="opt'+(s.pick===o.k?' on':'')+'" aria-pressed="'+(s.pick===o.k)+'" data-c="'+esc(c.id)+'" data-k="'+esc(o.k)+'"><div class="on-n"><span>'+esc(o.k+' · '+o.name)+'</span>'+(c.lean===o.k?'<span class="lean">Recommended</span>':'')+'</div><div class="osum">'+esc(o.sum||'')+'</div><div>'+mini(o.model)+'</div>'+
+ rows.map(function(r,i){return '<div class="r'+(i?'':' first')+'"><span>'+r[0]+'</span><span'+(r[2]&&r[2]!=='raw'?' class="'+r[2]+'"':'')+'>'+(r[1]?(r[2]==='raw'?r[1]:esc(r[1])):'<span style="color:var(--text-muted)">Not given</span>')+'</span></div>'}).join('')+'</button>'}
+function card(c){var s=S(c.id),h='<div class="card"><div class="q">'+esc(c.id+' · '+c.q)+'<span class="tag w">Needs you</span></div>'+(c.ask?'<div class="ask">'+esc(c.ask)+'</div>':'')+(c.why?'<div class="why">'+esc(c.why)+'</div>':'');
+ var ctx=[c.said?'<div><b>Client said</b> <span class="said">'+esc(c.said)+'</span></div>':'',c.today?'<div><b>In the org today</b> '+esc(c.today)+'</div>':'',c.reqs?'<div><b>Requirement</b> '+esc(c.reqs)+'</div>':''].join('');
+ if(ctx)h+='<div class="ctx">'+ctx+'</div>';
+ h+='<div class="opts">'+c.opts.map(function(o){return opt(c,o,s)}).join('')+'</div>';
+ if(c.lean_why){var L=c.opts.filter(function(o){return o.k===c.lean})[0];h+='<div class="rec"><b>Claude recommends '+esc(c.lean+(L?', '+L.name.toLowerCase():''))+'.</b> '+esc(c.lean_why)+(c.change_if?' This changes if '+esc(c.change_if)+'.':'')+'</div>'}
+ h+='<div class="links"><button class="lk'+(s.pick==='own'?' on':'')+'" data-c="'+esc(c.id)+'" data-k="own">Something else</button><button class="lk'+(s.pick==='more'?' on':'')+'" data-c="'+esc(c.id)+'" data-k="more">I need more first</button></div>';
+ if(s.pick==='own')h+='<input type="text" class="inp" data-f="own" data-c="'+esc(c.id)+'" placeholder="Your decision" value="'+esc(s.own||'')+'">';
+ if(s.pick==='more')h+='<input type="text" class="inp" data-f="more" data-c="'+esc(c.id)+'" placeholder="What you need: a sandbox test, a question to the client, a colleague\'s view" value="'+esc(s.more||'')+'">';
+ if(s.pick&&s.pick!=='more')h+='<input type="text" class="inp" data-f="why" data-c="'+esc(c.id)+'" placeholder="Why, for the log (optional)" value="'+esc(s.why||'')+'">';
  return h+'</div>'}
-function draw(){
- document.getElementById('hd').textContent=CFG.client+' · '+CFG.stage;
- document.getElementById('rv').innerHTML=CFG.review?'<a href="'+esc(CFG.review)+'">Open the design and build review ↗</a>':'';
- document.getElementById('calls').innerHTML=CFG.calls.length?'<div class="sec"><span>Your calls, most held up first</span></div>'+CFG.calls.map(callCard).join(''):'';
- document.getElementById('recs').innerHTML=CFG.recs.length?'<div class="sec"><span>I went ahead on these. Confirm each one, or change it</span><button id="all" style="font-size:12px;padding:3px 10px;height:auto">Confirm all</button></div>'+CFG.recs.map(function(r){var s=S(r.id);return '<div class="row"><div class="q">'+esc(r.id+' · '+r.q)+'</div><div class="sub">'+esc(r.pick)+'. '+esc(r.why)+(/[.!?]$/.test(r.why||'')?'':'.')+(r.alt?' The other way: '+esc(r.alt)+'.':'')+(r.built?' <span style="color:var(--text-warning)">Already built in '+esc(r.built)+'; changing it means rework.</span>':'')+'</div><div class="seg" style="margin-top:6px">'+
-  ['ok','chg','more'].map(function(v){return '<button data-r="'+esc(r.id)+'" data-v="'+v+'" class="'+(s.v===v?'on':'')+'" aria-pressed="'+(s.v===v)+'">'+{ok:'Confirm',chg:'Change',more:'I need more first'}[v]+'</button>'}).join('')+'</div>'+
-  (s.v==='chg'?'<input type="text" class="why" data-f="own" data-c="'+esc(r.id)+'" placeholder="What you want instead, and why" value="'+esc(s.own||'')+'">':'')+(s.v==='more'?'<input type="text" class="why" data-f="more" data-c="'+esc(r.id)+'" placeholder="What you need to decide" value="'+esc(s.more||'')+'">':'')+'</div>'}).join(''):'';
- var wc=CFG.withclient||[];
- document.getElementById('client').innerHTML=wc.length?'<div class="sec"><span>With the client. Nothing for you to decide, unless you want to note a lean</span></div>'+wc.map(function(r){var s=S(r.id);return '<div class="row"><div class="q">'+esc(r.id+' · '+r.q)+(r.ref?'<span class="tag">'+esc(r.ref)+'</span>':'')+'</div><div class="sub">'+esc(r.why||'')+'</div><input type="text" class="why" data-f="lean" data-c="'+esc(r.id)+'" placeholder="Your lean, if any" value="'+esc(s.lean||'')+'"></div>'}).join(''):'';
- document.getElementById('clear').innerHTML=CFG.clear.length?'<div class="sec"><span>'+CFG.clear.length+' calls I made. Reopen any you want to weigh in on</span></div>'+CFG.clear.map(function(r){var s=S(r.id);return '<div class="row" style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center"><div><div class="q">'+esc(r.id+' · '+r.q+': '+r.chosen)+'</div><div class="sub">'+esc(r.why||'')+'</div></div><div class="seg"><button data-o="'+esc(r.id)+'" class="'+(s.reo?'on':'')+'" aria-pressed="'+!!s.reo+'">'+(s.reo?'Reopened':'Reopen')+'</button></div></div>'}).join(''):'';
- document.getElementById('appr').innerHTML=CFG.approve?'<div class="sec"><span>'+esc(CFG.approve)+'</span></div><div class="seg"><button data-a="yes" class="'+(st._ap==='yes'?'on':'')+'">'+esc(CFG.approve)+'</button><button data-a="no" class="'+(st._ap==='no'?'on':'')+'">Not yet</button></div><div class="sub">Tasks that wait on an open decision stay held either way.</div>':'';
+function draw(){document.getElementById('hd').textContent=CFG.client+' · '+CFG.stage;
+ document.getElementById('rv').innerHTML=CFG.review?'<a href="'+esc(CFG.review)+'">Full design and build review ↗</a>':'';
+ document.getElementById('calls').innerHTML=CFG.calls.length?'<div class="sec"><span>Needs your decision</span></div>'+CFG.calls.map(card).join(''):'';
+ document.getElementById('recs').innerHTML=CFG.recs.length?'<div class="sec"><span>I went ahead on these. Confirm or change</span><button class="lk" id="all">Confirm all</button></div>'+CFG.recs.map(function(r){var s=S(r.id);return '<div class="row"><div><div class="q">'+esc(r.id+' · '+r.q+': '+r.pick)+'</div><div class="why">'+esc(r.why)+(r.alt?'. The other way: '+esc(r.alt):'')+'.'+(r.built?' <span class="warn">Built in '+esc(r.built)+'; changing it means rework.</span>':'')+'</div>'+(s.v==='chg'?'<input type="text" class="inp" data-f="own" data-c="'+esc(r.id)+'" placeholder="What you want instead, and why" value="'+esc(s.own||'')+'">':'')+(s.v==='more'?'<input type="text" class="inp" data-f="more" data-c="'+esc(r.id)+'" placeholder="What you need to decide" value="'+esc(s.more||'')+'">':'')+'</div><div class="seg">'+['ok','chg','more'].map(function(v){return '<button data-r="'+esc(r.id)+'" data-v="'+v+'" class="'+(s.v===v?'on':'')+'">'+{ok:'Confirm',chg:'Change',more:'Need more'}[v]+'</button>'}).join('')+'</div></div>'}).join(''):'';
+ var wc=CFG.withclient||[];document.getElementById('client').innerHTML=wc.length?'<div class="sec"><span>With the client. A lean is optional</span></div>'+wc.map(function(r){var s=S(r.id);return '<div class="row" style="grid-template-columns:1fr"><div><div class="q">'+esc(r.id+' · '+r.q)+(r.ref?'<span class="tag">'+esc(r.ref)+'</span>':'')+'</div><div class="why">'+esc(r.why||'')+'</div><input type="text" class="inp" data-f="lean" data-c="'+esc(r.id)+'" placeholder="Your lean, if any" value="'+esc(s.lean||'')+'"></div></div>'}).join(''):'';
+ document.getElementById('clear').innerHTML=CFG.clear.length?'<div class="sec"><span>'+CFG.clear.length+' calls I made. Reopen any you want to weigh in on</span></div>'+CFG.clear.map(function(r){var s=S(r.id);return '<div class="row"><div><div class="q">'+esc(r.id+' · '+r.q+': '+r.chosen)+'</div><div class="why">'+esc(r.why||'')+'</div></div><div class="seg"><button data-o="'+esc(r.id)+'" class="'+(s.reo?'on':'')+'">'+(s.reo?'Reopened':'Reopen')+'</button></div></div>'}).join(''):'';
+ document.getElementById('appr').innerHTML=CFG.approve?'<div class="row" style="margin-top:.75rem;border-top:0.5px solid var(--border)"><div><div class="q">'+esc(CFG.approve)+'</div><div class="why">Work that waits on an open decision stays held either way.</div></div><div class="seg"><button data-a="yes" class="'+(st._ap==='yes'?'on':'')+'">Approve</button><button data-a="no" class="'+(st._ap==='no'?'on':'')+'">Not yet</button></div></div>':'';
  summary()}
-function summary(){var d=0,m=0,o=0,c=0,ch=0,r=0;
- CFG.calls.forEach(function(x){var s=S(x.id);if(s.pick==='more')m++;else if(s.pick)d++;else o++});
- CFG.recs.forEach(function(x){var s=S(x.id);if(s.v==='ok')c++;else if(s.v==='chg')ch++;else if(s.v==='more')m++;else o++});
- CFG.clear.forEach(function(x){if(S(x.id).reo)r++});
+function summary(){var d=0,m=0,o=0,c=0,ch=0,r=0;CFG.calls.forEach(function(x){var s=S(x.id);if(s.pick==='more')m++;else if(s.pick)d++;else o++});
+ CFG.recs.forEach(function(x){var s=S(x.id);if(s.v==='ok')c++;else if(s.v==='chg')ch++;else if(s.v==='more')m++;else o++});CFG.clear.forEach(function(x){if(S(x.id).reo)r++});
  document.getElementById('sum').textContent=[d&&d+' decided',c&&c+' confirmed',ch&&ch+' changed',r&&r+' reopened',m&&m+' need more',o&&o+' still open'].filter(Boolean).join(' · ')||'Nothing picked yet'}
 document.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
  if(b.id==='all'){CFG.recs.forEach(function(r){S(r.id).v='ok'});draw();return}
  if(b.dataset.c&&b.dataset.k){var s=S(b.dataset.c);s.pick=s.pick===b.dataset.k?undefined:b.dataset.k;draw();return}
  if(b.dataset.r){var s2=S(b.dataset.r);s2.v=s2.v===b.dataset.v?undefined:b.dataset.v;draw();return}
  if(b.dataset.o){S(b.dataset.o).reo=!S(b.dataset.o).reo;draw();return}
- if(b.dataset.a){st._ap=st._ap===b.dataset.a?undefined:b.dataset.a;draw();return}});
+ if(b.dataset.a){st._ap=st._ap===b.dataset.a?undefined:b.dataset.a;draw()}});
 document.addEventListener('input',function(e){var t=e.target;if(t.dataset&&t.dataset.f){S(t.dataset.c)[t.dataset.f]=t.value;document.getElementById('err').hidden=true;summary()}});
 document.getElementById('go').addEventListener('click',function(){var err=document.getElementById('err'),miss=[],out=[];
  CFG.calls.forEach(function(c){var s=S(c.id);if((s.pick==='own'&&!(s.own||'').trim())||(s.pick==='more'&&!(s.more||'').trim()))miss.push(c.id)});
  CFG.recs.forEach(function(r){var s=S(r.id);if((s.v==='chg'&&!(s.own||'').trim())||(s.v==='more'&&!(s.more||'').trim()))miss.push(r.id)});
  if(miss.length){err.textContent='Say what you want for '+miss.join(', ')+' first';err.hidden=false;return}
  CFG.calls.forEach(function(c){var s=S(c.id),w=(s.why||'').trim();
-  if(!s.pick)out.push(c.id+': still open');
-  else if(s.pick==='more')out.push(c.id+': need more first: '+s.more.trim());
+  if(!s.pick)out.push(c.id+': still open');else if(s.pick==='more')out.push(c.id+': need more first: '+s.more.trim());
   else if(s.pick==='own')out.push(c.id+': own answer: '+s.own.trim()+(w?' · why: '+w:''));
   else out.push(c.id+': '+s.pick+' ('+c.opts.filter(function(o){return o.k===s.pick})[0].name+')'+(w?' · why: '+w:''))});
  CFG.recs.forEach(function(r){var s=S(r.id);out.push(r.id+': '+(s.v==='ok'?'confirm':s.v==='chg'?'change: '+s.own.trim():s.v==='more'?'need more first: '+s.more.trim():'not confirmed yet'))});

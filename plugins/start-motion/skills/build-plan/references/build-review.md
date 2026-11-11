@@ -6,6 +6,10 @@ One page per client build, for the SA. The SA is accountable for every component
 
 The home of this text is `plugins/start-motion/shared/build-review.md`; skills carry copies, written by `scripts/sync-agents.py`.
 
+## How it looks
+
+On the Kicksaw brand: a navy header band with the logo, a cyan eyebrow and the orange rule; Inter for headings, Source Sans 3 for text; orange only for what needs the SA. The side navigation groups the page into Review (Needs you, decisions, stories, differences), Design (today and after, data model, flows, automation, pages, access, reporting), Build (every component, changes to what exists, tasks, checks) and Reference. Needs you is sorted by urgency: decisions, then what the page found on its own, then changes to what exists, then what to confirm and review. The data model is an entity diagram: each object with its new and changed fields and their types, and each relationship drawn from its field to the parent. Every component is grouped by object, so the SA reviews one object at a time.
+
 ## When it is made and updated
 
 - `/start-motion:build-plan` makes it when the plan is drafted, before the SA approves: everything is Planned or Waits. The SA reviews the plan from this page.
