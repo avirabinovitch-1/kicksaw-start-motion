@@ -116,6 +116,6 @@ Nothing about the run depends on this; a run is never blocked by its log.
 - Every criterion of every planned story has a task. Every task has a criterion.
 - Never invent an object, field, API name, value or limit.
 - The plan never widens the signed scope.
-- Agents never delete from an org and never touch a production org. A removal is a person's task; a production deployment is a person's job.
+- Agents never delete from an org and never touch a production org. A removal is a person's task; a production deployment is a person's job. (Undoing a rejected, unmerged task in the sandbox is part of `/start-motion:build`, not a plan task.)
 - Sign-in details never go in the repo. The alias is enough.
 - No em dashes.

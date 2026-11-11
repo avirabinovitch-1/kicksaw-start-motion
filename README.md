@@ -51,7 +51,9 @@ Claude Code, Cowork and Codex start these as separate agents. Claude chat cannot
 
 Rules no agent can break: configuration only, never client records; sandbox only, never production; nothing is deleted from an org, records or metadata; every change is a commit; a person merges; only what an approved task names, built the simplest sound way; SOW limits are counted; sign-ins stay in the Salesforce CLI on the person's computer.
 
-**The org guard.** The rules above are also enforced outside the agents' instructions. `hooks/org-guard.sh` runs before every shell command in Claude Code and Cowork. It blocks Salesforce CLI commands that read or change records (`sf data`), run anonymous Apex, call the org's API directly, delete metadata (destructive changes, `sf project delete source`), delete an org or uninstall a package. Any deploy that saves to an org (a deploy without `--dry-run`, a quick deploy, a package install) is stopped and shown to the person, who has to confirm the command themselves. Retrieves, validations, dry runs and test runs pass. The guard cannot tell a sandbox from production; the agents and the stage commands check that, and the guard is the backstop.
+**The org guard.** The rules above are also enforced outside the agents' instructions. `hooks/org-guard.sh` runs before every shell command in Claude Code and Cowork. It blocks Salesforce CLI commands that change, load, export or delete records, run anonymous Apex, call the org's API directly, delete metadata, delete an org or uninstall a package, and any saving deploy aimed at an org that is not a sandbox (it asks the CLI what kind of org the alias is). It stops and shows the person the command, to confirm themselves, for a query that returns client records, a deploy that saves to a sandbox, and the undo of a rejected task. Retrieves, validations, dry runs, test runs and queries about configuration (`--use-tooling-api`) pass.
+
+**Undoing a rejected task.** `/build` asks, once a task has passed its reviews, whether to deploy it to the sandbox so the person can check it by hand before merging. If the pull request is then rejected, "undo <task ID>" takes the change back out. `skills/build/scripts/undo-task.sh` builds the list from git: only what that task's unmerged branch created is removed, what it changed is put back to the main branch's version, and the guard re-checks the list and the org before the person confirms. This is the only removal the kit runs.
 
 ## Install
 
@@ -76,6 +78,7 @@ plugins/start-motion/                 the plugin
   .claude-plugin/plugin.json
   agents/<agent>.md                   the eight agents (0.2.0)
   hooks/hooks.json, hooks/org-guard.sh  the org guard (0.2.0)
+  skills/build/scripts/undo-task.sh   builds and checks the undo list for a rejected task (0.2.0)
   skills/<command>/SKILL.md           the skill
   skills/<command>/references/agents/  copies of the agents that skill starts, written by scripts/sync-agents.py
   skills/<command>/references/        method.md (what the stage is for, the bar, the page link) and other reference files

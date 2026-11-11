@@ -87,6 +87,7 @@ What to do with the findings:
 - Never settle a finding by guessing. A criterion that is not exact because the client never gave the value becomes an open question on the story and on the Open items tab.
 - A story the source checker found narrower or broader than what the client said, or contradicted by a later call, is not reworded on your own. Show the SC the row and the source lines side by side; they fix the wording, ask the client, or mark the point as Kicksaw's recommendation so nobody reads it as something the client asked for.
 - A finding that a story should be split or merged is the SC's call; list it.
+- The same fixes apply to a story the SC has already edited or reviewed. Read it fresh first, change only what the finding names, keep every other word of the SC's, tell the SC what changed in one line per story, and set a reviewed story back to Draft.
 - Run each reviewer once, fix, and run it once more on the stories that changed. Two passes at most. Whatever is still flagged goes to the SC as it is.
 - When you show the SC a story, show its open findings under it, each in one line: what stops the build first, with the question the architect would ask; then source findings with the source line and the few words that would fix it; tidy findings last, in one line together. A story with none says "Both reviewers passed".
 

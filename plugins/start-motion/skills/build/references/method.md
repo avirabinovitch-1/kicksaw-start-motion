@@ -21,10 +21,22 @@ A reviewer and the builder go back and forth three times at most. After that the
 - Only what was approved. Something useful that nobody asked for is reported as a suggestion, not built
 - SOW limits are counted. Where the SOW sets a limit, the builder checks the count before adding and stops at the limit
 - Sign-ins stay put. The org sign-in lives in the Salesforce CLI on the person's computer
-- Nothing is deleted from an org by an agent: no records, no metadata. A removal is a named task a person carries out
+- Nothing is deleted from an org by an agent: no records, no metadata. A removal is a named task a person carries out. The one exception is the undo of a rejected task, below
 - Nothing is done in a production org. A person runs every production deployment
 
-The plugin backs these with an org guard (`hooks/org-guard.sh`): it blocks Salesforce CLI commands that read or change records, delete metadata or an org, or run anonymous Apex, and it makes every deploy that saves wait for the person to confirm the command themselves.
+## Deploying and undoing
+
+The builder validates and never deploys. Once a task has passed both reviews, the stage asks whether to deploy it to the sandbox, so the person can do the by-hand checks before merging. One yes per deploy.
+
+If that task is then rejected, "undo <task ID>" takes it back out: what the task changed is put back to the main branch's version, and what the task created is removed. The list of what it created comes from git, built by a fixed script, and only an unmerged task in a sandbox can be undone. Nothing that was in the org before the task is touched.
+
+## The org guard
+
+The plugin backs these rules with an org guard (`hooks/org-guard.sh`) that checks every Salesforce CLI command before it runs:
+
+- Blocked: changing, loading, exporting or deleting records; anonymous Apex; direct API calls; deleting metadata (other than the undo above); deleting an org; any saving deploy or removal aimed at an org that is not a sandbox
+- Asks the person first: a query that returns client records; a deploy that saves to a sandbox; the undo of a rejected task
+- Passes: retrieve, validate, dry runs, test runs, and queries about configuration
 
 ## What "done" means
 

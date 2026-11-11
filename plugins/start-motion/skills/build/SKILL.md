@@ -43,7 +43,8 @@ Build one task per request unless the person says to keep going ("build the next
 6. **Findings go back to the builder.** Hand the builder the findings as written, nothing more. It fixes, validates and commits; the reviewers read the branch again from the start. **Three rounds at most.** After the third round with a criterion still not met or a must-fix still open, go to "Handing a task back".
 7. **When both reviewers pass,** tell the builder so; it writes the task note at `docs/tasks/<task ID>.md`.
 8. **Open the pull request** from `task/<task ID>` into the main branch (section 2), post the evidence note on the Jira story (section 3), and set the task to Built in `docs/build-plan.md`.
-9. **Stop.** A person reviews the pull request and merges it. Never merge, never approve your own pull request, and never push to the main branch.
+9. **Ask whether to deploy it to the sandbox.** One line, with what and where: "E1.2-T1 passed both reviews. Deploy it to neo-dev (a sandbox) so you can check it by hand before you merge?" On a yes, run the deploy of the task branch's changed files; the org guard shows the person the command and their confirmation there is the one confirmation. Never deploy without being asked each time, and never to an org the client is testing in unless the person says that is the org they mean. Add a line to the task note and the pull request: "Deployed to <alias> on <date> from commit <id>". On a no, carry on; the by-hand checks then wait until after the merge.
+10. **Stop.** A person reviews the pull request and merges it. Never merge, never approve your own pull request, and never push to the main branch.
 
 When the person says a pull request was merged, set the task to Merged in the plan, with the date.
 
@@ -90,9 +91,27 @@ A task goes back to a person when the builder stopped, when three rounds did not
 - Tell the person in a few lines: the task, what was built, what is still wrong (the finding, word for word), what was tried in each round, and what decision or fix it needs. A criterion that cannot be checked goes to the SC; a design question goes to the SA; an error in the org goes to whoever owns the sandbox.
 - The person builds the rest by hand, or answers and says "try again", which starts a fresh run of the task from step 3.
 
-## 5. Deploying merged work to the sandbox
+## 5. Deploying to the sandbox
 
-Agents validate; they do not deploy. When the person says "deploy what is merged to the sandbox", confirm the alias is a sandbox, say back exactly what will be deployed and to which org ("Deploying main, 6 merged tasks, to neo-dev, a sandbox. Go?"), and wait for a plain yes. Then deploy the main branch's metadata, run the tests, and report the result line. The plugin's org guard also stops every deploy that saves and shows the person the command to confirm; that second question is on purpose. This is the only deploy this stage runs, it runs only on a person's word in this conversation, and it never targets production. Production deployments are run by a person, outside this stage.
+The builder validates; it never deploys. A deploy happens in two places, each on the person's word: step 9 above, for one task that has passed its reviews; and when the person says "deploy what is merged to the sandbox", for the main branch. Either way, say in one line exactly what is going where ("Deploying main, 6 merged tasks, to neo-dev, a sandbox"), then run it. The org guard checks the org is a sandbox, shows the person the command, and their confirmation there is the single yes; do not ask a second time in chat. The guard refuses any saving deploy to an org that is not a sandbox.
+
+## 5b. Undoing a rejected task
+
+A task that was deployed for a by-hand check and then rejected has left its change in the sandbox. When the person rejects or closes the pull request, or says "undo E1.2-T1", take it back out. This is the one removal the kit runs, and it is narrow on purpose:
+
+- only a task whose branch is **not merged**;
+- only what **that task's branch created**, worked out from git by a fixed script, never from your own reading of the org;
+- only in a **sandbox**;
+- never records, and never anything that was in the org before the task.
+
+Steps:
+1. Run `bash "${CLAUDE_PLUGIN_ROOT}/skills/build/scripts/undo-task.sh" prepare <task ID>` in the client's repo. It writes `.start-motion/undo/<task ID>/` and prints three lists: what the task created (to remove), what it changed (to put back to the main branch's version), and what it created that the script cannot name (to remove by hand).
+2. Show the person the three lists as printed. Say what removing means for them: a removed field takes any values typed into it during the check with it, and stays recoverable in Setup under Deleted Fields for 15 days. Never edit the lists or the files the script wrote.
+3. Put back what was changed: deploy the main branch's copy of each file in `restore.txt` to the sandbox. The guard asks the person to confirm.
+4. Remove what was created: `sf project deploy start --manifest .start-motion/undo/<task ID>/package.xml --post-destructive-changes .start-motion/undo/<task ID>/destructiveChanges.xml --target-org <alias>`. The guard checks the list against git again, checks the org is a sandbox, and asks the person to confirm. If the guard refuses, do not look for another way; tell the person what it said.
+5. Report what was removed, what was put back, and what is left for a person: anything on the by-hand list, an active flow that has to be switched off in Setup before it can be removed, and picklist values added to an existing field (putting the field back does not take a value away). Set the task to Handed back in the plan with "undone in <alias> on <date>".
+
+Work that is already merged is never undone this way. Taking merged work out is a new task in the build plan, named, approved by the SA and carried out by a person. This is the only deploy this stage runs, it runs only on a person's word in this conversation, and it never targets production. Production deployments are run by a person, outside this stage.
 
 ## 6. UAT scripts
 
@@ -106,7 +125,7 @@ When asked ("update the build log for [Client]"), write or update the build log 
 
 For one task, a few lines: the task, the result (pull request link, or handed back and why), what the person needs to check by hand in the sandbox, names to confirm, and the next task in order. For a run of several, a short table: task, result, rounds, pull request. No recap of steps.
 
-End with one line naming what comes next: review and merge the pull request; then `/start-motion:build` for the next task.
+End with one line naming what comes next: review and merge the pull request, then `/start-motion:build` for the next task; or, if the change is not right, reject it and say "undo <task ID>" to take it back out of the sandbox.
 
 ## Log the run
 
@@ -131,7 +150,7 @@ Nothing about the run depends on this; a run is never blocked by its log.
 - Everything is a commit. No change is made in the org that is not in the repo.
 - A person merges. Nothing reaches the main branch on an agent's say.
 - Only what was approved. A task builds what the approved plan names; anything else is a suggestion.
-- Nothing is deleted from an org by an agent or by this stage: no records, no metadata. Removals are named tasks a person carries out.
+- No agent deletes anything from an org: no records, no metadata. The one removal this stage runs is the undo of a rejected, unmerged task (section 5b): only what that task created, in a sandbox, from a list the script builds and the guard checks, on the person's confirmation. Every other removal is a named task a person carries out.
 - The simplest build that satisfies the criteria: standard before custom, configuration before code, relationships and formulas before stored copies, nothing added for later.
 - SOW limits are counted before anything is added.
 - Sign-ins stay in the Salesforce CLI on the person's computer. Never in the repo, a pull request, a Jira comment or the chat.

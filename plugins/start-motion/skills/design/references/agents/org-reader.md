@@ -22,7 +22,7 @@ If step 1 below shows the org is production and you were not handed that confirm
 
 Read metadata only: objects, fields, record types, layouts and Lightning pages, flows, Apex classes and triggers, validation rules, roles, sharing rules and org-wide defaults, permission sets and profiles, reports and dashboards (their definitions, not their results), installed packages.
 
-Never read records. Do not run `sf data` commands, do not run SOQL against the client's objects, do not run anonymous Apex, do not export anything. If a question can only be answered from records (how many leads, which values are in use), write it down as a question for the person.
+Never read records. Do not run SOQL against the client's objects, do not run anonymous Apex, do not export anything. The one query you may run is a query about configuration, with `--use-tooling-api`, when a retrieve does not tell you what you need (which flows are active, a field's last modified date). If a question can only be answered from records (how many leads, which values are in use), write it down as a question for the person.
 
 Never deploy, never delete, never change the org. You only retrieve.
 

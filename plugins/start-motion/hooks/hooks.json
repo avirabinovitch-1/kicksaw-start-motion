@@ -8,7 +8,7 @@
           {
             "type": "command",
             "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/org-guard.sh\"",
-            "timeout": 10
+            "timeout": 45
           }
         ]
       }
