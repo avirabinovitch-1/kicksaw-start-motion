@@ -27,12 +27,15 @@ STARTS = {
 
 # shared texts every skill in the list carries a copy of, at references/<file>
 SHARED_DIR = os.path.join(PLUGIN, 'shared')
-SHARED = {
-    'decisions.md': ['design', 'build-plan', 'build'],
-    'decision-picker.html': ['design', 'build-plan', 'build'],
+SHARED = {  # file -> [(skill, folder inside the skill)]
+    'decisions.md': [('design', 'references'), ('build-plan', 'references'), ('build', 'references')],
+    'decision-picker.html': [('design', 'references'), ('build-plan', 'references'), ('build', 'references')],
+    'build-review.md': [('design', 'references'), ('build-plan', 'references'), ('build', 'references')],
+    'build-review.py': [('build-plan', 'scripts'), ('build', 'scripts')],
 }
 SHARED_NOTE = {
     '.md': '<!-- Copy of plugins/start-motion/shared/%s, written by scripts/sync-agents.py. Do not edit here. -->\n\n',
+    '.py': '# Copy of plugins/start-motion/shared/%s, written by scripts/sync-agents.py. Do not edit here.\n',
 }
 
 NOTE = ('<!-- Copy of plugins/start-motion/agents/%s.md, written by scripts/sync-agents.py. Do not edit here. '
@@ -80,11 +83,11 @@ def main():
         text = open(src, encoding='utf-8').read()
         head = SHARED_NOTE.get(os.path.splitext(name)[1])
         want = (head % name if head else '') + text
-        for skill in skills:
+        for skill, folder in skills:
             if not os.path.isdir(os.path.join(SKILLS, skill)):
                 skipped.append(skill)
                 continue
-            dest = os.path.join(SKILLS, skill, 'references', name)
+            dest = os.path.join(SKILLS, skill, folder, name)
             have = open(dest, encoding='utf-8').read() if os.path.exists(dest) else None
             if have == want:
                 continue

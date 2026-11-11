@@ -111,6 +111,7 @@ Do not stop the draft to ask about any of them. Finish everything you can, then 
 - One HTML artifact on the Kicksaw design system (list Design System artifacts; colors from the Kicksaw Brand Playbook V2). Header: "Solution design · [platform]", the client, a one-line subtitle, prepared by the SA, the date, and a status: "Draft" until scope is confirmed, then "Final".
 - Contents on the side with every section linked; numbered sections; tables over prose.
 - Real API names in code style. TBD as a small chip wherever a detail waits on something, with what it waits on.
+- Once a build plan exists, a link at the top to its design and build review page (`references/build-review.md`), where the SA sees every component the design turns into.
 - A **Key decisions** section after the data model: each Decided row in a line the client can read (the decision, what was chosen, why, from the Chosen and Why columns), then the open ones with who decides each. Internal reasoning (effort, margin, anything about the relationship) stays on the Decisions tab.
 - Diagrams: draw flows in the document as numbered steps. When the SA draws a diagram by hand in Lucid, embed or link it and caption it. A diagram that also appears in the readout is identical in both.
 

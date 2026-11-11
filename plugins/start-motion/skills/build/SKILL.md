@@ -50,12 +50,14 @@ Build one task per request unless the person says to keep going ("build the next
 
 When a pull request is merged (the person says so, or the next run finds it merged), set the task to Merged in the plan, with the date, and update the story's Metadata field (section 3).
 
+After every task that reaches a pull request, every merge caught up on and every undo, update the design and build review page (`references/build-review.md`): refresh `content.json` (the task's status and pull request, any decision logged) and run `scripts/build-review.py` with `--head main` and a `--head` for each open task branch, then publish it to the same artifact. Anything it finds on its own for this task goes in the pull request's Check before you merge.
+
 ## 2. The pull request
 
 Title: `<Jira key> <task ID>: <what changed>` ("HLS-157 E1.2-T1: four fields on Referral"). The Jira key at the start, in the title, the branch's commits and the body, is what puts the pull request on the story's Development panel in Jira when the client's Jira has the GitHub app; the evidence note links it either way. The person reviewing reads the top of the body and decides from there, so the top is short and in plain words:
 
 - **What this does:** one or two sentences, in the story's language, no API names.
-- **Check before you merge:** the checks only a person can do, as a short list ("open a Referral as an intake specialist and confirm Court date shows under Intake"). "Nothing to check by hand" when there is nothing.
+- **Check before you merge:** the link to the design and build review page, then the checks only a person can do, as a short list ("open a Referral as an intake specialist and confirm Court date shows under Intake"). "Nothing to check by hand" when there is nothing.
 - **Decide:** names the builder chose, anything removed, should-fix items left. "Nothing to decide" when there is nothing. Design decisions are never decided in a pull request: they are on the Decisions tab, and the evidence below lists the ones this task built to.
 
 Then the evidence, in this order:
@@ -145,7 +147,7 @@ When asked ("update the build log for [Client]"), write or update the build log 
 
 ## 8. Report back
 
-For one task, a few lines: the task, the result (pull request link, or handed back and why), what the person needs to check by hand in the sandbox, names to confirm, and the next task in order. For a run of several, a short table: task, result, rounds, pull request. No recap of steps. Then, in one place, everything waiting on a person: pull requests to review, by-hand checks, and decisions (the picker, when any task was handed back on one).
+For one task, a few lines: the task, the result (pull request link, or handed back and why), the review page's link, what the person needs to check by hand in the sandbox, names to confirm, and the next task in order. For a run of several, a short table: task, result, rounds, pull request. No recap of steps. Then, in one place, everything waiting on a person: pull requests to review, by-hand checks, and decisions (the picker, when any task was handed back on one).
 
 End with one line naming what comes next: review and merge the pull request, then `/start-motion:build` for the next task; or, if the change is not right, reject it and say "undo <task ID>" to take it back out of the sandbox.
 

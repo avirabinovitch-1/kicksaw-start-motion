@@ -85,6 +85,10 @@ Save `docs/build-plan.md` in the client's repo, on a branch named `build-plan/<d
 - SOW limits: each one with the count today and the count when the plan is built.
 - Suggestions: useful things nobody asked for, for the SA to raise or drop.
 
+### 5b. The design and build review page
+
+Make the SA's review page as `references/build-review.md` sets out: `content.json` from the design, this plan, the Decisions tab, the stories and the org summary, then `scripts/build-review.py` in this skill's folder, then publish it. It shows every object, field, rule, automation, page, action and permission set the plan creates or changes, with the stories, decisions, diagrams and checks behind them. Put its link in the plan's header. The SA approves the plan from this page, not from the plan file alone. Before reporting, read its Needs you section: anything it found on its own (a field nobody is granted, two flows on the same object and moment) is either fixed in the plan or listed for the SA.
+
 If the team wants them, create one Jira sub-task per task under its story, titled with the task ID and what it changes. Only after the SA approves the plan.
 
 After the SA approves, add a short block at the end of each planned story's Build/Solution Details field in Jira, under the SA's own text and never in place of it:
@@ -107,7 +111,7 @@ When asked ("update the [Client] build plan"): read the stories that changed in 
 
 Three short paragraphs: what the plan covers (stories, tasks, how many have code), what the SA has to decide before approving (names to give, stories sent back, limits near), and what is not planned and why. No recap of steps.
 
-Then, when any decision the plan touches is still Proposed or was added in this run, the decision picker as `references/decisions.md` sets out (`references/decision-picker.html` in Claude chat, the plain text block elsewhere), with the stage "Build plan" and only the decisions the planned tasks touch. Approving the plan and answering the picker can be the same message. When the answers come back, write them to the Decisions tab and take "waits on" off the tasks they unblock.
+Then the link to the design and build review page, and the decision picker as `references/decisions.md` sets out (`references/decision-picker.html` in Claude chat, the plain text block elsewhere), with the stage "Build plan", `review` set to the page's link, `approve` set to "Approve the build plan", and only the decisions the planned tasks touch. Show it even when no decision is open: approving the plan is its last step. Write "Approved by <name> on <date>" only when the SA approved in it or said so plainly. When the answers come back, write them to the Decisions tab and take "waits on" off the tasks they unblock.
 
 End with one line naming what comes next: the SA reads and approves the plan; then `/start-motion:build` builds it one task at a time.
 

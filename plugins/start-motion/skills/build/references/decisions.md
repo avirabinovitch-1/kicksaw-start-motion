@@ -67,10 +67,16 @@ A run never stops because a decision is open. It finishes everything else and en
 
 At the end of a run that leaves rows Proposed (and at build plan approval, for the decisions its tasks depend on), show the decision picker: `references/decision-picker.html`, in Claude chat when an interactive visual can be shown. Change only the `CFG` line at the top of its script; send the rest as it is.
 
-- `client`, `stage` ("Solution design", "Build plan", "Build").
-- `calls`: SA calls and Client calls, most consequential first. Each: `id`, `q` (the Decision column), `why` (one line: what it affects and why it matters), `kind` ("SA call" or "Client call"), `opts` (each with `k` (A, B, C), `name`, `pro`, `con`, and `effort` when it differs: "Low", "Medium", "High"), `lean` (the option's `k`, or empty).
-- `recs`: Recommended rows, each with `id`, `q`, `pick` (the option name) and `why`.
-- `clear`: Clear rows, each with `id`, `q` and `chosen`.
+- `client` (the client's name), `stage` ("Solution design", "Build plan", "Build"), `review` (the link to the design and build review page, with `#needs-you`), and `approve` (the approval label, such as "Approve the build plan", only at a stage that has one; otherwise leave it out).
+- `calls`: SA calls, the one most other work waits on first. Each: `id`, `q` (the Decision column), `holds` ("1 task, 2 stories"), `why` (what it affects and why it matters), `reqs` (the requirement IDs and statements), `said` (the client's own words with speaker, call and timestamp, when a call touched it), `today` (what the org has now, from the org summary), `opts`, `lean` (an option's `k`, or empty), `lean_why`, `change_if` (the What would change it column).
+- each option in `opts`: `k` (A, B, C), `name`, `pro`, `con`, `risk`, `reversible` ("Easy to change later", "Hard to change once records exist in production"), `effort` ("Low", "Medium", "High"), `builds` (what the option creates or changes, by real or design name: "Follow_Up_Of__c (lookup to Referral__c)", "Flow on Referral__c, after save, update"), and `model` when the choice changes the data model (each relationship as [child, parent, field or label]); the picker draws each option's model so the SA sees the difference.
+- `recs`: Recommended rows: `id`, `q`, `pick`, `why`, `alt` (the other way, in a clause), and `built` (the task that already built on it, so the SA sees what changing it would cost).
+- `withclient`: Client calls: `id`, `q`, `ref` ("Q-14 with the SC"), `why`.
+- `clear`: Clear rows: `id`, `q`, `chosen`, `why`.
+
+Every fact in the picker comes from somewhere the SA could check: the requirements list, a transcript, the org summary, the design or the plan. Never write an option, a risk or a quote you cannot point to; leave the field out instead.
+
+What the SA can do in it: pick an option, write their own, or say "I need more first" with what they need (a sandbox test, a question to the client, a colleague's view); confirm, change or ask for more on each recommendation (nothing is confirmed until they say so; "Confirm all" is one click); note a lean on a client call; reopen any call Claude made; approve the stage when `approve` is set; and give a reason for any decision, which becomes the Why. The send button summarizes what will happen.
 
 One line above it, for example: "Two calls need you for Harborlight, three recommendations to confirm, and eleven I made. Everything else is drafted." The picker returns the answers as a message; write them straight into the log.
 
@@ -92,17 +98,20 @@ Made (reopen any):
 D-01 · [question]: [chosen]
 D-02 · ...
 
-Answer in one line, for example: "D-07 B, confirm all, reopen D-02".
+Answer in one line, for example: "D-07 B because ..., confirm all, reopen D-02, D-08 need more: the LWC effort".
 ```
 
 Client calls appear in the picker so the SA can see them, marked "Client call · Q-14 with the SC"; the SA can note a lean, but the row stays Proposed until the client answers.
 
 ## Writing the answers back
 
+- "I need more first": the row stays Proposed. Do what was asked in this run when you can (research it, check the org summary, draft the question for the SC), add what you found to the row's options, and put it back in front of the SA; when it needs someone else (a sandbox test, the client), say who and log it in Source.
+- "Not confirmed yet" on a recommendation: it stays Proposed and the work on it continues; it is listed again at the next picker.
 - A pick, or the person's own wording: Chosen, Decided by (the person's name, from the session or as they gave it), Date, Source ("SA in chat, <date>"), Status Decided. Write Why from the option's trade-off and anything the person said; if they gave no reason, Why is the option's pro line.
 - "Confirm": Chosen takes the Recommended pick.
 - "Reopen" on a Clear row: it becomes an SA call; write its options and put it in the next picker, or in this run if the person is still here.
 - A changed decision is never edited: write a new row, set the old one to Superseded with Superseded by. Then update everything in Affects.
+- Approval, when sent: record it as the stage says (the build plan's status line, the design's status), never on Claude's own say.
 - Then act on it in the same run: update the design section (remove the Open callout, fold the choice in), take the D-ID off the story's open question, mark the build tasks unblocked. Say in one line what changed because of it.
 
 ## How the agents use the log
