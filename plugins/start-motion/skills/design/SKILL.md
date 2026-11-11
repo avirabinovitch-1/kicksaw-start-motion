@@ -170,7 +170,7 @@ When asked ("get the [Client] design ready to share"), once the client has confi
 
 ## 7. Report back
 
-Three short paragraphs: what the design covers and how it is organized, the version saved (with the Drive file and the Claude link), what is still TBD and who answers each one, and what the SA should check.
+Three short paragraphs: what the design covers and how it is organized, the version saved (with the Drive file and the Claude link), what is still TBD and who answers each one, and what the SA should check. Then the design reviewer's findings that are still open, each in one line (uncovered requirements by ID, conflicts with the org, anything beyond scope), the date of the org summary or record of the org the design was written against (or that there was none), and one line on how the reviewer ran. No recap of steps.
 
 Then the decisions, the way `references/decisions.md` sets out: in Claude chat when an interactive visual can be shown, the decision picker (`references/decision-picker.html`, only its `CFG` line changed) with the SA calls and client calls, the recommendations to confirm and the clear calls you made; everywhere else, the same in the plain text block that file gives. One line above it, for example: "Two calls need you, three I went ahead on, eleven I made. Everything else is drafted." When the answers come back, write them to the Decisions tab, update the sections they unblock, and say in one line what changed. Skip this when no row is Proposed and no Clear row was added in this run. Then the design reviewer's findings that are still open, each in one line (uncovered requirements by ID, conflicts with the org, anything beyond scope), the date of the org summary the design was written against (or that there was none), and one line on how the reviewer ran. No recap of steps.
 
@@ -181,7 +181,7 @@ End with one line naming what comes next: after the first draft, keep it current
 After the report, write out one short run-log row for the delivery kit and say in one line that pasting it into #discovery-skill-feedback is optional (it helps the kit improve; it is never required). Write it quietly: no questionnaire, no asking the person to rate anything. The row, as plain text:
 
 ```
-Run log · start-motion:design (v0.1.6) · design · <client> · <date>
+Run log · start-motion:design (v0.1.7) · design · <client> · <date>
 Ran by: <the name of the person running it, if the session says; otherwise leave it for them>
 Corrected: <what the person corrected during the run, in one to three plain sentences: an output they rewrote, a proposal they rejected and why, an assumption that was wrong. "Nothing" if nothing.>
 Had to ask for: <anything you had to ask for that you should have found on your own (a folder, a link, a name already in a note). "Nothing" if nothing.>
