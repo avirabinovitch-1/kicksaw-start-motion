@@ -29,10 +29,19 @@ From the client's Claude Project and the places it links:
 - The signed SOW: confirmed architecture decisions and the section numbers to cite.
 - The discovery documents: the requirements list (with its Integrations and Open items tabs), the workflows, the session notes and their build notes, and the data and migration list when the project has one.
 - The readout as it stands: recommended build, scope in and set aside, open decisions.
-- The current org, if the client already runs Salesforce: objects and fields already in use.
+- The current org, when the client has one (an existing org, or a sandbox the team has started building in): the org summary at `docs/org-summary.md` in the client's repo, with a copy in the client's Drive folder. It lists the objects, fields, automation, access and pages that already exist, by their real names. When there is no summary, or the org has changed since it was written, get one first ("Start from the org" below).
 - Any access worksheet or data dictionary.
 
 If the SOW, the requirements list or the workflows are missing, say which and stop. A missing data list is not a reason to stop; say the design has no data section to draw on. Never design from memory or from raw transcripts.
+
+### Start from the org
+
+A design written from the requirements alone can name a new field where one already exists, or miss automation the new build will collide with. So when the client has an org, the design starts from what is in it.
+
+- Where the session has a terminal with the Salesforce CLI signed in to the org and the client's repo on this computer (Claude Code, Cowork with the repo folder connected, Codex), start the org reader: `start-motion:org-reader`. Hand it the client's name, the org's alias, the repo path, the SOW's countable limits (custom fields per object and the like) and the date of the last summary. It pulls the org's configuration into the repo on its own branch and writes `docs/org-summary.md`. It reads configuration only, never records, and changes nothing in the org.
+- Save a copy of the summary to the client's Drive folder so the SC and PM can read it.
+- In Claude chat with no terminal, the org cannot be read from here. Use the summary in the client's folder if there is one and say its date; if there is none, say the design is being drafted without a read of the org, and mark every object and field it names as "to check against the org".
+- Name existing objects, fields and picklist values exactly as the summary has them, and say plainly what is new. Where the design adds automation to an object that already has some, say how the two will work together.
 
 ## 1. Propose the sections
 
@@ -73,6 +82,19 @@ Four parts, in this order:
 - Real API names in code style. TBD as a small chip wherever a detail waits on something, with what it waits on.
 - Diagrams: draw flows in the document as numbered steps. When the SA draws a diagram by hand in Lucid, embed or link it and caption it. A diagram that also appears in the readout is identical in both.
 
+## 4b. Have the design checked
+
+After a first draft, after an update that changes more than a TBD, and always before getting it ready to share, start the design reviewer: `start-motion:design-reviewer`. It did not see the design being drafted. Hand it the design as it stands; the requirements in scope (ID, statement, status, Scope), saying whether the scope is signed yet; the user stories when they exist; and the org summary when there is one. Never hand it the transcripts or your notes.
+
+Where the session cannot start a separate agent (Claude chat often cannot), read `references/reviewers/design-reviewer.md` in this skill's folder and run it yourself as a second pass, working from the requirements list and the org summary, not from memory of drafting. Say in the report which way it ran; a second pass in the same conversation is weaker than a separate reader.
+
+What to do with the findings:
+- An uncovered requirement: add it to the section it belongs in when the discovery documents say how it is met; otherwise add it as a TBD with what it waits on. Never design around a gap with an assumption.
+- A conflict with the org where the summary settles it (a field that already exists, a name spelled differently): correct the design to the org's name. A conflict that needs a decision (two automations on one object, an access model that changes) goes to the SA as an Open callout in that section.
+- Something designed beyond the confirmed scope: mark it in the design and list it for the SA. The SA takes it out or raises it with the PM. Do not remove it on your own.
+- An unconfirmed detail: mark it TBD with what it waits on.
+- Run the reviewer once, fix, and run it once more. Two passes at most. Whatever is still flagged goes to the SA as it is.
+
 ## 5. Keep it current
 
 When asked ("update the [Client] solution design from today's call"): read the call, fold in what was decided, close the TBDs it answered with the date and source, and add new TBDs. Keep the document's tone, structure and look; add to it, never restyle it. List what changed.
@@ -87,9 +109,9 @@ When asked ("get the [Client] design ready to share"), once the client has confi
 
 ## 7. Report back
 
-Three short paragraphs: what the design covers and how it is organized, what is still TBD and who answers each one, and what the SA should check. No recap of steps.
+Three short paragraphs: what the design covers and how it is organized, what is still TBD and who answers each one, and what the SA should check. Then the design reviewer's findings that are still open, each in one line (uncovered requirements by ID, conflicts with the org, anything beyond scope), the date of the org summary the design was written against (or that there was none), and one line on how the reviewer ran. No recap of steps.
 
-End with one line naming what comes next: after the first draft, keep it current with `/start-motion:design` after each systems session, third-party call or decision; after scope sign-off, `/start-motion:design` gets it ready to share and the SC, PM and build lead review it; once it is shared, `/start-motion:user-stories` writes the stories with the design in hand.
+End with one line naming what comes next: after the first draft, keep it current with `/start-motion:design` after each systems session, third-party call or decision; after scope sign-off, `/start-motion:design` gets it ready to share and the SC, PM and build lead review it; once it is shared, `/start-motion:user-stories` writes the stories with the design in hand; once the stories are refined and the SA has approved the design, `/start-motion:build-plan` turns them into build tasks.
 
 ## Log the run
 

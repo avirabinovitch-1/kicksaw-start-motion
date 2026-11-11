@@ -69,7 +69,24 @@ Work through the epic plan story by story, starting from each story's row on the
 - Add the readout to the Source footer line.
 - Write the finished story back to its row on the User stories tab, so the sheet and what goes to Jira match.
 
-A story keeps the status Draft while you work on it. Then show the stories to the SC one at a time for review, edit and approval; when the SC approves one, set it to Reviewed by SC on the sheet. Create nothing in Jira until the SC says the story is ready. A Withdrawn story is never pushed; list it for the SC with the quote that withdrew it. Before showing the SC anything for an epic, have that epic's stories read cold against the transcripts and the readout for defects only (a separate reviewer agent where one is available, otherwise a second pass of your own from the transcripts, not from memory); reconcile first.
+A story keeps the status Draft while you work on it. Then show the stories to the SC one at a time for review, edit and approval; when the SC approves one, set it to Reviewed by SC on the sheet. Create nothing in Jira until the SC says the story is ready. A Withdrawn story is never pushed; list it for the SC with the quote that withdrew it. Before showing the SC anything for an epic, run the two reviewers on that epic's stories ("The two reviewers" below) and act on what they find.
+
+### The two reviewers
+
+Two reviewers read every story before the SC does. Each has one job and reads the story without having seen it written.
+
+- **The source checker** opens every quote's call at its timestamp and checks that the quote is there, that the speaker is right, and that the acceptance criteria say what the client said: not more, not less. Hand it the epic's stories (ID, acceptance criteria, each quote with its citation), the tl;dv link for every S-ID the stories cite, the signed readout, and the calls held after each story was drafted.
+- **The story reviewer** reads each story as the architect and the tester will, with only the story in hand, and reports the criteria that cannot be built or tested as written. Hand it the stories only, plus the list of objects and fields that already exist when the solution design or an org summary has one. Never hand it the requirements list or the transcripts.
+
+**Starting a reviewer.** Where the session can start a separate agent (Claude Code, Cowork, Codex), start it by name (`start-motion:source-checker`, `start-motion:story-reviewer`) and hand it only what its file says it is handed: never this conversation, your notes or your reasoning. Where the session cannot start one (Claude chat often cannot), read its instructions at `references/reviewers/<name>.md` in this skill's folder and run them yourself as a second pass, working from the sources and the story text, not from memory of drafting. Say on the report which way each reviewer ran; a second pass in the same conversation is weaker than a separate reader, and the SC should know which one they got.
+
+What to do with the findings:
+- Fix what is plainly wrong and what the sources settle: a quote that differs from the transcript is replaced with the transcript's words; a wrong timestamp or speaker is corrected; a criterion with no trigger gets the trigger the client stated; a quote inside the criteria moves to the Description; Given/When/Then is rewritten as plain behavior.
+- Never settle a finding by guessing. A criterion that is not exact because the client never gave the value becomes an open question on the story and on the Open items tab.
+- A story the source checker found narrower or broader than what the client said, or contradicted by a later call, is not reworded on your own. Show the SC the row and the source lines side by side; they fix the wording, ask the client, or mark the point as Kicksaw's recommendation so nobody reads it as something the client asked for.
+- A finding that a story should be split or merged is the SC's call; list it.
+- Run each reviewer once, fix, and run it once more on the stories that changed. Two passes at most. Whatever is still flagged goes to the SC as it is.
+- When you show the SC a story, show its open findings under it, each in one line. A story with none says "Both reviewers passed".
 
 ### The title
 
@@ -137,7 +154,7 @@ Build/Solution Details, Metadata, Test Steps and build or QA sub-tasks belong to
 
 ## 3. Create the stories in Jira
 
-When the SC approves a story, create it in the client's Jira project under its epic (create the epic first if it is not there): Summary from the Title, and User Story, Description, Acceptance Criteria and Open Questions in their own fields, Priority Medium unless the SC says otherwise, T-Shirt Size when the SC has sized it, unassigned, the story ID as its label. Status New, with or without open questions. Link dependencies with "blocks". Read the issue back to confirm the custom fields landed. Then confirm the key to the SC, add it to stories/epic-plan.md, and on the requirements list set the story's row on the User stories tab to In Jira with its key, and write the key in the Jira column of every requirement the story covers.
+When the SC approves a story, create it in the client's Jira project under its epic (create the epic first if it is not there): Summary from the Title, and User Story, Description, Acceptance Criteria and Open Questions in their own fields, Priority Medium unless the SC says otherwise, T-Shirt Size when the SC has sized it, unassigned, the story ID as its label. Status New, with or without open questions. Link dependencies with "blocks". A story the SC edited after the reviewers ran goes through the story reviewer once more before it is created; a finding goes back to the SC, not into Jira. Read the issue back to confirm the custom fields landed. Then confirm the key to the SC, add it to stories/epic-plan.md, and on the requirements list set the story's row on the User stories tab to In Jira with its key, and write the key in the Jira column of every requirement the story covers.
 
 From here Jira is the story's home: refinement changes go to Jira, and the sheet row keeps the key and status.
 
@@ -173,7 +190,7 @@ Stories then flow: New, Pending Client Approval, Refined, Build Ready, In Progre
 
 ## 6. Report back
 
-Three short paragraphs: what was finished or changed and under which epics, what the SC needs to check or decide, and what is still open with the client. Then a short list of every story waiting for review. After a refinement, also list every story that changed with the criteria touched, and any quote that could not be found in the transcript. No recap of steps.
+Three short paragraphs: what was finished or changed and under which epics, what the SC needs to check or decide, and what is still open with the client. Then a short list of every story waiting for review, each with the reviewers' findings still open on it, and one line on how the reviewers ran (as separate agents, or as a second pass in this conversation). After a refinement, also list every story that changed with the criteria touched, and any quote that could not be found in the transcript. No recap of steps.
 
 End with one line naming what comes next, by move: after the epic plan, `/start-motion:user-stories` finishes the stories epic by epic; after the SC approves a story, `/start-motion:user-stories` creates it in Jira; before each refinement session, `/start-motion:user-stories` preps it; the same day after it, `/start-motion:user-stories` folds the answers in; once sprint 1 is refined, the SA adds build details and sizes the stories with the SC, and the PM loads the sprint.
 

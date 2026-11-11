@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0 (not released; on branch agents-0.2.0, written Nov 10, 2026, not yet tested)
+
+Agents (Avi, Nov 9 and 10). Eight agents in `plugins/start-motion/agents/`, each with one job, a cold start and a fixed answer shape, started by the stage commands. Version numbers in plugin.json and marketplace.json are not bumped until the tests in the project doc `claude/agents-test-handoff-2026-11-10.md` have run.
+
+- Source checker and story reviewer. `/discovery-call` runs both on the rows and stories a call added or changed (new step 4b), and `/user-stories` runs both on an epic's stories before the SC sees them and the story reviewer again before a story the SC edited goes to Jira. Plainly wrong things the transcript settles are fixed (a quote that differs from the transcript, a wrong timestamp, a missing trigger the client stated); a requirement found narrower or broader than what the client said is never reworded on its own and goes to the SC with the source lines beside it. Two passes at most. Reports say whether the reviewers ran as separate agents or as a second pass.
+- Org reader and design reviewer. `/design` starts from the org summary when the client has an org, and has the design checked for uncovered requirements, conflicts with the org and anything beyond the confirmed scope (new step 4b).
+- New command `/start-motion:build-plan`: approved stories and the approved design become ordered build tasks in `docs/build-plan.md` in the client's repo. The SA approves it.
+- New command `/start-motion:build`: one task at a time. Test writer (when the task has code), builder, then the story compliance reviewer and the Salesforce quality reviewer; three rounds at most, then a person. Ends in a pull request with its evidence and an evidence note on the Jira story. Agents validate against the sandbox and never deploy; a deploy of merged work to the sandbox runs only on a person's word.
+- Every skill that starts an agent carries a copy of it at `references/reviewers/`, written by `scripts/sync-agents.py`, for sessions that cannot start a separate agent.
+
 ## 0.1.6 (2026-11-06)
 
 - Requirements list scope (Avi, Nov 6): the Scope column's values are In SOW and Beyond SOW (was Past SOW), in every skill, story footer ("Priority: Beyond SOW") and the discovery call's start card. A new Scope decision column sits right of Scope with Raised with PM, Change order, Future phase and Dropped; empty on a Beyond SOW row means not yet reviewed. The discovery call writes Beyond SOW rows with Scope decision empty and lists the undecided ones on its report for the PM. The SC or PM fills Scope decision; Claude never fills it unless told what was decided.

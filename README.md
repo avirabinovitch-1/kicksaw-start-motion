@@ -23,12 +23,33 @@ The signed SOW, and whatever else is in the client's Drive folder. Nothing more.
 | 3 Readout | `/start-motion:readout` | Section plan, build, dry run, deck, readout call, sign-off |
 | 5 Design | `/start-motion:design` | Starts, updates and finalizes the solution design |
 | 6 User stories | `/start-motion:user-stories` | Epics, finishing the stories, Jira, refinement |
+| Build plan (0.2.0, not released) | `/start-motion:build-plan` | Turns approved stories and the approved design into ordered build tasks, each with the criteria it covers and the check that proves it. The SA approves it |
+| Build (0.2.0, not released) | `/start-motion:build` | Builds the approved plan one task at a time in a sandbox: a builder agent makes the change, two reviewer agents check it, and a person reviews and merges the pull request |
 
 In chat the commands show as their bare names (`/kickoff`, `/new-client`); in Cowork and Claude Code they carry the prefix.
 
 Plain requests work too: "process today's Tog call", "make the kickoff deck for Tog", "build the readout for Tog".
 
 Scope sign-off (stage 1.4) is a meeting; the readout skill carries its record.
+
+## The agents (0.2.0, not released)
+
+An agent is a separate worker with one job. A stage command starts it, hands it only what it needs, and gets back a short result. It does not see the conversation that produced the work it is checking: it reads a story the way the architect will, or a built field the way a tester will.
+
+| Agent | Its one job | Started by |
+|---|---|---|
+| `source-checker` | Checks every requirement and story against the call, SOW section or document it cites; reports only rows that do not match | `discovery-call`, `user-stories` |
+| `story-reviewer` | Reads each story with nothing but the story in hand; reports criteria that cannot be built or tested as written | `discovery-call`, `user-stories`, `build-plan` |
+| `org-reader` | Reads an org's configuration through the Salesforce CLI, pulls it into the client repo and writes the org summary. Never reads records | `design`, `build-plan` |
+| `design-reviewer` | Checks the design against the requirements in scope and against what is in the org | `design` |
+| `builder` | Builds one approved task as metadata in a branch and validates it against the sandbox | `build` |
+| `test-writer` | Writes Apex tests and UAT scripts from the acceptance criteria | `build` |
+| `story-compliance-reviewer` | Checks what was built against each acceptance criterion | `build` |
+| `salesforce-quality-reviewer` | Checks what was built against Salesforce practice and the team's house rules | `build` |
+
+Claude Code, Cowork and Codex start these as separate agents. Claude chat cannot always do that, so each skill carries a copy of the agents it starts at `references/reviewers/` and runs them as a second pass there, and says on its report which way the check ran. `agents/` is the home of the text; `scripts/sync-agents.py` writes the copies and `--check` fails when one is out of date.
+
+Rules no agent can break: configuration only, never client records; sandbox only, never production; every change is a commit; a person merges; only what an approved task names; SOW limits are counted; sign-ins stay in the Salesforce CLI on the person's computer.
 
 ## Install
 
@@ -51,12 +72,17 @@ Uploading the `.plugin` file from a release also works, but does not update itse
 .claude-plugin/marketplace.json       the marketplace this repo is
 plugins/start-motion/                 the plugin
   .claude-plugin/plugin.json
+  agents/<agent>.md                   the eight agents (0.2.0)
   skills/<command>/SKILL.md           the skill
+  skills/<command>/references/reviewers/  copies of the agents that skill starts, written by scripts/sync-agents.py
   skills/<command>/references/        method.md (what the stage is for, the bar, the page link) and other reference files
   skills/<command>/templates|brand|icons|scripts
 scripts/refresh-page-skills.py        writes the eight skill texts into a saved copy of the Start Motion page
 scripts/patch-page-work-in-claude.py  added the Work in Claude box to each stage (applied Oct 30, 2026; kept to rebuild the page)
 scripts/patch-page-start-here.py      added the Start here page and the new-client row (applied Oct 30, 2026; kept to rebuild the page)
+scripts/sync-agents.py                copies each agent into the skills that start it; --check fails on a stale copy
+scripts/edits_agents_phase1.py        Nov 10: source checker and story reviewer wired into discovery-call and user-stories
+scripts/edits_agents_phase2.py        Nov 10: org reader and design reviewer wired into design
 scripts/edits_0_2_0.py                the Oct 30 reading-rule and handoff-optional edits, applied in place (the record of what changed and why)
 CHANGELOG.md                          what changed in each release
 ```
