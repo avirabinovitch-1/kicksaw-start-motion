@@ -500,10 +500,10 @@ def page(c, rows):
         [[E(d.get('n')), md(d.get('says')), md(d.get('does')), md(d.get('rec'))] for d in c.get('differences') or []]),
         'Each row is a story criterion the design does not meet as written. It closes when the story is reworded or the design changes.')
     sec('decisions', 'Decisions that shape the design', '<ol class="rules">%s</ol>' % ''.join(
-        '<li><b>%s</b> %s%s <span class="muted">(%s%s%s)</span></li>' % (
+        '<li><b>%s</b> %s%s <span class="muted by">%s%s%s</span></li>' % (
             md(d.get('chosen') or d.get('rule')), md(d.get('why') or ''),
             ' Considered: %s.' % md(d['considered']) if d.get('considered') else '',
-            E(d.get('by') or ''), ', ' + E(d.get('date')) if d.get('date') else '', ', <span class="nw">%s</span>' % dl(d.get('id')) if d.get('id') else '')
+            E(d.get('by') or ''), ', ' + E(d.get('date')) if d.get('date') else '', ' · <span class="nw">%s</span>' % dl(d.get('id')) if d.get('id') else '')
         for d in decided) if decided else '',
         ('%d still open, listed under Open for the SA.' % len(open_)) if open_ else None)
     sec('today', 'Today and after', table(['Area', 'Today', 'After this build'],
@@ -616,23 +616,24 @@ TEMPLATE = r"""<!DOCTYPE html>
 body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
 .wrap{display:grid;grid-template-columns:220px minmax(0,1fr);max-width:1240px;margin:0 auto}
 nav{position:sticky;top:0;align-self:start;max-height:100vh;overflow:auto;padding:56px 12px 40px 24px;font-size:13.5px}
-nav a{display:block;color:var(--muted);text-decoration:none;padding:3px 8px;border-radius:4px;line-height:1.4}nav a:hover{background:var(--soft);color:var(--fg)}
-nav a.cur{color:var(--fg);background:var(--soft)}
+nav a{display:block;color:var(--muted);text-decoration:none;padding:4px 10px;border-left:2px solid transparent;line-height:1.4}nav a:hover{color:var(--fg)}
+nav a.cur{color:var(--ink);border-left-color:var(--ink);font-weight:500}
 main{padding:48px 48px 120px 24px;min-width:0;max-width:1000px}
 header{margin-bottom:8px}.logo{height:18px;width:auto;display:block;margin-bottom:28px}.wordmark{font-weight:700;color:var(--ink);display:block;margin-bottom:24px}
 .eyebrow{font-size:13px;color:var(--muted)}h1{font-size:32px;line-height:1.2;margin:4px 0 6px;color:var(--ink);font-weight:700}
-.meta{color:var(--muted);font-size:14px;margin:0 0 16px}.lede{font-size:17px;margin:0 0 12px}
-.status{font-size:14px;color:var(--muted);padding:10px 14px;background:var(--soft);border-radius:6px;margin:0}
-section{padding-top:28px;scroll-margin-top:16px}h2{font-size:22px;color:var(--ink);margin:0 0 6px;font-weight:600;padding-bottom:6px;border-bottom:1px solid var(--line)}
-h3{font-size:17px;color:var(--fg);margin:20px 0 6px;font-weight:600}.sl{color:var(--muted);font-size:14.5px;margin:6px 0 10px}.muted{color:var(--muted)}
+.meta{color:var(--muted);font-size:14px;margin:0 0 20px}.lede{font-size:17.5px;line-height:1.6;margin:0 0 18px;max-width:46em}
+.status{font-size:14px;color:var(--muted);padding:10px 14px;border-left:3px solid var(--line);background:var(--soft);border-radius:0 6px 6px 0;margin:0 0 8px}
+section{padding-top:44px;scroll-margin-top:16px}h2{font-size:22px;letter-spacing:-.2px;color:var(--ink);margin:0 0 4px;font-weight:600;padding-bottom:8px;border-bottom:1px solid var(--line)}
+h3{font-size:16.5px;color:var(--fg);margin:26px 0 6px;font-weight:600}.sl{color:var(--muted);font-size:14.5px;margin:10px 0 12px;max-width:52em}.muted{color:var(--muted)}
 .nw{white-space:nowrap}a{color:var(--blue)}.wt{color:var(--warn)}.sv{color:var(--fg)}
 .tw{overflow-x:auto;margin:8px 0}table{border-collapse:collapse;width:100%;font-size:14.5px}
-th{text-align:left;font-weight:600;color:var(--muted);font-size:13px;padding:7px 10px;border-bottom:1px solid var(--line);background:var(--soft)}
-td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:1px solid var(--line)}
-table.two td:first-child{width:32%}table.objt td:first-child,table.auto td:first-child{width:26%}table.open td:first-child{width:56px}table.open td:nth-child(2){width:130px;color:var(--muted)}
-code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--fg);background:rgba(135,131,120,.13);padding:1px 4px;border-radius:3px}
-.rules{padding-left:22px}.rules li{margin:8px 0}
-.fig{margin:10px 0 4px;border:1px solid var(--line);border-radius:6px;padding:14px;overflow-x:auto}
+th{text-align:left;font-weight:500;color:var(--muted);font-size:12.5px;padding:8px 12px;border-bottom:1px solid var(--line)}
+td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+tbody tr:hover td{background:var(--soft)}tr.gh:hover td{background:none}td .muted{font-size:14px;margin-top:2px}
+table.two td:first-child{width:32%}table.objt td:first-child,table.auto td:first-child{width:26%}table.open td:first-child{width:60px;font-weight:500}table.open td:nth-child(2){width:130px;color:var(--muted)}
+code{font:12.5px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--fg);background:rgba(135,131,120,.1);padding:1px 5px;border-radius:4px}
+.rules{padding-left:22px}.rules li{margin:0 0 14px;padding-left:4px}.rules li::marker{color:var(--muted)}.rules .by{display:block;font-size:13.5px;margin-top:2px}
+.fig{margin:14px 0 10px;border:1px solid var(--line);border-radius:8px;padding:18px;overflow-x:auto;background:var(--bg)}
 figcaption{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13px;color:var(--muted);margin-top:10px}
 .key i.kb{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:6px;vertical-align:-1px;border:1.5px solid}
 .dia{width:100%;height:auto;display:block}.dia text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;fill:var(--fg)}
@@ -648,8 +649,8 @@ figcaption{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13px;color:var(--m
 .flow .nb{fill:var(--muted)}.flow .nt{font-size:11px;font-weight:700;fill:var(--bg)!important}
 .flow .ac{font-size:10.5px;font-weight:600;letter-spacing:.05em;fill:var(--muted)!important}.flow .st2{font-size:13.5px}.flow .fl{stroke:var(--muted);stroke-width:1.3}.flow .ah{fill:var(--muted)}
 .key .kb.fp{border-color:var(--line)}.key .kb.fs{border-color:var(--line);background:var(--soft)}
-.filt{display:flex;gap:8px;margin:6px 0 8px}.filt select,.filt input{font:inherit;font-size:14px;padding:5px 8px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg)}.filt input{flex:1}
-#inv{table-layout:fixed}#inv td{overflow-wrap:anywhere}tr.gh td{padding:16px 10px 6px;border-bottom:1px solid var(--line);font-weight:600}tr.gh code{font-size:14px}
+.filt{display:flex;gap:8px;margin:10px 0 6px}.filt select,.filt input{font:inherit;font-size:14px;padding:5px 8px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg)}.filt input{flex:1}
+#inv{table-layout:fixed}#inv td{overflow-wrap:anywhere}tr.gh td{padding:22px 12px 8px;border-bottom:1px solid var(--line);font-weight:600;color:var(--ink)}tr.gh code{font-size:14px}
 table.mx td,table.mx th{white-space:nowrap}
 @media (max-width:900px){.wrap{grid-template-columns:1fr}nav{display:none}main{padding:28px 20px 80px}}
 @media print{nav,.filt{display:none}.wrap{grid-template-columns:1fr}}
