@@ -174,14 +174,14 @@ Three short paragraphs: what the design covers and how it is organized, the vers
 
 Then the decisions, the way `references/decisions.md` sets out: in Claude chat when an interactive visual can be shown, the decision picker (`references/decision-picker.html`, only its `CFG` line changed) with the SA calls and client calls, the recommendations to confirm and the clear calls you made; everywhere else, the same in the plain text block that file gives. One line above it, for example: "Two calls need you, three I went ahead on, eleven I made. Everything else is drafted." When the answers come back, write them to the Decisions tab, update the sections they unblock, and say in one line what changed. Skip this when no row is Proposed and no Clear row was added in this run. Then the design reviewer's findings that are still open, each in one line (uncovered requirements by ID, conflicts with the org, anything beyond scope), the date of the org summary the design was written against (or that there was none), and one line on how the reviewer ran. No recap of steps.
 
-End with one line naming what comes next: after the first draft, keep it current with `/start-motion:design` after each systems session, third-party call or decision; after scope sign-off, `/start-motion:design` gets it ready to share and the SC, PM and build lead review it; once it is shared, `/start-motion:user-stories` writes the stories with the design in hand; once the stories are refined and the SA has approved the design, `/start-motion:build-plan` turns them into build tasks.
+End with one line naming what comes next: after the first draft, keep it current with `/start-motion:design` after each systems session, third-party call or decision; after scope sign-off, `/start-motion:design` gets it ready to share and the SC, PM and build lead review it; once it is shared, `/start-motion:user-stories` writes the stories with the design in hand.
 
 ## Log the run
 
 After the report, write out one short run-log row for the delivery kit and say in one line that pasting it into #discovery-skill-feedback is optional (it helps the kit improve; it is never required). Write it quietly: no questionnaire, no asking the person to rate anything. The row, as plain text:
 
 ```
-Run log · start-motion:design (v0.1.7) · design · <client> · <date>
+Run log · start-motion:design (v0.1.8) · design · <client> · <date>
 Ran by: <the name of the person running it, if the session says; otherwise leave it for them>
 Corrected: <what the person corrected during the run, in one to three plain sentences: an output they rewrote, a proposal they rejected and why, an assumption that was wrong. "Nothing" if nothing.>
 Had to ask for: <anything you had to ask for that you should have found on your own (a folder, a link, a name already in a note). "Nothing" if nothing.>

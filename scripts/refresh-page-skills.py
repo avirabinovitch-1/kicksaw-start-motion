@@ -23,6 +23,33 @@ BLOCKS = {  # pre id on the page -> skill folder
     'newClientSkillText': 'new-client',
 }
 
+# Lines the page's copy of a skill leaves out or words differently. The page is shared widely and says nothing
+# about the private build plugin (Avi, Nov 11, 2026); a skill pasted from the page runs in chat, where the org
+# reader never applies anyway. Each entry: skill -> [(text in SKILL.md, text on the page)]. A missing text stops.
+PAGE_EDITS = {
+    'design': [
+        ("- Read a sandbox when there is one. A production org is read only", None),
+        ("- Save a copy of the summary to the client's Drive folder so the SC and PM can read it.", None),
+        ("- Where the Start Motion Build plugin is installed and the session has a terminal", None),  # drop the whole line
+        ("- Without Start Motion Build, or in Claude chat with no terminal, the org cannot be read from here. Use", "- Use"),
+        ("- Once a build plan exists (Start Motion Build), a link at the top", None),
+        (" with the version in the commit message: the build plan plans against that version.", " with the version in the commit message."),
+        (", so the build plan can trace a task back to the client's process.", ", so later work can be traced back to the client's process."),
+    ],
+}
+
+
+def page_text(skill, text):
+    for old, new in PAGE_EDITS.get(skill, []):
+        if old not in text:
+            sys.exit('page edit for %s no longer matches: %s' % (skill, old[:60]))
+        if new is None:
+            text = '\n'.join(l for l in text.split('\n') if not l.startswith(old))
+        else:
+            text = text.replace(old, new)
+    return text
+
+
 ap = argparse.ArgumentParser()
 ap.add_argument('--page', required=True)
 ap.add_argument('--out', required=True)
@@ -47,14 +74,14 @@ for pid, skill in BLOCKS.items():
         sys.exit('page has no <pre id="%s">' % pid)
     old = m.group(2)
     # the page wraps the text in <code>...</code>; keep that wrapper if it was there
-    inner = html.escape(text, quote=False)
+    inner = html.escape(page_text(skill, text), quote=False)
     if old.lstrip().startswith('<code>'):
         inner = '<code>' + inner + '</code>'
     page = page[:m.start(2)] + inner + page[m.end(2):]
     print('%-16s %-15s %6d -> %6d chars' % (pid, skill, len(old), len(inner)))
 
 # version line, if the page carries one
-page, n = re.subn(r'(data-plugin-version=")[^"]*(")', r'\g<1>%s\g<2>' % version, page)
+page, n = re.subn(r'(data-plugin-version=")[^"]*("[^>]*>)v?[0-9.]+(<)', r'\g<1>%s\g<2>v%s\g<3>' % (version, version), page)
 print('plugin version marker updated' if n else 'no plugin version marker on this page yet (add data-plugin-version to the kit inventory)')
 open(a.out, 'w', encoding='utf-8').write(page)
 print('wrote', a.out, len(page), 'bytes')
