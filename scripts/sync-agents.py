@@ -2,7 +2,7 @@
 
 Why: the agents live in plugins/start-motion/agents/, which Claude Code, Cowork and Codex load as separate agents.
 Claude chat cannot always start a separate agent, and a skill can only count on reading its own folder. So every
-skill that starts an agent carries a copy of that agent's instructions at references/reviewers/<agent>.md, and runs
+skill that starts an agent carries a copy of that agent's instructions at references/agents/<agent>.md, and runs
 it as a second pass when no separate agent is available. The agents folder is the home of the text; the copies are
 written by this script and never edited by hand.
 
@@ -52,7 +52,7 @@ def main():
             if want is None:
                 skipped.append('%s (agent %s not written yet)' % (skill, agent))
                 continue
-            dest = os.path.join(SKILLS, skill, 'references', 'reviewers', agent + '.md')
+            dest = os.path.join(SKILLS, skill, 'references', 'agents', agent + '.md')
             have = open(dest, encoding='utf-8').read() if os.path.exists(dest) else None
             if have == want:
                 continue

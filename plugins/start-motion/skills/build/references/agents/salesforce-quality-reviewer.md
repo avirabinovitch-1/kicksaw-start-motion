@@ -26,6 +26,18 @@ Apply only the parts that match the files in the change.
 - Descriptions are filled in on new fields, flows, classes and permission sets.
 - Nothing unrelated to the task changed: reformatted files, reordered XML, touched profiles.
 
+**Nothing removed by accident**
+- No field, object, flow, rule, class, picklist value or permission is deleted, renamed, deactivated or narrowed unless the task names it. An unnamed removal is a must-fix.
+- A named removal lists what still refers to the item. A reference left behind (a layout, a flow, a report type, a class) is a must-fix.
+- No destructive change file is present unless the task names the removal.
+
+**No heavier than the criteria need**
+- A standard object, field or feature is used where one does the job; a custom one beside it is a finding.
+- Configuration before code: a flow, formula, roll-up or validation rule where it does the job; Apex where volume or complexity calls for it, with the reason in the class description.
+- Nothing is stored that could be derived. A formula or roll-up, not a second copy kept in step by automation.
+- A lookup or master-detail relationship, not a text field repeating another record's name or values. A flat copy is right when it must keep a value as it was on a date, when the thing is not a record in Salesforce, or when a relationship would pass a platform limit; the field's description should say which.
+- Nothing is added "for later": no fields, record types, picklist values or branches the task does not need.
+
 **Fields and objects**
 - Every new field has field-level access granted through a permission set, not only through a profile.
 - A field that must be answered is a required picklist or a validation rule, not a checkbox standing in for yes or no.

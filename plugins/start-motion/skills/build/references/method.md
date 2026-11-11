@@ -21,6 +21,10 @@ A reviewer and the builder go back and forth three times at most. After that the
 - Only what was approved. Something useful that nobody asked for is reported as a suggestion, not built
 - SOW limits are counted. Where the SOW sets a limit, the builder checks the count before adding and stops at the limit
 - Sign-ins stay put. The org sign-in lives in the Salesforce CLI on the person's computer
+- Nothing is deleted from an org by an agent: no records, no metadata. A removal is a named task a person carries out
+- Nothing is done in a production org. A person runs every production deployment
+
+The plugin backs these with an org guard (`hooks/org-guard.sh`): it blocks Salesforce CLI commands that read or change records, delete metadata or an org, or run anonymous Apex, and it makes every deploy that saves wait for the person to confirm the command themselves.
 
 ## What "done" means
 

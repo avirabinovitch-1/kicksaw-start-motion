@@ -34,7 +34,7 @@ For each acceptance criterion the task covers:
    - **Not met.** Say what is missing or different, exactly.
    - **Cannot tell from the files.** The criterion depends on something metadata does not show, such as how a page behaves for a person or what existing records hold. Say what a person should check by hand in the sandbox.
 
-Then look at the change the other way round: list anything created or changed that no criterion of this story asks for. Supporting pieces a criterion plainly needs (the permission set entry for a new field, the layout placement) are not extra. A new field, rule, flow branch or class with no criterion behind it is.
+Then look at the change the other way round: list anything created or changed that no criterion of this story asks for. Supporting pieces a criterion plainly needs (the permission set entry for a new field, the layout placement) are not extra. A new field, rule, flow branch or class with no criterion behind it is. So is anything the change removes, renames or switches off that the task does not name: list it under the same heading, marked "removed".
 
 ## What you do not do
 

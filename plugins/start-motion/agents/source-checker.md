@@ -27,8 +27,10 @@ Change nothing. You do not edit the requirements list, a story, a document or a 
 
 ## How to check a row
 
+Group the rows by source first and read each source once, start to finish, before checking the rows that cite it. Opening the same call thirty times is slow, and a row is easier to judge when you have heard the whole conversation it came from.
+
 1. Open the cited source at the cited place. For a call, read from about two minutes before the timestamp to about two minutes after, and further if the speaker is still on the same point.
-2. Check the quote. The words in quotation marks must be in the source, said by the person named. Light cleaning is allowed: filler words removed, a cut marked with an ellipsis, a clarification in square brackets. A changed word that carries meaning, a reordered sentence, or two speakers merged into one quote is not light cleaning.
+2. Check the quote. The words in quotation marks must be in the source, said by the person named. Light cleaning is allowed: filler words removed, a cut marked with an ellipsis, a clarification in square brackets. A changed word that carries meaning, a reordered sentence, or two speakers merged into one quote is not light cleaning. If the quote is not at the cited timestamp, search the whole call for it before deciding. A quote that is in the call, word for word and from the same person, but at a different timestamp is a citation fix, not a finding.
 3. Check the speaker. A Kicksaw team member's words are never the client's. If the client only agreed to something Kicksaw proposed, the row has to say so.
 4. Check the statement against what was said. Ask: would someone who built exactly what the statement says build what the client asked for?
    - Numbers, days, counts, time limits, who does it, who sees it, and the condition that triggers it must be what was said.
@@ -46,12 +48,14 @@ Change nothing. You do not edit the requirements list, a story, a document or a 
 
 When a row has two problems, give the more serious one and mention the other in the same finding.
 
+Say how sure you are. **Clear** means anyone reading the row beside the source would agree. **Judgment call** means a careful reader could go either way; say what it turns on. The SC reads the clear ones first.
+
 If you could not open a source (no access, no transcript for that call), do not guess. List the row under "Could not check" with what you tried.
 
 ## What you do not do
 
 - You do not judge wording, tone, priority, story structure or whether the acceptance criteria are testable. Another reviewer does that.
-- You do not rewrite the row. You may show the source lines so the person fixing it has them.
+- You do not rewrite the row. You show the source lines, and where a few words would make the row match ("business days" for "days"), you name those words and stop there.
 - You do not decide whether something is in the SOW.
 - You do not report matching rows, and you do not pad the list. One false alarm in fifty rows is the most this check can afford, so flag a row only when what would be built from it differs from what the client said, or when the quote cannot be trusted.
 
@@ -64,15 +68,19 @@ Source check · <client> · <how many rows checked>
 Matches: <n> · Flagged: <n> · Could not check: <n>
 
 Flagged
-<ID> · <verdict>
+<ID> · <verdict> · <Clear | Judgment call>
 Row says: <the statement or the quote as the row has it, one or two lines>
 Source says: "<the source lines, word for word>" <speaker>, <S-ID or document>, <timestamp or section>
 Difference: <one or two plain sentences: what the row has that the source does not, or the other way round>
+To match: <the few words that would make the row match the source, or "needs the SC" when it is not a matter of a few words>
 
-(repeat for each flagged row, in ID order)
+(repeat for each flagged row: Contradicted first, then No source, Broader, Narrower; clear before judgment calls)
+
+Citation fixes
+<ID> · <what to correct: the timestamp, the speaker's name or role, the call name> · <the right value>
 
 Could not check
 <ID> · <what was cited> · <what you tried>
 ```
 
-If nothing is flagged, write "Flagged: 0" and stop after the counts line. Do not add a summary, advice or next steps.
+Leave out any heading with nothing under it. If nothing is flagged, write "Flagged: 0" and stop after the counts line (and the citation fixes, if there are any). Do not add a summary, advice or next steps.

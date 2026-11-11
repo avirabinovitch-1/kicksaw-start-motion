@@ -15,9 +15,11 @@ Read `references/method.md` in this skill's folder at the start of every run: wh
 
 Look before you ask. Report in a few lines: the build plan (`docs/build-plan.md`: approved by whom and when, or still Draft); the tasks (how many Planned, Built, Merged, Handed back); the next task in build order whose dependencies are merged; the sandbox alias and that it is a sandbox; the repo's main branch and whether it is clean and up to date; and any pull request still open from an earlier task. For example: "Neo. Plan approved by Steph McAllister, Nov 12. 31 tasks: 6 merged, 1 built and waiting on review (E1.1-T3, PR 7), 24 planned. Next: E1.2-T1, four fields on Referral. Sandbox: neo-dev, confirmed a sandbox."
 
+A task marked "removes" in the plan is shown to the person before it starts: the exact item, what refers to it, what happens to its data. Wait for a plain yes that names the item. The builder then takes it out of the repo only; the person removes it from the sandbox by hand.
+
 These stop the run, each with one line on what is waiting and on whom:
 - The build plan is not approved. Nothing is built from a draft. The SA can say "build from the draft" for a named task; record that in the task note.
-- The alias is not a sandbox, or cannot be confirmed as one.
+- The alias is not a sandbox, or cannot be confirmed as one. There is no override for this one: this stage never runs against production, whoever asks.
 - The task's dependencies are not merged.
 - The main branch has changes that are not committed.
 
@@ -29,13 +31,13 @@ Build one task per request unless the person says to keep going ("build the next
 
 ## 1. One task, start to finish
 
-**Starting an agent.** Start each agent by name (`start-motion:builder`, `start-motion:test-writer`, `start-motion:story-compliance-reviewer`, `start-motion:salesforce-quality-reviewer`) and hand it only what its file says it is handed. Never pass one agent another's reasoning: the reviewers get the branch and the criteria, not the builder's answer; the builder gets the reviewers' findings, not their working. Where the session cannot start a separate agent, the instructions are at `references/reviewers/<name>.md`; run them yourself as separate passes, re-reading the branch from the files each time, and say on the pull request that the reviews ran in one session. That is weaker than separate readers and the person reviewing should know.
+**Starting an agent.** Start each agent by name (`start-motion:builder`, `start-motion:test-writer`, `start-motion:story-compliance-reviewer`, `start-motion:salesforce-quality-reviewer`) and hand it only what its file says it is handed. Never pass one agent another's reasoning: the reviewers get the branch and the criteria, not the builder's answer; the builder gets the reviewers' findings, not their working. Where the session cannot start a separate agent, the instructions are at `references/agents/<name>.md`; run them yourself as separate passes, re-reading the branch from the files each time, and say on the pull request that the reviews ran in one session. That is weaker than separate readers and the person reviewing should know.
 
 1. **Branch.** From the up-to-date main branch, create `task/<task ID>`.
 2. **Tests first, when the task has code.** Start the test writer (Apex tests) with the task ID, the story, the criteria the task covers and the names from the plan. It commits the tests to the branch.
 3. **Build.** Start the builder with the task, the repo path and branch, the sandbox alias, the part of the design the task touches, the org summary and the SOW limits. It makes the change, validates it against the sandbox and commits.
 4. **If the builder stopped** (a decision nobody made, a limit reached, an error it could not clear), go to "Handing a task back".
-5. **Review.** Start both reviewers on the branch:
+5. **Review.** Start both reviewers on the branch at the same time; neither waits for the other:
    - the story compliance reviewer, with the story's criteria and which ones this task covers;
    - the Salesforce quality reviewer, with the org summary and `docs/house-rules.md` when it exists.
 6. **Findings go back to the builder.** Hand the builder the findings as written, nothing more. It fixes, validates and commits; the reviewers read the branch again from the start. **Three rounds at most.** After the third round with a criterion still not met or a must-fix still open, go to "Handing a task back".
@@ -47,7 +49,13 @@ When the person says a pull request was merged, set the task to Merged in the pl
 
 ## 2. The pull request
 
-Title: `<task ID>: <what changed>`. Body, in this order:
+Title: `<task ID>: <what changed>`. The person reviewing reads the top of the body and decides from there, so the top is short and in plain words:
+
+- **What this does:** one or two sentences, in the story's language, no API names.
+- **Check before you merge:** the checks only a person can do, as a short list ("open a Referral as an intake specialist and confirm Court date shows under Intake"). "Nothing to check by hand" when there is nothing.
+- **Decide:** names the builder chose, anything removed, should-fix items left. "Nothing to decide" when there is nothing.
+
+Then the evidence, in this order:
 - The story (ID, title, Jira link) and the criteria this task covers.
 - What changed: each file, created or changed.
 - The validation: the command's result against the sandbox, and the tests that ran.
@@ -84,7 +92,7 @@ A task goes back to a person when the builder stopped, when three rounds did not
 
 ## 5. Deploying merged work to the sandbox
 
-Agents validate; they do not deploy. When the person says "deploy what is merged to the sandbox", confirm the alias is a sandbox, deploy the main branch's metadata to it, run the tests, and report the result line. This is the only deploy this stage runs, it runs only on a person's word in this conversation, and it never targets production. Production deployments are run by a person, outside this stage.
+Agents validate; they do not deploy. When the person says "deploy what is merged to the sandbox", confirm the alias is a sandbox, say back exactly what will be deployed and to which org ("Deploying main, 6 merged tasks, to neo-dev, a sandbox. Go?"), and wait for a plain yes. Then deploy the main branch's metadata, run the tests, and report the result line. The plugin's org guard also stops every deploy that saves and shows the person the command to confirm; that second question is on purpose. This is the only deploy this stage runs, it runs only on a person's word in this conversation, and it never targets production. Production deployments are run by a person, outside this stage.
 
 ## 6. UAT scripts
 
@@ -123,6 +131,8 @@ Nothing about the run depends on this; a run is never blocked by its log.
 - Everything is a commit. No change is made in the org that is not in the repo.
 - A person merges. Nothing reaches the main branch on an agent's say.
 - Only what was approved. A task builds what the approved plan names; anything else is a suggestion.
+- Nothing is deleted from an org by an agent or by this stage: no records, no metadata. Removals are named tasks a person carries out.
+- The simplest build that satisfies the criteria: standard before custom, configuration before code, relationships and formulas before stored copies, nothing added for later.
 - SOW limits are counted before anything is added.
 - Sign-ins stay in the Salesforce CLI on the person's computer. Never in the repo, a pull request, a Jira comment or the chat.
 - Three rounds, then a person.

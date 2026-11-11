@@ -38,6 +38,7 @@ If the SOW, the requirements list or the workflows are missing, say which and st
 
 A design written from the requirements alone can name a new field where one already exists, or miss automation the new build will collide with. So when the client has an org, the design starts from what is in it.
 
+- Read a sandbox when there is one. A production org is read only when there is no sandbox to read and the person says so plainly in this conversation, naming the org ("yes, read Harborlight production"). Ask, and wait for that answer; "go ahead" to something else is not it. Hand the org reader the person's name with the confirmation. Reading changes nothing in the org, and it is still the client's live system.
 - Where the session has a terminal with the Salesforce CLI signed in to the org and the client's repo on this computer (Claude Code, Cowork with the repo folder connected, Codex), start the org reader: `start-motion:org-reader`. Hand it the client's name, the org's alias, the repo path, the SOW's countable limits (custom fields per object and the like) and the date of the last summary. It pulls the org's configuration into the repo on its own branch and writes `docs/org-summary.md`. It reads configuration only, never records, and changes nothing in the org.
 - Save a copy of the summary to the client's Drive folder so the SC and PM can read it.
 - In Claude chat with no terminal, the org cannot be read from here. Use the summary in the client's folder if there is one and say its date; if there is none, say the design is being drafted without a read of the org, and mark every object and field it names as "to check against the org".
@@ -75,6 +76,23 @@ Four parts, in this order:
 3. Spec: an Element and Spec table. For an integration: trigger, direction and pattern, fields exchanged, fallback. For a new object: label and API name, record name format, record types, statuses, relationships, ownership.
 4. Terms and callouts: a "What it means for [client]" table for every Salesforce term in the section, then callouts as needed: Recommendation (with the reason and what would change it), Dependency, Open, Note.
 
+## 3b. Design it simple and sound
+
+Every section is written to these. The design reviewer checks them, and so does the Salesforce quality reviewer when the design is built.
+
+- **Only what the scope needs.** Every object, field, record type, status and automation in the design answers a requirement in scope. Nothing is added "for later"; a later phase designs its own.
+- **Standard before custom.** Use the standard object, field or feature when it does the job, and say which. A custom one needs its reason in the section.
+- **Configuration before code.** A formula, roll-up or validation rule before a flow; a flow before Apex. Recommend code only where volume or complexity calls for it, as a Recommendation callout with the reason.
+- **One copy of every fact.** Relate records with a lookup or master-detail instead of typing another record's name or values into flat fields, and show related values with a formula or roll-up instead of storing them twice. A flat field is right when it has to keep a value as it was on a date, when the thing it describes is not a record in Salesforce, or when a relationship would pass a platform limit. Say which, in the Notes column, so nobody "fixes" it later.
+- **Lookup or master-detail on purpose.** Say which and why: who owns the child, what happens when the parent is deleted, whether roll-ups are needed.
+- **Picklists over free text** for anything reported on, and a record type only where the process, the layout or the values really differ.
+- **One automation per object and event.** Where the org already has automation on the object, say how the new behavior joins it. Never a second flow beside the first without a reason.
+- **Access through permission sets,** as narrow as the requirement allows. Say what each kind of user can see and do, not only what exists.
+- **Nothing in the org is removed or replaced quietly.** When the design retires a field, a flow, a rule or a sharing setting, it says so in an Open or Dependency callout: what goes, what depends on it (from the org summary), what happens to the data it holds, and that a person carries out the removal. Agents never delete from an org.
+- **Limits counted.** Where the SOW or the platform sets a limit, the design shows the count before and after.
+
+When the simplest sound design and what the client asked for pull apart, say so as a Recommendation with the reason and what would change it. Do not quietly design the heavier thing, and do not quietly drop what they asked for.
+
 ## 4. Render
 
 - One HTML artifact on the Kicksaw design system (list Design System artifacts; colors from the Kicksaw Brand Playbook V2). Header: "Solution design · [platform]", the client, a one-line subtitle, prepared by the SA, the date, and a status: "Draft" until scope is confirmed, then "Final".
@@ -86,12 +104,13 @@ Four parts, in this order:
 
 After a first draft, after an update that changes more than a TBD, and always before getting it ready to share, start the design reviewer: `start-motion:design-reviewer`. It did not see the design being drafted. Hand it the design as it stands; the requirements in scope (ID, statement, status, Scope), saying whether the scope is signed yet; the user stories when they exist; and the org summary when there is one. Never hand it the transcripts or your notes.
 
-Where the session cannot start a separate agent (Claude chat often cannot), read `references/reviewers/design-reviewer.md` in this skill's folder and run it yourself as a second pass, working from the requirements list and the org summary, not from memory of drafting. Say in the report which way it ran; a second pass in the same conversation is weaker than a separate reader.
+Where the session cannot start a separate agent (Claude chat often cannot), read `references/agents/design-reviewer.md` in this skill's folder and run it yourself as a second pass, working from the requirements list and the org summary, not from memory of drafting. Say in the report which way it ran; a second pass in the same conversation is weaker than a separate reader.
 
 What to do with the findings:
 - An uncovered requirement: add it to the section it belongs in when the discovery documents say how it is met; otherwise add it as a TBD with what it waits on. Never design around a gap with an assumption.
 - A conflict with the org where the summary settles it (a field that already exists, a name spelled differently): correct the design to the org's name. A conflict that needs a decision (two automations on one object, an access model that changes) goes to the SA as an Open callout in that section.
 - Something designed beyond the confirmed scope: mark it in the design and list it for the SA. The SA takes it out or raises it with the PM. Do not remove it on your own.
+- Something heavier than it needs to be: where the lighter way is plainly sound and changes nothing the client would see, change the design and say so in the report. Where it is a real trade-off, put both in a Recommendation callout for the SA.
 - An unconfirmed detail: mark it TBD with what it waits on.
 - Run the reviewer once, fix, and run it once more. Two passes at most. Whatever is still flagged goes to the SA as it is.
 

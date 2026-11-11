@@ -40,6 +40,8 @@ The plan has to start from what is already in the sandbox. Start the org reader 
 
 **Starting an agent.** This stage needs a terminal with the Salesforce CLI and the client's repo: Claude Code, Cowork with the repo folder connected, or Codex. Start the agent by name (`start-motion:org-reader`, `start-motion:story-reviewer`) and hand it only what its file says it is handed. In Claude chat with no terminal, the org cannot be read: say so, and plan from the existing org summary if there is one, marked "planned from the org summary of <date>".
 
+The plan is read from the sandbox. If the only org to read is production, ask the person first and wait for a plain yes that names the org; hand the org reader their name with the confirmation. Nothing in this stage or the next one ever changes a production org.
+
 The org reader commits what it retrieved on its own branch. Show the person its answer and ask them to merge that branch before the plan is written, so every task branches from what is really in the org.
 
 ## 3. Check the stories once more
@@ -62,6 +64,8 @@ For each story that passed:
   - any SOW limit it counts against, with the count before and after.
 - **Only what the stories ask for.** A task with no criterion behind it does not go in the plan. Something useful nobody asked for is listed at the end under Suggestions for the SA.
 - **Manual steps are tasks too.** Anything metadata cannot carry (a setting switched on in Setup, a connected app's secret, a queue's members) is a task marked "by hand", with who does it.
+- **Removing something is its own task, and a person does the removing.** A task that deletes, renames, deactivates or narrows anything already in the org (a field, a flow, a rule, a picklist value, a permission) is marked "removes", names the exact item, lists everything in the org summary that refers to it, and says what happens to any data it holds. The builder may take the item out of the repo for such a task; taking it out of the org is done by hand by the person named on the task. The SA sees every "removes" task listed on its own at the top of the plan before approving.
+- **The fewest tasks that do the job.** No task adds a field, record type, status or branch that no criterion needs. Where the design gives a choice, plan the simpler build: standard before custom, configuration before code, a relationship or formula before a stored copy.
 - **Data work is its own task and never the builder's.** Loading, cleaning or backfilling records is marked "by hand: data", outside what an agent builds.
 
 ## 5. Write the plan
@@ -112,5 +116,6 @@ Nothing about the run depends on this; a run is never blocked by its log.
 - Every criterion of every planned story has a task. Every task has a criterion.
 - Never invent an object, field, API name, value or limit.
 - The plan never widens the signed scope.
+- Agents never delete from an org and never touch a production org. A removal is a person's task; a production deployment is a person's job.
 - Sign-in details never go in the repo. The alias is enough.
 - No em dashes.

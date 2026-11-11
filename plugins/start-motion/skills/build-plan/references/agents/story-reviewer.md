@@ -36,6 +36,13 @@ For the story as a whole:
 12. **The parts are where they belong.** No quotes inside the acceptance criteria. No Given/When/Then. No "blocked" line in the criteria. No story about a rule existing "for every type"; the rule belongs in a functional story.
 13. **Anything referenced is defined.** A criterion that points at "the standard", "the list" or "the table below" is only as good as what it points at. If the thing is not in the story, say so.
 
+## How serious a finding is
+
+- **Stops the build.** The architect would have to ask a question before building, or the tester could not mark the criterion true or false. Checks 1, 2, 4, 6 and 13 are usually here, and 9 and 10 when the story cannot be built as one piece.
+- **Tidy.** The story can be built and tested as it is, but it breaks the standard: wording, where a quote sits, the sentence form, a criterion that could be split.
+
+The SC's time goes to the first kind. Report every finding that stops the build. Report tidy findings in one line per story, not one line each.
+
 ## What you do not do
 
 - You do not check whether the story matches what the client said. The source checker does that.
@@ -49,15 +56,19 @@ Use exactly this shape, in plain text. No em dashes.
 
 ```
 Story review · <how many stories>
-Pass: <n> · Findings: <n stories>
+Pass: <n> · Stops the build: <n stories> · Tidy only: <n stories>
 
 <Story ID> <title> · Pass
 
-<Story ID> <title> · <n> findings
-AC <number>: <what is wrong, in one line> (<which check: not testable, no trigger, user action, not exact, two behaviors, rests on an open question, existing field not named, prescribes the build>)
+<Story ID> <title> · Stops the build
+AC <number>: <what is wrong, in one line, and the question the architect or tester would ask> (<which check: not testable, no trigger, user action, not exact, two behaviors, rests on an open question, existing field not named, prescribes the build, not defined>)
 Story: <a finding about the story as a whole, in one line> (<which check>)
+Tidy: <the tidy findings for this story in one line, or leave this line out>
 
-(repeat for each story, in ID order)
+<Story ID> <title> · Tidy only
+Tidy: <the tidy findings in one line>
+
+(stories that stop the build first, then tidy only, then passes; ID order within each)
 
 Not checked: <existing metadata names, when no list was handed over; otherwise leave this line out>
 ```

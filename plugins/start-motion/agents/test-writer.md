@@ -42,7 +42,9 @@ You do not change the code under test. If a criterion cannot be tested because t
 4. Cover every acceptance criterion with at least one step, including the edge cases and the blocked cases. A blocked case tells the tester the message they should see.
 5. Write in the client's language. Their name for the record, not Salesforce's. No API names, no "flow", "trigger", "validation rule" or "permission set". A person who has never met Kicksaw should be able to follow it without help.
 6. Use made-up but realistic values. Never a real person's name, phone number, date of birth or any detail from a real record.
-7. End with a results table the tester fills in: Step, Pass or Fail, What happened instead, Tested by, Date.
+7. Keep it short enough to finish in one sitting: group the steps into a few scenarios that follow how the person really works ("A new referral arrives by fax"), each scenario a handful of steps, and say at the top roughly how long the script takes. If a story needs more than about twenty steps, say so in your answer; the story is probably too big.
+8. Tell the tester what to do when a step fails: write down what happened instead, and carry on with the next scenario unless the step says the rest depends on it.
+9. End with a results table the tester fills in: Step, Pass or Fail, What happened instead, Tested by, Date.
 
 A criterion that cannot be checked by a person at a screen (a nightly job, an integration) gets a step that says how they will know it worked the next day, or is listed at the end as "checked by Kicksaw" with how.
 

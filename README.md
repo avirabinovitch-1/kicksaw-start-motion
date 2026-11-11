@@ -47,9 +47,11 @@ An agent is a separate worker with one job. A stage command starts it, hands it 
 | `story-compliance-reviewer` | Checks what was built against each acceptance criterion | `build` |
 | `salesforce-quality-reviewer` | Checks what was built against Salesforce practice and the team's house rules | `build` |
 
-Claude Code, Cowork and Codex start these as separate agents. Claude chat cannot always do that, so each skill carries a copy of the agents it starts at `references/reviewers/` and runs them as a second pass there, and says on its report which way the check ran. `agents/` is the home of the text; `scripts/sync-agents.py` writes the copies and `--check` fails when one is out of date.
+Claude Code, Cowork and Codex start these as separate agents. Claude chat cannot always do that, so each skill carries a copy of the agents it starts at `references/agents/` and runs them as a second pass there, and says on its report which way the check ran. `agents/` is the home of the text; `scripts/sync-agents.py` writes the copies and `--check` fails when one is out of date.
 
-Rules no agent can break: configuration only, never client records; sandbox only, never production; every change is a commit; a person merges; only what an approved task names; SOW limits are counted; sign-ins stay in the Salesforce CLI on the person's computer.
+Rules no agent can break: configuration only, never client records; sandbox only, never production; nothing is deleted from an org, records or metadata; every change is a commit; a person merges; only what an approved task names, built the simplest sound way; SOW limits are counted; sign-ins stay in the Salesforce CLI on the person's computer.
+
+**The org guard.** The rules above are also enforced outside the agents' instructions. `hooks/org-guard.sh` runs before every shell command in Claude Code and Cowork. It blocks Salesforce CLI commands that read or change records (`sf data`), run anonymous Apex, call the org's API directly, delete metadata (destructive changes, `sf project delete source`), delete an org or uninstall a package. Any deploy that saves to an org (a deploy without `--dry-run`, a quick deploy, a package install) is stopped and shown to the person, who has to confirm the command themselves. Retrieves, validations, dry runs and test runs pass. The guard cannot tell a sandbox from production; the agents and the stage commands check that, and the guard is the backstop.
 
 ## Install
 
@@ -73,16 +75,15 @@ Uploading the `.plugin` file from a release also works, but does not update itse
 plugins/start-motion/                 the plugin
   .claude-plugin/plugin.json
   agents/<agent>.md                   the eight agents (0.2.0)
+  hooks/hooks.json, hooks/org-guard.sh  the org guard (0.2.0)
   skills/<command>/SKILL.md           the skill
-  skills/<command>/references/reviewers/  copies of the agents that skill starts, written by scripts/sync-agents.py
+  skills/<command>/references/agents/  copies of the agents that skill starts, written by scripts/sync-agents.py
   skills/<command>/references/        method.md (what the stage is for, the bar, the page link) and other reference files
   skills/<command>/templates|brand|icons|scripts
 scripts/refresh-page-skills.py        writes the eight skill texts into a saved copy of the Start Motion page
 scripts/patch-page-work-in-claude.py  added the Work in Claude box to each stage (applied Oct 30, 2026; kept to rebuild the page)
 scripts/patch-page-start-here.py      added the Start here page and the new-client row (applied Oct 30, 2026; kept to rebuild the page)
 scripts/sync-agents.py                copies each agent into the skills that start it; --check fails on a stale copy
-scripts/edits_agents_phase1.py        Nov 10: source checker and story reviewer wired into discovery-call and user-stories
-scripts/edits_agents_phase2.py        Nov 10: org reader and design reviewer wired into design
 scripts/edits_0_2_0.py                the Oct 30 reading-rule and handoff-optional edits, applied in place (the record of what changed and why)
 CHANGELOG.md                          what changed in each release
 ```

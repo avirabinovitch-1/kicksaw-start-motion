@@ -1,0 +1,17 @@
+{
+  "description": "Org guard: blocks Salesforce CLI commands that read or change client records, delete metadata or an org, or run code in an org, and makes any deploy that saves to an org wait for the person's confirmation.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/org-guard.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
