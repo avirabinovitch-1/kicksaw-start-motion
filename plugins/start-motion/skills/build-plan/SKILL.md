@@ -25,12 +25,16 @@ Ask once, in one message, and only for what the Start did not find: which storie
 ## 0. Load what you need
 
 - The stories from Jira, with every field: user story, description, acceptance criteria, open questions, status, dependencies. Plan only stories with no open question that affects a criterion; list the others with the question that holds each one.
-- The solution design, the version marked Final (or the draft, when the SA said so).
+- The solution design: the current version from the client's Drive folder (`Design` subfolder), as `references/drive-copies.md` sets out, marked Final (or a draft, when the SA said so). Note its version; the plan names it. If the repo's `docs/solution-design.html` is an older version, say so.
+- The workflows in scope (W-IDs with their numbered steps and who does each step), from the signed readout's future state workflows, or the workflow document before sign-off. They show how the stories join into one process: the order of statuses, who acts at each step, where work passes from one team to another.
+- The signed readout's scope at a glance and what it set aside, so nothing is planned toward a capability the client parked.
 - `docs/org-summary.md` in the client's repo. If there is none, or the sandbox has changed since it was written, start the org reader first (section 2).
 - The SOW's countable limits (custom fields per object, record types, flows, integration endpoints, source files), so each task can be checked against them.
 - The Decisions tab of the requirements list: every row, with its Affects column, so each task knows the decisions it builds to and which open ones it waits on.
 - Each story's Build/Solution Details field in Jira, when the SA has written one: it is the SA's own spec for the story, and it wins over the design where the two differ (say so in the plan).
 - The existing `docs/build-plan.md`, when there is one: tasks already built or merged are never re-planned.
+
+**When the sources disagree.** The later and more specific source wins, in this order: the story's acceptance criteria and its Build/Solution Details field; then the Decided rows of the Decisions tab; then the design at the version you loaded; then the signed readout; then the workflows. The readout and the workflows are read for context and to catch gaps; they never add scope on their own. A disagreement is never settled by building to one side quietly: plan to the winning source, and list the disagreement for the SA in the plan (and as a finding to send back to the SC when it is the story that looks wrong).
 
 ## 1. The client repo, when there is none
 
@@ -75,7 +79,8 @@ For each story that passed:
   - whether it has code (the test writer writes tests for it) or is configuration only;
   - any SOW limit it counts against, with the count before and after;
   - the decisions it builds to (Decided rows, by ID) and any it waits on (Proposed rows);
-  - the later epics that build on it, from the Solution map, so the builder and the reviewers keep its shape open for them.
+  - the later epics that build on it, from the Solution map, so the builder and the reviewers keep its shape open for them;
+  - the workflow step it serves, in one line (for example "W2 step 4: the intake coordinator verifies benefits; next, step 5 schedules the assessment"), or "no workflow step" for foundation work. This line is the builder's whole view of the client's process; it never hands the builder the readout or the workflow document.
 - **Only what the stories ask for.** A task with no criterion behind it does not go in the plan. Something useful nobody asked for is listed at the end under Suggestions for the SA.
 - **Manual steps are tasks too.** Anything metadata cannot carry (a setting switched on in Setup, a connected app's secret, a queue's members) is a task marked "by hand", with who does it.
 - **Removing something is its own task, and a person does the removing.** A task that deletes, renames, deactivates or narrows anything already in the org (a field, a flow, a rule, a picklist value, a permission) is marked "removes", names the exact item, lists everything in the org summary that refers to it, and says what happens to any data it holds. The builder may take the item out of the repo for such a task; taking it out of the org is done by hand by the person named on the task. The SA sees every "removes" task listed on its own at the top of the plan before approving.
@@ -87,19 +92,20 @@ For each story that passed:
 
 Save `docs/build-plan.md` in the client's repo, on a branch named `build-plan/<date>`, in this shape:
 
-- A header: the client, the date, the stories planned (count, and the Jira filter or keys), the design version, the org summary date, and a status line: "Draft, not approved". When the SA approves, the line becomes "Approved by <name> on <date>"; you write that only when the SA says so in this conversation.
+- A header: the client, the date, the stories planned (count, and the Jira filter or keys), the design version (with a link to its Drive file), the org summary date, and a status line: "Draft, not approved". When the SA approves, the line becomes "Approved by <name> on <date>"; you write that only when the SA says so in this conversation.
 - A table of every task in build order: ID, story, what it creates or changes, criteria covered, check, depends on, code or configuration or by hand, status (Planned, Built, Merged, Handed back).
 - Under the table, one short block per task with the detail a builder needs: the names, the exact values from the criteria, the check in full.
 - A coverage list: every planned story with its criteria and the task that covers each. A criterion with no task is a defect in the plan; fix it before showing the SA.
 - Stories not planned, each with why (open question, a reviewer's finding, too large) and who it waits on.
 - Decisions: the open rows the plan waits on, each with the tasks it holds, and the Decided rows the plan builds to.
+- Disagreements between the sources: each with what each source says and which one the plan followed.
 - Later epics: for each object this plan touches, what the later epics will add to it, from the Solution map, and anything in this plan shaped for them.
 - SOW limits: each one with the count today and the count when the plan is built.
 - Suggestions: useful things nobody asked for, for the SA to raise or drop.
 
 ### 5b. The design and build review page
 
-Make the SA's review page as `references/build-review.md` sets out: `content.json` from the design, this plan, the Decisions tab, the stories and the org summary, then `scripts/build-review.py` in this skill's folder, then publish it. It shows every object, field, rule, automation, page, action and permission set the plan creates or changes, with the stories, decisions, diagrams and checks behind them. Put its link in the plan's header. The SA approves the plan from this page, not from the plan file alone. Before reporting, read its Needs you section: anything it found on its own (a field nobody is granted, two flows on the same object and moment) is either fixed in the plan or listed for the SA.
+Make the SA's review page as `references/build-review.md` sets out: `content.json` from the design, this plan, the Decisions tab, the stories and the org summary, then `scripts/build-review.py` in this skill's folder, then publish it and save its HTML to the client's Drive folder (`Build` subfolder), as `references/drive-copies.md` sets out. It shows every object, field, rule, automation, page, action and permission set the plan creates or changes, with the stories, decisions, diagrams and checks behind them. Put its link in the plan's header. The SA approves the plan from this page, not from the plan file alone. Before reporting, read its Needs you section: anything it found on its own (a field nobody is granted, two flows on the same object and moment) is either fixed in the plan or listed for the SA.
 
 If the team wants them, create one Jira sub-task per task under its story, titled with the task ID and what it changes. Only after the SA approves the plan.
 
@@ -117,7 +123,7 @@ No em dashes. Real API names in code style. Never invent a name, a value or a li
 
 ## 6. Keep it current
 
-When asked ("update the [Client] build plan"): read the stories that changed in refinement since the plan was written, the design's changes and the tasks' statuses. Add tasks for new stories, change tasks whose criteria changed, and mark tasks whose story was withdrawn. A task that is Built or Merged is never edited; a change to its story becomes a new task. The plan goes back to "Draft, not approved" for the changed tasks only, and the SA approves those.
+When asked ("update the [Client] build plan"): read the stories that changed in refinement since the plan was written, the design's changes since the version the plan names (its change log says what changed) and the tasks' statuses. A design change that touches a planned task changes the task; one that touches a Built or Merged task becomes a new task. Add tasks for new stories, change tasks whose criteria changed, and mark tasks whose story was withdrawn. A task that is Built or Merged is never edited; a change to its story becomes a new task. The plan goes back to "Draft, not approved" for the changed tasks only, and the SA approves those.
 
 ## 7. Report back
 

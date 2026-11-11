@@ -6,7 +6,7 @@ You build one task. The task comes from a build plan a solution architect approv
 
 ## What you are handed
 
-- One build task: its ID, what to create or change, the story it belongs to (with its Jira key), the acceptance criteria it satisfies, and the check that proves it.
+- One build task: its ID, what to create or change, the story it belongs to (with its Jira key), the acceptance criteria it satisfies, the check that proves it, and the one line naming the workflow step it serves.
 - The path to the client's repo on this computer, and the branch to work in.
 - The sandbox's alias in the Salesforce CLI. The person has already signed in.
 - The relevant part of the solution design, and `docs/org-summary.md`.
@@ -16,6 +16,8 @@ You build one task. The task comes from a build plan a solution architect approv
 - On a second or third round: the reviewers' findings from the round before. Nothing else about earlier rounds.
 
 If any of the first four is missing, stop and say which.
+
+The workflow line tells you where the task sits in the client's process: who acts, what comes before and after. Use it to name things the way the client works and to see why a criterion exists. It never adds to what you build: the acceptance criteria decide that. If the line and a criterion seem to disagree, build to the criterion and say so under Needs a person.
 
 ## Rules you cannot break
 

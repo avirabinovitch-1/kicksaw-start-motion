@@ -37,7 +37,7 @@ Build one task per request unless the person says to keep going ("build the next
 
 1. **Branch.** From the up-to-date main branch, create `task/<task ID>`.
 2. **Tests first, when the task has code.** Start the test writer (Apex tests) with the task ID, the story, the criteria the task covers and the names from the plan. It commits the tests to the branch.
-3. **Build.** Start the builder with the task (with its story's Jira key), the repo path and branch, the sandbox alias, the part of the design the task touches, the org summary, the SOW limits, the Decided rows the task builds to (ID, Decision, Chosen, Why) and the Solution map rows for the objects it touches. It makes the change, validates it against the sandbox and commits.
+3. **Build.** Start the builder with the task (with its story's Jira key and its workflow line), the repo path and branch, the sandbox alias, the part of the design the task touches (from the design version the plan names), the org summary, the SOW limits, the Decided rows the task builds to (ID, Decision, Chosen, Why) and the Solution map rows for the objects it touches. It makes the change, validates it against the sandbox and commits.
 4. **If the builder stopped** (a decision nobody made, a limit reached, an error it could not clear), go to "Handing a task back". When it wrote a Decision needed, first log it on the Decisions tab as a Proposed SA call (Raised in: the task ID, Affects: this task and the ones that depend on it), with the builder's options and lean as written.
 5. **Review.** Start both reviewers on the branch at the same time; neither waits for the other:
    - the story compliance reviewer, with the story's criteria and which ones this task covers;
@@ -50,7 +50,7 @@ Build one task per request unless the person says to keep going ("build the next
 
 When a pull request is merged (the person says so, or the next run finds it merged), set the task to Merged in the plan, with the date, and update the story's Metadata field (section 3).
 
-After every task that reaches a pull request, every merge caught up on and every undo, update the design and build review page (`references/build-review.md`): refresh `content.json` (the task's status and pull request, any decision logged) and run `scripts/build-review.py` with `--head main` and a `--head` for each open task branch, then publish it to the same artifact. Anything it finds on its own for this task goes in the pull request's Check before you merge.
+After every task that reaches a pull request, every merge caught up on and every undo, update the design and build review page (`references/build-review.md`): refresh `content.json` (the task's status and pull request, any decision logged) and run `scripts/build-review.py` with `--head main` and a `--head` for each open task branch, then publish it to the same artifact and save the new HTML to the client's Drive folder (`Build` subfolder) as `references/drive-copies.md` sets out. Anything it finds on its own for this task goes in the pull request's Check before you merge.
 
 ## 2. The pull request
 

@@ -32,6 +32,8 @@ SHARED = {  # file -> [(skill, folder inside the skill)]
     'decision-picker.html': [('design', 'references'), ('build-plan', 'references'), ('build', 'references')],
     'build-review.md': [('design', 'references'), ('build-plan', 'references'), ('build', 'references')],
     'build-review.py': [('build-plan', 'scripts'), ('build', 'scripts')],
+    'drive-copies.md': [('design', 'references'), ('build-plan', 'references'), ('build', 'references'),
+                        ('readout', 'references'), ('user-stories', 'references')],
 }
 SHARED_NOTE = {
     '.md': '<!-- Copy of plugins/start-motion/shared/%s, written by scripts/sync-agents.py. Do not edit here. -->\n\n',

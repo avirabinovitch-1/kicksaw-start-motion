@@ -9,6 +9,8 @@ One request ("build the solution readout for [Client]") produces the readout fro
 
 The readout is a page built from a template, the same way the workflow document and What we heard are. You write one content file (readout/content.json in the client's Claude Project); the build script merges it with the client's What we heard data and workflow data and produces the page. Nobody edits the page by hand. A wrong line is fixed in its source (the requirements list, the workflow document, What we heard, or content.json), and the page is rebuilt.
 
+The readout is a client record, so it does not live only in the SC's Claude Project. Every build that changes it also saves the content file, the page's HTML and a PDF to the client's Drive folder (`Readout` subfolder) as a new version, with the previous one moved to `Older versions`, as `references/drive-copies.md` sets out. The project copy is the one the SC's runs work from; the Drive copy is the one anyone else picks the readout up from.
+
 Reference examples: the Fred Hutch CIS Solution Readout (https://claude.ai/artifact/1zGR6YS43gd5uF9fuaaQHH) and its deck (https://claude.ai/artifact/HBeWJkdv6Q2UFQPE7agzvL); the Crossroads readout deck (https://claude.ai/artifact/3EBpjRHritAxrDaDD75qqo) for a future-state-only readout with a dated timeline. Match their depth and tone, not their content. The template preview shows the finished shape: https://claude.ai/artifact/Dyb1mx8s7mQh9M6hcghCzo.
 
 ## Start: where the readout stands
@@ -17,7 +19,7 @@ Read `references/method.md` in this skill's folder at the start of every run: wh
 
 This skill covers five moves that are five separate prompts on the page: the section plan and build, the dry run, cutting the deck, the readout call, and sign-off. Work out which one is next from where the readout stands, and propose it.
 
-Look before you ask. The client's name comes from the request; if it is missing, that is the one thing to ask before looking anywhere. Read the Discovery documents note, the three discovery documents, the client settings in the note, and the readout files in the client's project if they exist (readout/manifest.md, readout/content.json, readout/sign-off.md). Then report against the stage's readiness list, in a few lines, before doing anything else:
+Look before you ask. The client's name comes from the request; if it is missing, that is the one thing to ask before looking anywhere. Read the Discovery documents note, the three discovery documents, the client settings in the note, and the readout files in the client's project if they exist (readout/manifest.md, readout/content.json, readout/sign-off.md). When they are not in the project (someone else is picking the readout up), take the current version from the client's Drive folder (`Readout` subfolder) and the Google Doc "Readout sign-off: [Client]", copy them into this project, and say so. Then report against the stage's readiness list, in a few lines, before doing anything else:
 
 - the discovery documents: current to which call, and none still a template
 - requirements: how many confirmed, how many heard (those show as provisional), whether every row has a priority
