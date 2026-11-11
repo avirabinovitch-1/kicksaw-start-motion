@@ -25,9 +25,13 @@ In Claude chat and Cowork, show `references/mode-picker.html` as an interactive 
 
 - `cmd`: `plan` for `/build-plan`, `build` for `/build`.
 - `client`: the client's name.
+Every list on the picker comes from the client's connected Jira at the moment the picker is shown, so the person picks from what is really there: picking A sprint shows the open sprints, An epic shows the epics, and Specific stories shows a search over the stories.
+
 - `sprints`: the open sprints from Jira (the active sprint and future sprints, in start order), each `{key, when, stories, epics, note}`: the sprint name, when it starts ("Active, ends Nov 21", "Next sprint, starts Nov 17"), how many stories it holds (for `/build`, how many approved tasks are ready for its stories), the names of the epics those stories belong to, and a short note on where it stands ("0 of 9 planned", "3 of 12 tasks built"). Leave out sprints with nothing left to plan or build. Leave the list empty when the project has no sprints, and the picker shows only epic and specific stories.
 - `epics`: each epic with something left to plan or build, `{key, name, stories, note}`.
 - `scope`: the choice to show selected: `sprint` when the project has sprints, otherwise `epic`.
+- `stories`: for the specific-stories choice, a searchable list of what can be picked: for `/build-plan`, the refined stories not yet planned; for `/build`, the approved tasks not yet built (key or task ID as `key`). Each `{key, title, epic, sprint}`, with `sprint` set to "Not in a sprint" when it has none. The person can also type a key that is not in the list; the picker returns it marked "not in the list", and you look it up in Jira before planning or building it, and say what it is (or that it does not exist) before going on.
+- `jira`: the Jira project key, shown as the source of the lists.
 
 Every number comes from Jira and the build plan, never an estimate. The picker returns one message: what the run covers, the mode, and whether to save it as the default. When it says save, write `.start-motion/my-defaults.json` (and add `.start-motion/my-defaults.json` to the repo's `.gitignore` if it is not there), then say in one line what was saved and how to change it.
 
