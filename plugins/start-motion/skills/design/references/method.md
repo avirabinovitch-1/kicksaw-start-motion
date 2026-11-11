@@ -4,6 +4,7 @@ Show how we will build it in Salesforce, capability by capability, for the deliv
 
 ## Calls the SA makes on every design
 
+- How do I want to work? Build together: decide the data model and the big design choices first, then go one capability at a time with Claude in the chat. Run with it: Claude drafts the whole design and you work back through the decisions inside the document. Both end with the same design
 - When do I start? During discovery, as soon as the systems sessions start. Draft freely; share nothing with the client before scope is signed
 - Sections by capability or by integration? Whatever the build is made of
 - Not confirmed yet? Flag it TBD and say what it waits on. Never fill a gap with an assumption

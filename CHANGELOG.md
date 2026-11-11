@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.1.9 (2026-11-11)
+
+Solution design: two ways to work, the data model first, and decisions made inside the design (Avi, Nov 11). Built from a mockup Avi reviewed the same day (project doc `claude/design-decisions-prototype-2026-11-11.md`). Tested in a browser on the Harborlight example; not yet run end to end on a client.
+
+- Working mode. A new `/design` starts in the chat with one choice: Build together or Run with it, on a clickable picker (`shared/design-mode-picker.html`, the same look as the build stages' picker) with a collapsed explainer and "Use this every time I start a design". A saved default skips the picker. `shared/design-mode.md`.
+- The data model comes first. The step that asked the SA to approve a list of sections is gone. In either mode the first thing produced is the data model, one automation owner per object, access in brief, and the few structural decisions most of the design is built on.
+- Build together. Everything in the chat: the SA decides the structural decisions first, then each capability comes as a short brief with its decisions in the decision picker, and the SA confirms before the next.
+- Run with it. Claude shows the data model it is designing to and keeps going, drafts every section on its own picks and marks each place where the choice was the SA's. The one stop: a structural decision with no defensible pick.
+- Decisions inside the design. The design page has a bar that counts what is answered, one marker per decision and Next decision, which goes to each choice in the section it affects. Structural decisions come first and everything else is locked until they are applied. The SA can pick, write their own, ask for more first, confirm or change a recommendation, reopen a call Claude made, and comment on any section. Send to Claude gives one message to paste into the chat; Claude logs the answers, rewrites only the sections they touch and says what changed.
+- The design is a content file. `/design` writes `design-content.json` and `scripts/build-design.py` builds the page from it with `templates/Kicksaw Solution Design.template.html`; nobody writes the page's HTML by hand, and an update changes only the sections it touches. The script prints a CHECK for each problem. `references/design-content.md` and a full example, `references/design-content-example.json`.
+- Clickable cards in Cowork. The decision picker and the mode picker are shown wherever the session can show an interactive visual, Cowork included; plain text only where none can be shown. Both fall back to text to copy if the chat cannot take the answer directly.
+- Drafts are lighter. The client-facing "What it means for [client]" tables are added when the design is made ready to share, not in drafts. A draft's PDF is made when the design goes Final or someone asks; the content file is saved with every version. The design reviewer runs when a draft is complete, not part way through.
+- Fixed: the report step listed the design reviewer's findings twice.
+- Not in this release: the Start Motion page still shows the 0.1.8 design skill text and kit inventory. The private Start Motion Build plugin keeps its own copies of `decisions.md` and `decision-picker.html`; refresh them with `scripts/sync-agents.py --refresh-from`.
+
 ## 0.1.8 (2026-11-11)
 
 Decisions, the whole-solution design and Drive copies (Avi, Nov 10 and 11). The build stages that were developed alongside these (build plan, build and their agents) moved to a separate private plugin, Start Motion Build, so only the people Avi grants access get them (Avi, Nov 11).

@@ -11,7 +11,7 @@ Reference examples, by Steph McAllister: the Crossroads Treatment Centers Soluti
 
 ## Start: where the design stands
 
-Read `references/method.md` in this skill's folder at the start of every run: what the stage is for, the calls the stage asks you to make, the bar, and the link to the full method on the Start Motion page. Read `references/decisions.md` too: how every design choice is sorted, logged and put in front of the SA (section 3d). And read `references/drive-copies.md`: the design's master copy is an HTML file in the client's Drive folder, one running document saved as a new version each run, never a file that lives only in someone's Claude account.
+Read `references/method.md` in this skill's folder at the start of every run: what the stage is for, the calls the stage asks you to make, the bar, and the link to the full method on the Start Motion page. Read `references/decisions.md` too: how every design choice is sorted, logged and put in front of the SA (section 3d). Read `references/design-mode.md`: the two ways an SA can work on a design, and how they choose. Read `references/design-content.md`: the design is kept as a content file and the page is built from it by a script, never written by hand. And read `references/drive-copies.md`: the design's master copy is an HTML file in the client's Drive folder, one running document saved as a new version each run, never a file that lives only in someone's Claude account.
 
 This skill covers three moves that are three separate prompts on the page: starting the draft, keeping it current from calls and decisions, and getting it ready to share once scope is signed. Work out which one is next from what exists, and propose it.
 
@@ -19,9 +19,21 @@ Look before you ask. The client's name comes from the request; if it is missing,
 
 ## What to ask: one message
 
-Ask once, in one message, and only for what the Start did not find. Starting the draft needs nothing beyond the client; organized by capability or by integration is proposed in the section plan (section 1), not asked. Updating needs nothing; the calls since the last update are read. Getting it ready to share needs the readout version that was signed, if readout/sign-off.md does not say.
+Ask once, in one message, and only for what the Start did not find. Starting the draft needs the client and how the SA wants to work (next section); organized by capability or by integration is your call, said with the data model (section 1), not asked. Updating needs nothing; the calls since the last update are read. Getting it ready to share needs the readout version that was signed, if readout/sign-off.md does not say.
 
 Then read back what you heard in one line and run.
+
+## How the SA wants to work
+
+A new design starts with one choice, made in the chat: Build together or Run with it. `references/design-mode.md` has the whole of it. In short:
+
+- Look for the person's saved default first. If there is one, say what you are using in one line and start.
+- Otherwise show the mode picker (`references/design-mode-picker.html`, only its `CFG` line changed) wherever the session can show an interactive visual. Claude chat and Cowork both can. Plain text only where no visual can be shown.
+- **Build together:** the SA decides the data model and the big design choices first, then you go one capability at a time in the chat, and they confirm each before the next.
+- **Run with it:** you draft the whole design on your best picks and mark every place where the choice was the SA's. They work back through the decisions inside the document, the biggest first.
+- Both end with the same design document, the same decision log and the same review. The SA can switch at any point by saying so.
+
+Updating a design that exists, and getting one ready to share, do not ask.
 
 ## 0. Load what you need
 
@@ -31,7 +43,7 @@ From the client's Claude Project and the places it links:
 - The readout as it stands: recommended build, scope in and set aside, open decisions.
 - The current org, when the client has one (an existing org, or a sandbox the team has started building in): the org summary at `docs/org-summary.md` in the client's repo, with a copy in the client's Drive folder. It lists the objects, fields, automation, access and pages that already exist, by their real names. When there is no summary, or the org has changed since it was written, get one first ("Start from the org" below).
 - Any access worksheet or data dictionary.
-- The design itself, when one exists: the current version from the client's Drive folder (`Design` subfolder), as `references/drive-copies.md` sets out. Every update starts from that file.
+- The design itself, when one exists: the current version and its content file from the client's Drive folder (`Design` subfolder), as `references/drive-copies.md` sets out. Every update starts from that content file.
 
 If the SOW, the requirements list or the workflows are missing, say which and stop. A missing data list is not a reason to stop; say the design has no data section to draw on. Never design from memory or from raw transcripts.
 
@@ -45,14 +57,42 @@ A design written from the requirements alone can name a new field where one alre
 - Without Start Motion Build, or in Claude chat with no terminal, the org cannot be read from here. Use the org summary or build log in the client's folder if there is one and say its date; if there is none, say the design is being drafted without a read of the org, and mark every object and field it names as "to check against the org".
 - Name existing objects, fields and picklist values exactly as the summary has them, and say plainly what is new. Where the design adds automation to an object that already has some, say how the two will work together.
 
-## 1. Propose the sections
+## 1. Start with the data model and the big design choices
 
-Before writing, reply with a one-screen plan and wait for the SA:
-- Organized by capability or by integration, and why.
-- The capability or integration sections, in order, each with the SOW section it comes from.
-- The optional sections in or out, with the reason: building on an existing build, users and licensing, prototype screens.
-- The diagrams each section needs.
-- What is still TBD and what each one waits on.
+An architect does not start from a list of sections. They start from what everything else is built on. So in either mode, before any capability is written, produce this, and keep it short:
+
+- **The data model.** Every object the solution touches, standard and custom, which are new and which the org already has, and how they relate, as a diagram and a table (section 2, item 2).
+- **Who owns the automation.** One automation owner per object and moment (3c).
+- **Access in brief.** Who sees what, in a few lines.
+- **The structural decisions.** The few choices most of the design is built on: how a person or an account is modeled, what the main record is, the access model, an integration pattern several capabilities share. Usually three to seven. Each is a row on the Decisions tab (3d), marked structural, with its options, your pick and what would change it.
+- **The capabilities, in the order you will design them:** the order they depend on each other, each with the SOW section it comes from. Say whether the design is organized by capability or by integration and why, and which optional sections are in or out (building on an existing build, users and licensing, prototype screens).
+
+An architect rarely arrives empty-handed. In Build together, ask with the first picker: "Already decided something, or want to rule something out?" In Run with it, take it from the request and the client's folder, and do not stop to ask.
+
+Then go on by the mode.
+
+### Build together
+
+Everything happens in the chat. The SA has nothing else to open.
+
+1. Show the data model as a diagram, then the structural decisions in the decision picker (`references/decision-picker.html`, `stage` "Solution design · data model"). One line above it: "Before I write any capability, here is the data model and the three choices the rest is built on." Wait for the answers. Write them to the Decisions tab, and redraw the data model if they changed it.
+2. Take the capabilities one at a time, in order. For each one, write its section (step 3), then show a short brief in the chat: what it does in two or three lines, the flow as numbered steps, what it creates or changes, and its decisions in the decision picker (the SA calls and recommendations for this capability only, `stage` "Solution design · <capability>"). End with "Anything else you would build differently here?" Wait. Fold the answers into the section and the tab, say in one line what changed, and go to the next. A capability with no decisions still gets its brief and a confirmation.
+3. Security and access, reporting and the remaining sections need no stop unless they raise an SA call. Write them and say so.
+4. When the last capability is confirmed, build the page (step 4), have it checked (4b) and report (step 7). The report links the design; opening it is optional, since every decision was already made in the chat.
+
+"I need more first" on a decision parks it. Do what was asked in this run if you can; otherwise say who it is with. Carry on with everything that does not depend on it.
+
+### Run with it
+
+The SA is asked nothing until the whole design is drafted, with one exception.
+
+1. Show the data model as a diagram in the chat, with your pick on each structural decision in one line each, and say you are not waiting: "Here is the data model I am designing to. I am not waiting on this. If something is already wrong, say so and I will stop." If the SA answers, use the answer.
+2. The exception: a structural decision where you have no pick you can defend and most of the design depends on the answer. Ask that one question in the decision picker and wait for it. Nothing else stops the run.
+3. Write every section on your picks, and mark each place a decision shaped the text (`{{D-04}}`, see `references/design-content.md`).
+4. Build the page (step 4), have it checked (4b), fix what the review settles, save and publish.
+5. Tell the SA in the chat what is done and what needs them, in a few lines, with the link. For example: "The whole design is drafted. Where a choice was yours, I wrote the section on my pick and marked it. What needs you: 3 structural decisions first, then 3 more and 2 recommendations to confirm. I made 4 calls on my own that you can reopen. Open the design; Next decision takes you to each one."
+
+The SA answers inside the document: Next decision goes to each choice in the section it affects, the structural ones first, and everything else stays locked until those are applied, because changing one rewrites the sections under it. Send to Claude gives them one message to paste into the chat. `references/design-content.md` ("What the SA does in the page, and what comes back") says what to do when it arrives: log the answers, rewrite only the sections they touch, save the next version, and say what changed.
 
 ## 2. The sections
 
@@ -75,7 +115,7 @@ Four parts, in this order:
 1. Lede: two or three lines on what it does, citing the SOW section that puts it in scope.
 2. Flow: numbered steps, each with its actor (client, agent, system, or the integrated system) and what the step produces. Dashed for steps not decided yet.
 3. Spec: an Element and Spec table. For an integration: trigger, direction and pattern, fields exchanged, fallback. For a new object: label and API name, record name format, record types, statuses, relationships, ownership.
-4. Terms and callouts: a "What it means for [client]" table for every Salesforce term in the section, then callouts as needed: Recommendation (with the reason and what would change it), Dependency, Open, Note. Every Recommendation and every Open callout that is a design choice carries its decision ID ("Recommended · D-04", "Open · D-07, SA call") and matches its row on the Decisions tab.
+4. Callouts as needed: Dependency, Note, and anything not confirmed as a TBD with what it waits on. Where a design choice shaped a sentence or a row, mark it with its decision ID (`{{D-04}}`); the page labels it "Written on Claude's pick" or "Decided" from the Decisions tab, and puts the decision itself, with its options, at the end of the section. The "What it means for [client]" table for the Salesforce terms in the section is added when the design is made ready to share (step 6), not in drafts.
 
 ## 3b. Design it simple and sound
 
@@ -115,30 +155,31 @@ The kit's standard is `references/decisions.md`. In short: every design choice w
 
 - **Clear** (one sound answer under the SOW, the org, what the client said or 3b): make the call, write it in the design, log it as Decided by Claude. Nothing waits.
 - **Recommended** (more than one sound answer, and a pick you can defend in a line): write the design on the pick with a "Recommended · D-n" marker, log it as Proposed with the pick. Nothing waits until the design goes Final.
-- **SA call** (a real trade-off, or no defensible lean): write the options side by side in an Open callout, log every option's trade-off and your lean if you have one. Draft every other section.
-- **Client call** (only the client can answer): Open callout, log it, and add an Open items question for the SC with its number in the row.
+- **SA call** (a real trade-off, or no defensible lean): log every option's trade-off and your lean if you have one. Write the section on your lean and mark it; with no lean, leave that part Open and say what it turns on. Draft every other section.
+- **Client call** (only the client can answer): log it, mark the place, and add an Open items question for the SC with its number in the row.
 
 When unsure between two kinds, take the one that involves the SA more. A choice that sets aside a rule in 3b is never Clear.
 
-Do not stop the draft to ask about any of them. Finish everything you can, then put the open ones in front of the SA at the end of the run (section 7). Names, layouts and formatting are not decisions; do not log them.
+When the SA answers depends on the mode (section 1). In Build together, the structural decisions are answered before any capability is written, and each capability's decisions with its brief. In Run with it, nothing stops the draft except a structural decision with no defensible pick; the rest are answered inside the document afterwards. Names, layouts and formatting are not decisions; do not log them.
 
 ## 4. Render and save
 
-- One running HTML document on the Kicksaw design system (list Design System artifacts; colors from the Kicksaw Brand Playbook V2). Header: "Solution design · [platform]", the client, a one-line subtitle, prepared by the SA, the date, the version, and a status: "Draft" until scope is confirmed, then "Final".
-- Contents on the side with every section linked; numbered sections; tables over prose.
+- One running document, kept as a content file (`design-content.json`) and built into the page by `scripts/build-design.py` with `templates/Kicksaw Solution Design.template.html`. `references/design-content.md` says what goes in the file. Never write the page's HTML by hand, and when the design changes, change only the sections the change touches. Fix every CHECK the script prints and build again.
+- The header carries the platform, the client, a one-line subtitle, the SA, the date, the version, and a status: "Draft" until scope is confirmed, then "Final".
+- Numbered sections; tables over prose. The page builds the contents on the side.
 - Real API names in code style. TBD as a small chip wherever a detail waits on something, with what it waits on.
 - The Solution map (3c) as its own section after the data model, as a table by object, with the epics in columns.
 - Once a build plan exists (Start Motion Build), a link at the top to its design and build review page, where the SA sees every component the design turns into.
-- A **Key decisions** section after the data model: each Decided row in a line the client can read (the decision, what was chosen, why, from the Chosen and Why columns), then the open ones with who decides each. Internal reasoning (effort, margin, anything about the relationship) stays on the Decisions tab.
+- A **Key decisions** section, built by the page from the decisions in the content file: each Decided row in a line the client can read (the decision, what was chosen, why, from the Chosen and Why columns), then the open ones with who decides each. Internal reasoning (effort, margin, anything about the relationship) stays on the Decisions tab.
 - Diagrams: draw flows in the document as numbered steps. When the SA draws a diagram by hand in Lucid, embed or link it and caption it. A diagram that also appears in the readout is identical in both.
 - Each capability section's flow names the workflow steps it carries out (W-IDs and step numbers from the workflow document), so the build plan can trace a task back to the client's process.
 - A change log at the end: one line per version.
 
-Save it as `references/drive-copies.md` sets out: the new version as HTML and PDF in the `Design` subfolder, the previous version moved to `Older versions`, then the Claude link republished from the same HTML. A run that changes the design always ends with a new version saved; a run that changes nothing saves nothing.
+Save it as `references/drive-copies.md` sets out: the new version as HTML and its content file in the `Design` subfolder (and the PDF when the design goes Final or someone asks for one), the previous version moved to `Older versions`, then the Claude link republished from the same HTML. A run that changes the design always ends with a new version saved; a run that changes nothing saves nothing.
 
 ## 4b. Have the design checked
 
-After a first draft, after an update that changes more than a TBD, and always before getting it ready to share, start the design reviewer: `start-motion:design-reviewer`. It did not see the design being drafted. Hand it the design as it stands; the requirements in scope (ID, statement, status, Scope), saying whether the scope is signed yet; the workflows in scope (each W-ID with its numbered steps and actors, from the workflow document, or from the signed readout's future state workflows once it is signed); the user stories when they exist; the org summary when there is one; the Decided rows of the Decisions tab (ID, Decision, Chosen, Why); and, when the run covers one epic's part of the design, the requirements of the later epics, so it can report what would close a door on them. Never hand it the Proposed rows, the transcripts or your notes.
+When a first draft is complete (in Build together, once the last capability is confirmed; in Run with it, before the SA is sent the design), after an update that changes more than a TBD, and always before getting it ready to share, start the design reviewer: `start-motion:design-reviewer`. It did not see the design being drafted. Hand it the design as it stands; the requirements in scope (ID, statement, status, Scope), saying whether the scope is signed yet; the workflows in scope (each W-ID with its numbered steps and actors, from the workflow document, or from the signed readout's future state workflows once it is signed); the user stories when they exist; the org summary when there is one; the Decided rows of the Decisions tab (ID, Decision, Chosen, Why); and, when the run covers one epic's part of the design, the requirements of the later epics, so it can report what would close a door on them. Never hand it the Proposed rows, the transcripts or your notes.
 
 Where the session cannot start a separate agent (Claude chat often cannot), read `references/agents/design-reviewer.md` in this skill's folder and run it yourself as a second pass, working from the requirements list and the org summary, not from memory of drafting. Say in the report which way it ran; a second pass in the same conversation is weaker than a separate reader.
 
@@ -154,7 +195,7 @@ What to do with the findings:
 
 ## 5. Keep it current
 
-When asked ("update the [Client] solution design from today's call"): start from the current version in Drive, read the call, fold in what was decided, close the TBDs it answered with the date and source, and add new TBDs. A decision the call settled closes its row on the Decisions tab (Chosen, Why, Decided by the person who settled it, Source with the call and timestamp); a call that reverses a Decided row gets a new row and the old one is set to Superseded. Keep the document's tone, structure and look; add to it, never restyle it. Save it as the next draft version (v0.4 after v0.3), add the change log line, and list what changed.
+When asked ("update the [Client] solution design from today's call"): start from the current content file in Drive, read the call, fold in what was decided into the sections it touches, close the TBDs it answered with the date and source, and add new TBDs. A decision the call settled closes its row on the Decisions tab (Chosen, Why, Decided by the person who settled it, Source with the call and timestamp); a call that reverses a Decided row gets a new row and the old one is set to Superseded. Keep the document's tone, structure and look; add to it, never restyle it. Save it as the next draft version (v0.4 after v0.3), add the change log line, and list what changed.
 
 ## 6. Get it ready to share
 
@@ -163,6 +204,7 @@ When asked ("get the [Client] design ready to share"), once the client has confi
 - Close every TBD the readout review answered. List the ones still open, each with an owner.
 - No Recommended row or SA call still Proposed. If there are any, show the decision picker for them and wait; that is the one thing this step waits on. Client calls still open are listed with their owner and do not stop it, unless a capability in scope cannot be designed without the answer.
 - Clear rows: when the SA approves, mark each "Claude · accepted by <SA> with the design, <date>".
+- Add the "What it means for [client]" table to each capability section, for every Salesforce term in it. Drafts leave these out.
 - Check the bar: every capability in scope has a section; the data model is complete; security is layer by layer; every recommendation has its reason; every term the client may not know is explained; nothing confidential about the relationship is in it.
 - Set the status to "Final", the version to v1.0, and list what the SC, PM and build lead should review before it goes to the client.
 - Save v1.0 to Drive with its PDF (the PDF is what goes to the client). When the client has a repo, also commit the same HTML as `docs/solution-design.html` on a branch for the SA to merge, with the version in the commit message: the build plan plans against that version.
@@ -172,7 +214,7 @@ When asked ("get the [Client] design ready to share"), once the client has confi
 
 Three short paragraphs: what the design covers and how it is organized, the version saved (with the Drive file and the Claude link), what is still TBD and who answers each one, and what the SA should check. Then the design reviewer's findings that are still open, each in one line (uncovered requirements by ID, conflicts with the org, anything beyond scope), the date of the org summary or record of the org the design was written against (or that there was none), and one line on how the reviewer ran. No recap of steps.
 
-Then the decisions, the way `references/decisions.md` sets out: in Claude chat when an interactive visual can be shown, the decision picker (`references/decision-picker.html`, only its `CFG` line changed) with the SA calls and client calls, the recommendations to confirm and the clear calls you made; everywhere else, the same in the plain text block that file gives. One line above it, for example: "Two calls need you, three I went ahead on, eleven I made. Everything else is drafted." When the answers come back, write them to the Decisions tab, update the sections they unblock, and say in one line what changed. Skip this when no row is Proposed and no Clear row was added in this run. Then the design reviewer's findings that are still open, each in one line (uncovered requirements by ID, conflicts with the org, anything beyond scope), the date of the org summary the design was written against (or that there was none), and one line on how the reviewer ran. No recap of steps.
+Then the decisions still open, by the mode. After Run with it: one line counting them, with the link, since they are answered inside the document (section 1). After Build together, or after an update: any row still Proposed goes in the decision picker (`references/decision-picker.html`, only its `CFG` line changed), with the recommendations to confirm and the clear calls you made; where no visual can be shown, the same in the plain text block `references/decisions.md` gives. When the answers come back, write them to the Decisions tab, update the sections they touch, and say in one line what changed. Skip this when no row is Proposed and no Clear row was added in this run.
 
 End with one line naming what comes next: after the first draft, keep it current with `/start-motion:design` after each systems session, third-party call or decision; after scope sign-off, `/start-motion:design` gets it ready to share and the SC, PM and build lead review it; once it is shared, `/start-motion:user-stories` writes the stories with the design in hand.
 
@@ -181,7 +223,7 @@ End with one line naming what comes next: after the first draft, keep it current
 After the report, write out one short run-log row for the delivery kit and say in one line that pasting it into #discovery-skill-feedback is optional (it helps the kit improve; it is never required). Write it quietly: no questionnaire, no asking the person to rate anything. The row, as plain text:
 
 ```
-Run log · start-motion:design (v0.1.8) · design · <client> · <date>
+Run log · start-motion:design (v0.1.9) · design · <client> · <date>
 Ran by: <the name of the person running it, if the session says; otherwise leave it for them>
 Corrected: <what the person corrected during the run, in one to three plain sentences: an output they rewrote, a proposal they rejected and why, an assumption that was wrong. "Nothing" if nothing.>
 Had to ask for: <anything you had to ask for that you should have found on your own (a folder, a link, a name already in a note). "Nothing" if nothing.>
@@ -200,4 +242,5 @@ Nothing about the run depends on this; a run is never blocked by its log.
 - Follow the confirmed scope. The design never widens it.
 - No requirement IDs or traceability tables; the requirements list holds that.
 - No em dashes.
+- Never write the design page's HTML by hand. Change the content file and build the page with the script.
 - The SA reviews every draft; the team reviews it before the client sees it.

@@ -10,7 +10,7 @@ In the client's Drive folder, next to the Discovery subfolder:
 
 | Document | Subfolder | File names |
 |---|---|---|
-| Solution design | `Design` | `[Client] Solution Design v0.3.html` and `[Client] Solution Design v0.3.pdf` |
+| Solution design | `Design` | `[Client] Solution Design v0.3.html`, the content file `[Client] Design content v0.3.json`, and `[Client] Solution Design v0.3.pdf` when it goes Final or someone asks for one |
 | Solution readout | `Readout` | `[Client] Solution Readout v1.1.html`, `.pdf`, and the content file `[Client] Readout content v1.1.json` |
 | Design and build review page | `Build` | `[Client] Design and Build Review [date].html` |
 
@@ -28,6 +28,8 @@ There is only ever one design and one readout per client. Each saved version is 
 ## The PDF
 
 Drive cannot preview an HTML file; clicking it offers a download. So every version saved also gets a PDF of the same page, saved next to it, which Drive previews and which can be sent to a client. Print it with headless Chrome: `google-chrome --headless --no-pdf-header-footer --print-to-pdf=<file.pdf> file://<page.html>` (`chromium` works the same; add `--no-sandbox` in a container). Keep the page's colors by giving the page `print-color-adjust: exact` before printing. If there is no way to print one in the session, save the HTML alone and say in the report that the PDF is missing.
+
+The solution design is the exception while it is a draft: its drafts are read through the Claude link, and its PDF is made when the design goes Final or when someone asks for one. The design's content file is saved with every version, next to the page, because the next run starts from it.
 
 ## The Claude link
 

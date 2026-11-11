@@ -57,6 +57,7 @@ withclient:[{id:'D-09',ref:'Q-14 with the SC',q:'Does a reply from another numbe
 clear:[{id:'D-01',q:'Referral object',chosen:'Custom object Referral__c',why:'No standard object fits intake, outreach and assignment'},
  {id:'D-02',q:'Court date',chosen:'Date field on Referral__c',why:'The client sorts the work list by it'},
  {id:'D-03',q:'Access',chosen:'Two permission sets, intake and site staff',why:'The two roles in the SOW; no profiles edited'}]};
+function emit(m){if(typeof sendPrompt==='function'){sendPrompt(m);return}var e=document.getElementById('err');e.hidden=false;e.style.whiteSpace='pre-wrap';e.style.color='var(--text-primary)';e.textContent='Copy this into the chat:\n'+m}
 var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
 var st={};function S(id){return st[id]||(st[id]={})}
 function nm(b){return esc(b).replace(/\b(\w+__(c|mdt|e))\b/g,'<code>$1</code>')}
@@ -104,6 +105,6 @@ document.getElementById('go').addEventListener('click',function(){var err=docume
  var ro=CFG.clear.filter(function(r){return S(r.id).reo}).map(function(r){return r.id});out.push(ro.length?'Reopen: '+ro.join(', '):'Calls Claude made: accepted');
  if(CFG.approve&&st._ap)out.push(CFG.approve+': '+(st._ap==='yes'?'yes':'not yet'));
  var nt=document.getElementById('notes').value.trim();
- sendPrompt('Decisions for '+CFG.client+' · '+CFG.stage+'. Write these to the Decisions tab, research what I asked for, and carry on with what they unblock.\n'+out.join('\n')+(nt?'\nNotes: '+nt:''))});
+ emit('Decisions for '+CFG.client+' · '+CFG.stage+'. Write these to the Decisions tab, research what I asked for, and carry on with what they unblock.\n'+out.join('\n')+(nt?'\nNotes: '+nt:''))});
 draw();
 </script>

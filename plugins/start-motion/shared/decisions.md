@@ -47,7 +47,7 @@ Sort every logged choice into one of these the moment it comes up. When unsure b
 
 **Recommended.** More than one answer is sound and Claude has a pick it can defend in one line. Write the row with Status Proposed, the pick in Recommended, Chosen empty. The work goes ahead on the pick: the design is written with it and the section carries a small "Recommended · D-04" marker. It only has to be confirmed before the design goes Final, or before a build task that depends on it is approved.
 
-**SA call.** A real trade-off where a careful architect could go either way (cost against flexibility, a pattern the client will live with for years, how far to bend the org's existing build), or where Claude has no defensible lean. Write the row with Status Proposed and every option's trade-off; put a lean in Recommended if there is one, otherwise "No lean". The design shows that section as Open with the options side by side. Everything that does not depend on it keeps moving.
+**SA call.** A real trade-off where a careful architect could go either way (cost against flexibility, a pattern the client will live with for years, how far to bend the org's existing build), or where Claude has no defensible lean. Write the row with Status Proposed and every option's trade-off; put a lean in Recommended if there is one, otherwise "No lean". The design is written on the lean and the place is marked ("Written on Claude's pick · D-07"); with no lean, that part is left Open. The decision sits in the section it affects, with its options, for the SA to answer. Everything that does not depend on it keeps moving.
 
 **Client call.** Only the client can answer (a business rule, a policy, a third party). Write the row and an Open items question for the SC or PM, and put the Open items number in Source. Claude may still write the options and a lean so the SC can ask it well. The dependent work waits exactly as for an SA call. When `/start-motion:discovery-call` or a refinement closes that Open items question, the decision row closes with it.
 
@@ -57,13 +57,15 @@ Sort every logged choice into one of these the moment it comes up. When unsure b
 |---|---|---|
 | Clear | Everything | Nothing |
 | Recommended | Drafting, stories, planning, on the pick | The design going Final; approving a build task that depends on it |
-| SA call, Client call | Every section, story and task that does not depend on it | The dependent section (shown Open), stories whose criteria turn on it (open question with the D-ID), build tasks that depend on it (planned but marked "waits on D-07", never built) |
+| SA call, Client call | Every section, story and task that does not depend on it | The dependent section being settled (written on Claude's lean and marked, or left Open when there is no lean), stories whose criteria turn on it (open question with the D-ID), build tasks that depend on it (planned but marked "waits on D-07", never built) |
 
 A run never stops because a decision is open. It finishes everything else and ends with the decisions waiting, in one place.
 
 ## Putting decisions in front of the person
 
-At the end of a run that leaves rows Proposed (and at build plan approval, for the decisions its tasks depend on), show the decision picker: `references/decision-picker.html`, in Claude chat when an interactive visual can be shown. Change only the `CFG` line at the top of its script; send the rest as it is.
+At the end of a run that leaves rows Proposed (and at build plan approval, for the decisions its tasks depend on), show the decision picker: `references/decision-picker.html`, wherever the session can show an interactive visual. Claude chat and Cowork both can. Change only the `CFG` line at the top of its script; send the rest as it is.
+
+`/start-motion:design` is the exception in one case: after a Run with it draft, the SA answers inside the design document (Next decision takes them to each one), and the document gives them one message to paste into the chat. That message has the same shape as the picker's and is written back the same way. The design skill's `references/design-content.md` has it.
 
 - `client` (the client's name), `stage` ("Solution design", "Build plan", "Build"), `review` (the link to the design and build review page, with `#needs-you`), and `approve` (the approval label, such as "Approve the build plan", only at a stage that has one; otherwise leave it out).
 - `calls`: SA calls, the one most other work waits on first. Each: `id`, `q` (a short title: "Crisis follow-up after a referral is closed"), `ask` (the question in one plain sentence, as you would ask it across a table: what is being decided, between what), `why` (what it holds up), `said` (the client's own words with speaker, call and timestamp, when a call touched it), `today` (what the org has now, from the org summary), `reqs` (the requirement IDs and statements), `opts`, `lean` (an option's `k`, or empty), `lean_why` (one sentence), `change_if` (the What would change it column).
@@ -78,7 +80,7 @@ What the SA can do in it: pick an option, write their own, or say "I need more f
 
 One line above it, for example: "Two calls need you for Harborlight, three recommendations to confirm, and eleven I made. Everything else is drafted." The picker returns the answers as a message; write them straight into the log.
 
-Everywhere else (Cowork, Claude Code, Codex, a chat that cannot show visuals), send this, filled in:
+Only where no visual can be shown (Claude Code in a terminal, Codex), send this, filled in:
 
 ```
 Decisions for [Client] · [stage]

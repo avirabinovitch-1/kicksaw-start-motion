@@ -1,0 +1,475 @@
+{
+ "client": "Harborlight Behavioral Health",
+ "title": "Harborlight Access Center",
+ "platform": "Salesforce Health Cloud and Experience Cloud",
+ "architect": "Steph McAllister",
+ "date": "Nov 11, 2026",
+ "version": "v0.1",
+ "status": "Draft",
+ "approved": "",
+ "review_link": "",
+ "changed": [],
+ "sections": [
+  {
+   "id": "data-model",
+   "num": "1",
+   "title": "Data model and structural decisions",
+   "html": "<p>Three records carry the whole solution: the person, the referral, and the organization that sent it. The three choices below shape every section after this one, so they come first.</p><div class=\"erd\"><svg viewBox=\"0 0 680 250\" role=\"img\" aria-label=\"Object model: a referring organization and a person each relate to many referral records, and each has outreach tasks.\">\n  <line x1=\"200\" y1=\"49\" x2=\"245\" y2=\"49\" stroke=\"#6B7780\" stroke-width=\"1.5\"></line><line x1=\"435\" y1=\"49\" x2=\"480\" y2=\"49\" stroke=\"#6B7780\" stroke-width=\"1.5\"></line><line x1=\"340\" y1=\"78\" x2=\"340\" y2=\"140\" stroke=\"#6B7780\" stroke-width=\"1.5\"></line>\n  <text x=\"222\" y=\"42\" text-anchor=\"middle\" font-size=\"11\" fill=\"#6B7780\" font-family=\"Source Sans 3,Arial\">1 : many</text><text x=\"458\" y=\"42\" text-anchor=\"middle\" font-size=\"11\" fill=\"#6B7780\" font-family=\"Source Sans 3,Arial\">many : 1</text>\n  <g><rect x=\"10\" y=\"20\" width=\"190\" height=\"58\" rx=\"6\" fill=\"#fff\" stroke=\"#9AA7B0\" stroke-width=\"1.2\"></rect><text x=\"105\" y=\"44\" text-anchor=\"middle\" font-family=\"Inter,Arial\" font-size=\"14\" font-weight=\"600\" fill=\"#03355E\">Referring organization</text><text x=\"105\" y=\"63\" text-anchor=\"middle\" font-family=\"Source Sans 3,Arial\" font-size=\"12\" fill=\"#6B7780\">Account · standard</text></g><g><rect x=\"245\" y=\"20\" width=\"190\" height=\"58\" rx=\"6\" fill=\"#fff\" stroke=\"#0071B9\" stroke-width=\"2\"></rect><text x=\"340\" y=\"44\" text-anchor=\"middle\" font-family=\"Inter,Arial\" font-size=\"14\" font-weight=\"600\" fill=\"#03355E\">Referral</text><text x=\"340\" y=\"63\" text-anchor=\"middle\" font-family=\"Source Sans 3,Arial\" font-size=\"12\" fill=\"#6B7780\">Referral__c · new</text></g><g><rect x=\"480\" y=\"20\" width=\"190\" height=\"58\" rx=\"6\" fill=\"#fff\" stroke=\"#9AA7B0\" stroke-width=\"1.2\"></rect><text x=\"575\" y=\"44\" text-anchor=\"middle\" font-family=\"Inter,Arial\" font-size=\"14\" font-weight=\"600\" fill=\"#03355E\">Person</text><text x=\"575\" y=\"63\" text-anchor=\"middle\" font-family=\"Source Sans 3,Arial\" font-size=\"12\" fill=\"#6B7780\">Account (person) · standard</text></g><g><rect x=\"245\" y=\"140\" width=\"190\" height=\"58\" rx=\"6\" fill=\"#fff\" stroke=\"#9AA7B0\" stroke-width=\"1.2\"></rect><text x=\"340\" y=\"164\" text-anchor=\"middle\" font-family=\"Inter,Arial\" font-size=\"14\" font-weight=\"600\" fill=\"#03355E\">Outreach attempt</text><text x=\"340\" y=\"183\" text-anchor=\"middle\" font-family=\"Source Sans 3,Arial\" font-size=\"12\" fill=\"#6B7780\">Task · standard</text></g>\n  <path d=\"M435 62 C 500 100, 500 130, 400 78\" fill=\"none\" stroke=\"#0071B9\" stroke-width=\"1.5\" stroke-dasharray=\"4 3\"></path><text x=\"505\" y=\"108\" font-size=\"11\" fill=\"#0071B9\" font-family=\"Source Sans 3,Arial\">follow-up of (new lookup)</text>\n  <text x=\"10\" y=\"238\" font-size=\"11.5\" fill=\"#6B7780\" font-family=\"Source Sans 3,Arial\">Blue outline: new in this build. Grey: a standard object used as it is.</text></svg></div>\n   <div class=\"tw\"><table><thead><tr><th>Object</th><th>API name</th><th>Used by</th><th></th></tr></thead><tbody>\n   <tr><td>Person</td><td>Account (person)</td><td>Intake, Screening, Crisis follow-up</td><td>{{D-01}}</td></tr>\n   <tr><td>Referral</td><td><code>Referral__c</code></td><td>Every capability</td><td>{{D-02}}</td></tr>\n   <tr><td>Referring organization</td><td>Account, record type Partner</td><td>Intake, Partner updates</td><td></td></tr>\n   <tr><td>Outreach attempt</td><td>Task</td><td>Assignment, Crisis follow-up</td><td></td></tr></tbody></table></div>\n   <div class=\"tw\"><table><thead><tr><th>Automation on</th><th>When</th><th>The one owner</th><th>Capabilities that add to it</th></tr></thead><tbody>\n   <tr><td>Referral</td><td>After save</td><td>One flow, \"Referral: after save\"</td><td>Intake, Screening, Assignment, Partner updates</td></tr>\n   <tr><td>Referral</td><td>Before save</td><td>Formulas and validation rules only</td><td>Screening, Assignment</td></tr></tbody></table></div>\n   <p><b>Partner access.</b> Partners sign in to a site and see only the referrals their own organization sent. {{D-03}}</p>"
+  },
+  {
+   "id": "intake",
+   "num": "2.1",
+   "title": "Referral intake",
+   "html": "<p>A referral reaches Harborlight three ways: the website, a partner, and fax. Each becomes one referral linked to the person and to the organization that sent it. SOW 2.1.</p>\n   <ol><li><span class=\"who\">Partner or member of the public</span> submits the referral on the partner site, or on the public website form.</li>\n   <li><span class=\"who\">System</span> looks for the person by name and date of birth with a matching rule, and creates a Person Account only when there is none.</li>\n   <li><span class=\"who\">System</span> creates the referral with its source and the time it was received.</li>\n   <li><span class=\"who\">System</span> turns each email in the fax mailbox into a draft referral with the fax attached; the intake specialist reads it and fills in the fields. {{D-04}}</li>\n   <li><span class=\"who\">Intake specialist</span> checks it and moves it from Received to In review.</li></ol>\n   <div class=\"tw\"><table><thead><tr><th>Element</th><th>Spec</th></tr></thead><tbody><tr><td>Record</td><td>Referral (<code>Referral__c</code>)</td></tr><tr><td>Source values</td><td>Website, Partner, Fax, Phone</td></tr><tr><td>Duplicates</td><td>Matching rule on first name, last name and date of birth; alert, not block</td></tr></tbody></table></div>"
+  },
+  {
+   "id": "screening",
+   "num": "2.2",
+   "title": "Screening and eligibility",
+   "html": "<p>The intake specialist screens each referral against the four programs' eligibility rules and records which programs fit. SOW 2.2.</p>\n   <ol><li><span class=\"who\">Intake specialist</span> answers the screening questions on the referral.</li><li><span class=\"who\">System</span> reads the eligibility rules from rule records an administrator can edit and proposes the programs that fit. {{D-05}}</li><li><span class=\"who\">Intake specialist</span> accepts the proposal or overrides it with a reason.</li></ol>"
+  },
+  {
+   "id": "assignment",
+   "num": "2.3",
+   "title": "Assignment",
+   "html": "<p>An accepted referral is assigned to a program and a site, and the site has two business days to make first contact. SOW 2.3.</p>\n   <ol><li><span class=\"who\">Intake specialist</span> picks the program and the site.</li><li><span class=\"who\">System</span> sets the owner to the queue for that program and site. {{D-06}}</li><li><span class=\"who\">Site coordinator</span> takes it from the queue and logs each outreach attempt as a task.</li><li><span class=\"who\">System</span> shows the business days waiting with a formula; nothing is scheduled.</li></ol>"
+  },
+  {
+   "id": "partner",
+   "num": "2.4",
+   "title": "Partner updates",
+   "html": "<p>A referring partner can find out what happened to a referral without calling the Access Center. SOW 2.4.</p>\n   <ol><li><span class=\"who\">Partner</span> signs in to the site and opens the list of referrals their organization sent.</li><li><span class=\"who\">System</span> shows each one's status and nothing about care. {{D-07}}</li></ol>"
+  },
+  {
+   "id": "crisis",
+   "num": "2.5",
+   "title": "Crisis follow-up",
+   "html": "<p>When someone is discharged from crisis care, the crisis follow-up coordinator contacts them within one business day and books an appointment within seven. SOW 2.5.</p>\n   <ol><li><span class=\"who\">Coordinator</span> finds the person and their earlier referral records.</li><li><span class=\"who\">Coordinator</span> starts a new referral linked to the closed one, so the history is one click away. {{D-08}}</li><li><span class=\"who\">System</span> counts the days to contact and to appointment from the new record's received date.</li></ol>"
+  },
+  {
+   "id": "access",
+   "num": "3",
+   "title": "Security and access",
+   "html": "<div class=\"tw\"><table><thead><tr><th>Layer</th><th>Salesforce feature</th><th>What it does for Harborlight</th></tr></thead><tbody>\n   <tr><td>Default</td><td>Organization-wide default: Private on Referral</td><td>Nobody sees a referral unless something grants it</td></tr>\n   <tr><td>Staff</td><td>Permission sets: Access Center staff, Site intake</td><td>Access Center sees all; a site sees its own site's work</td></tr>\n   <tr><td>Sites</td><td>Sharing rules by site, to a public group per site</td><td>San Pedro does not see Harbor City's referrals</td></tr>\n   <tr><td>Partners</td><td>Sharing set on Referral; permission set Partner referrer</td><td>A partner sees only what their organization sent</td></tr></tbody></table></div>"
+  },
+  {
+   "id": "reporting",
+   "num": "4",
+   "title": "Reporting",
+   "html": "<div class=\"tw\"><table><thead><tr><th>Component</th><th>Audience</th><th>Details</th></tr></thead><tbody>\n   <tr><td>County monthly report</td><td>Kim Tanaka</td><td>Referrals received, days to first contact and days to appointment, by program. From <code>Referral__c</code>.</td></tr>\n   <tr><td>Work waiting</td><td>Site coordinators</td><td>Open referral records by business days waiting, for their site.</td></tr></tbody></table></div>"
+  },
+  {
+   "id": "key-decisions",
+   "num": "5",
+   "title": "Key decisions",
+   "auto": "key-decisions"
+  },
+  {
+   "id": "calls-claude-made",
+   "num": "6",
+   "title": "Calls Claude made",
+   "auto": "claude-calls"
+  },
+  {
+   "id": "change-log",
+   "num": "7",
+   "title": "Change log",
+   "auto": "change-log"
+  }
+ ],
+ "decisions": [
+  {
+   "id": "D-01",
+   "kind": "sa",
+   "status": "open",
+   "q": "How a person seeking care is stored",
+   "structural": true,
+   "section": "data-model",
+   "ask": "Do we turn on Person Accounts for the people Harborlight serves, or keep them as Contacts under an account?",
+   "why": "Every capability reads or writes this record. It is the hardest choice to change later.",
+   "today": "New org with Health Cloud. Person Accounts are not turned on yet.",
+   "reqs": "R-02: one record per person across every referral they ever have.",
+   "opts": [
+    {
+     "k": "A",
+     "name": "Person Accounts",
+     "sum": "One record is both the person and their account.",
+     "gain": "Health Cloud and the partner site are both built around it",
+     "cost": "Once turned on in an org it cannot be turned off",
+     "risk": "Any later work with organizations sits beside person accounts",
+     "builds": [
+      "Person Account record type: Client"
+     ],
+     "undo": "Cannot be undone",
+     "effort": "Low"
+    },
+    {
+     "k": "B",
+     "name": "Contacts under an account",
+     "sum": "Each person is a Contact; a household account holds them.",
+     "gain": "Nothing permanent is switched on",
+     "cost": "Health Cloud care features need extra setup to work with plain contacts",
+     "risk": "The same person can end up under two accounts",
+     "builds": [
+      "Account record type: Household",
+      "Contact record type: Client"
+     ],
+     "undo": "Possible, with a data migration",
+     "effort": "Medium"
+    }
+   ],
+   "lean": "A",
+   "lean_why": "Health Cloud is in the SOW and its features assume it.",
+   "change_if": "Harborlight plans to sell to or manage organizations in this org",
+   "shapes": [
+    "Data model",
+    "Referral intake",
+    "Screening and eligibility",
+    "Security and access"
+   ]
+  },
+  {
+   "id": "D-02",
+   "kind": "sa",
+   "status": "open",
+   "q": "What a referral is in Salesforce",
+   "structural": true,
+   "section": "data-model",
+   "ask": "Is a referral its own object, a Lead that converts when accepted, or a Case?",
+   "why": "Intake, screening, assignment, partner updates and the County report are all built on this record.",
+   "said": "\"The same person can come to us three times in a year, from three different places.\" Priya Nair, D1 00:22:10",
+   "today": "Nothing built.",
+   "reqs": "R-05: every referral keeps its own source, dates and outcome.",
+   "opts": [
+    {
+     "k": "A",
+     "name": "Its own object",
+     "sum": "A custom Referral record, many per person.",
+     "gain": "Each referral keeps its own dates and outcome, and the person keeps their history",
+     "cost": "No built-in web form; intake needs a flow",
+     "risk": "None beyond the build",
+     "builds": [
+      "Referral__c",
+      "lookup to the person",
+      "lookup to the referring organization"
+     ],
+     "undo": "Moderate",
+     "effort": "Medium"
+    },
+    {
+     "k": "B",
+     "name": "A Lead that converts",
+     "sum": "A Lead until accepted, then converted to the person.",
+     "gain": "Web-to-Lead and conversion are standard",
+     "cost": "A person referred twice is two leads; declined referrals never reach the person record",
+     "risk": "History is split between leads and the person",
+     "builds": [
+      "Lead record type: Referral",
+      "lead conversion mapping"
+     ],
+     "undo": "Hard once leads are converted",
+     "effort": "Low"
+    },
+    {
+     "k": "C",
+     "name": "A Case",
+     "sum": "A Case with a Referral record type.",
+     "gain": "Queues, email intake and time targets are standard",
+     "cost": "Case fields and statuses are named for support and most need relabeling",
+     "risk": "Staff see service terms that do not match intake",
+     "builds": [
+      "Case record type: Referral",
+      "Case status values"
+     ],
+     "undo": "Moderate",
+     "effort": "Low"
+    }
+   ],
+   "lean": "A",
+   "lean_why": "It is the only option that keeps one person with many referrals, which is what Priya described.",
+   "change_if": "Harborlight only ever needs the latest referral per person",
+   "shapes": [
+    "Data model",
+    "Referral intake",
+    "Screening and eligibility",
+    "Assignment",
+    "Crisis follow-up",
+    "Reporting"
+   ]
+  },
+  {
+   "id": "D-03",
+   "kind": "sa",
+   "status": "open",
+   "q": "How partners follow the referrals they send",
+   "structural": true,
+   "section": "data-model",
+   "ask": "Do partner organizations get a login to a site, or a public form with status sent by email?",
+   "why": "It sets the access model and decides whether the partner updates capability is a site or an email.",
+   "today": "Experience Cloud licences are in the SOW. No site exists.",
+   "reqs": "R-11: a referring partner can find out what happened to a referral without calling.",
+   "opts": [
+    {
+     "k": "A",
+     "name": "A partner site with logins",
+     "sum": "Partners sign in, submit, and see their own referrals.",
+     "gain": "Submitting and checking status happen in one place",
+     "cost": "Partner users have to be created and looked after",
+     "risk": "Sharing has to be exact: a partner sees only what they sent",
+     "builds": [
+      "Experience Cloud site",
+      "sharing set on the referral",
+      "permission set: Partner referrer"
+     ],
+     "undo": "Moderate",
+     "effort": "High"
+    },
+    {
+     "k": "B",
+     "name": "A public form and status emails",
+     "sum": "No logins. Status goes out by email when it changes.",
+     "gain": "No partner users to manage",
+     "cost": "Partners cannot look anything up",
+     "risk": "Each email has to say very little",
+     "builds": [
+      "public web form",
+      "status email on change"
+     ],
+     "undo": "Easy",
+     "effort": "Low"
+    }
+   ],
+   "lean": "A",
+   "lean_why": "The SOW already includes the licences and R-11 asks for look-up, not notification.",
+   "change_if": "Harborlight cannot staff partner user administration",
+   "shapes": [
+    "Data model",
+    "Referral intake",
+    "Partner updates",
+    "Security and access"
+   ]
+  },
+  {
+   "id": "D-04",
+   "kind": "sa",
+   "status": "open",
+   "q": "Referrals that arrive by fax",
+   "section": "intake",
+   "ask": "Does the fax mailbox create a draft referral with the fax attached, or do staff keep keying faxes in by hand?",
+   "why": "One step of the intake flow and the fax mailbox setup.",
+   "said": "\"I am not retyping a fax into two places.\" Linda Pham, D1 00:41:07",
+   "today": "Faxes arrive as PDFs in a shared mailbox.",
+   "reqs": "R-07: fax referrals are logged the day they arrive.",
+   "opts": [
+    {
+     "k": "A",
+     "name": "The mailbox creates a draft",
+     "sum": "Each fax email becomes a draft referral with the PDF attached.",
+     "gain": "Nothing is lost in the mailbox; the received time is exact",
+     "cost": "Staff still read the fax and fill in the fields",
+     "risk": "Junk faxes create drafts that need closing",
+     "builds": [
+      "email service on the fax mailbox",
+      "a Draft status value"
+     ],
+     "undo": "Easy",
+     "effort": "Medium"
+    },
+    {
+     "k": "B",
+     "name": "Staff key it in",
+     "sum": "Staff open the mailbox and create the referral themselves.",
+     "gain": "Nothing to build",
+     "cost": "Received time depends on when someone opens the mailbox",
+     "risk": "A fax can sit unlogged",
+     "builds": [],
+     "undo": "Easy",
+     "effort": "Low"
+    }
+   ],
+   "lean": "A",
+   "lean_why": "R-07 needs the arrival time, and only the mailbox knows it.",
+   "change_if": "IT cannot forward the fax mailbox to Salesforce",
+   "shapes": [
+    "Referral intake"
+   ]
+  },
+  {
+   "id": "D-05",
+   "kind": "recommended",
+   "status": "open",
+   "q": "Where the eligibility rules live",
+   "section": "screening",
+   "why": "Four program directors own these rules and they change; an edit is a record change, not a flow change.",
+   "pick": "Rule records an administrator can edit, read by one flow",
+   "alt": "writing each rule into the flow",
+   "shapes": [
+    "Screening and eligibility"
+   ]
+  },
+  {
+   "id": "D-06",
+   "kind": "sa",
+   "status": "open",
+   "q": "How an assigned referral reaches the right people",
+   "section": "assignment",
+   "ask": "Does the referral go to a queue for its program and site, or is it routed to an available coordinator?",
+   "why": "The assignment step and how site coordinators find their work.",
+   "today": "Sites work from a shared spreadsheet filtered by site.",
+   "reqs": "R-14: a site coordinator sees new referrals for their site and program the same day.",
+   "opts": [
+    {
+     "k": "A",
+     "name": "Queues by program and site",
+     "sum": "The referral flow sets the owner to a queue.",
+     "gain": "Simple to see and to change",
+     "cost": "Someone has to pick work up from the queue",
+     "risk": "A quiet site can leave work waiting",
+     "builds": [
+      "queues per program and site",
+      "a branch in the referral flow"
+     ],
+     "undo": "Easy",
+     "effort": "Low"
+    },
+    {
+     "k": "B",
+     "name": "Routing to a person",
+     "sum": "Omni-Channel hands each referral to an available coordinator.",
+     "gain": "Work is pushed, not picked",
+     "cost": "Coordinators must set themselves available; more to administer",
+     "risk": "Heavier than four sites need",
+     "builds": [
+      "Omni-Channel setup",
+      "routing configurations",
+      "presence statuses"
+     ],
+     "undo": "Moderate",
+     "effort": "High"
+    }
+   ],
+   "lean": "A",
+   "lean_why": "It meets R-14 with the least to build and maintain.",
+   "change_if": "Volumes grow past what a site can pick up by hand",
+   "shapes": [
+    "Assignment"
+   ]
+  },
+  {
+   "id": "D-07",
+   "kind": "recommended",
+   "status": "open",
+   "q": "What a partner sees on the site",
+   "section": "partner",
+   "why": "It answers R-11 and says nothing about care.",
+   "pick": "Status only: Received, In review, Assigned, Closed",
+   "alt": "also showing the program name",
+   "shapes": [
+    "Partner updates"
+   ],
+   "depends_on": "D-03"
+  },
+  {
+   "id": "D-08",
+   "kind": "sa",
+   "status": "open",
+   "q": "Crisis follow-up after a referral is closed",
+   "section": "crisis",
+   "ask": "When someone comes back through crisis after their referral was closed, do we reopen that referral or start a new one linked to it?",
+   "why": "The crisis follow-up flow and the seven-day appointment measure on the County report.",
+   "said": "\"If they come back through crisis, it's a new episode for us, but I need to see the history.\" Javier Morales, D3 00:18:54",
+   "today": "Nothing built.",
+   "reqs": "R-08: contact within one business day of discharge, appointment within seven days.",
+   "opts": [
+    {
+     "k": "A",
+     "name": "Reopen the closed referral",
+     "sum": "One record carries the whole history.",
+     "gain": "Everything for the person in one place",
+     "cost": "Closed dates move, so time-to-close reports must allow for reopening",
+     "risk": "The seven-day measure needs a separate reopen date",
+     "builds": [
+      "a Reopened status value",
+      "a reopened date field"
+     ],
+     "undo": "Hard once records reopen in production",
+     "effort": "Medium"
+    },
+    {
+     "k": "B",
+     "name": "New referral, linked to the closed one",
+     "sum": "Each episode gets its own record.",
+     "gain": "Clean dates and reports; matches how Javier describes it",
+     "cost": "Two records per person; history is one click away",
+     "risk": "None beyond one more lookup",
+     "builds": [
+      "a lookup from the new referral to the earlier one",
+      "a related list on the page"
+     ],
+     "undo": "Easy",
+     "effort": "Low"
+    }
+   ],
+   "lean": "B",
+   "lean_why": "It matches the client's own words and keeps every date clean.",
+   "change_if": "Harborlight reports episodes per person, not per referral",
+   "shapes": [
+    "Crisis follow-up",
+    "Reporting"
+   ]
+  },
+  {
+   "id": "D-09",
+   "kind": "client",
+   "status": "open",
+   "q": "What a partner may be told once a referral is assigned",
+   "section": "partner",
+   "why": "42 CFR Part 2 limits what a referrer can be told. The status wording waits on her answer.",
+   "ref": "Q-21, with the SC to ask Kim Tanaka",
+   "depends_on": "D-03"
+  },
+  {
+   "id": "D-11",
+   "kind": "clear",
+   "status": "decided",
+   "q": "Referring organizations",
+   "chosen": "The standard Account, with a Partner record type",
+   "why_chosen": "The standard object does the job.",
+   "by": "Claude"
+  },
+  {
+   "id": "D-12",
+   "kind": "clear",
+   "status": "decided",
+   "q": "Two-business-day aging",
+   "chosen": "A formula field, no automation",
+   "why_chosen": "Nothing to schedule or maintain, and it is always current.",
+   "by": "Claude"
+  },
+  {
+   "id": "D-13",
+   "kind": "clear",
+   "status": "decided",
+   "q": "Staff access",
+   "chosen": "Permission sets; no profile is edited",
+   "why_chosen": "As narrow as the two staff roles in the SOW need.",
+   "by": "Claude"
+  },
+  {
+   "id": "D-14",
+   "kind": "clear",
+   "status": "decided",
+   "q": "Program and site",
+   "chosen": "Two picklists on the referral",
+   "why_chosen": "Both are reported on, and neither has a process or layout of its own.",
+   "by": "Claude"
+  }
+ ],
+ "log": [
+  [
+   "v0.1",
+   "Nov 11, 2026",
+   "First full draft, written on Claude's picks."
+  ]
+ ]
+}

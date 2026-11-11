@@ -1,0 +1,60 @@
+<h2 class="sr-only">Working mode picker shown at the start of the design command: Build together, the default, or Run with it, a collapsed explainer, an option to use the choice every time, and a Start the design button.</h2>
+<style>
+.mp{--t-bg:#E1F5EE;--t-bd:#0F6E56;--t-tx:#085041;--t-sub:#0F6E56;--p-bg:#EEEDFE;--p-bd:#534AB7;--p-tx:#3C3489;--p-sub:#534AB7;padding:.5rem 0}
+[data-mode="dark"] .mp{--t-bg:#085041;--t-bd:#5DCAA5;--t-tx:#E1F5EE;--t-sub:#9FE1CB;--p-bg:#3C3489;--p-bd:#AFA9EC;--p-tx:#EEEDFE;--p-sub:#CECBF6}
+@media (prefers-color-scheme:dark){:root:not([data-mode]) .mp{--t-bg:#085041;--t-bd:#5DCAA5;--t-tx:#E1F5EE;--t-sub:#9FE1CB;--p-bg:#3C3489;--p-bd:#AFA9EC;--p-tx:#EEEDFE;--p-sub:#CECBF6}}
+.mp-opt{border-radius:12px;padding:14px 16px;cursor:pointer;text-align:left;width:100%;display:flex;flex-direction:column;gap:6px;border:0.5px solid var(--border-strong);background:var(--surface-2);height:auto;white-space:normal;line-height:1.5;font-size:14px}
+.mp-opt.sel{border-width:2px;padding:13px 15px}
+.mp-opt.T.sel{background:var(--t-bg);border-color:var(--t-bd);color:var(--t-tx)}.mp-opt.R.sel{background:var(--p-bg);border-color:var(--p-bd);color:var(--p-tx)}
+.mp-h{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:500}
+.mp-pill{display:none;margin-left:auto;font-size:11px;font-weight:500;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.mp-opt.T.sel .mp-pill{display:inline-flex;background:var(--t-bd);color:var(--t-bg)}.mp-opt.R.sel .mp-pill{display:inline-flex;background:var(--p-bd);color:var(--p-bg)}
+.mp-fit{font-size:13px}
+.mp summary{cursor:pointer;font-size:14px;color:var(--text-accent)}
+.mp .st{display:flex;gap:8px;align-items:baseline;font-size:14px;line-height:1.5;margin:0 0 6px}
+.mp .tag{font-size:11px;padding:1px 7px;border-radius:var(--radius);white-space:nowrap;background:var(--surface-1);color:var(--text-secondary)}
+.mp .tag.you{font-weight:500}
+</style>
+<div class="mp">
+<div style="display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:0.5px solid var(--border);margin-bottom:14px"><span id="cl" style="font-size:16px;font-weight:500"></span><code style="font-size:12px;padding:2px 7px;border-radius:var(--radius);background:var(--surface-1);color:var(--text-secondary)">/design</code></div>
+<div style="font-size:15px;font-weight:500;margin:0 0 10px">How do you want to work on this design?</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px">
+<button class="mp-opt T" id="optT" aria-pressed="true"><span class="mp-h"><i class="ti ti-users" style="font-size:20px" aria-hidden="true"></i>Build together<span class="mp-pill">Selected</span></span><span id="descT"></span><span class="mp-fit">A good fit for a first design with the kit, or a solution that is complex or new to you.</span></button>
+<button class="mp-opt R" id="optR" aria-pressed="false"><span class="mp-h"><i class="ti ti-player-play" style="font-size:20px" aria-hidden="true"></i>Run with it<span class="mp-pill">Selected</span></span><span id="descR"></span><span class="mp-fit">A good fit when you know the solution well and want a full draft fast.</span></button>
+</div>
+<details style="margin-top:12px"><summary>Need to understand better?</summary>
+<p style="font-size:14px;line-height:1.6;margin:8px 0 12px">Think of a house. You are the architect: the design is yours and your name is on it. Claude is the designer who drafts the plans. In Build together you sit with the designer and go room by room. In Run with it the designer draws the full set of plans and you mark them up.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px">
+<div><div style="font-size:14px;font-weight:500;margin-bottom:8px;color:var(--t-sub)">Build together</div><div id="stepsT"></div></div>
+<div><div style="font-size:14px;font-weight:500;margin-bottom:8px;color:var(--p-sub)">Run with it</div><div id="stepsR"></div></div>
+</div>
+<p style="font-size:13px;color:var(--text-secondary);line-height:1.5;margin:8px 0 0">Either way you end up with the same design document, every choice is logged with its reason, and nothing is final until you approve it. You can switch at any point by saying so.</p>
+</details>
+<label id="keepRow" style="display:flex;gap:8px;align-items:baseline;font-size:13px;color:var(--text-secondary);margin-top:14px"><input type="checkbox" id="keep"><span>Use this every time I start a design</span></label>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap">
+<span id="foot" style="font-size:13px;color:var(--text-secondary)"></span>
+<button id="goBtn">Start the design</button>
+</div>
+<div id="out" hidden style="font-size:13px;white-space:pre-wrap;margin-top:8px"></div>
+</div>
+<script>
+var CFG={client:'Harborlight Behavioral Health',mode:'T',n:5,canSave:true};
+var mode=CFG.mode==='R'?'R':'T',n=CFG.n||0,caps=n?(n===1?'the one capability':'all '+n+' capabilities'):'every capability';
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function steps(id,arr){document.getElementById(id).innerHTML=arr.map(function(s){return '<div class="st"><span class="tag'+(s[0]==='You'?' you':'')+'">'+s[0]+'</span><span>'+esc(s[1])+'</span></div>'}).join('')}
+function pick(x){mode=x;var T=document.getElementById('optT'),R=document.getElementById('optR');T.classList.toggle('sel',x==='T');R.classList.toggle('sel',x==='R');T.setAttribute('aria-pressed',x==='T');R.setAttribute('aria-pressed',x==='R');
+ var b=document.getElementById('goBtn'),k=x==='T'?'t':'p';b.style.background='var(--'+k+'-bd)';b.style.color='var(--'+k+'-bg)';b.style.borderColor='var(--'+k+'-bd)';foot()}
+function foot(){document.getElementById('foot').textContent=(mode==='T'?'Build together':'Run with it')+' · '+(document.getElementById('keep').checked?'saved as your default':'this design only')}
+function emit(m){if(typeof sendPrompt==='function'){sendPrompt(m);return}var o=document.getElementById('out');o.hidden=false;o.textContent='Copy this into the chat:\n'+m}
+document.getElementById('cl').textContent=CFG.client;
+document.getElementById('descT').textContent='We start with the data model and the few big design choices everything else is built on. Then we go one capability at a time: I explain what it needs and what I would build, and you confirm before I move on.';
+document.getElementById('descR').textContent='I draft the whole design in one sitting, '+caps+', on my best picks, and mark every place where the choice was yours. You get one document and work back through the decisions inside it, the biggest first.';
+steps('stepsT',[['Claude','Shows the data model and the big design choices, each with its options.'],['You','Pick, or say what you have already decided.'],['Claude','Writes one capability and puts its decisions in front of you.'],['You','Confirm or change it, then on to the next.'],['Claude','Has the finished design checked by a second reader.'],['You','Approve the draft.']]);
+steps('stepsR',[['Claude','Shows the data model it is designing to, and keeps going.'],['Claude','Drafts every capability, security and reporting, and has it checked.'],['You','Open the design. Next decision takes you to each choice, the structural ones first.'],['You','Send your answers back to the chat.'],['Claude','Rewrites only the sections your answers touch.'],['You','Approve the draft.']]);
+if(!CFG.canSave)document.getElementById('keepRow').style.display='none';
+document.getElementById('optT').onclick=function(){pick('T')};
+document.getElementById('optR').onclick=function(){pick('R')};
+document.getElementById('keep').addEventListener('change',foot);
+document.getElementById('goBtn').onclick=function(){emit('Working choices for '+CFG.client+' · /design\nMode: '+(mode==='T'?'Build together':'Run with it')+'\nSave as my default: '+(CFG.canSave&&document.getElementById('keep').checked?'yes':'no'))};
+pick(mode);
+</script>

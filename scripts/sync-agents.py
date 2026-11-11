@@ -28,6 +28,8 @@ SHARED_DIR = os.path.join(PLUGIN, 'shared')
 SHARED = {  # file -> [(skill, folder inside the skill)]
     'decisions.md': [('design', 'references')],
     'decision-picker.html': [('design', 'references')],
+    'design-mode.md': [('design', 'references')],
+    'design-mode-picker.html': [('design', 'references')],
     'drive-copies.md': [('design', 'references'), ('readout', 'references'), ('user-stories', 'references')],
 }
 SHARED_NOTE = {
