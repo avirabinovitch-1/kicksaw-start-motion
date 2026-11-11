@@ -1,0 +1,87 @@
+<h2 class="sr-only">Decision picker: choose an option for each call that needs the solution architect, confirm the recommendations, and reopen any call Claude made.</h2>
+<style>
+.sec{font-size:13px;color:var(--text-secondary);margin:1.25rem 0 .5rem;display:flex;justify-content:space-between;align-items:baseline}
+.card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:1rem 1.25rem;margin-bottom:12px}
+.q{font-size:15px;font-weight:500;line-height:1.4}.why{font-size:13px;color:var(--text-secondary);margin:4px 0 10px;line-height:1.5}
+.tag{font-size:11px;padding:2px 8px;border-radius:var(--radius);background:var(--bg-neutral,var(--surface-1));color:var(--text-secondary);margin-left:6px;font-weight:400;white-space:nowrap}
+.tag.cl{background:var(--bg-warning);color:var(--text-warning)}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px}
+.opt{text-align:left;height:auto;padding:10px 12px;border-radius:var(--radius);display:block;line-height:1.45;white-space:normal}
+.opt.on{border:2px solid var(--border-accent)!important;background:var(--bg-accent-muted,var(--bg-accent))!important;padding:9px 11px}
+.on-n{font-size:14px;font-weight:500;display:flex;justify-content:space-between;gap:6px}
+.pro,.con{font-size:12px;margin-top:4px}.pro{color:var(--text-success)}.con{color:var(--text-secondary)}
+.lean{font-size:11px;color:var(--text-accent);font-weight:400;white-space:nowrap}.eff{font-size:11px;color:var(--text-muted);margin-top:4px}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 4px;border-bottom:0.5px solid var(--border)}
+.row .q{font-size:14px}.row .why{margin:2px 0 0}.seg{display:inline-flex;gap:6px}.seg button{font-size:12px;padding:3px 10px;height:auto}
+.seg button.on{background:var(--fill-accent)!important;color:var(--on-accent)!important;border-color:var(--fill-accent)!important}
+.err{font-size:13px;color:var(--text-danger);margin-top:6px}
+</style>
+<div style="display:flex;justify-content:space-between;align-items:baseline;padding:.5rem 0 0">
+<span id="hd" style="font-size:14px;color:var(--text-secondary)"></span>
+<span id="cnt" style="font-size:13px;color:var(--text-secondary)"></span>
+</div>
+<div id="calls"></div>
+<div id="recs"></div>
+<div id="clear"></div>
+<div style="margin-top:1rem;display:grid;gap:8px">
+<input id="notes" type="text" placeholder="Anything else the log should say, for example who else weighed in">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+<span style="font-size:13px;color:var(--text-secondary)">Anything left unpicked stays open and nothing that depends on it is built</span>
+<button id="go">Send decisions ↗</button>
+</div>
+<div id="err" class="err" hidden></div>
+</div>
+<script>
+var CFG={client:'Harborlight Behavioral Health',stage:'Solution design',calls:[{id:'D-07',kind:'SA call',q:'How does a referral link to the provider who sent it?',why:'Shapes the Referral object, the intake page and the referral source report (R-04, R-11)',opts:[{k:'A',name:'Lookup to Contact',pro:'One record per provider, reportable, no retyping',con:'Every referring provider has to exist as a Contact first',effort:'Medium'},{k:'B',name:'Lookup to Account, provider name as text',pro:'Fast to enter, matches how intake works today',con:'Provider names repeat and drift, weaker reporting',effort:'Low'}],lean:'A'},{id:'D-09',kind:'Client call',ref:'Q-14 with the SC',q:'Does a crisis follow-up reopen a closed referral or start a new one?',why:'Decides the status model and the 7-day appointment rule (R-08)',opts:[{k:'A',name:'Reopen the referral',pro:'One history per client episode',con:'Closed dates and reports have to allow reopening'},{k:'B',name:'New linked referral',pro:'Clean dates and reporting',con:'Two records for one episode'}],lean:''}],recs:[{id:'D-04',q:'Where do contact attempts live?',pick:'Standard Task with a Call type',why:'Already used for outreach in the org, reports on attempts work as is'},{id:'D-05',q:'How is the two-business-day aging flag worked out?',pick:'Formula field, no automation',why:'Nothing to schedule or maintain, always current'}],clear:[{id:'D-01',q:'Referral object',chosen:'Custom object Referral__c (no standard object fits)'},{id:'D-02',q:'Court date',chosen:'Date field on Referral__c, sorts the work list'},{id:'D-03',q:'Access',chosen:'Two permission sets, intake and site staff'}]};
+var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+var pick={},own={},rec={},reo={};
+CFG.recs.forEach(function(r){rec[r.id]='ok'});
+function card(c){
+  var cl=c.kind==='Client call';
+  var h='<div class="card"><div class="q">'+esc(c.id)+' · '+esc(c.q)+'<span class="tag'+(cl?' cl':'')+'">'+esc(cl?'Client call'+(c.ref?' · '+c.ref:''):'Needs you')+'</span></div><div class="why">'+esc(c.why)+(cl?' Your lean is optional; the client answers this one.':'')+'</div><div class="opts">';
+  c.opts.forEach(function(o){
+    h+='<button class="opt'+(pick[c.id]===o.k?' on':'')+'" data-c="'+esc(c.id)+'" data-k="'+esc(o.k)+'"><div class="on-n"><span>'+esc(o.k+' · '+o.name)+'</span>'+(c.lean===o.k?'<span class="lean">Claude leans this way</span>':'')+'</div><div class="pro">+ '+esc(o.pro)+'</div><div class="con">− '+esc(o.con)+'</div>'+(o.effort?'<div class="eff">Effort: '+esc(o.effort)+'</div>':'')+'</button>';
+  });
+  h+='<button class="opt'+(pick[c.id]==='own'?' on':'')+'" data-c="'+esc(c.id)+'" data-k="own"><div class="on-n"><span>Something else</span></div><div class="con">Write your own below</div></button></div>';
+  if(pick[c.id]==='own')h+='<input type="text" class="own" data-c="'+esc(c.id)+'" placeholder="Your decision and why" value="'+esc(own[c.id]||'')+'" style="margin-top:8px;width:100%">';
+  return h+'</div>';
+}
+function draw(){
+  var need=CFG.calls.filter(function(c){return c.kind!=='Client call'}).length;
+  var done=CFG.calls.filter(function(c){return c.kind!=='Client call'&&pick[c.id]&&(pick[c.id]!=='own'||(own[c.id]||'').trim())}).length;
+  document.getElementById('hd').textContent=CFG.client+' · '+CFG.stage;
+  document.getElementById('cnt').textContent=need?done+' of '+need+' decided':'';
+  document.getElementById('calls').innerHTML=CFG.calls.length?'<div class="sec"><span>Needs a decision</span></div>'+CFG.calls.map(card).join(''):'';
+  document.getElementById('recs').innerHTML=CFG.recs.length?'<div class="sec"><span>I went ahead on these. Confirm or change</span></div>'+CFG.recs.map(function(r){return '<div class="row"><div><div class="q">'+esc(r.id+' · '+r.q)+'</div><div class="why">'+esc(r.pick)+'. '+esc(r.why)+'</div>'+(rec[r.id]==='chg'?'<input type="text" class="chg" data-c="'+esc(r.id)+'" placeholder="What you want instead, and why" value="'+esc(own[r.id]||'')+'" style="margin-top:6px;width:100%">':'')+'</div><div class="seg"><button data-r="'+esc(r.id)+'" data-v="ok" class="'+(rec[r.id]==='ok'?'on':'')+'">Confirm</button><button data-r="'+esc(r.id)+'" data-v="chg" class="'+(rec[r.id]==='chg'?'on':'')+'">Change</button></div></div>'}).join(''):'';
+  document.getElementById('clear').innerHTML=CFG.clear.length?'<div class="sec"><span>'+CFG.clear.length+' calls I made. Reopen any you want to weigh in on</span></div>'+CFG.clear.map(function(r){return '<div class="row"><div><div class="q">'+esc(r.id+' · '+r.q)+'</div><div class="why">'+esc(r.chosen)+'</div></div><div class="seg"><button data-o="'+esc(r.id)+'" class="'+(reo[r.id]?'on':'')+'">'+(reo[r.id]?'Reopened':'Reopen')+'</button></div></div>'}).join(''):'';
+}
+document.addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b)return;
+  if(b.dataset.c&&b.dataset.k){pick[b.dataset.c]=pick[b.dataset.c]===b.dataset.k?undefined:b.dataset.k;draw();return}
+  if(b.dataset.r){rec[b.dataset.r]=b.dataset.v;draw();return}
+  if(b.dataset.o){reo[b.dataset.o]=!reo[b.dataset.o];draw();return}
+});
+document.addEventListener('input',function(e){
+  var t=e.target;if(t.classList.contains('own')||t.classList.contains('chg')){own[t.dataset.c]=t.value;document.getElementById('err').hidden=true;
+  var need=CFG.calls.filter(function(c){return c.kind!=='Client call'}).length,done=CFG.calls.filter(function(c){return c.kind!=='Client call'&&pick[c.id]&&(pick[c.id]!=='own'||(own[c.id]||'').trim())}).length;document.getElementById('cnt').textContent=need?done+' of '+need+' decided':''}
+});
+document.getElementById('go').addEventListener('click',function(){
+  var err=document.getElementById('err'),miss=[];
+  Object.keys(pick).forEach(function(id){if(pick[id]==='own'&&!(own[id]||'').trim())miss.push(id)});
+  Object.keys(rec).forEach(function(id){if(rec[id]==='chg'&&!(own[id]||'').trim())miss.push(id)});
+  if(miss.length){err.textContent='Write what you want for '+miss.join(', ')+' first';err.hidden=false;return}
+  var out=[];
+  CFG.calls.forEach(function(c){
+    var p=pick[c.id],cl=c.kind==='Client call';
+    if(!p){out.push(c.id+': '+(cl?'waiting on the client':'still open'));return}
+    var line=p==='own'?'own answer: '+own[c.id].trim():p+' ('+c.opts.filter(function(o){return o.k===p})[0].name+')';
+    out.push(c.id+': '+(cl?'SA lean '+line+', still the client\'s call':line));
+  });
+  CFG.recs.forEach(function(r){out.push(r.id+': '+(rec[r.id]==='ok'?'confirm':'change: '+own[r.id].trim()))});
+  var ro=CFG.clear.filter(function(r){return reo[r.id]}).map(function(r){return r.id});
+  out.push(ro.length?'Reopen: '+ro.join(', '):'Calls Claude made: accepted');
+  var nt=document.getElementById('notes').value.trim();
+  sendPrompt('Decisions for '+CFG.client+' · '+CFG.stage+'. Write these to the Decisions tab and carry on with what they unblock.\n'+out.join('\n')+(nt?'\nNotes: '+nt:''));
+});
+draw();
+</script>

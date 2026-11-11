@@ -186,7 +186,7 @@ When asked ("fold in today's [Client] refinement"), pull the tl;dv transcript fo
 - **Update the AC and the Open Questions fields** to match: rewrite the criteria that changed, add the new ones, remove the questions answered. A question the product owner raised and could not answer goes in as a new open question with their quote, and on the Open items tab.
 - **Anything the product owner asked for that is beyond the signed scope** goes in the requirements list with Scope set to Beyond SOW and Scope decision empty, with the quote and citation; it never widens a story silently. Tell the PM that week.
 - **A story the product owner approved** moves to Pending Client Approval or Refined, per the project's workflow. Say which stories moved.
-- **Record new decisions in the Open items tab** with the quote, and update the Source footer line of the story to add the refinement call.
+- **Record new decisions in the Open items tab** with the quote, and update the Source footer line of the story to add the refinement call. A decision that answers a row on the Decisions tab closes that row as well (Chosen, Why, Decided by, Source with the call and timestamp), and the D-ID comes off the story's open question.
 - Keep the story's tone and structure; add to it, never rewrite the parts the SC already approved unless the product owner changed them.
 
 Stories then flow: New, Pending Client Approval, Refined, Build Ready, In Progress, Ready for QA, QA Testing, UAT, Done. The SC and SA size refined stories together; the PM, SC and SA load sprint 1 from them with input from the team.

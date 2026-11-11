@@ -11,11 +11,11 @@ Reference examples, by Steph McAllister: the Crossroads Treatment Centers Soluti
 
 ## Start: where the design stands
 
-Read `references/method.md` in this skill's folder at the start of every run: what the stage is for, the calls the stage asks you to make, the bar, and the link to the full method on the Start Motion page.
+Read `references/method.md` in this skill's folder at the start of every run: what the stage is for, the calls the stage asks you to make, the bar, and the link to the full method on the Start Motion page. Read `references/decisions.md` too: how every design choice is sorted, logged and put in front of the SA (section 3c).
 
 This skill covers three moves that are three separate prompts on the page: starting the draft, keeping it current from calls and decisions, and getting it ready to share once scope is signed. Work out which one is next from what exists, and propose it.
 
-Look before you ask. The client's name comes from the request; if it is missing, that is the one thing to ask before looking anywhere. Then report what you found against the stage's readiness list, in a few lines, before doing anything else: the signed SOW; the discovery documents (current to which call; the Integrations and Open items tabs; the data list if there is one); the readout (none, draft at which version, or signed on which date); the current org (access or not, when the client already runs Salesforce); third-party contacts and any access worksheet or data dictionary; and whether a design already exists (then its status, Draft or Final, and the TBDs still open). For example: "Tog. SOW found. Discovery documents current to S-09. Readout v1.1, not yet signed. Org: client runs Salesforce, access not granted. Design: draft started Nov 18, 14 TBDs open, 3 answered on calls since. Next: fold in the calls since Nov 18."
+Look before you ask. The client's name comes from the request; if it is missing, that is the one thing to ask before looking anywhere. Then report what you found against the stage's readiness list, in a few lines, before doing anything else: the signed SOW; the discovery documents (current to which call; the Integrations and Open items tabs; the data list if there is one); the readout (none, draft at which version, or signed on which date); the current org (access or not, when the client already runs Salesforce); third-party contacts and any access worksheet or data dictionary; and whether a design already exists (then its status, Draft or Final, the TBDs still open, and the Decisions tab: how many Decided and how many Proposed, by kind). For example: "Tog. SOW found. Discovery documents current to S-09. Readout v1.1, not yet signed. Org: client runs Salesforce, access not granted. Design: draft started Nov 18, 14 TBDs open, 3 answered on calls since. Next: fold in the calls since Nov 18."
 
 ## What to ask: one message
 
@@ -27,7 +27,7 @@ Then read back what you heard in one line and run.
 
 From the client's Claude Project and the places it links:
 - The signed SOW: confirmed architecture decisions and the section numbers to cite.
-- The discovery documents: the requirements list (with its Integrations and Open items tabs), the workflows, the session notes and their build notes, and the data and migration list when the project has one.
+- The discovery documents: the requirements list (with its Integrations, Open items and Decisions tabs), the workflows, the session notes and their build notes, and the data and migration list when the project has one.
 - The readout as it stands: recommended build, scope in and set aside, open decisions.
 - The current org, when the client has one (an existing org, or a sandbox the team has started building in): the org summary at `docs/org-summary.md` in the client's repo, with a copy in the client's Drive folder. It lists the objects, fields, automation, access and pages that already exist, by their real names. When there is no summary, or the org has changed since it was written, get one first ("Start from the org" below).
 - Any access worksheet or data dictionary.
@@ -74,7 +74,7 @@ Four parts, in this order:
 1. Lede: two or three lines on what it does, citing the SOW section that puts it in scope.
 2. Flow: numbered steps, each with its actor (client, agent, system, or the integrated system) and what the step produces. Dashed for steps not decided yet.
 3. Spec: an Element and Spec table. For an integration: trigger, direction and pattern, fields exchanged, fallback. For a new object: label and API name, record name format, record types, statuses, relationships, ownership.
-4. Terms and callouts: a "What it means for [client]" table for every Salesforce term in the section, then callouts as needed: Recommendation (with the reason and what would change it), Dependency, Open, Note.
+4. Terms and callouts: a "What it means for [client]" table for every Salesforce term in the section, then callouts as needed: Recommendation (with the reason and what would change it), Dependency, Open, Note. Every Recommendation and every Open callout that is a design choice carries its decision ID ("Recommended · D-04", "Open · D-07, SA call") and matches its row on the Decisions tab.
 
 ## 3b. Design it simple and sound
 
@@ -93,42 +93,62 @@ Every section is written to these. The design reviewer checks them, and so does 
 
 When the simplest sound design and what the client asked for pull apart, say so as a Recommendation with the reason and what would change it. Do not quietly design the heavier thing, and do not quietly drop what they asked for.
 
+## 3c. Decisions: what moves and what waits
+
+The kit's standard is `references/decisions.md`. In short: every design choice with a real alternative gets a row on the Decisions tab, sorted into one of four kinds, and only the work that depends on an open one waits.
+
+- **Clear** (one sound answer under the SOW, the org, what the client said or 3b): make the call, write it in the design, log it as Decided by Claude. Nothing waits.
+- **Recommended** (more than one sound answer, and a pick you can defend in a line): write the design on the pick with a "Recommended · D-n" marker, log it as Proposed with the pick. Nothing waits until the design goes Final.
+- **SA call** (a real trade-off, or no defensible lean): write the options side by side in an Open callout, log every option's trade-off and your lean if you have one. Draft every other section.
+- **Client call** (only the client can answer): Open callout, log it, and add an Open items question for the SC with its number in the row.
+
+When unsure between two kinds, take the one that involves the SA more. A choice that sets aside a rule in 3b is never Clear.
+
+Do not stop the draft to ask about any of them. Finish everything you can, then put the open ones in front of the SA at the end of the run (section 7). Names, layouts and formatting are not decisions; do not log them.
+
 ## 4. Render
 
 - One HTML artifact on the Kicksaw design system (list Design System artifacts; colors from the Kicksaw Brand Playbook V2). Header: "Solution design · [platform]", the client, a one-line subtitle, prepared by the SA, the date, and a status: "Draft" until scope is confirmed, then "Final".
 - Contents on the side with every section linked; numbered sections; tables over prose.
 - Real API names in code style. TBD as a small chip wherever a detail waits on something, with what it waits on.
+- A **Key decisions** section after the data model: each Decided row in a line the client can read (the decision, what was chosen, why, from the Chosen and Why columns), then the open ones with who decides each. Internal reasoning (effort, margin, anything about the relationship) stays on the Decisions tab.
 - Diagrams: draw flows in the document as numbered steps. When the SA draws a diagram by hand in Lucid, embed or link it and caption it. A diagram that also appears in the readout is identical in both.
 
 ## 4b. Have the design checked
 
-After a first draft, after an update that changes more than a TBD, and always before getting it ready to share, start the design reviewer: `start-motion:design-reviewer`. It did not see the design being drafted. Hand it the design as it stands; the requirements in scope (ID, statement, status, Scope), saying whether the scope is signed yet; the user stories when they exist; and the org summary when there is one. Never hand it the transcripts or your notes.
+After a first draft, after an update that changes more than a TBD, and always before getting it ready to share, start the design reviewer: `start-motion:design-reviewer`. It did not see the design being drafted. Hand it the design as it stands; the requirements in scope (ID, statement, status, Scope), saying whether the scope is signed yet; the user stories when they exist; the org summary when there is one; and the Decided rows of the Decisions tab (ID, Decision, Chosen, Why). Never hand it the Proposed rows, the transcripts or your notes.
 
 Where the session cannot start a separate agent (Claude chat often cannot), read `references/agents/design-reviewer.md` in this skill's folder and run it yourself as a second pass, working from the requirements list and the org summary, not from memory of drafting. Say in the report which way it ran; a second pass in the same conversation is weaker than a separate reader.
 
 What to do with the findings:
 - An uncovered requirement: add it to the section it belongs in when the discovery documents say how it is met; otherwise add it as a TBD with what it waits on. Never design around a gap with an assumption.
-- A conflict with the org where the summary settles it (a field that already exists, a name spelled differently): correct the design to the org's name. A conflict that needs a decision (two automations on one object, an access model that changes) goes to the SA as an Open callout in that section.
+- A conflict with the org where the summary settles it (a field that already exists, a name spelled differently): correct the design to the org's name. A conflict that needs a decision (two automations on one object, an access model that changes) becomes a row on the Decisions tab (usually an SA call) and an Open callout in that section.
 - Something designed beyond the confirmed scope: mark it in the design and list it for the SA. The SA takes it out or raises it with the PM. Do not remove it on your own.
-- Something heavier than it needs to be: where the lighter way is plainly sound and changes nothing the client would see, change the design and say so in the report. Where it is a real trade-off, put both in a Recommendation callout for the SA.
+- Something heavier than it needs to be: where the lighter way is plainly sound and changes nothing the client would see, change the design and say so in the report. Where it is a real trade-off, log it as Recommended or an SA call with both options, and mark the section.
+- A choice with a real alternative that no row records (the reviewer's Unlogged choices): log it under the right kind.
+- Work that contradicts a Decided row: correct the design to the decision. If the design was right and the decision is now wrong, write a new row for the SA; never edit a Decided row.
 - An unconfirmed detail: mark it TBD with what it waits on.
 - Run the reviewer once, fix, and run it once more. Two passes at most. Whatever is still flagged goes to the SA as it is.
 
 ## 5. Keep it current
 
-When asked ("update the [Client] solution design from today's call"): read the call, fold in what was decided, close the TBDs it answered with the date and source, and add new TBDs. Keep the document's tone, structure and look; add to it, never restyle it. List what changed.
+When asked ("update the [Client] solution design from today's call"): read the call, fold in what was decided, close the TBDs it answered with the date and source, and add new TBDs. A decision the call settled closes its row on the Decisions tab (Chosen, Why, Decided by the person who settled it, Source with the call and timestamp); a call that reverses a Decided row gets a new row and the old one is set to Superseded. Keep the document's tone, structure and look; add to it, never restyle it. List what changed.
 
 ## 6. Get it ready to share
 
 When asked ("get the [Client] design ready to share"), once the client has confirmed scope:
 - Check every section against the confirmed scope. Anything set aside comes out; anything added is in.
 - Close every TBD the readout review answered. List the ones still open, each with an owner.
+- No Recommended row or SA call still Proposed. If there are any, show the decision picker for them and wait; that is the one thing this step waits on. Client calls still open are listed with their owner and do not stop it, unless a capability in scope cannot be designed without the answer.
+- Clear rows: when the SA approves, mark each "Claude · accepted by <SA> with the design, <date>".
 - Check the bar: every capability in scope has a section; the data model is complete; security is layer by layer; every recommendation has its reason; every term the client may not know is explained; nothing confidential about the relationship is in it.
 - Set the status to "Final" and list what the SC, PM and build lead should review before it goes to the client.
 
 ## 7. Report back
 
-Three short paragraphs: what the design covers and how it is organized, what is still TBD and who answers each one, and what the SA should check. Then the design reviewer's findings that are still open, each in one line (uncovered requirements by ID, conflicts with the org, anything beyond scope), the date of the org summary the design was written against (or that there was none), and one line on how the reviewer ran. No recap of steps.
+Three short paragraphs: what the design covers and how it is organized, what is still TBD and who answers each one, and what the SA should check.
+
+Then the decisions, the way `references/decisions.md` sets out: in Claude chat when an interactive visual can be shown, the decision picker (`references/decision-picker.html`, only its `CFG` line changed) with the SA calls and client calls, the recommendations to confirm and the clear calls you made; everywhere else, the same in the plain text block that file gives. One line above it, for example: "Two calls need you, three I went ahead on, eleven I made. Everything else is drafted." When the answers come back, write them to the Decisions tab, update the sections they unblock, and say in one line what changed. Skip this when no row is Proposed and no Clear row was added in this run. Then the design reviewer's findings that are still open, each in one line (uncovered requirements by ID, conflicts with the org, anything beyond scope), the date of the org summary the design was written against (or that there was none), and one line on how the reviewer ran. No recap of steps.
 
 End with one line naming what comes next: after the first draft, keep it current with `/start-motion:design` after each systems session, third-party call or decision; after scope sign-off, `/start-motion:design` gets it ready to share and the SC, PM and build lead review it; once it is shared, `/start-motion:user-stories` writes the stories with the design in hand; once the stories are refined and the SA has approved the design, `/start-motion:build-plan` turns them into build tasks.
 
@@ -151,6 +171,8 @@ Nothing about the run depends on this; a run is never blocked by its log.
 ## Rules
 
 - Never invent an object, field, API name, number, date or quote. If it is not confirmed, it is TBD.
+- Never record a decision as made by a person who did not make it. Claude decides only Clear rows, and says so in Decided by.
+- A decision never stops the whole run. Only the work that depends on it waits.
 - Follow the confirmed scope. The design never widens it.
 - No requirement IDs or traceability tables; the requirements list holds that.
 - No em dashes.

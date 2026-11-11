@@ -9,9 +9,9 @@ One request ("build the plan for [Client]") turns the approved stories into buil
 
 ## Start: where the build stands
 
-Read `references/method.md` in this skill's folder at the start of every run: what the stage is for, the calls the stage asks you to make, the bar, and the link to the Start Motion page.
+Read `references/method.md` in this skill's folder at the start of every run: what the stage is for, the calls the stage asks you to make, the bar, and the link to the Start Motion page. Read `references/decisions.md` too: the Decisions tab, the four kinds of decision, and what waits while one is open.
 
-Look before you ask. The client's name comes from the request; if it is missing, that is the one thing to ask. Then report what you found, in a few lines, before doing anything else: the stories (how many are refined or approved in Jira, how many are still New or have open questions); the solution design (Final, Draft, or none); the client's repo (found, with its main branch, or none); the org summary (`docs/org-summary.md` and its date, or none); the sandbox (an alias signed in through the Salesforce CLI on this computer, or not); and whether a build plan already exists (`docs/build-plan.md`, with how many tasks are planned, built and merged). For example: "Neo. Stories: 18 refined, 4 with open questions. Design: Final, Nov 12. Repo: neo-salesforce, main. Org summary: Nov 10. Sandbox: signed in as neo-dev. Build plan: none yet. Next: draft the plan for the 18 refined stories."
+Look before you ask. The client's name comes from the request; if it is missing, that is the one thing to ask. Then report what you found, in a few lines, before doing anything else: the stories (how many are refined or approved in Jira, how many are still New or have open questions); the solution design (Final, Draft, or none); the client's repo (found, with its main branch, or none); the org summary (`docs/org-summary.md` and its date, or none); the sandbox (an alias signed in through the Salesforce CLI on this computer, or not); whether a build plan already exists (`docs/build-plan.md`, with how many tasks are planned, built and merged); and the Decisions tab (how many Decided, how many still Proposed and which stories they touch). For example: "Neo. Stories: 18 refined, 4 with open questions. Design: Final, Nov 12. Repo: neo-salesforce, main. Org summary: Nov 10. Sandbox: signed in as neo-dev. Build plan: none yet. Next: draft the plan for the 18 refined stories."
 
 Three things stop the run, each with one line saying what is waiting and on whom:
 - No approved or refined stories. The plan is built from stories the client's product owner has been through.
@@ -28,6 +28,8 @@ Ask once, in one message, and only for what the Start did not find: which storie
 - The solution design, the version marked Final (or the draft, when the SA said so).
 - `docs/org-summary.md` in the client's repo. If there is none, or the sandbox has changed since it was written, start the org reader first (section 2).
 - The SOW's countable limits (custom fields per object, record types, flows, integration endpoints, source files), so each task can be checked against them.
+- The Decisions tab of the requirements list: every row, with its Affects column, so each task knows the decisions it builds to and which open ones it waits on.
+- Each story's Build/Solution Details field in Jira, when the SA has written one: it is the SA's own spec for the story, and it wins over the design where the two differ (say so in the plan).
 - The existing `docs/build-plan.md`, when there is one: tasks already built or merged are never re-planned.
 
 ## 1. The client repo, when there is none
@@ -61,10 +63,12 @@ For each story that passed:
   - the check that proves it: the validation, the Apex test and what it must assert, or the step a person does by hand in the sandbox when metadata cannot show it;
   - what it depends on (task IDs);
   - whether it has code (the test writer writes tests for it) or is configuration only;
-  - any SOW limit it counts against, with the count before and after.
+  - any SOW limit it counts against, with the count before and after;
+  - the decisions it builds to (Decided rows, by ID) and any it waits on (Proposed rows).
 - **Only what the stories ask for.** A task with no criterion behind it does not go in the plan. Something useful nobody asked for is listed at the end under Suggestions for the SA.
 - **Manual steps are tasks too.** Anything metadata cannot carry (a setting switched on in Setup, a connected app's secret, a queue's members) is a task marked "by hand", with who does it.
 - **Removing something is its own task, and a person does the removing.** A task that deletes, renames, deactivates or narrows anything already in the org (a field, a flow, a rule, a picklist value, a permission) is marked "removes", names the exact item, lists everything in the org summary that refers to it, and says what happens to any data it holds. The builder may take the item out of the repo for such a task; taking it out of the org is done by hand by the person named on the task. The SA sees every "removes" task listed on its own at the top of the plan before approving.
+- **An open decision holds only what depends on it.** A task that depends on a Proposed row is planned, marked "waits on D-07", and cannot be built until the row is Decided. Every other task is planned and buildable as normal. When planning surfaces a choice the design did not make (two sound ways to break a story, a pattern the design left open), log it on the Decisions tab under the right kind and plan the rest.
 - **The fewest tasks that do the job.** No task adds a field, record type, status or branch that no criterion needs. Where the design gives a choice, plan the simpler build: standard before custom, configuration before code, a relationship or formula before a stored copy.
 - **Data work is its own task and never the builder's.** Loading, cleaning or backfilling records is marked "by hand: data", outside what an agent builds.
 
@@ -77,10 +81,21 @@ Save `docs/build-plan.md` in the client's repo, on a branch named `build-plan/<d
 - Under the table, one short block per task with the detail a builder needs: the names, the exact values from the criteria, the check in full.
 - A coverage list: every planned story with its criteria and the task that covers each. A criterion with no task is a defect in the plan; fix it before showing the SA.
 - Stories not planned, each with why (open question, a reviewer's finding, too large) and who it waits on.
+- Decisions: the open rows the plan waits on, each with the tasks it holds, and the Decided rows the plan builds to.
 - SOW limits: each one with the count today and the count when the plan is built.
 - Suggestions: useful things nobody asked for, for the SA to raise or drop.
 
 If the team wants them, create one Jira sub-task per task under its story, titled with the task ID and what it changes. Only after the SA approves the plan.
+
+After the SA approves, add a short block at the end of each planned story's Build/Solution Details field in Jira, under the SA's own text and never in place of it:
+
+```
+Build plan (<date>): <task IDs, each with what it creates or changes, one per line>
+Decisions: <D-04 lookup to Contact for the referring provider; D-05 formula for aging; or "none">
+Waits on: <D-07, SA call; or nothing>
+```
+
+When the field already has a Build plan block from an earlier plan, replace that block only. Find the field by its name on the story, not by ID; if the project has no Build/Solution Details field, put the block in a comment instead and say so.
 
 No em dashes. Real API names in code style. Never invent a name, a value or a limit: if the design does not give it, the task says "name from the SA" and the plan lists it as a question.
 
@@ -91,6 +106,8 @@ When asked ("update the [Client] build plan"): read the stories that changed in 
 ## 7. Report back
 
 Three short paragraphs: what the plan covers (stories, tasks, how many have code), what the SA has to decide before approving (names to give, stories sent back, limits near), and what is not planned and why. No recap of steps.
+
+Then, when any decision the plan touches is still Proposed or was added in this run, the decision picker as `references/decisions.md` sets out (`references/decision-picker.html` in Claude chat, the plain text block elsewhere), with the stage "Build plan" and only the decisions the planned tasks touch. Approving the plan and answering the picker can be the same message. When the answers come back, write them to the Decisions tab and take "waits on" off the tasks they unblock.
 
 End with one line naming what comes next: the SA reads and approves the plan; then `/start-motion:build` builds it one task at a time.
 
@@ -113,6 +130,7 @@ Nothing about the run depends on this; a run is never blocked by its log.
 ## Rules
 
 - Nothing is built from a plan the SA has not approved, and you never mark a plan approved yourself.
+- An open decision holds only the tasks that depend on it, never the whole plan.
 - Every criterion of every planned story has a task. Every task has a criterion.
 - Never invent an object, field, API name, value or limit.
 - The plan never widens the signed scope.

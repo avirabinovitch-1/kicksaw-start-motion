@@ -125,7 +125,7 @@ Read the transcript against the documents and work out every change in the shape
 **Open items**
 - Questions answered on this call, with the answer and the quote, and the stories and criteria the answer changes. Use the plan's Q numbers; they are the same as the Open items numbers.
 - New questions, with an owner if one was named, otherwise "SC to assign", and the planned session each one belongs to. Mark the ones that block the design. This includes the gaps a story cannot be written without (an empty state nobody described, a value list nobody gave); those are marked as ours.
-- Decisions closed. A decision is logged only when the client says it is decided or picks between stated options. A preference is a requirement with status Heard, not a decision.
+- Decisions closed. A decision is logged only when the client says it is decided or picks between stated options. A preference is a requirement with status Heard, not a decision. When the Open items question is tied to a row on the Decisions tab (a client call from the design), close that row too: Chosen, Why in the client's words, Decided by the client's speaker, Source with the call and timestamp.
 
 **Coverage**
 - Against the plan's must-leave-with list for this session: each item done, partly (and what remains), or not reached. Then the agenda items that were not covered and where they go (the flex slot, another session, dropped with a reason).
