@@ -27,6 +27,8 @@ Where it lives: next to the design in the client's Drive folder, `Design` subfol
 
 Each section: `id` (lower-case letters, digits and hyphens: `data-model`, `intake`), `num` ("1", "2.1"), `title`, and `html`, the section's content.
 
+Write every section at the design's level (the top of SKILL.md): the shape and the decisions, no field lists, value lists, validation rules, page names or permission tables.
+
 `html` is plain content only: `<p>`, `<ol>`, `<ul>`, `<table>` inside `<div class="tw">`, `<h3>`, `<code>` for API names, `<span class="who">` for the actor at the start of a flow step, `<span class="tbd">TBD · what it waits on</span>`, `<div class="callout"><b>Dependency</b> ...</div>`, and a diagram as inline SVG inside `<div class="erd">` (the data model) or `<div class="fig">`. No styles, no scripts, no layout.
 
 Mark where a decision shaped the text with `{{D-04}}`, right after the sentence or row it shaped. The page turns it into the right label: "Written on Claude's pick · D-04" while it is open, "Decided · D-04" once it is. Write the sentence itself on the option in force: the SA's choice when decided, your pick when not.

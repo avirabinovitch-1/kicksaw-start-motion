@@ -7,6 +7,8 @@ description: Start Motion stage 2.1 (/start-motion:design). Drafts, updates and 
 
 The design shows how we will build the solution in Salesforce, capability by capability. It is written for the delivery team and shareable with the client. It is not a scope recap: the readout covers what and why; the design covers how. The SA owns it; Claude drafts and keeps it current.
 
+**The level it is written at.** The design settles the shape of the solution and the decisions. It is a few pages an architect can write from what is known at scope sign-off, and a client can read. In: the objects and how they relate, record types where the process really differs, who owns the automation on each object and moment, the access approach, integration patterns, the decisions and the open questions. Out: individual fields, picklist values, validation rules, page and layout names, and which permission each permission set carries. Those are worked out later, a sprint or an epic at a time, once that slice's stories are refined and it is being built. A field is named here only when it is structural: a relationship, an external ID that intake or a migration matches on, the field a status path runs on.
+
 Reference examples, by Steph McAllister: the Crossroads Treatment Centers Solution Design (https://claude.ai/artifact/E45dBFHcyYyk8R3Pxnw1pw), organized by integration, and the Healthcare Legal Solutions Client Portal Solution Design (https://claude.ai/artifact/Gdit1JR6FzURLvhq67jqAm), organized by capability. Match their structure, depth and look, not their content.
 
 ## Start: where the design stands
@@ -43,6 +45,7 @@ From the client's Claude Project and the places it links:
 - The readout as it stands: recommended build, scope in and set aside, open decisions.
 - The current org, when the client has one (an existing org, or a sandbox the team has started building in): the org summary at `docs/org-summary.md` in the client's repo, with a copy in the client's Drive folder. It lists the objects, fields, automation, access and pages that already exist, by their real names. When there is no summary, or the org has changed since it was written, get one first ("Start from the org" below).
 - Any access worksheet or data dictionary.
+- The user stories, when they exist. Read them to understand each capability. A field table, a list of values or the wording of a rule in a story is not copied into the design; it is the input for building that story.
 - The design itself, when one exists: the current version and its content file from the client's Drive folder (`Design` subfolder), as `references/drive-copies.md` sets out. Every update starts from that content file.
 
 If the SOW, the requirements list or the workflows are missing, say which and stop. A missing data list is not a reason to stop; say the design has no data section to draw on. Never design from memory or from raw transcripts.
@@ -98,10 +101,10 @@ The SA answers inside the document: Next decision goes to each choice in the sec
 
 Always in:
 1. How to read this document. One paragraph on what the document is and is not; a current state to target state strip of three to five rows; a "what this covers" list with a link to each section.
-2. Data and object model. A short lede, then a table: Object, API name, Relationship, Populated by (or Portal access and How access is granted for external users), Notes. Then the ERD.
+2. Data and object model. A short lede, then a table: Object, API name, Relationship, Populated by (or Portal access and How access is granted for external users), Notes. Then the ERD. No field lists: name a field only when it is structural.
 3. One section per capability or integration (see step 3).
-4. Security and access model. Who sees what, drawn for each kind of user when there are external users, then a table by layer: Layer, Salesforce feature, What it does for [client]. Cover org-wide defaults, record access, hierarchy, and object and field access.
-5. Reporting and dashboards. Table: Component, Audience, Details, naming the objects and field API names behind each metric and any formula still to confirm. Then what is out of scope for reporting.
+4. Security and access model. Who sees what, drawn for each kind of user when there are external users, then a table by layer: Layer, Salesforce feature, What it does for [client]. Cover org-wide defaults, record access, hierarchy, and object and field access. Give the approach at each layer (which sharing model, permission sets for which roles), not which permission each set carries.
+5. Reporting and dashboards. Table: Component, Audience, Details: which reports and dashboards there are, who each is for, and which objects it draws on. Field API names and formulas are left for when they are built. Then what is out of scope for reporting.
 6. Diagrams needed. Each diagram, the section it belongs to, and where it lives.
 
 Add when it fits:
@@ -114,7 +117,7 @@ Add when it fits:
 Four parts, in this order:
 1. Lede: two or three lines on what it does, citing the SOW section that puts it in scope.
 2. Flow: numbered steps, each with its actor (client, agent, system, or the integrated system) and what the step produces. Dashed for steps not decided yet.
-3. Spec: an Element and Spec table. For an integration: trigger, direction and pattern, fields exchanged, fallback. For a new object: label and API name, record name format, record types, statuses, relationships, ownership.
+3. Spec: an Element and Spec table. For an integration: trigger, direction and pattern, what is exchanged (which records and what they carry, not a field map), fallback. For a new object: its relationships, who owns the records, record types only where the process differs, and the automation owner. Record name formats, lists of status values and field specs are left for when the capability is built.
 4. Callouts as needed: Dependency, Note, and anything not confirmed as a TBD with what it waits on. Where a design choice shaped a sentence or a row, mark it with its decision ID (`{{D-04}}`); the page labels it "Written on Claude's pick" or "Decided" from the Decisions tab, and puts the decision itself, with its options, at the end of the section. The "What it means for [client]" table for the Salesforce terms in the section is added when the design is made ready to share (step 6), not in drafts.
 
 ## 3b. Design it simple and sound
@@ -140,7 +143,7 @@ Stories are refined and built a slice at a time (a sprint, which often holds par
 
 The design carries a **Solution map** section, after the data model:
 
-- **Every object the solution touches**, standard and custom, with each epic that creates, changes or reads it, and its relationships.
+- **Every object the solution touches**, standard and custom, with each epic that creates, changes or reads it, and its relationships. At object level, not field by field.
 - **One automation owner per object and moment** (before save, after save, on a schedule, from a screen): the one flow (or trigger) that runs there, and which epics add a branch to it. A later epic extends that flow; it never adds a second one beside it.
 - **Shared values and structure**: picklists more than one epic reports on, record types, the sharing model of each object, the permission set structure, naming conventions, and the integration touchpoints.
 - **Open structural questions** that more than one epic depends on. Each is a row on the Decisions tab, and it has to be decided before the first epic that depends on it is planned.
@@ -160,6 +163,8 @@ The kit's standard is `references/decisions.md`. In short: every design choice w
 
 When unsure between two kinds, take the one that involves the SA more. A choice that sets aside a rule in 3b is never Clear.
 
+A design decision is structural: an object model, a relationship type, standard against custom, an access model, an automation owner, an integration pattern. Component choices (a field type, a validation rule, how a page is built) are not logged here; they are made and logged when the capability is built. A design with twenty-five decisions has gone too deep.
+
 When the SA answers depends on the mode (section 1). In Build together, the structural decisions are answered before any capability is written, and each capability's decisions with its brief. In Run with it, nothing stops the draft except a structural decision with no defensible pick; the rest are answered inside the document afterwards. Names, layouts and formatting are not decisions; do not log them.
 
 ## 4. Render and save
@@ -167,7 +172,7 @@ When the SA answers depends on the mode (section 1). In Build together, the stru
 - One running document, kept as a content file (`design-content.json`) and built into the page by `scripts/build-design.py` with `templates/Kicksaw Solution Design.template.html`. `references/design-content.md` says what goes in the file. Never write the page's HTML by hand, and when the design changes, change only the sections the change touches. Fix every CHECK the script prints and build again.
 - The header carries the platform, the client, a one-line subtitle, the SA, the date, the version, and a status: "Draft" until scope is confirmed, then "Final".
 - Numbered sections; tables over prose. The page builds the contents on the side.
-- Real API names in code style. TBD as a small chip wherever a detail waits on something, with what it waits on.
+- API names in code style, for existing metadata and for new objects. Other new things get plain names. TBD as a small chip wherever a detail waits on something, with what it waits on.
 - The Solution map (3c) as its own section after the data model, as a table by object, with the epics in columns.
 - Once a build plan exists (Start Motion Build), a link at the top to its design and build review page, where the SA sees every component the design turns into.
 - A **Key decisions** section, built by the page from the decisions in the content file: each Decided row in a line the client can read (the decision, what was chosen, why, from the Chosen and Why columns), then the open ones with who decides each. Internal reasoning (effort, margin, anything about the relationship) stays on the Decisions tab.
@@ -223,7 +228,7 @@ End with one line naming what comes next: after the first draft, keep it current
 After the report, write out one short run-log row for the delivery kit and say in one line that pasting it into #discovery-skill-feedback is optional (it helps the kit improve; it is never required). Write it quietly: no questionnaire, no asking the person to rate anything. The row, as plain text:
 
 ```
-Run log · start-motion:design (v0.1.9) · design · <client> · <date>
+Run log · start-motion:design (v0.1.10) · design · <client> · <date>
 Ran by: <the name of the person running it, if the session says; otherwise leave it for them>
 Corrected: <what the person corrected during the run, in one to three plain sentences: an output they rewrote, a proposal they rejected and why, an assumption that was wrong. "Nothing" if nothing.>
 Had to ask for: <anything you had to ask for that you should have found on your own (a folder, a link, a name already in a note). "Nothing" if nothing.>
@@ -237,6 +242,7 @@ Nothing about the run depends on this; a run is never blocked by its log.
 ## Rules
 
 - Never invent an object, field, API name, number, date or quote. If it is not confirmed, it is TBD.
+- Stay at the design's level. No field lists, value lists, validation rules, page names or permission tables, even when the stories already carry them.
 - Never record a decision as made by a person who did not make it. Claude decides only Clear rows, and says so in Decided by.
 - A decision never stops the whole run. Only the work that depends on it waits.
 - Follow the confirmed scope. The design never widens it.

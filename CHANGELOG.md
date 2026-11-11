@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.10 (2026-11-11)
+
+The design is written at the level of shape and decisions (Avi, Nov 11, from the HLS E1 run; project doc `claude/build-agent-test/design-level-handoff-2026-11-11.md`). Run on HLS, 0.1.8 produced a design at build depth: every field, value and validation rule, 25 logged decisions, about 30 reviewer findings. An architect could not write that at the point in a project where the design is written.
+
+- `/design` says what level it is written at. In: objects and how they relate, record types where the process differs, who owns the automation, the access approach, integration patterns, the decisions and the open questions. Out: individual fields, picklist values, validation rules, page and layout names, which permission each set carries. Those are worked out a sprint or an epic at a time, when that slice is built.
+- The data model table carries no field lists; a field is named only when it is structural. A new object's spec is its relationships, ownership, record types where they differ and its automation owner. Security gives the approach by layer. Reporting says which reports exist, for whom and on which objects.
+- Stories that already exist are read to understand a capability. Their field tables, values and rule wording are not copied into the design.
+- A design decision is structural. Component choices are made and logged when the capability is built.
+- Design reviewer: reviews at the same level. Coverage is per capability and requirement; a missing field, value, rule, page or permission is never a finding; feasibility is raised only where it would break the shape.
+- README: stage numbers match the methodology (1.1 to 2.2).
+- Not in this release: the same change on the build plan side (it is where the detail for a slice is designed) lives in the private Start Motion Build plugin.
+
 ## 0.1.9 (2026-11-11)
 
 Solution design: two ways to work, the data model first, and decisions made inside the design (Avi, Nov 11). Built from a mockup Avi reviewed the same day (project doc `claude/design-decisions-prototype-2026-11-11.md`). Tested in a browser on the Harborlight example; not yet run end to end on a client.

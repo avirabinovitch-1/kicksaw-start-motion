@@ -10,6 +10,7 @@ Show how we will build it in Salesforce, capability by capability, for the deliv
 - Not confirmed yet? Flag it TBD and say what it waits on. Never fill a gap with an assumption
 - Recommendation or open item? Recommend when you would make the call and can say why; leave it open when the client or a third party has to answer
 - Who decides? Claude makes the clear calls and logs them; the SA confirms recommendations and makes the real trade-offs, from a short options brief; the client answers what only the client can. Every one is a row on the Decisions tab with its options and why, and only the work that depends on an open one waits
+- How deep? The shape and the decisions: objects and how they relate, who owns the automation, the access approach, integration patterns. Fields, values, rules and pages are worked out when each capability is built, not here
 - How technical? API names, objects, sharing and patterns, yes. Explain every Salesforce term in a short table so the client can follow it too
 - Scope changed after the readout? The design follows the signed scope. Anything set aside comes out of the design, not into it
 

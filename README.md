@@ -17,12 +17,12 @@ The signed SOW, and whatever else is in the client's Drive folder. Nothing more.
 |---|---|---|
 | Setup | `/start-motion:new-client` | Sets a new client up once: finds the SOW and whatever sales shared, finds or makes the client's Drive folder and its Discovery subfolder, checks the Claude Project and connectors, offers the discovery documents, names the first stage |
 | 0 SOW and handoff (optional) | `/start-motion:handoff` | When sales shares a packet beyond the SOW: builds the handoff document on DJ's standard, drafts delivery's questions, folds in the handoff call. Nothing downstream waits for it |
-| 1 Kickoff | `/start-motion:kickoff` | Builds the kickoff deck from the finished slide templates, shows the plan first |
-| 2 Discovery | `/start-motion:discovery-plan` | Plans discovery from the SOW and the sales calls before kickoff; preps each session |
-| 2 Discovery | `/start-motion:discovery-call` | Sets up the discovery documents; processes every call into them, drafting a story for every requirement |
-| 3 Readout | `/start-motion:readout` | Section plan, build, dry run, deck, readout call, sign-off |
-| 5 Design | `/start-motion:design` | Starts, updates and finalizes the solution design |
-| 6 User stories | `/start-motion:user-stories` | Epics, finishing the stories, Jira, refinement |
+| 1.1 Kickoff | `/start-motion:kickoff` | Builds the kickoff deck from the finished slide templates, shows the plan first |
+| 1.2 Discovery | `/start-motion:discovery-plan` | Plans discovery from the SOW and the sales calls before kickoff; preps each session |
+| 1.2 Discovery | `/start-motion:discovery-call` | Sets up the discovery documents; processes every call into them, drafting a story for every requirement |
+| 1.3 Readout | `/start-motion:readout` | Section plan, build, dry run, deck, readout call, sign-off |
+| 2.1 Design | `/start-motion:design` | Starts, updates and finalizes the solution design |
+| 2.2 User stories | `/start-motion:user-stories` | Epics, finishing the stories, Jira, refinement |
 
 In chat the commands show as their bare names (`/kickoff`, `/new-client`); in Cowork and Claude Code they carry the prefix.
 
