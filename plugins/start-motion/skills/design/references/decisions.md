@@ -2,7 +2,7 @@
 
 # Decisions: the log, the four kinds, and what waits
 
-How the kit records a design or build choice, who makes it, and what keeps moving while it is open. Used by `/start-motion:design`, and by the build plan and build stages of the separate Start Motion Build plugin (`/start-motion-build:build-plan`, `/start-motion-build:build`) for those who have it. The home of this text is `plugins/start-motion/shared/decisions.md`; the copies in each skill's `references/` are written by `scripts/sync-agents.py`.
+How the kit records a design or build choice, who makes it, and what keeps moving while it is open. Used by `/start-motion:design`, and by the build design and build stages of the separate Start Motion Build plugin (`/start-motion-build:build-design`, `/start-motion-build:build`) for those who have it. The home of this text is `plugins/start-motion/shared/decisions.md`; the copies in each skill's `references/` are written by `scripts/sync-agents.py`.
 
 The rule behind all of it: anything that does not need a person moves forward, and anything that does is made plain, logged and put in front of the right person in one place. A decision never stops a whole run. Only the work that depends on it waits.
 
@@ -33,7 +33,7 @@ Columns, found by header name:
 | What would change it | The fact that would reopen it ("if providers ever need portal access"). |
 | Requirements | The requirement IDs it serves. |
 | Affects | The design section, stories and build tasks that depend on it. |
-| Raised in | Design (date), Build plan (date), Task E1.2-T1, or the call (S-05). |
+| Raised in | Design (date), Build design (date), Task E1.2-T1, or the call (S-05). |
 | Decided by | A person's name, or "Claude" for a Clear row (see below). |
 | Date | The date it was decided. |
 | Source | Where the decision was made: "SA in chat, Nov 12", the call and timestamp, a Slack thread, the Open items number for a client call. |
@@ -59,24 +59,24 @@ Sort every logged choice into one of these the moment it comes up. When unsure b
 |---|---|---|
 | Clear | Everything | Nothing |
 | Recommended | Drafting, stories, planning, on the pick | The design going Final; approving a build task that depends on it |
-| SA call, Client call | Every section, story and task that does not depend on it | The dependent section being settled (written on Claude's lean and marked, or left Open when there is no lean), stories whose criteria turn on it (open question with the D-ID), build tasks that depend on it (planned but marked "waits on D-07", never built) |
+| SA call, Client call | Every section, story and task that does not depend on it | The dependent section being settled (written on Claude's lean and marked, or left Open when there is no lean), stories whose criteria turn on it (open question with the D-ID), build tasks that depend on it (designed but marked "waits on D-07", never built) |
 
 A run never stops because a decision is open. It finishes everything else and ends with the decisions waiting, in one place.
 
 ## Putting decisions in front of the person
 
-At the end of a run that leaves rows Proposed (and at build plan approval, for the decisions its tasks depend on), show the decision picker: `references/decision-picker.html`, wherever the session can show an interactive visual. Claude chat and Cowork both can. Change only the `CFG` line at the top of its script; send the rest as it is.
+At the end of a run that leaves rows Proposed (and when a build design is ready for the SA, for the decisions it depends on), show the decision picker: `references/decision-picker.html`, wherever the session can show an interactive visual. Claude chat and Cowork both can. Change only the `CFG` line at the top of its script; send the rest as it is.
 
 `/start-motion:design` is the exception in one case: after a Run with it draft, the SA answers inside the design document (Next decision takes them to each one), and the document gives them one message to paste into the chat. That message has the same shape as the picker's and is written back the same way. The design skill's `references/design-content.md` has it.
 
-- `client` (the client's name), `stage` ("Solution design", "Build plan", "Build"), `review` (the link to the design and build review page, with `#needs-you`), and `approve` (the approval label, such as "Approve the build plan", only at a stage that has one; otherwise leave it out).
+- `client` (the client's name), `stage` ("Solution design", "Build design", "Build"), `review` (the link to the design and build review page, with `#needs-you`), and `approve` (the approval label, only at a stage that is approved in the picker; otherwise leave it out. A build design is approved from its review page, never in the picker, so it is left out there).
 - `calls`: SA calls, the one most other work waits on first. Each: `id`, `q` (a short title: "Crisis follow-up after a referral is closed"), `ask` (the question in one plain sentence, as you would ask it across a table: what is being decided, between what), `why` (what it holds up), `said` (the client's own words with speaker, call and timestamp, when a call touched it), `today` (what the org has now, from the org summary), `reqs` (the requirement IDs and statements), `opts`, `lean` (an option's `k`, or empty), `lean_why` (one sentence), `change_if` (the What would change it column).
 - each option in `opts`: `k` (A, B, C), `name`, `sum` (what the option is, in one short sentence), `gain`, `cost`, `risk`, `builds` (what it creates or changes, a few words each; API names are shown as code on their own), `undo` ("Easy", "Hard once records exist in production"), `effort` ("Low", "Medium", "High"). The picker lines these up row by row across the options, so fill the same rows for every option; a row left out shows as "Not given".
 - `recs`: Recommended rows: `id`, `q`, `pick`, `why`, `alt` (the other way, in a clause), and `built` (the task that already built on it, so the SA sees what changing it would cost).
 - `withclient`: Client calls: `id`, `q`, `ref` ("Q-14 with the SC"), `why`.
 - `clear`: Clear rows: `id`, `q`, `chosen`, `why`.
 
-Every fact in the picker comes from somewhere the SA could check: the requirements list, a transcript, the org summary, the design or the plan. Never write an option, a risk or a quote you cannot point to; leave the field out instead.
+Every fact in the picker comes from somewhere the SA could check: the requirements list, a transcript, the org summary, the design or the build design. Never write an option, a risk or a quote you cannot point to; leave the field out instead.
 
 What the SA can do in it: pick an option, write their own, or say "I need more first" with what they need (a sandbox test, a question to the client, a colleague's view); confirm, change or ask for more on each recommendation (nothing is confirmed until they say so; "Confirm all" is one click); note a lean on a client call; reopen any call Claude made; approve the stage when `approve` is set; and give a reason for any decision, which becomes the Why. The send button summarizes what will happen.
 
@@ -113,8 +113,8 @@ Client calls appear in the picker so the SA can see them, marked "Client call ·
 - "Confirm": Chosen takes the Recommended pick.
 - "Reopen" on a Clear row: it becomes an SA call; write its options and put it in the next picker, or in this run if the person is still here.
 - A changed decision is never edited: write a new row, set the old one to Superseded with Superseded by. Then update everything in Affects.
-- Approval, when sent: record it as the stage says (the build plan's status line, the design's status), never on Claude's own say.
-- Rebuild the design and build review page from the updated log (Start Motion Build's `references/build-review.md`, "It follows the decisions") and republish it to the same link, once a build plan exists.
+- Approval, when sent: record it as the stage says (the design's status), never on Claude's own say. A build design is approved from its review page, with the message that page's Approve button hands back.
+- Rebuild the design and build review page from the updated log (Start Motion Build's `references/build-review.md`, "It follows the decisions") and republish it to the same link, once a build design exists.
 - Then act on it in the same run: update the design section (remove the Open callout, fold the choice in), take the D-ID off the story's open question, mark the build tasks unblocked. Say in one line what changed because of it.
 
 ## How the agents use the log
@@ -122,4 +122,4 @@ Client calls appear in the picker so the SA can see them, marked "Client call ·
 - Agents are handed the **Decided** rows that touch their work, never the Proposed ones and never anyone's reasoning beyond the Why column.
 - The builder builds to them. When the task, the design and a Decided row disagree, it stops and says so under Needs a person.
 - A reviewer does not flag a choice a Decided row records (a lookup the SA chose over a formula is not "heavier than needed"). It does flag work that contradicts a Decided row, citing the ID, and a choice with a real alternative that no row records, so it gets logged. A Decided row never excuses something that breaks a hard rule: production, deletion, records, a platform or SOW limit.
-- When the builder stops for a decision, the stage command writes it as a Proposed row (Raised in: the task), hands back only that task and the ones that depend on it, and carries on with the rest.
+- When the builder stops for a decision, the stage command writes it as a Proposed row (Raised in: the task), sets aside only that story and the ones built on it, and carries on with the rest.
