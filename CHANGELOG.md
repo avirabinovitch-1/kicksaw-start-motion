@@ -1,5 +1,12 @@
 # Changelog
 
+## After 0.1.10 (2026-11-12, no version change)
+
+Two small changes merged ahead of 0.1.11 (the whole-scope design, not yet pushed). The version stays 0.1.10 so 0.1.11 keeps its number.
+
+- **The story reviewer is advice to the SC, never a blocker** (Avi, Nov 12). It reports gaps (places where the architect or tester would have to guess), each with the question to ask the client, and wording points in one line per story. Pass or fail and "stops the build" are gone. In `/discovery-call`, a gap the transcript does not settle becomes a question on the Open items tab. In `/user-stories`, a gap no longer keeps an edited story out of Jira; it goes in as an open question. The reviewer also reads the stories before each refinement session and its gaps join the agenda. A status is never refused or held back because of a gap. Not yet run on a client's stories.
+- **Decisions: the build plan stage is named the build design stage**, to match the private Start Motion Build plugin. A build design is approved from its review page, never in the decision picker. No change to how `/design` works. The design skill and README still say "build plan" in four places; that rename goes in with 0.1.11.
+
 ## 0.1.10 (2026-11-11)
 
 The design is written at the level of shape and decisions (Avi, Nov 11, from the HLS E1 run; project doc `claude/build-agent-test/design-level-handoff-2026-11-11.md`). Run on HLS, 0.1.8 produced a design at build depth: every field, value and validation rule, 25 logged decisions, about 30 reviewer findings. An architect could not write that at the point in a project where the design is written.
