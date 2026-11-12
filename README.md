@@ -39,7 +39,7 @@ A review agent is a separate checker with one job. A stage command starts it, ha
 | Agent | Its one job | Started by |
 |---|---|---|
 | `source-checker` | Checks every requirement and story quote against the call, SOW section or document it cites; reports only rows that do not say what the client said | `discovery-call`, `user-stories` |
-| `story-reviewer` | Reads each story with nothing but the story in hand; reports criteria that cannot be built or tested as written | `discovery-call`, `user-stories` |
+| `story-reviewer` | Reads each story with nothing but the story in hand; tells the SC where someone would have to guess, with the question to ask. Helps improve a story, never holds one back | `discovery-call`, `user-stories` |
 | `design-reviewer` | Checks the design against the requirements and workflows in scope, the org, the decisions already made and what later epics need | `design` |
 
 Each runs twice at most per run. Claude Code and Cowork start these as separate agents. Claude chat cannot always do that, so each skill carries a copy of the agents it starts at `references/agents/` and runs them as a second pass there, and says on its report which way the check ran.

@@ -76,7 +76,7 @@ A story keeps the status Draft while you work on it. Then show the stories to th
 Two reviewers read every story before the SC does. Each has one job and reads the story without having seen it written.
 
 - **The source checker** opens every quote's call at its timestamp and checks that the quote is there, that the speaker is right, and that the acceptance criteria say what the client said: not more, not less. Hand it the epic's stories (ID, acceptance criteria, each quote with its citation), the tl;dv link for every S-ID the stories cite, the signed readout, and the calls held after each story was drafted.
-- **The story reviewer** reads each story as the architect and the tester will, with only the story in hand, and reports the criteria that cannot be built or tested as written. Hand it the stories only, plus the list of objects and fields that already exist when the solution design or an org summary has one. Never hand it the requirements list or the transcripts.
+- **The story reviewer** reads each story as the architect and the tester will, with only the story in hand, and says where someone would have to guess, with the question to ask. It is there to help the SC improve the story before it is approved and built. It never holds a story back from Jira, from refinement or from a status; the SC decides what to do with what it found. Hand it the stories only, plus the list of objects and fields that already exist when the solution design or an org summary has one. Never hand it the requirements list or the transcripts.
 
 **Starting a reviewer.** Where the session can start a separate agent (Claude Code, Cowork, Codex), start it by name (`start-motion:source-checker`, `start-motion:story-reviewer`) and hand it only what its file says it is handed: never this conversation, your notes or your reasoning. Where the session cannot start one (Claude chat often cannot), read its instructions at `references/agents/<name>.md` in this skill's folder and run them yourself as a second pass, working from the sources and the story text, not from memory of drafting. Say on the report which way each reviewer ran; a second pass in the same conversation is weaker than a separate reader, and the SC should know which one they got.
 
@@ -89,7 +89,7 @@ What to do with the findings:
 - A finding that a story should be split or merged is the SC's call; list it.
 - The same fixes apply to a story the SC has already edited or reviewed. Read it fresh first, change only what the finding names, keep every other word of the SC's, tell the SC what changed in one line per story, and set a reviewed story back to Draft.
 - Run each reviewer once, fix, and run it once more on the stories that changed. Two passes at most. Whatever is still flagged goes to the SC as it is.
-- When you show the SC a story, show its open findings under it, each in one line: what stops the build first, with the question the architect would ask; then source findings with the source line and the few words that would fix it; tidy findings last, in one line together. A story with none says "Both reviewers passed".
+- When you show the SC a story, show its open findings under it, each in one line: the gaps first, each with the question to ask; then source findings with the source line and the few words that would fix it; wording points last, in one line together. A story with none says "Both reviewers passed".
 
 ### The title
 
@@ -157,7 +157,7 @@ Build/Solution Details, Metadata, Test Steps and build or QA sub-tasks belong to
 
 ## 3. Create the stories in Jira
 
-When the SC approves a story, create it in the client's Jira project under its epic (create the epic first if it is not there): Summary from the Title, and User Story, Description, Acceptance Criteria and Open Questions in their own fields, Priority Medium unless the SC says otherwise, T-Shirt Size when the SC has sized it, unassigned, the story ID as its label. Status New, with or without open questions. Link dependencies with "blocks". A story the SC edited after the reviewers ran goes through the story reviewer once more before it is created; a finding goes back to the SC, not into Jira. Read the issue back to confirm the custom fields landed. Then confirm the key to the SC, add it to stories/epic-plan.md, and on the requirements list set the story's row on the User stories tab to In Jira with its key, and write the key in the Jira column of every requirement the story covers.
+When the SC approves a story, create it in the client's Jira project under its epic (create the epic first if it is not there): Summary from the Title, and User Story, Description, Acceptance Criteria and Open Questions in their own fields, Priority Medium unless the SC says otherwise, T-Shirt Size when the SC has sized it, unassigned, the story ID as its label. Status New, with or without open questions. Link dependencies with "blocks". A story the SC edited after the reviewers ran goes through the story reviewer once more before it is created. Show the SC anything new in one line and create the story either way, unless the SC says to wait: a gap nobody has answered goes into Jira as an open question on the story, so the product owner sees it. Read the issue back to confirm the custom fields landed. Then confirm the key to the SC, add it to stories/epic-plan.md, and on the requirements list set the story's row on the User stories tab to In Jira with its key, and write the key in the Jira column of every requirement the story covers.
 
 From here Jira is the story's home: refinement changes go to Jira, and the sheet row keeps the key and status.
 
@@ -167,7 +167,7 @@ The first pass is the whole signed scope in Jira, gaps and all. Discovery never 
 
 Refinement is a live call with the client's product owner. Before each session:
 - Propose which stories to refine, by epic and in build order, enough for one session (usually six to ten).
-- For each one, list its open questions and what else the SC should ask: "Does this look right? What did we miss? What would make this wrong?"
+- Run the story reviewer on those stories as they stand in Jira (section 2), since they may have changed since it last read them. For each story, list its open questions, the gaps the reviewer found with the question each one puts to the product owner, and what else the SC should ask: "Does this look right? What did we miss? What would make this wrong?" This session is where gaps get closed, before a story is approved and built.
 - Draft the agenda: stories in order, each with its questions, and the decisions the session has to close.
 
 ## 5. Fold in refinement
@@ -185,7 +185,7 @@ When asked ("fold in today's [Client] refinement"), pull the tl;dv transcript fo
   Each bullet is one quote and, in plain words, what it changed: the criterion number added, changed or removed, the open question it closed, or the field it added. If a criterion changes, keep the new wording in the AC field only; the block records why it changed.
 - **Update the AC and the Open Questions fields** to match: rewrite the criteria that changed, add the new ones, remove the questions answered. A question the product owner raised and could not answer goes in as a new open question with their quote, and on the Open items tab.
 - **Anything the product owner asked for that is beyond the signed scope** goes in the requirements list with Scope set to Beyond SOW and Scope decision empty, with the quote and citation; it never widens a story silently. Tell the PM that week.
-- **A story the product owner approved** moves to Pending Client Approval or Refined, per the project's workflow. Say which stories moved.
+- **A story the product owner approved** moves to Pending Client Approval or Refined, per the project's workflow. Say which stories moved. Never refuse or hold back a status because a reviewer found a gap: if a story that moved still has one, say so in one line with the question, and leave the call to the SC. Once a story is approved, it is built as written; nothing reviews it again at build.
 - **Record new decisions in the Open items tab** with the quote, and update the Source footer line of the story to add the refinement call. A decision that answers a row on the Decisions tab closes that row as well (Chosen, Why, Decided by, Source with the call and timestamp), and the D-ID comes off the story's open question.
 - Keep the story's tone and structure; add to it, never rewrite the parts the SC already approved unless the product owner changed them.
 
