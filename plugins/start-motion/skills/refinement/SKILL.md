@@ -64,7 +64,18 @@ Comments from the Kicksaw team tell you what has been decided on the build side 
 
 Run the story reviewer on the picked stories as well, since they may have changed since it last read them. Where the session can start a separate agent, start `start-motion:story-reviewer` and hand it the stories only; where it cannot, read its instructions at `references/agents/story-reviewer.md` and run them yourself as a second pass. It reads as the architect and the tester; its gaps join the list. The reviewer is advice: it never keeps a story out of a session and never holds back a status.
 
-Every item you add is worded as a question to the product owner, about what the business needs, never about how it is built. Keep track of where each one came from: the Open Questions field, a client comment, or your review. Add only what has to be settled for the story to be built right; a session with thirty questions settles none of them, so leave out anything the SA can decide without the client, and merge items that are the same decision.
+Every item you add is worded as a question to the product owner, about what the business needs, never about how it is built. Keep track of where each one came from: the Open Questions field, a client comment, or your review.
+
+**Then cut the list down to the questions that unlock the sprint.** The review finds everything; the session only carries what matters. A question goes to the client only when all three are true:
+- The answer changes what gets built in this sprint. If the build is the same either way, it is not a question.
+- Only the client can answer it. If the SA or the SC can make a sensible call and adjust later, they make it.
+- It is not already decided. A point settled on a call or in a comment is at most a line to confirm, never a question.
+
+Apply the same test to the Open Questions field: a question in Jira that fails it is dropped from the session too, and you tell the SC so.
+
+Merge questions that are one decision, even across stories: three questions about the same automatic reply are one question with three parts. Edge cases, "who exactly does this" details and things worth double-checking do not go to the client; where one matters, write it into the proposal of the question it belongs to.
+
+A sprint's worth of stories usually comes down to about six questions, and rarely more than eight. If you have more, cut again before you show the SC; do not split into more sessions to make room. Everything you cut is listed for the SC in one short block under the questions (decided by Kicksaw, to confirm, for the SA), so nothing is lost and the SC can pull one back in.
 
 ## 2. Work up each question
 
