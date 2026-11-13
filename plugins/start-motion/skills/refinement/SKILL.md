@@ -29,27 +29,46 @@ The SC chooses which stories this session covers. Offer the three ways to pick, 
 - **By epic:** the stories under one epic that are not yet approved, in build order.
 - **Specific stories:** the SC names them or finds them in the list.
 
-Not yet approved means the story's status is New or Pending Client Approval. Propose, already ticked: the next sprint's stories that are not yet approved, plus any story from the last session that still has a question open. Six to ten stories fit a typical call; if the set carries more than about twelve open questions, say so in one line and suggest which stories could wait for the next session. The SC decides.
+Not yet approved means the product owner has not approved the story. In the kit's workflow that is status New or Pending Client Approval. Projects differ, so read the statuses this project uses and how approval is recorded there (a status, or a comment from the client such as "Approved"), and say in the Start report which rule you used. Propose, already ticked: the next sprint's stories that are not yet approved, plus any story from the last session that still has a question open. Six to ten stories fit a typical call; if the set carries more than about twelve open questions, say so in one line and suggest which stories could wait for the next session. The SC decides.
 
-For each story the list shows its key, its title, its epic or sprint, how many questions are open on it, and whether it carries a design question (so the SC knows to invite the SA). A design question is one about how something is built or what the platform can do, not about what the business needs.
+For each story the list shows its key, its title, its epic or sprint, how many questions are open on it, whether the client has commented on it in Jira since it was last refined, and whether it carries a design question (so the SC knows to invite the SA). The count at this point is the Open Questions field; your own review of the stories the SC picks comes next and usually adds to it, so say so in the line above the list. A design question is one about how something is built or what the platform can do, not about what the business needs.
 
-**In Claude chat or Cowork, when you can show an interactive visual,** show the story picker: `references/story-picker.html`. Change only the `CFG` block at the top of its script: `client`; `session` (the session's name and date, for example "Refinement 2 · Thu Oct 29"); `mode` ("sprint", "epic" or "one") and `pick` (the sprint or epic it opens on); and `stories`, one row per story that is not yet approved, across every sprint and epic, as `[key, title, epic, sprint, open questions, 1 if it carries a design question else 0, 1 if you propose it else 0]`. A story with no sprint has an empty sprint. Send everything else as it is. Write one line above it, for example "Here are the stories I'd bring to Thursday's session. Change anything, then press Build the refinement deck."
+**In Claude chat or Cowork, when you can show an interactive visual,** show the story picker: `references/story-picker.html`. Change only the `CFG` block at the top of its script: `client`; `session` (the session's name and date, for example "Refinement 2 · Thu Oct 29"); `mode` ("sprint", "epic" or "one") and `pick` (the sprint or epic it opens on); and `stories`, one row per story that is not yet approved, across every sprint and epic, as `[key, title, epic, sprint, open questions, 1 if it carries a design question else 0, 1 if you propose it else 0, the date of the client's latest comment or an empty string]`. A story with no sprint has an empty sprint. On a large backlog, list the next three sprints and say so; the SC can ask for the rest. Send everything else as it is. Write one line above it, for example "Here are the stories I'd bring to Thursday's session. Change anything, then press Build the refinement deck."
 
 **Everywhere else,** send the same list as text, grouped by sprint or epic, with the proposed stories marked, and ask the SC to reply with the keys to bring.
 
 The picker sends back the list of stories in the order to take them. Take that order as it is.
 
-## 1. Read the picked stories
+## 1. Read and review the picked stories
 
-For each story the SC picked, read it in Jira as it stands now: the Summary, the User Story, the Description (the client's words and the Refined on blocks from earlier sessions), the Acceptance Criteria and the Open Questions. Read the epic it belongs to and the sprint it is in.
+The Open Questions field in Jira is where the questions start, not where they end. For every story the SC picked, read the whole story and review it yourself, so the session covers everything that has to be sorted out before the story is built and not only what someone remembered to write down.
 
-Then read what the questions depend on: the signed solution readout (the workflow and step each story's Source line points to), the solution design if there is one, the Open items and Decisions tabs of the requirements list, and the session notes for the calls the story cites. Open a tl;dv transcript when a question needs the client's words; quotes follow "The client's words" in `/start-motion:user-stories`: always from the transcript, lightly cleaned, cited with the speaker and the date.
+**Read each story in Jira as it stands now:** the Summary, the User Story, the Description (the client's words and the Refined on blocks from earlier sessions), the Acceptance Criteria, the Open Questions, and every comment. Read the epic it belongs to, the sprint it is in, and the stories it depends on or that depend on it.
 
-Run the story reviewer on the picked stories as they stand in Jira, since they may have changed since it last read them. Where the session can start a separate agent, start `start-motion:story-reviewer` and hand it the stories only; where it cannot, read its instructions at `references/agents/story-reviewer.md` and run them yourself as a second pass. A gap it finds, where the architect or the tester would have to guess, joins the story's questions for this session, worded as a question to the product owner. The reviewer is advice: it never keeps a story out of a session and never holds back a status.
+**Read the comments closely.** Clients often answer in a comment on the story. For each comment from the client since the story was last refined:
+- If it answers an open question, the question is not open any more. It goes in the deck as something to confirm: what they told us, when, and how the criterion will read. Say whether the story has been updated to match or still needs to be.
+- If it raises something new (a correction, a request, a "we want to discuss"), that is a question for the session.
+- If it asks for something beyond the signed scope, say so; it goes to the SC as a scope point, not into the deck as a question, unless the SC wants it discussed.
+Comments from the Kicksaw team tell you what has been decided on the build side and what the SA is waiting on.
+
+**Then read what the questions depend on:** the signed solution readout (the workflow and step each story's Source line points to), the solution design if there is one, the Open items and Decisions tabs of the requirements list, and the session notes for the calls the story cites. Open a tl;dv transcript when a question needs the client's words; quotes follow "The client's words" in `/start-motion:user-stories`: always from the transcript, lightly cleaned, cited with the speaker and the date. A quote from a Jira comment is cited as a comment, with the person and the date.
+
+**Review each story and add what is missing.** Look for:
+- a criterion that rests on something the client has not confirmed: a value, a list, a threshold, a name, who does it
+- a criterion a comment or a later call contradicts, or two stories in the session that say different things about the same field, status, queue or rule
+- a case the story does not cover that the client will hit in the first week: the empty state, the exception, what happens when someone changes their mind
+- a dependency on another story, an integration or a client action that is not settled, especially one the sprint needs first
+- a choice Kicksaw made on the client's behalf that they have not seen: a default, a name the users will see, something left out on purpose
+- a criterion marked blocked, or wording such as "CIS to confirm", "to be decided" or "TBD" anywhere in the story
+- anything the client asked for in a comment that the story does not yet reflect
+
+Run the story reviewer on the picked stories as well, since they may have changed since it last read them. Where the session can start a separate agent, start `start-motion:story-reviewer` and hand it the stories only; where it cannot, read its instructions at `references/agents/story-reviewer.md` and run them yourself as a second pass. It reads as the architect and the tester; its gaps join the list. The reviewer is advice: it never keeps a story out of a session and never holds back a status.
+
+Every item you add is worded as a question to the product owner, about what the business needs, never about how it is built. Keep track of where each one came from: the Open Questions field, a client comment, or your review. Add only what has to be settled for the story to be built right; a session with thirty questions settles none of them, so leave out anything the SA can decide without the client, and merge items that are the same decision.
 
 ## 2. Work up each question
 
-A question on a slide has four parts. Write all four for every open question on every picked story:
+A question on a slide has four parts. Write all four for every question on every picked story: the ones in the Open Questions field, the ones from client comments and the ones your review added.
 
 - **The question,** in the client's language and short enough to read aloud. One decision per question. If a Jira open question holds two decisions, make it two.
 - **What we know:** two or three lines on where things stand and where the question came from: how it works today, what the client said and when, what the data shows. Only what the sources say.
@@ -60,9 +79,9 @@ Then decide whether the question needs its own slide. Most do not. It does when 
 
 Number the questions through the whole deck, 1 to n, in the order the stories are taken.
 
-**Show the SC the questions and proposals before building.** One message: each story, its questions, and the proposal for each in one line, with any "No proposal yet" called out first. Ask the SC to change any proposal they would not stand behind, then to say build. A proposal goes to the client under Kicksaw's name, so the SC sees every one first. If the SC said "just build it", build, and list the proposals in the briefing so they can still be changed.
+**Show the SC the questions and proposals before building.** One message: each story, its questions, and the proposal for each in one line, with any "No proposal yet" called out first. Mark where each question came from: from Jira, from a client comment (with the date), or added in your review (with the reason in a few words). List separately the points the client has already answered in a comment, which go in the deck to confirm. Ask the SC to drop any question that does not belong on the call, change any proposal they would not stand behind, then to say build. A proposal goes to the client under Kicksaw's name, so the SC sees every one first. If the SC said "just build it", build, and list the proposals in the briefing so they can still be changed.
 
-Proposals are for the deck. Do not write them into Jira; the story changes when the product owner answers.
+Proposals are for the deck. Do not write them into Jira; the story changes when the product owner answers. A question your review added is offered to the SC for the story's Open Questions field as well: say which ones, and add them to Jira only when the SC says to.
 
 ## 3. Build the deck
 

@@ -2,7 +2,7 @@
 <style>
 .seg{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:0.5rem 0 0.75rem}
 .seg button.on{background:var(--fill-accent)!important;color:var(--on-accent)!important;border-color:var(--fill-accent)!important}
-.rw{display:grid;grid-template-columns:22px 72px minmax(0,1fr) auto;gap:12px;align-items:center;padding:9px 4px;border-bottom:0.5px solid var(--border)}
+.rw{display:grid;grid-template-columns:22px 112px minmax(0,1fr) auto;gap:12px;align-items:center;padding:9px 4px;border-bottom:0.5px solid var(--border)}
 .rw.off .nm{color:var(--text-secondary)}
 .ky{font-family:var(--font-mono);font-size:13px;color:var(--text-accent)}
 .nm{font-size:14px;line-height:1.35}
@@ -39,7 +39,7 @@
 <script>
 var CFG={client:'Tidewell Solar',session:'Refinement 2 · Thu Oct 29',mode:'sprint',pick:'Sprint 2',
 stories:[
-['TS-21','Partner leads routed to the partner manager\'s queue','Lead management','Sprint 2',2,0,1],
+['TS-21','Partner leads routed to the partner manager\'s queue','Lead management','Sprint 2',2,0,1,'Oct 27'],
 ['TS-24','First call due within one business day of a new lead','Lead management','Sprint 2',1,0,1],
 ['TS-27','Duplicate lead warning before saving','Lead management','Sprint 2',3,0,1],
 ['TS-29','Lead converted to an opportunity with the site survey attached','Lead management','Sprint 2',0,0,0],
@@ -60,7 +60,7 @@ function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 function render(){var h='',last=null;shown().forEach(function(s){
 var g=mode==='epic'?(s[3]||'No sprint yet'):s[2];if(g!==last){h+='<div class="gp">'+esc(g)+'</div>';last=g}
 h+='<label class="rw'+(on[s[0]]?'':' off')+'"><input type="checkbox" data-k="'+esc(s[0])+'"'+(on[s[0]]?' checked':'')+'><span class="ky">'+esc(s[0])+'</span>'
-+'<span><div class="nm">'+esc(s[1])+'</div><div class="mt">'+esc(mode==='epic'?s[2]:(s[3]||'No sprint yet'))+(s[5]?' · design question, invite the SA':'')+'</div></span>'
++'<span><div class="nm">'+esc(s[1])+'</div><div class="mt">'+esc(mode==='epic'?s[2]:(s[3]||'No sprint yet'))+(s[7]?' · client comment '+esc(s[7]):'')+(s[5]?' · design question, invite the SA':'')+'</div></span>'
 +'<span class="pl '+(s[4]?'q':'z')+'">'+(s[4]?s[4]+' open question'+(s[4]>1?'s':''):'No open questions')+'</span></label>'});
 document.getElementById('list').innerHTML=h||'<div class="gp">No stories match.</div>';
 var n=0,q=0;S.forEach(function(s){if(on[s[0]]){n++;q+=s[4]}});

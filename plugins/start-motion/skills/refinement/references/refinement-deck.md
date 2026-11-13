@@ -31,6 +31,8 @@ A story with no open questions uses `criteria` alone, with the story sentence in
 | detail-table | A question about who can do what, or what happens when | Permissions, matching rules, routing by case | Up to ten rows and five columns |
 | landed | Where we landed | Always last | Up to seven questions. Past seven, a second slide |
 
+A point the client has already answered in a Jira comment is not shown as an open question. It goes on the story's question slide as a card headed "To confirm" in place of "Question n": what they told us and when, and how the criterion will read.
+
 A story with three or more questions that does not fit `story-short` uses `story` twice: two questions on the first, the rest on the second, with "(continued)" after the eyebrow.
 
 ## Rules the slides already follow
