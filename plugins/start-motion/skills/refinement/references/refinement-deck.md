@@ -14,7 +14,7 @@ The slides share one stylesheet, `templates/refinement/deck.css`. It goes into t
    - `criteria`, unless the story used `story-short`
 4. `landed`
 
-A story with no open questions uses `criteria` alone, with the story sentence in the speaker notes: it is there to be read and approved.
+A story with nothing open (no question and nothing to confirm) gets no slides of its own. It is one line on `today`, marked "To approve", with "Nothing open. Approve in Jira" under its title. Its criteria are read in Jira, not on a slide, and the briefing tells the SC which stories these are. A story that only shares another story's question still gets its `criteria` slide, with the story sentence in the speaker notes.
 
 ## The slides
 
