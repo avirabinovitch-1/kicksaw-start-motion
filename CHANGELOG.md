@@ -1,8 +1,8 @@
 # Changelog
 
-## Not released: /refinement (branch refinement-stage-3, 2026-11-12)
+## /refinement, stage 3 (2026-11-12, no version change)
 
-Refinement sessions get their own command, stage 3 (Avi, Nov 12; project doc `claude/refinement-section-2026-11-12.md`). Not tested on a client yet: the plan is a run on the HLS backlog before this merges.
+Refinement sessions get their own command, stage 3 (Avi, Nov 12; project doc `claude/refinement-section-2026-11-12.md`). Tested on the Fred Hutch backlog (sprint 2, eight stories, read-only on Jira) before it merged. The version stays 0.1.10 so 0.1.11 keeps its number.
 
 - New `/start-motion:refinement`. Before a session the SC picks the stories by sprint, by epic or one by one, on a clickable story list in the chat (`references/story-picker.html`; a text list where no visual can be shown). Each row shows the story's open question count and whether it carries a design question.
 - The skill reads and reviews every picked story itself and adds what is missing (Avi, Nov 12: do not rely on the Open Questions field alone): criteria resting on something unconfirmed, contradictions between stories or with a later comment, cases not covered, unsettled dependencies, choices the client has not seen. It reads the Jira comments: a client answer in a comment becomes a point to confirm, a new point becomes a question. The SC sees where each question came from and can drop any.
@@ -13,7 +13,10 @@ Refinement sessions get their own command, stage 3 (Avi, Nov 12; project doc `cl
 - `/user-stories` ends when the stories are in Jira. Its prep and fold-in sections are replaced by a pointer to `/refinement`, and its description no longer answers to "prep refinement" or "fold in today's refinement".
 - The story reviewer is started by `/refinement` before each session (`scripts/sync-agents.py`).
 - From the first run on Fred Hutch (Nov 12): what counts as not yet approved follows the project's own statuses and how the client records approval; the picker shows the date of the client's latest comment and fits long Jira keys; on a large backlog it lists the next three sprints.
-- Not in this branch: the Start Motion page's Refinement section, the version number, and the page's copy of the user stories skill text.
+- After the review, the list is cut to the questions that unlock the sprint (Avi, Nov 12: the first review's 20 questions were too many). A question goes to the client only when the answer changes what gets built this sprint, only the client can answer it, and it is not already decided. Questions that are one decision are merged, even across stories. There is no target number. Everything cut is listed for the SC.
+- A story with nothing open gets no slides: it is one line on Today's stories and is approved in Jira.
+- Deck styling pass: question cards carry the same labelled parts (the question, What we know, Our proposal) and are as tall as their words; criteria markers are pills with an even text width; brand colors only (blue for a question, navy for a point to confirm); three steps under a short Today's stories list.
+- `scripts/refresh-page-skills.py` fills nine skill texts on the Start Motion page, which gets a Refinement section in stage 3.
 
 ## After 0.1.10 (2026-11-12, no version change)
 
