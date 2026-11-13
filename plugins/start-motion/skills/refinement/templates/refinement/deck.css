@@ -26,13 +26,32 @@ section.light { background:#FFFFFF; color:#414042; font-family:'Source Sans 3', 
 .qline { background:#F4F4F4; border:1px solid #D7D7D7; border-left:6px solid #0071B9; border-radius:0 14px 14px 0; padding:12px 20px 14px; display:flex; flex-direction:column; gap:3px; }
 .qline .qt { font-size:27px; }
 .qline .qtext { font-size:24px; }
+/* a question card's parts */
+.qrow { display:flex; flex-direction:row; gap:28px; align-items:stretch; }
+.qcard .prop { margin-top:auto; }
+.qwide { background:#F4F4F4; border:1px solid #D7D7D7; border-top:6px solid #0071B9; border-radius:0 0 16px 16px; padding:24px 28px 26px; display:flex; flex-direction:row; gap:40px; align-items:stretch; }
+.qwide .prop { width:640px; flex:none; padding:18px 22px 20px; gap:8px; }
+.qwide .qt { font-size:36px; }
+.kn { font-size:24px; font-weight:700; letter-spacing:1.5px; color:#676668; padding:6px 0 0; }
+.qcard.conf, .qwide.conf { border-top-color:#03355E; }
+.qk.conf { color:#03355E; }
+/* how the session works */
+.steps { display:flex; flex-direction:row; gap:24px; align-items:stretch; }
+.step { flex:1; display:flex; flex-direction:row; gap:18px; align-items:flex-start; border-top:2px solid #D7D7D7; padding:20px 0 0; }
+.stepn { width:48px; height:48px; border-radius:50%; background:#03355E; color:#FFFFFF; font-family:Inter, Arial, sans-serif; font-size:24px; font-weight:700; display:flex; align-items:center; justify-content:center; flex:none; }
+.stept { font-family:Inter, Arial, sans-serif; font-size:26px; font-weight:700; line-height:1.2; color:#03355E; }
+.stepd { font-size:24px; line-height:1.3; color:#414042; }
+.scount.line { background:#FFFFFF; color:#03355E; border:2px solid #03355E; padding:8px 0 10px; }
 /* criteria */
 .ac { display:flex; flex-direction:column; gap:11px; }
 .acrow { display:flex; flex-direction:row; gap:18px; align-items:flex-start; }
 .acn { width:44px; height:44px; border-radius:50%; background:#EFEFEF; color:#03355E; font-family:Inter, Arial, sans-serif; font-size:24px; font-weight:700; display:flex; align-items:center; justify-content:center; flex:none; }
 .act { flex:1; font-size:26px; line-height:1.33; color:#414042; padding:4px 0 0; }
 .acrow.open .acn { background:#0071B9; color:#FFFFFF; }
-.chip { font-size:24px; font-weight:700; color:#0071B9; white-space:nowrap; padding:5px 0 0; width:210px; flex:none; text-align:right; }
+.chipslot { width:214px; flex:none; display:flex; flex-direction:row; justify-content:flex-end; padding:3px 0 0; }
+.chip { font-size:24px; font-weight:700; line-height:1.2; color:#0071B9; border:2px solid #0071B9; border-radius:999px; padding:3px 16px 5px; white-space:nowrap; }
+.chip.conf { color:#03355E; border-color:#03355E; }
+.acrow.conf .acn { background:#03355E; color:#FFFFFF; }
 .note { font-size:24px; line-height:1.3; color:#676668; }
 /* today's stories */
 .story { display:flex; flex-direction:row; gap:28px; align-items:center; background:#F4F4F4; border:1px solid #D7D7D7; border-radius:16px; padding:22px 30px; }
@@ -70,7 +89,7 @@ section.light { background:#FFFFFF; color:#414042; font-family:'Source Sans 3', 
 .td { font-size:24px; line-height:1.25; color:#414042; padding:5px 16px 7px; display:flex; align-items:center; }
 .td.c { width:206px; flex:none; justify-content:center; text-align:center; border-left:1px solid #D7D7D7; }
 .td.first { flex:1; }
-.yes { color:#2E7D5B; font-weight:700; }
+.yes { color:#0071B9; font-weight:700; }
 .no { background:#EFEFEF; color:#676668; font-weight:700; }
 .tr.all .td { background:#E6F4FB; }
 .blank { color:#9A999B; }

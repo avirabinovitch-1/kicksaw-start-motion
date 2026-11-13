@@ -21,8 +21,8 @@ A story with nothing open (no question and nothing to confirm) gets no slides of
 | Slide file | What it is | Use it when | Holds |
 |---|---|---|---|
 | cover | Title | Always first | Client, session, date, the sprint's dates |
-| today | Today's stories | Always second | 2 to 6 stories, each with what needs settling and its question count. Past six, a second slide |
-| story | A story and its open questions | The story has two questions | The story sentence and two question cards, each with what we know and our proposal |
+| today | Today's stories | Always second | 2 to 6 stories, each with what needs settling and a pill: filled for a count of open questions, outlined for To confirm, To approve or the number of a question it shares. With four or fewer stories, the three steps of how each story will go sit under the list. Past six, a second slide |
+| story | A story and its open questions | The story has two questions | The story sentence and two question cards of equal height, each with the question, What we know, and Our proposal at the foot of the card |
 | story-one | A story and one open question | The story has one question | The story sentence and one question, the proposal beside it |
 | story-short | Story, criteria and questions on one slide | Up to four criteria of two lines each and up to three questions with a one-line proposal | Left: the criteria. Right: the questions |
 | criteria | Acceptance criteria to confirm | Every story that did not use story-short | Up to nine criteria. Past nine, a second slide |
@@ -31,13 +31,15 @@ A story with nothing open (no question and nothing to confirm) gets no slides of
 | detail-table | A question about who can do what, or what happens when | Permissions, matching rules, routing by case | Up to ten rows and five columns |
 | landed | Where we landed | Always last | Up to seven questions. Past seven, a second slide |
 
-A point the client has already answered in a Jira comment is not shown as an open question. It goes on the story's question slide as a card headed "To confirm" in place of "Question n": what they told us and when, and how the criterion will read.
+A point the client has already answered in a Jira comment is not shown as an open question. When it needs explaining, it goes on the story's question slide as a card headed "To confirm" in place of "Question n", in navy: what they told us and when, and how the criterion will read. When it does not, it is a navy "To confirm" pill on its criterion, with one line under the criteria saying what was answered and when.
 
 A story with three or more questions that does not fit `story-short` uses `story` twice: two questions on the first, the rest on the second, with "(continued)" after the eyebrow.
 
 ## Rules the slides already follow
 
-- Kicksaw Brand Playbook colors only. Orange is the title rule and nothing else on these slides.
+- Kicksaw Brand Playbook colors only: no green, red or amber for status. Blue marks a question, navy marks a point to confirm, grey marks nothing to do. Orange is the title rule and nothing else on these slides.
+- A question card always has the same parts in the same order: the question's number and the criteria it affects, the question, What we know, Our proposal. Cards are as tall as their words; never stretch one to fill the slide.
+- On a criteria slide every row keeps the same text width, whether or not it carries a pill.
 - Titles are Inter Bold with the orange rule; everything else is Source Sans 3. Nothing under 24px.
 - The logo is the brand file: `brand/logo-full-color.svg` on white, `brand/logo-inverse.svg` on navy. The topographic pattern on the cover comes from the Kicksaw Slides design system; when it cannot be read, build the cover without it and say so.
 - The footer reads "<Client> × Kicksaw · <Sprint or session> refinement" with the slide number.
