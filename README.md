@@ -1,6 +1,6 @@
 # Kicksaw Project Start Motion
 
-The Kicksaw delivery kit as a Claude plugin. The seven stages of a net-new project run as skills, each one with the templates, logos and scripts it builds from. The method, the examples and the prompt builders stay on the Start Motion page (https://claude.ai/artifact/7FURp3rBMYHuqmor99zi6S); this plugin is where the work runs.
+The Kicksaw delivery kit as a Claude plugin. The stages of a net-new project, from the SOW to the refinement sessions ahead of each sprint, run as skills, each one with the templates, logos and scripts it builds from. The method, the examples and the prompt builders stay on the Start Motion page (https://claude.ai/artifact/7FURp3rBMYHuqmor99zi6S); this plugin is where the work runs.
 
 Two ways to work, both supported:
 
@@ -22,7 +22,8 @@ The signed SOW, and whatever else is in the client's Drive folder. Nothing more.
 | 1.2 Discovery | `/start-motion:discovery-call` | Sets up the discovery documents; processes every call into them, drafting a story for every requirement |
 | 1.3 Readout | `/start-motion:readout` | Section plan, build, dry run, deck, readout call, sign-off |
 | 2.1 Design | `/start-motion:design` | Starts, updates and finalizes the solution design |
-| 2.2 User stories | `/start-motion:user-stories` | Epics, finishing the stories, Jira, refinement |
+| 2.2 User stories | `/start-motion:user-stories` | Epics, finishing the stories, Jira |
+| 3 Refinement | `/start-motion:refinement` | Before each session: the SC picks the stories by sprint, epic or one by one, and gets the refinement deck and a briefing on the call. After it: the answers folded into Jira from the recording |
 
 In chat the commands show as their bare names (`/kickoff`, `/new-client`); in Cowork and Claude Code they carry the prefix.
 
