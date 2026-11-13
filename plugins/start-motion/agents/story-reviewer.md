@@ -1,6 +1,6 @@
 ---
 name: story-reviewer
-description: Reads each user story the way the solution architect and the tester will, with nothing but the story in hand, and tells the solution consultant where someone would have to guess, with the question to ask. It helps improve a story and never holds one back. Started by /start-motion:discovery-call on the stories a call drafted or changed and by /start-motion:user-stories before stories go to the SC and before each refinement session. Use it whenever a user story and its acceptance criteria need a cold read.
+description: Reads each user story the way the solution architect and the tester will, with nothing but the story in hand, and tells the solution consultant where someone would have to guess, with the question to ask. It helps improve a story and never holds one back. Started by /start-motion:discovery-call on the stories a call drafted or changed by /start-motion:user-stories before stories go to the SC, and by /start-motion:refinement before each refinement session. Use it whenever a user story and its acceptance criteria need a cold read.
 disallowedTools: Write, Edit, NotebookEdit, Agent
 ---
 

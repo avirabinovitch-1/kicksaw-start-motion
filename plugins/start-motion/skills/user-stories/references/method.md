@@ -1,6 +1,6 @@
 # User stories: what this stage is for
 
-Turn the signed scope into epics and stories in the client's Jira project, then refine them live with the client's product owner until each sprint has what it needs. Every requirement already has a draft story from the call it was heard on; this stage finishes those drafts against the signed readout, pushes them to Jira as New, and runs refinement one sprint ahead of the build. If it is not in the acceptance criteria, it is not getting built.
+Turn the signed scope into epics and stories in the client's Jira project, ready to refine live with the client's product owner (`/start-motion:refinement`) until each sprint has what it needs. Every requirement already has a draft story from the call it was heard on; this stage finishes those drafts against the signed readout, and pushes them to Jira as New; refinement then runs one sprint ahead of the build. If it is not in the acceptance criteria, it is not getting built.
 
 ## Where stories come from
 

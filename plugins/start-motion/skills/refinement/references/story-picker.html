@@ -1,0 +1,80 @@
+<h2 class="sr-only">Refinement story picker: choose stories by sprint, by epic or one by one, tick the ones for the session, then build the deck.</h2>
+<style>
+.seg{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:0.5rem 0 0.75rem}
+.seg button.on{background:var(--fill-accent)!important;color:var(--on-accent)!important;border-color:var(--fill-accent)!important}
+.rw{display:grid;grid-template-columns:22px 72px minmax(0,1fr) auto;gap:12px;align-items:center;padding:9px 4px;border-bottom:0.5px solid var(--border)}
+.rw.off .nm{color:var(--text-secondary)}
+.ky{font-family:var(--font-mono);font-size:13px;color:var(--text-accent)}
+.nm{font-size:14px;line-height:1.35}
+.mt{font-size:12px;color:var(--text-muted);margin-top:2px}
+.pl{font-size:12px;padding:3px 10px;border-radius:var(--radius);white-space:nowrap}
+.pl.q{background:var(--bg-warning);color:var(--text-warning)}
+.pl.z{background:var(--bg-success);color:var(--text-success)}
+.gp{font-size:12px;color:var(--text-secondary);padding:12px 4px 4px}
+</style>
+<div style="display:flex;justify-content:space-between;align-items:baseline;padding:0.5rem 0 0">
+<span id="hd" style="font-size:14px;color:var(--text-secondary)"></span>
+<span id="cnt" style="font-size:13px;color:var(--text-secondary)"></span>
+</div>
+<div class="seg">
+<span style="font-size:13px;color:var(--text-secondary)">Pick by</span>
+<button data-m="sprint">Sprint</button>
+<button data-m="epic">Epic</button>
+<button data-m="one">Specific stories</button>
+<select id="sel" style="width:auto;min-width:200px" aria-label="Which sprint or epic"></select>
+<input id="find" type="text" placeholder="Find a story by key or words" style="flex:1;min-width:180px" aria-label="Find a story">
+</div>
+<div style="display:flex;gap:8px;padding:0 0 4px">
+<button id="all" style="font-size:12px;padding:3px 10px;height:auto">Tick all shown</button>
+<button id="none" style="font-size:12px;padding:3px 10px;height:auto">Untick all</button>
+</div>
+<div id="list"></div>
+<div style="margin-top:1rem;display:grid;gap:8px">
+<input id="notes" type="text" placeholder="Anything else: how long the call is, where to start, who is joining">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+<span id="err" style="font-size:13px;color:var(--text-danger)" role="status"></span>
+<button id="go">Build the refinement deck ↗</button>
+</div>
+</div>
+<script>
+var CFG={client:'Tidewell Solar',session:'Refinement 2 · Thu Oct 29',mode:'sprint',pick:'Sprint 2',
+stories:[
+['TS-21','Partner leads routed to the partner manager\'s queue','Lead management','Sprint 2',2,0,1],
+['TS-24','First call due within one business day of a new lead','Lead management','Sprint 2',1,0,1],
+['TS-27','Duplicate lead warning before saving','Lead management','Sprint 2',3,0,1],
+['TS-29','Lead converted to an opportunity with the site survey attached','Lead management','Sprint 2',0,0,0],
+['TS-33','Install scheduled from the signed contract','Install scheduling','Sprint 3',2,1,0],
+['TS-34','Crew assigned by region and panel type','Install scheduling','Sprint 3',1,0,0]
+]};
+var S=CFG.stories,mode=CFG.mode||'sprint',on={};
+S.forEach(function(s){on[s[0]]=!!s[6]});
+var sel=document.getElementById('sel'),find=document.getElementById('find');
+function uniq(i){var o=[];S.forEach(function(s){if(s[i]&&o.indexOf(s[i])<0)o.push(s[i])});return o}
+function fill(){sel.innerHTML='';uniq(mode==='sprint'?3:2).forEach(function(v){var o=document.createElement('option');o.textContent=v;if(v===CFG.pick)o.selected=true;sel.appendChild(o)});
+sel.style.display=mode==='one'?'none':'';find.style.display=mode==='one'?'':'none';
+document.querySelectorAll('.seg button').forEach(function(x){x.classList.toggle('on',x.dataset.m===mode)})}
+function shown(){var f=find.value.trim().toLowerCase();return S.filter(function(s){
+if(mode==='sprint')return s[3]===sel.value;if(mode==='epic')return s[2]===sel.value;
+return !f||(s[0]+' '+s[1]).toLowerCase().indexOf(f)>-1})}
+function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
+function render(){var h='',last=null;shown().forEach(function(s){
+var g=mode==='epic'?(s[3]||'No sprint yet'):s[2];if(g!==last){h+='<div class="gp">'+esc(g)+'</div>';last=g}
+h+='<label class="rw'+(on[s[0]]?'':' off')+'"><input type="checkbox" data-k="'+esc(s[0])+'"'+(on[s[0]]?' checked':'')+'><span class="ky">'+esc(s[0])+'</span>'
++'<span><div class="nm">'+esc(s[1])+'</div><div class="mt">'+esc(mode==='epic'?s[2]:(s[3]||'No sprint yet'))+(s[5]?' · design question, invite the SA':'')+'</div></span>'
++'<span class="pl '+(s[4]?'q':'z')+'">'+(s[4]?s[4]+' open question'+(s[4]>1?'s':''):'No open questions')+'</span></label>'});
+document.getElementById('list').innerHTML=h||'<div class="gp">No stories match.</div>';
+var n=0,q=0;S.forEach(function(s){if(on[s[0]]){n++;q+=s[4]}});
+document.getElementById('cnt').textContent=n+' stor'+(n===1?'y':'ies')+' · '+q+' open question'+(q===1?'':'s');
+if(n)document.getElementById('err').textContent=''}
+document.querySelectorAll('.seg button').forEach(function(b){b.addEventListener('click',function(){mode=b.dataset.m;fill();render()})});
+sel.addEventListener('change',render);find.addEventListener('input',render);
+document.getElementById('list').addEventListener('change',function(e){var k=e.target.dataset.k;if(k){on[k]=e.target.checked;render()}});
+document.getElementById('all').addEventListener('click',function(){shown().forEach(function(s){on[s[0]]=true});render()});
+document.getElementById('none').addEventListener('click',function(){S.forEach(function(s){on[s[0]]=false});render()});
+document.getElementById('go').addEventListener('click',function(){var out=[];S.forEach(function(s){if(on[s[0]])out.push(s[0]+' '+s[1]+' ('+s[4]+' open)')});
+if(!out.length){document.getElementById('err').textContent='Tick at least one story first.';return}
+var nt=document.getElementById('notes').value.trim();
+sendPrompt('Refinement for '+CFG.client+', '+CFG.session+'. Build the refinement deck for exactly these stories, in this order:\n'+out.join('\n')+(nt?'\nNotes: '+nt:''))});
+document.getElementById('hd').textContent=CFG.client+' · '+CFG.session;
+fill();render();
+</script>

@@ -20,6 +20,7 @@ SKILLS = os.path.join(PLUGIN, 'skills')
 STARTS = {
     'discovery-call': ['source-checker', 'story-reviewer'],
     'user-stories': ['source-checker', 'story-reviewer'],
+    'refinement': ['story-reviewer'],
     'design': ['design-reviewer'],
 }
 

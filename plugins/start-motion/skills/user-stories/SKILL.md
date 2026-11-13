@@ -1,11 +1,11 @@
 ---
 name: user-stories
-description: Start Motion stage 2.2 (/start-motion:user-stories). Finishes, refines, splits and pushes Kicksaw user stories and acceptance criteria from a signed scope, carrying the client's own words from the call transcripts into every story and every refinement update. Starts from the stories the discovery call skill already drafted on the requirements list's User stories tab, checks them against the signed solution readout and the tl;dv transcripts, proposes the epics, takes the stories to the SC one at a time, creates them in the client's Jira project, and preps and folds in refinement sessions with the client's product owner. Use whenever someone says "write the stories for [client]", "build the backlog", "push the stories", "draft AC", "split this story", "prep refinement" or "fold in today's refinement".
+description: Start Motion stage 2.2 (/start-motion:user-stories). Finishes, splits and pushes Kicksaw user stories and acceptance criteria from a signed scope, carrying the client's own words from the call transcripts into every story. Starts from the stories the discovery call skill already drafted on the requirements list's User stories tab, checks them against the signed solution readout and the tl;dv transcripts, proposes the epics, takes the stories to the SC one at a time, and creates them in the client's Jira project. Refinement sessions with the product owner are run with /start-motion:refinement. Use whenever someone says "write the stories for [client]", "build the backlog", "push the stories", "draft AC" or "split this story".
 ---
 
 # Kicksaw user stories
 
-One request ("write the stories for [Client]") turns the signed scope into a Jira backlog. The scope comes from two documents: the requirements list, which the discovery call skill built from every call, and the solution readout, which is what the client signed. The stories are not written from scratch here: the discovery call skill drafted a story for every requirement on the requirements list's User stories tab, from the call where the requirement was heard, and kept it current as later calls changed it. This skill checks those drafts against what the client signed, finishes them, pushes them to Jira, and runs the refinement loop. The client's words come from the calls themselves: every story carries what the client actually said, pulled from the tl;dv transcript, and every change made in refinement carries what the product owner said on that call. Ask only for what step 0 cannot find.
+One request ("write the stories for [Client]") turns the signed scope into a Jira backlog. The scope comes from two documents: the requirements list, which the discovery call skill built from every call, and the solution readout, which is what the client signed. The stories are not written from scratch here: the discovery call skill drafted a story for every requirement on the requirements list's User stories tab, from the call where the requirement was heard, and kept it current as later calls changed it. This skill checks those drafts against what the client signed, finishes them, and pushes them to Jira. The client's words come from the calls themselves: every story carries what the client actually said, pulled from the tl;dv transcript. Ask only for what step 0 cannot find.
 
 A story is read by three people at once: the client product owner, who approves it in refinement; the solution architect, who decides how to build it; and the tester, who marks each acceptance criterion true or false. Every choice below serves all three: plain language the client can approve, precise behavior the architect can build from, and checks a tester can run. The client's own words are what let the product owner recognize the story as theirs and let the architect and tester see why a criterion is there.
 
@@ -13,7 +13,7 @@ A story is read by three people at once: the client product owner, who approves 
 
 Read `references/method.md` in this skill's folder at the start of every run: what the stage is for, the calls the stage asks you to make, the bar, and the link to the full method on the Start Motion page.
 
-This skill covers five moves that are five separate prompts on the page: proposing the epics, finishing the stories epic by epic, pushing approved stories to Jira, prepping refinement, and folding a refinement session in. Work out which one is next from what exists, and propose it.
+This skill covers three steps that are three separate prompts on the page: proposing the epics, finishing the stories epic by epic, and pushing approved stories to Jira. Refinement sessions are run with `/start-motion:refinement`. Work out which one is next from what exists, and propose it.
 
 Look before you ask. The client's name comes from the request; if it is missing, that is the one thing to ask before looking anywhere. Then report what you found against the stage's readiness list, in a few lines, before doing anything else: written sign-off on a named readout version (recorded, or not); the requirements list (how many approved, how many still heard or confirmed, whether the User stories tab exists and how many drafts it holds); every discovery call on Sessions and sources with its tl;dv link (any missing); the client's Jira project and its key (and what is already in it); the product owner (named in the note or not); the solution design (shared, draft, or none); refinement sessions on the calendar or not; and the epic plan (stories/epic-plan.md exists or not, and which epics are finished, pushed or refined). For example: "Tog. Sign-off recorded Dec 4 on readout v1.2. Requirements: 38 approved, 5 confirmed (stay on the sheet). User stories tab: 41 drafts. Calls: all nine linked. Jira: TOG, empty. Product owner: Dana Ruiz. Design: shared Dec 3. Epic plan: none yet. Next: propose the epics."
 
@@ -21,7 +21,7 @@ If the readout is not signed, or there are no approved requirements, say so and 
 
 ## What to ask: one message
 
-Ask once, in one message, and only for what the Start did not find: the epic to finish next when more than one is open and the request did not name it; the product owner when the note does not name them; the Jira project key when none is found; and, when folding in a refinement session, which call, if more than one for the client happened that day. Everything else comes from the documents.
+Ask once, in one message, and only for what the Start did not find: the epic to finish next when more than one is open and the request did not name it; the product owner when the note does not name them; and the Jira project key when none is found. Everything else comes from the documents.
 
 Then read back what you heard in one line and run: "Finishing the Tog stories for the Lead intake epic, six drafts, one at a time for your review."
 
@@ -111,7 +111,7 @@ In order:
 1. The business situation and what this story does about it. Two to five sentences, written in the client's vocabulary: their names for the records, the teams and the steps, as heard on the calls, not Salesforce names. Say which neighboring stories hold the boundaries ("assigning the lead is E1.2").
 2. Short bolded explainer subsections where a concept needs unpacking ("**How territories are set:** ...", "**Why the match runs first:** ..."). Only when the AC would not make sense without them.
 3. **Source traceability:** the quotes that drive the story, pulled and cited as "The client's words" says. Each on its own line.
-4. **Refined on [date]:** one block per refinement session that changed the story, added by step 5. Nothing here before refinement.
+4. **Refined on [date]:** one block per refinement session that changed the story, added by `/start-motion:refinement`. Nothing here before refinement.
 5. Footer lines, each on its own line:
    - `Source: Solution readout v{n} (signed {date}), section 8 W-01 Lead intake, steps 2 to 4; section 5 "Lead capture" row. Calls: S-04 Discovery 3: Lead routing (Oct 7 2026), S-06 Discovery 5: Conversion (Oct 14 2026)`. The readout is the shared source the client signed; the calls are where the words came from.
    - `Supersedes: {key}` when this story replaces an earlier one, with one line on what changed.
@@ -163,39 +163,17 @@ From here Jira is the story's home: refinement changes go to Jira, and the sheet
 
 The first pass is the whole signed scope in Jira, gaps and all. Discovery never covers every detail; refinement is where the details get closed.
 
-## 4. Prep refinement
+## 4. Refinement
 
-Refinement is a live call with the client's product owner. Before each session:
-- Propose which stories to refine, by epic and in build order, enough for one session (usually six to ten).
-- Run the story reviewer on those stories as they stand in Jira (section 2), since they may have changed since it last read them. For each story, list its open questions, the gaps the reviewer found with the question each one puts to the product owner, and what else the SC should ask: "Does this look right? What did we miss? What would make this wrong?" This session is where gaps get closed, before a story is approved and built.
-- Draft the agenda: stories in order, each with its questions, and the decisions the session has to close.
-
-## 5. Fold in refinement
-
-When asked ("fold in today's [Client] refinement"), pull the tl;dv transcript for that session (if more than one call for the client happened that day, ask which) and add it to the Sessions and sources tab with the next S-ID. Read all of it and note each speaker. Then, story by story:
-
-- **Match what was said to the stories on the agenda,** and to any story the product owner brought up that was not on it.
-- **For each story discussed, pull the product owner's words** for every answer, correction and addition, cited as "The client's words" says. Take the passage where they say what they want and why, not where they say "yes".
-- **Add a Refined on block to the Description**, one per session, between Source traceability and the footer:
-
-  **Refined on Oct 28 2026 with Dana Ruiz (Refinement 2):**
-  - "We never want a lead from a partner to go to a rep... [it goes] to the partner manager" Dana Ruiz, Sales Operations Manager, S-15 Refinement 2, Oct 28 2026, 00:12:05. Changed AC 1: leads with Lead Source = Partner go to the partner manager's queue. Closed open item 2.
-  - "Blank is fine, an error would stop my team cold" Dana Ruiz, Sales Operations Manager, S-15 Refinement 2, Oct 28 2026, 00:14:40. Added AC 7: the field shows blank, not an error, when there is no territory.
-
-  Each bullet is one quote and, in plain words, what it changed: the criterion number added, changed or removed, the open question it closed, or the field it added. If a criterion changes, keep the new wording in the AC field only; the block records why it changed.
-- **Update the AC and the Open Questions fields** to match: rewrite the criteria that changed, add the new ones, remove the questions answered. A question the product owner raised and could not answer goes in as a new open question with their quote, and on the Open items tab.
-- **Anything the product owner asked for that is beyond the signed scope** goes in the requirements list with Scope set to Beyond SOW and Scope decision empty, with the quote and citation; it never widens a story silently. Tell the PM that week.
-- **A story the product owner approved** moves to Pending Client Approval or Refined, per the project's workflow. Say which stories moved. Never refuse or hold back a status because a reviewer found a gap: if a story that moved still has one, say so in one line with the question, and leave the call to the SC. Once a story is approved, it is built as written; nothing reviews it again at build.
-- **Record new decisions in the Open items tab** with the quote, and update the Source footer line of the story to add the refinement call. A decision that answers a row on the Decisions tab closes that row as well (Chosen, Why, Decided by, Source with the call and timestamp), and the D-ID comes off the story's open question.
-- Keep the story's tone and structure; add to it, never rewrite the parts the SC already approved unless the product owner changed them.
+Refinement with the client's product owner has its own command. Before each session, `/start-motion:refinement` lets the SC pick the stories, builds the refinement deck and briefs the SC on the call; the same day after it, the same command folds the product owner's answers into the stories in Jira.
 
 Stories then flow: New, Pending Client Approval, Refined, Build Ready, In Progress, Ready for QA, QA Testing, UAT, Done. The SC and SA size refined stories together; the PM, SC and SA load sprint 1 from them with input from the team.
 
-## 6. Report back
+## 5. Report back
 
-Three short paragraphs: what was finished or changed and under which epics, what the SC needs to check or decide, and what is still open with the client. Then a short list of every story waiting for review, each with the reviewers' findings still open on it, and one line on how the reviewers ran (as separate agents, or as a second pass in this conversation). After a refinement, also list every story that changed with the criteria touched, and any quote that could not be found in the transcript. No recap of steps.
+Three short paragraphs: what was finished or changed and under which epics, what the SC needs to check or decide, and what is still open with the client. Then a short list of every story waiting for review, each with the reviewers' findings still open on it, and one line on how the reviewers ran (as separate agents, or as a second pass in this conversation). No recap of steps.
 
-End with one line naming what comes next, by move: after the epic plan, `/start-motion:user-stories` finishes the stories epic by epic; after the SC approves a story, `/start-motion:user-stories` creates it in Jira; before each refinement session, `/start-motion:user-stories` preps it; the same day after it, `/start-motion:user-stories` folds the answers in; once sprint 1 is refined, the SA adds build details and sizes the stories with the SC, and the PM loads the sprint.
+End with one line naming what comes next, by move: after the epic plan, `/start-motion:user-stories` finishes the stories epic by epic; after the SC approves a story, `/start-motion:user-stories` creates it in Jira; before each refinement session, `/start-motion:refinement` preps it and builds the deck; the same day after it, `/start-motion:refinement` folds the answers in; once sprint 1 is refined, the SA adds build details and sizes the stories with the SC, and the PM loads the sprint.
 
 ## Log the run
 

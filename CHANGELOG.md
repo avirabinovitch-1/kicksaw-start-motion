@@ -1,5 +1,18 @@
 # Changelog
 
+## Not released: /refinement (branch refinement-stage-3, 2026-11-12)
+
+Refinement sessions get their own command, stage 3 (Avi, Nov 12; project doc `claude/refinement-section-2026-11-12.md`). Not tested on a client yet: the plan is a run on the HLS backlog before this merges.
+
+- New `/start-motion:refinement`. Before a session the SC picks the stories by sprint, by epic or one by one, on a clickable story list in the chat (`references/story-picker.html`; a text list where no visual can be shown). Each row shows the story's open question count and whether it carries a design question.
+- Every open question is worked up with what we know and Kicksaw's proposal, and the SC sees the proposals before anything is built. Where the sources give no basis for a proposal, the slide says so; nothing is invented.
+- The refinement deck is built from finished slides (`templates/refinement/`, shown with Tidewell Solar): cover, today's stories, each story with its questions, a detail slide where a question needs a picture (things grouped, a rule over time, who can do what), the acceptance criteria to confirm as they read in Jira, and where we landed. A short story fits on one slide; a long one takes two. `references/refinement-deck.md`.
+- With the deck, the SC gets a briefing in the chat, written so someone who was not in discovery could run the call from it: what the session is for, what to do before it, how to open it, each story in turn (what its questions decide, what to listen for, which criteria to slow down on), what to do when an answer is not ready and why, and what happens after.
+- Fold-in moved here from `/user-stories`, with three additions: it reads the session's deck, uses notes the SC took on the call as pointers into the recording, and records an agreement with a proposal in the Refined on block.
+- `/user-stories` ends when the stories are in Jira. Its prep and fold-in sections are replaced by a pointer to `/refinement`, and its description no longer answers to "prep refinement" or "fold in today's refinement".
+- The story reviewer is started by `/refinement` before each session (`scripts/sync-agents.py`).
+- Not in this branch: the Start Motion page's Refinement section, the version number, and the page's copy of the user stories skill text.
+
 ## After 0.1.10 (2026-11-12, no version change)
 
 Two small changes merged ahead of 0.1.11 (the whole-scope design, not yet pushed). The version stays 0.1.10 so 0.1.11 keeps its number.
