@@ -75,7 +75,7 @@ Apply the same test to the Open Questions field: a question in Jira that fails i
 
 Merge questions that are one decision, even across stories: three questions about the same automatic reply are one question with three parts. Edge cases, "who exactly does this" details and things worth double-checking do not go to the client; where one matters, write it into the proposal of the question it belongs to.
 
-A sprint's worth of stories usually comes down to about six questions, and rarely more than eight. If you have more, cut again before you show the SC; do not split into more sessions to make room. Everything you cut is listed for the SC in one short block under the questions (decided by Kicksaw, to confirm, for the SA), so nothing is lost and the SC can pull one back in.
+There is no number to hit: the test decides how many questions there are. If the list is too long for one call, apply the test again before you show the SC; do not split into more sessions to make room. Everything you cut is listed for the SC in one short block under the questions (decided by Kicksaw, to confirm, for the SA), so nothing is lost and the SC can pull one back in.
 
 ## 2. Work up each question
 
