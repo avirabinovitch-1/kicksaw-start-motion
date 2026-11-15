@@ -1,6 +1,6 @@
 ---
 name: refinement
-description: Start Motion stage 3 (/start-motion:refinement). Prepares and folds in Kicksaw refinement sessions with a client's product owner. Lets the SC pick the stories for an upcoming session by sprint, by epic or one by one, works up each open question with what we know and Kicksaw's proposal, and builds the refinement deck from the finished slides in the same run, with no stop in between (each story with its questions, a detail slide where a question needs a picture, the acceptance criteria to confirm, and where we landed). The SC then looks the draft deck over, changes what they want, and gets a briefing in the chat on how to run the call and what each story needs. After the call, folds the product owner's answers into the stories in Jira from the recording. Use whenever someone says "prep refinement for [client]", "build the refinement deck", "which stories should we refine", "get me ready for the [client] refinement call" or "fold in today's refinement".
+description: Start Motion stage 3 (/start-motion:refinement). Prepares and folds in Kicksaw refinement sessions with a client's product owner. Lets the SC pick the stories for an upcoming session by sprint, by epic or one by one, works up each open question with what we know and Kicksaw's proposal, and builds the refinement deck from the finished slides in the same run, with no stop in between (each story with its questions, a detail slide where a question needs a picture, the acceptance criteria to confirm, and where we landed). The SC gets a briefing in the chat first, on how to run the call and what each story needs, then the draft deck to look over and change before it goes to the client. After the call, folds the product owner's answers into the stories in Jira from the recording. Use whenever someone says "prep refinement for [client]", "build the refinement deck", "which stories should we refine", "get me ready for the [client] refinement call" or "fold in today's refinement".
 ---
 
 # Kicksaw refinement
@@ -39,7 +39,7 @@ For each story the list shows its key, its title, its epic or sprint, how many q
 
 The picker sends back the list of stories in the order to take them. Take that order as it is.
 
-**From the pick to the deck is one run.** Once the SC has picked, work through sections 1 to 5 without stopping: read and review the stories, work up the questions, build the deck, then hand it over with the second look and the briefing. Do not ask the SC to confirm the questions or the proposals first, and do not wait for them to say build. The picker is the only thing the SC answers before the deck exists; they review the questions and proposals on the draft deck (section 4). The one reason to stop early is something that makes a deck impossible, such as stories that cannot be read in Jira; say what is missing.
+**From the pick to the deck is one run.** Once the SC has picked, work through sections 1 to 5 without stopping: read and review the stories, work up the questions, brief the SC in the chat, build the deck, then hand it over with the second look. Do not ask the SC to confirm the questions or the proposals first, and do not wait for them to say build. The picker is the only thing the SC answers before the deck exists; they review the questions and proposals on the draft deck (section 5). The one reason to stop early is something that makes a deck impossible, such as stories that cannot be read in Jira; say what is missing.
 
 ## 1. Read and review the picked stories
 
@@ -92,53 +92,24 @@ Then decide whether the question needs its own slide. Most do not. It does when 
 
 Number the questions through the whole deck, 1 to n, in the order the stories are taken.
 
-**Do not stop here.** Go straight on and build the deck from these questions and proposals. Keep track, for the second look (section 4), of where each question came from, which points the client has already answered, and what you cut.
+**Do not stop here.** Go straight on to the briefing and then the deck. Keep track, for the second look (section 5), of where each question came from, which points the client has already answered, and what you cut.
 
 Proposals are for the deck. Do not write them into Jira; the story changes when the product owner answers.
 
-## 3. Build the deck
+## 3. Brief the SC in the chat
 
-Read `references/refinement-deck.md` before writing anything: the slides, their order, what each holds and the rules.
+The briefing comes before the deck. As soon as the questions are worked up, and before you build anything, write the briefing to the SC in the chat, then carry on and build the deck in the same run without waiting for a reply. The SC reads the briefing while the deck is being built.
 
-1. Build from the Slides artifact type, not a .pptx, unless a file format is named. Create the deck, named "[Client] refinement: [session or sprint], [date]", and apply the Kicksaw Slides design system the way the Slides type's instructions say, as `/start-motion:kickoff` does.
-2. Copy `templates/refinement/deck.css` into the deck as `project/deck.css`, unchanged.
-3. For each slide in the order `references/refinement-deck.md` gives, copy `templates/refinement/<slide>.html` into the deck as `project/slides/<id>.html`, with an id of its own (for example `ts21`, `ts21-detail`, `ts21-criteria`). Keep its markup and classes; change only the words.
-4. Repeating items (story rows, question cards, criteria, table rows, columns) are added by copying an existing item or removed whole, within what the slide holds. Past that, use the slide that holds more, or split. Never shrink text and never change sizes, colors or spacing.
-5. A story's title, sentence and acceptance criteria are copied from Jira. Do not reword a criterion for the slide. Where a criterion in Jira refers to a table or a list too long for the slide, give the sentence and say in the speaker notes where the rest is.
-6. Mark each criterion a question could change with that question's number.
-7. Upload the two logo files in `brand/` and point the slides at them. Footer on every slide: "<Client> × Kicksaw · <Sprint or session> refinement" and the slide number.
-8. Speaker notes on every slide, written for someone who was not in discovery: what to say, what to ask and in what order, where the client spoke about it (the call and the date), and what to do if the answer is not ready.
-9. Nothing internal on the slides or in the notes: sizing, hours, cost, staffing, build details, risks, or the reviewer's findings as findings.
-10. `landed` lists every question with its proposal and leaves the last two columns to fill in on the call.
+The briefing names slide numbers, so settle the slide list first: read `references/refinement-deck.md`, decide which slide each story and question takes, and number them in order. Build the deck to that list (section 4). If a slide number changes during the build, say which in the reply that carries the link.
 
-Look at every slide once it is built: no text shrank, the logo, title, rule and footer are in the same place on every content slide, every question has its proposal or says there is none, and nothing was invented. Fix what you find before handing over.
+Brief the SC on this session. The deck is what the client sees. The briefing is what a colleague who knows the project would tell the consultant before they walk into the call: what the session is for, how to run it, and what each story needs and why. Write it so that someone who was not in discovery could run the call from it.
 
-## 4. The SC's second look
-
-The deck goes to the client under Kicksaw's name, so the SC reads every question and proposal before it is sent. That review happens on the finished draft, not before the build.
-
-Reply with the link and say in one line that this is a draft for the SC to look over before it goes to the client. Then give them what to look at, short enough to check against the deck in a few minutes, with the slide number on every line:
-
-- **Proposals to check first:** any question that says "No proposal yet", and any proposal that rests on something nobody has confirmed.
-- **The questions, story by story:** each question in one line with its proposal in one line, and where it came from: from Jira, from a client comment (with the date), or added in your review (with the reason in a few words).
-- **To confirm:** the points the client has already answered in a comment, which the deck reads back.
-- **Left out:** what you cut and why, in one short block (decided by Kicksaw, to confirm, for the SA), so the SC can pull one back in.
-- **For Jira:** the questions your review added that are not yet in the story's Open Questions field. Add them to Jira only when the SC says to.
-
-Close the list by asking the SC to read through the deck and reply with anything to change: a question to drop, a proposal to reword, a cut question to bring back, a story to add or take out. If nothing needs changing, the deck is ready to send, and the SC uses the Share menu to send it.
-
-When the SC replies with changes, make them in the same deck. Never build a second one. Renumber the questions if one was dropped or added, and bring `today`, the criteria marks, `landed` and the speaker notes into line. Look at every slide you touched. Then reply with what changed, by slide number, and rewrite only the parts of the briefing the change affects. Repeat until the SC says it is ready.
-
-## 5. Brief the SC in the chat
-
-Right after the second look, in the same reply, brief the SC on this session. The deck is what the client sees. The briefing is what a colleague who knows the project would tell the consultant before they walk into the call: what the session is for, how to run it, and what each story needs and why. Write it so that someone who was not in discovery could run the call from it.
-
-Write in full sentences and explain the reason behind each point. A line like "do not leave question 6 open" is not enough; say what depends on the answer and what happens if it stays open. Use the client's and the team's real names, the story keys and the slide numbers. No recap of how the deck was built.
+Write in full sentences and explain the reason behind each point. A line like "do not leave question 6 open" is not enough; say what depends on the answer and what happens if it stays open. Use the client's and the team's real names, the story keys and the slide numbers. Nothing about how the deck is built.
 
 Six parts, under these headings:
 
 - **What this session is for.** Two or three sentences: which stories these are and why they are up now (the sprint they belong to and when it starts), how many questions stand between them and the build, and what a good call ends with.
-- **Before the call.** Start with the second look: the deck is a draft until the SC has read it. Then when to send the deck and what to say when sending it, so the product owner knows to read the questions and the proposals and come with answers. Who needs to be on the call and why each one is needed: the SA, by name, when a story carries a design question; anyone the product owner has said decides a point. Anything to check first, with the reason, such as a proposal that rests on something nobody has confirmed.
+- **Before the call.** Start with the second look: the deck that follows this briefing is a draft until the SC has read it. Then when to send the deck and what to say when sending it, so the product owner knows to read the questions and the proposals and come with answers. Who needs to be on the call and why each one is needed: the SA, by name, when a story carries a design question; anyone the product owner has said decides a point. Anything to check first, with the reason, such as a proposal that rests on something nobody has confirmed.
 - **Opening the call.** What to say in the first two minutes: what the session is for, how it works (each story, then its questions, each with our proposal, which they can agree with or change), and that anything not settled today leaves with an owner and a date. Give the SC words they could use.
 - **Story by story.** One short paragraph for each story, in the order of the deck, with its slide numbers:
   - what the story does, in one plain sentence, for a consultant who has not read it lately
@@ -175,6 +146,39 @@ Closing the call and after
 Before you close, fill in slide 10 with Dana and read it back to her. The call is recorded. Today, run /start-motion:refinement and say "fold in today's Tidewell refinement": the answers go into the stories in Jira, and you see each change before it is saved. If you took notes on the call, paste them in. The stories Dana approved move on in Jira; Ben adds the build details and sizes them with you, and the PM loads sprint 2.
 ```
 
+## 4. Build the deck
+
+Build right after the briefing, in the same run, to the slide list the briefing used. `references/refinement-deck.md` has the slides, their order, what each holds and the rules.
+
+1. Build from the Slides artifact type, not a .pptx, unless a file format is named. Create the deck, named "[Client] refinement: [session or sprint], [date]", and apply the Kicksaw Slides design system the way the Slides type's instructions say, as `/start-motion:kickoff` does.
+2. Copy `templates/refinement/deck.css` into the deck as `project/deck.css`, unchanged.
+3. For each slide in the order `references/refinement-deck.md` gives, copy `templates/refinement/<slide>.html` into the deck as `project/slides/<id>.html`, with an id of its own (for example `ts21`, `ts21-detail`, `ts21-criteria`). Keep its markup and classes; change only the words.
+4. Repeating items (story rows, question cards, criteria, table rows, columns) are added by copying an existing item or removed whole, within what the slide holds. Past that, use the slide that holds more, or split. Never shrink text and never change sizes, colors or spacing.
+5. A story's title, sentence and acceptance criteria are copied from Jira. Do not reword a criterion for the slide. Where a criterion in Jira refers to a table or a list too long for the slide, give the sentence and say in the speaker notes where the rest is.
+6. Mark each criterion a question could change with that question's number.
+7. Upload the two logo files in `brand/` and point the slides at them. Footer on every slide: "<Client> × Kicksaw · <Sprint or session> refinement" and the slide number.
+8. Speaker notes on every slide, written for someone who was not in discovery: what to say, what to ask and in what order, where the client spoke about it (the call and the date), and what to do if the answer is not ready.
+9. Nothing internal on the slides or in the notes: sizing, hours, cost, staffing, build details, risks, or the reviewer's findings as findings.
+10. `landed` lists every question with its proposal and leaves the last two columns to fill in on the call.
+
+Look at every slide once it is built: no text shrank, the logo, title, rule and footer are in the same place on every content slide, every question has its proposal or says there is none, and nothing was invented. Fix what you find before handing over.
+
+## 5. The SC's second look
+
+The deck goes to the client under Kicksaw's name, so the SC reads every question and proposal before it is sent. That review happens on the finished draft, not before the build.
+
+When the deck is built, reply with the link and say in one line that this is a draft for the SC to look over before it goes to the client. Then give them what to look at, short enough to check against the deck in a few minutes, with the slide number on every line:
+
+- **Proposals to check first:** any question that says "No proposal yet", and any proposal that rests on something nobody has confirmed.
+- **The questions, story by story:** each question in one line with its proposal in one line, and where it came from: from Jira, from a client comment (with the date), or added in your review (with the reason in a few words).
+- **To confirm:** the points the client has already answered in a comment, which the deck reads back.
+- **Left out:** what you cut and why, in one short block (decided by Kicksaw, to confirm, for the SA), so the SC can pull one back in.
+- **For Jira:** the questions your review added that are not yet in the story's Open Questions field. Add them to Jira only when the SC says to.
+
+Close the list by asking the SC to read through the deck and reply with anything to change: a question to drop, a proposal to reword, a cut question to bring back, a story to add or take out. If nothing needs changing, the deck is ready to send, and the SC uses the Share menu to send it.
+
+When the SC replies with changes, make them in the same deck. Never build a second one. Renumber the questions if one was dropped or added, and bring `today`, the criteria marks, `landed` and the speaker notes into line. Look at every slide you touched. Then reply with what changed, by slide number, and give again only the parts of the briefing the change affects. Repeat until the SC says it is ready.
+
 ## 6. Fold in refinement
 
 When asked ("fold in today's [Client] refinement"), read the refinement deck for that session if there is one (its questions, their numbers and proposals are what the call worked through), then pull the tl;dv transcript for that session (if more than one call for the client happened that day, ask which) and add it to the Sessions and sources tab with the next S-ID. Read all of it and note each speaker. Then, story by story:
@@ -201,7 +205,7 @@ Stories then flow: New, Pending Client Approval, Refined, Build Ready, In Progre
 
 ## 7. Report back
 
-After a prep, one reply: the link to the draft deck, the second look (section 4), then the briefing (section 5). Nothing else.
+After a prep, in this order: the briefing (section 3), then the link to the draft deck and the second look (section 5). Nothing else.
 
 After a fold-in, three short paragraphs: which stories changed and the criteria touched, which stories moved status, and what is still open with its owner and date. Then any quote that could not be found in the transcript, and anything the product owner asked for beyond the signed scope. No recap of steps.
 
