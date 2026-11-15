@@ -1,5 +1,14 @@
 # Changelog
 
+## /refinement builds the deck straight from the pick (2026-11-14, no version change)
+
+Avi, Nov 14: refinement was still clunky because it did not create the deck automatically. Not yet run on a client's backlog.
+
+- Once the SC picks the stories, `/start-motion:refinement` reads and reviews them, works up the questions and builds the deck in one run. The stop that showed the questions and proposals and waited for "build" is gone.
+- The SC's review moves to after the deck exists (new section 4, the SC's second look): the reply carries the link to the draft deck, a short list to check against it (proposals to check first, each question with its proposal and where it came from, points to confirm, what was left out, questions to add to Jira), then the briefing.
+- Changes the SC asks for are made in the same deck, with the questions renumbered and the briefing updated where it is affected. The deck is a draft until the SC says it is ready to send.
+- `references/method.md` matches. The Start Motion page's Refinement steps need the same change.
+
 ## /refinement, stage 3 (2026-11-12, no version change)
 
 Refinement sessions get their own command, stage 3 (Avi, Nov 12; project doc `claude/refinement-section-2026-11-12.md`). Tested on the Fred Hutch backlog (sprint 2, eight stories, read-only on Jira) before it merged. The version stays 0.1.10 so 0.1.11 keeps its number.
