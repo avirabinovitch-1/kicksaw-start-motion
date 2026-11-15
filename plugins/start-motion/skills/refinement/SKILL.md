@@ -17,7 +17,9 @@ Read `references/method.md` in this skill's folder at the start of every run: wh
 
 Look before you ask. The client's name comes from the request; if it is missing, that is the one thing to ask before looking anywhere. Then report what you found in a few lines before doing anything else: the client's Jira project and its key; how many stories are in it by status (New, Pending Client Approval, Refined and later); the sprints in Jira and which one is next; how many stories in the next sprint are not yet approved, and how many open questions they carry between them; the product owner (named in the Discovery documents note, or not); the next refinement session on the calendar (date, or none found); the last refinement call and whether it has been folded in. For example: "Tog. Jira: TOG, 41 stories: 29 New, 4 Pending Client Approval, 8 Refined. Next sprint: Sprint 2 (Nov 4 to 17), 9 stories, 6 not yet approved with 11 open questions. Product owner: Dana Ruiz. Next session: Thu Oct 29. Last session, Oct 22: folded in."
 
-If the last refinement call has not been folded in, say so and offer to do that first: its answers change what this session needs to cover.
+If the last refinement call has not been folded in, say so in that report and say why it matters: its answers change what this session needs to cover. Still show the picker; the SC can say "fold in first".
+
+The report and the story picker go in the same reply. Keep the report to a few lines so the picker is on the screen without scrolling. Do not wait for an answer between them.
 
 If no stories are in Jira for the client, say so and stop; `/start-motion:user-stories` comes first.
 
@@ -29,17 +31,19 @@ The SC chooses which stories this session covers. Offer the three ways to pick, 
 - **By epic:** the stories under one epic that are not yet approved, in build order.
 - **Specific stories:** the SC names them or finds them in the list.
 
-Not yet approved means the product owner has not approved the story. In the kit's workflow that is status New or Pending Client Approval. Projects differ, so read the statuses this project uses and how approval is recorded there (a status, or a comment from the client such as "Approved"), and say in the Start report which rule you used. Propose, already ticked: the next sprint's stories that are not yet approved, plus any story from the last session that still has a question open. Six to ten stories fit a typical call; if the set carries more than about twelve open questions, say so in one line and suggest which stories could wait for the next session. The SC decides.
+Not yet approved means the product owner has not approved the story. In the kit's workflow that is status New or Pending Client Approval. Projects differ, so read the statuses this project uses and how approval is recorded there (a status, or a comment from the client such as "Approved"), and say in the Start report which rule you used. Propose, already ticked: the next sprint's stories that are not yet approved, plus any story from the last session that still has a question open. When the request already names a sprint, an epic or story keys ("prep refinement for Tog sprint 3"), open the picker on that with those stories ticked, so the SC only has to press the button. Six to ten stories fit a typical call; if the set carries more than about twelve open questions, say so in one line and suggest which stories could wait for the next session. The SC decides.
 
 For each story the list shows its key, its title, its epic or sprint, how many questions are open on it, whether the client has commented on it in Jira since it was last refined, and whether it carries a design question (so the SC knows to invite the SA). The count at this point is the Open Questions field; your own review of the stories the SC picks comes next and usually adds to it, so say so in the line above the list. A design question is one about how something is built or what the platform can do, not about what the business needs.
 
 **In Claude chat or Cowork, when you can show an interactive visual,** show the story picker: `references/story-picker.html`. Change only the `CFG` block at the top of its script: `client`; `session` (the session's name and date, for example "Refinement 2 · Thu Oct 29"); `mode` ("sprint", "epic" or "one") and `pick` (the sprint or epic it opens on); and `stories`, one row per story that is not yet approved, across every sprint and epic, as `[key, title, epic, sprint, open questions, 1 if it carries a design question else 0, 1 if you propose it else 0, the date of the client's latest comment or an empty string]`. A story with no sprint has an empty sprint. On a large backlog, list the next three sprints and say so; the SC can ask for the rest. Send everything else as it is. Write one line above it, for example "Here are the stories I'd bring to Thursday's session. Change anything, then press Build the refinement deck."
 
-**Everywhere else,** send the same list as text, grouped by sprint or epic, with the proposed stories marked, and ask the SC to reply with the keys to bring.
+**Everywhere else,** send the same list as text, grouped by sprint or epic, with the proposed stories marked, and ask the SC to reply with the keys to bring, or "go" to take the proposed set.
 
 The picker sends back the list of stories in the order to take them. Take that order as it is.
 
 **From the pick to the deck is one run.** Once the SC has picked, work through sections 1 to 5 without stopping: read and review the stories, work up the questions, brief the SC in the chat, build the deck, then hand it over with the second look. Do not ask the SC to confirm the questions or the proposals first, and do not wait for them to say build. The picker is the only thing the SC answers before the deck exists; they review the questions and proposals on the draft deck (section 5). The one reason to stop early is something that makes a deck impossible, such as stories that cannot be read in Jira; say what is missing.
+
+Reading and reviewing the stories takes a few minutes, so tell the SC what is coming before you start, in one or two plain sentences: which stories you are reading, and that they will get the briefing first, then the draft deck to look over. For example: "Reading the eight sprint 2 stories and their comments now. You'll get the briefing for the call first, then the draft deck to look over before it goes to Dana." Nothing else until the briefing.
 
 ## 1. Read and review the picked stories
 
@@ -109,7 +113,7 @@ Write in full sentences and explain the reason behind each point. A line like "d
 Six parts, under these headings:
 
 - **What this session is for.** Two or three sentences: which stories these are and why they are up now (the sprint they belong to and when it starts), how many questions stand between them and the build, and what a good call ends with.
-- **Before the call.** Start with the second look: the deck that follows this briefing is a draft until the SC has read it. Then when to send the deck and what to say when sending it, so the product owner knows to read the questions and the proposals and come with answers. Who needs to be on the call and why each one is needed: the SA, by name, when a story carries a design question; anyone the product owner has said decides a point. Anything to check first, with the reason, such as a proposal that rests on something nobody has confirmed.
+- **Before the call.** Start with the second look: the deck that follows this briefing is a draft until the SC has read it. Then when to send the deck, with a short note the SC can paste when sending it (two or three sentences in the SC's voice), so the product owner knows to read the questions and the proposals and come with answers. Who needs to be on the call and why each one is needed: the SA, by name, when a story carries a design question; anyone the product owner has said decides a point. Anything to check first, with the reason, such as a proposal that rests on something nobody has confirmed.
 - **Opening the call.** What to say in the first two minutes: what the session is for, how it works (each story, then its questions, each with our proposal, which they can agree with or change), and that anything not settled today leaves with an owner and a date. Give the SC words they could use.
 - **Story by story.** One short paragraph for each story, in the order of the deck, with its slide numbers:
   - what the story does, in one plain sentence, for a consultant who has not read it lately
@@ -167,17 +171,25 @@ Look at every slide once it is built: no text shrank, the logo, title, rule and 
 
 The deck goes to the client under Kicksaw's name, so the SC reads every question and proposal before it is sent. That review happens on the finished draft, not before the build.
 
-When the deck is built, reply with the link and say in one line that this is a draft for the SC to look over before it goes to the client. Then give them what to look at, short enough to check against the deck in a few minutes, with the slide number on every line:
+When the deck is built, reply with the link and one line on what it holds, for example: "Draft deck: 14 slides, 8 stories, 6 questions and 4 points to confirm." Say that it is a draft until the SC has looked it over.
 
-- **Proposals to check first:** any question that says "No proposal yet", and any proposal that rests on something nobody has confirmed.
-- **The questions, story by story:** each question in one line with its proposal in one line, and where it came from: from Jira, from a client comment (with the date), or added in your review (with the reason in a few words).
-- **To confirm:** the points the client has already answered in a comment, which the deck reads back.
+Then tell the SC where to look. The deck already shows every question and proposal, and the briefing has already explained them, so do not list them again. Give only what needs the SC's eye, each line with its slide number, and leave out any heading that has nothing under it:
+
+- **Check these first:** any question that says "No proposal yet", and any proposal that rests on something nobody has confirmed. Say what it rests on.
+- **Added in my review:** the questions that were not in Jira, each in one line with the reason in a few words. These are the ones the SC has not seen before. Offer to add them to the story's Open Questions field, and add them only when the SC says to.
 - **Left out:** what you cut and why, in one short block (decided by Kicksaw, to confirm, for the SA), so the SC can pull one back in.
-- **For Jira:** the questions your review added that are not yet in the story's Open Questions field. Add them to Jira only when the SC says to.
+- **Changed since the briefing:** any slide number that moved during the build.
 
-Close the list by asking the SC to read through the deck and reply with anything to change: a question to drop, a proposal to reword, a cut question to bring back, a story to add or take out. If nothing needs changing, the deck is ready to send, and the SC uses the Share menu to send it.
+If nothing falls under the first two, say so in one line: every question came from Jira or a client comment and every proposal has a source.
 
-When the SC replies with changes, make them in the same deck. Never build a second one. Renumber the questions if one was dropped or added, and bring `today`, the criteria marks, `landed` and the speaker notes into line. Look at every slide you touched. Then reply with what changed, by slide number, and give again only the parts of the briefing the change affects. Repeat until the SC says it is ready.
+Close by telling the SC the two ways to change the deck, and what to say when it is ready:
+- Wording on a slide (a proposal, a line of What we know) is quickest to change in the deck itself.
+- Anything that changes the set of questions or stories comes back to you in the chat: a question to drop, a cut question to bring back, a story to add or take out. The numbering, Today's stories and the last slide all have to follow, so you make those.
+- When it reads right, the SC says so, and sends it from the Share menu.
+
+When the SC replies with changes, read the deck as it stands first, so nothing they edited by hand is overwritten. Make the changes in the same deck. Never build a second one. Renumber the questions if one was dropped or added, and bring `today`, the criteria marks, `landed` and the speaker notes into line. Look at every slide you touched. Then reply with what changed, by slide number, and give again only the parts of the briefing the change affects. Repeat until the SC says it is ready.
+
+When the SC says it is ready, confirm in one line and name what comes next: the deck goes to the product owner with the note from the briefing, and the same day after the call, "fold in today's [Client] refinement". The run log (below) goes here, not earlier.
 
 ## 6. Fold in refinement
 
@@ -205,7 +217,7 @@ Stories then flow: New, Pending Client Approval, Refined, Build Ready, In Progre
 
 ## 7. Report back
 
-After a prep, in this order: the briefing (section 3), then the link to the draft deck and the second look (section 5). Nothing else.
+After a prep, in this order: the briefing (section 3), then the link to the draft deck and the second look (section 5). Nothing else: no recap of what you read, and no run log yet.
 
 After a fold-in, three short paragraphs: which stories changed and the criteria touched, which stories moved status, and what is still open with its owner and date. Then any quote that could not be found in the transcript, and anything the product owner asked for beyond the signed scope. No recap of steps.
 
@@ -213,7 +225,7 @@ End with one line naming what comes next: after a prep, the same day after the c
 
 ## Log the run
 
-After the report, write out one short run-log row for the delivery kit and say in one line that pasting it into #discovery-skill-feedback is optional (it helps the kit improve; it is never required). Write it quietly: no questionnaire, no asking the person to rate anything. The row, as plain text:
+After a fold-in report, or after a prep once the SC has said the deck is ready (never in the reply that carries the draft deck), write out one short run-log row for the delivery kit and say in one line that pasting it into #discovery-skill-feedback is optional (it helps the kit improve; it is never required). Write it quietly: no questionnaire, no asking the person to rate anything. The row, as plain text:
 
 ```
 Run log · start-motion:refinement (v0.1.10) · refinement · <client> · <date>
