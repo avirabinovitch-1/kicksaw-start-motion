@@ -1,5 +1,15 @@
 # Changelog
 
+## /guide, stage 3 (2026-11-24, no version change). Not merged: waiting on Avi's review of the page preview
+
+Avi, Nov 24: the walkthrough guide should also be on the Start Motion page, with the context there for somebody to work through it.
+
+- New `/start-motion:guide`. It finds the stories behind a job, asks for the job, the reader and how the screens get captured in one message, walks the job, shows the outline before capturing, marks the screenshots, writes the guide, builds the page and the PDF, checks every instruction against the acceptance criteria, and saves the PDF and the guide's source in the client's Guides folder in Drive.
+- Three ways to capture: Claude in a browser the person is signed in to, the person's own screenshots, or a mix.
+- The tools come from the guide written for a client in November 2026: `scripts/mark.py`, `scripts/build.py`, `scripts/build-pdf.sh`, `scripts/assets/`, and a made-up example in `references/example/` that builds end to end.
+- `scripts/refresh-page-skills.py` writes ten skill texts (adds `guideSkillText`).
+- Not run on a client. The example builds; capturing in a browser from a Cowork session has not been tried.
+
 ## /refinement builds the deck straight from the pick (2026-11-14, no version change)
 
 Avi, Nov 14: refinement was still clunky because it did not create the deck automatically. Not yet run on a client's backlog.

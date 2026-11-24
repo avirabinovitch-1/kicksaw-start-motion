@@ -1,0 +1,44 @@
+{
+  "client": "Acme",
+  "title": "Acme Case Closing Guide",
+  "footer": "Kicksaw is the Salesforce implementation partner for Acme. Month YYYY.",
+  "brand": {
+    "colors": {"navy": "#101820", "cyan": "#2E9BD6", "blue": "#1F6FA3", "deep": "#134566", "accent-light": "#6CC3F0"}
+  },
+  "cover": {
+    "tag": "Salesforce user guide",
+    "headline": "Closing a case in Salesforce",
+    "lede": "A made-up example that shows every part of the guide: the path at a glance, a reference block, numbered steps with marked screenshots, and good to know.",
+    "facts": [{"n": 2, "label": "steps"}, {"n": 4, "label": "clicks"}]
+  },
+  "path": {
+    "eyebrow": "At a glance", "title": "The path from open to closed",
+    "intro": "One line that says where the work happens.",
+    "lanes": [
+      {"label": "On the case", "nodes": [{"title": "Open the case", "detail": "From your list or a search", "icon": "list", "step": 1}]},
+      {"label": "In the close window", "nodes": [{"title": "Record the resolution", "detail": "Status and what fixed it", "icon": "document", "step": 1}, {"title": "Save", "detail": "The case closes", "icon": "check", "step": 1}]}
+    ],
+    "before_you_start": ["<b>Not your case?</b> Ask the owner before closing it."]
+  },
+  "reference": {
+    "eyebrow": "Reference", "title": "The statuses you can choose",
+    "intro": "Use a panel for anything people look up: a catalog, record types, statuses.",
+    "panels": [{"title": "Case statuses", "sub": "In the order a case moves through them.", "groups": [{"label": "Open", "rows": [{"name": "New", "value": "Not started"}, {"name": "Working", "value": "In progress"}]}, {"label": "Closed", "rows": [{"name": "Closed", "pill": "Needs a resolution"}]}]}],
+    "terms": [{"term": "Resolution", "means": "What fixed the problem, in a sentence."}, {"term": "Owner", "means": "The person responsible for the case."}]
+  },
+  "steps": {
+    "eyebrow": "Step by step", "title": "From open to closed",
+    "intro": "The orange numbers on each screen match the numbered instructions above it. The screens show demo records.",
+    "items": [
+      {"title": "Close the case", "sub": "One sentence on what this step achieves.",
+       "shots": [
+         {"image": "shots/s1a.jpg", "alt": "Case record with the Close Case button marked", "instructions": ["On the case, click <b>Close Case</b>."]},
+         {"image": "shots/s1b.jpg", "alt": "Close Case window with status, resolution and Save marked", "instructions": ["Leave <b>Status</b> on Closed.", "Type what fixed it in <b>Resolution</b>.", "Click <b>Save</b>."], "note": "<b>Tip:</b> a note sits between the instructions and the screenshot."}
+       ]}
+    ]
+  },
+  "good_to_know": {
+    "eyebrow": "Good to know", "title": "How closing behaves",
+    "cards": [{"title": "Closed cases can be reopened", "text": "Change the status back to Working."}, {"title": "Resolution is required", "text": "Salesforce stops the save without it."}]
+  }
+}

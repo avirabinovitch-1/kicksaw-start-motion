@@ -1,0 +1,4 @@
+[
+ {"src": "raw/01-case.png", "out": "shots/s1a.jpg", "marks": [{"n": 1, "box": [1150, 115, 130, 44]}]},
+ {"src": "raw/02-close.png", "out": "shots/s1b.jpg", "marks": [{"n": 2, "box": [380, 280, 720, 46]}, {"n": 3, "box": [380, 390, 720, 130]}, {"n": 4, "box": [980, 630, 120, 46]}]}
+]

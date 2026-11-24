@@ -1,4 +1,4 @@
-"""Write the plugin's nine skill texts into a saved copy of the Start Motion page, so the page's copy boxes
+"""Write the plugin's ten skill texts into a saved copy of the Start Motion page, so the page's copy boxes
 hand out the same skill the plugin installs.
 
 Usage:
@@ -22,6 +22,7 @@ BLOCKS = {  # pre id on the page -> skill folder
     'storySkillText': 'user-stories',
     'newClientSkillText': 'new-client',
     'refSkillText': 'refinement',
+    'guideSkillText': 'guide',
 }
 
 # Lines the page's copy of a skill leaves out or words differently. The page is shared widely and says nothing

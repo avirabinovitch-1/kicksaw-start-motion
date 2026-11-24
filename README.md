@@ -24,6 +24,7 @@ The signed SOW, and whatever else is in the client's Drive folder. Nothing more.
 | 2.1 Design | `/start-motion:design` | Starts, updates and finalizes the solution design |
 | 2.2 User stories | `/start-motion:user-stories` | Epics, finishing the stories, Jira |
 | 3 Refinement | `/start-motion:refinement` | Before each session: the SC picks the stories by sprint, epic or one by one, and gets the refinement deck and a briefing on the call. After it: the answers folded into Jira from the recording |
+| 3 Walkthrough guides | `/start-motion:guide` | A click-by-click guide to one job in Salesforce for the client's users: the path at a glance, numbered steps matched to numbered markers on the screenshots, as a PDF and a link in the client's branding |
 
 In chat the commands show as their bare names (`/kickoff`, `/new-client`); in Cowork and Claude Code they carry the prefix.
 
