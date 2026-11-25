@@ -50,7 +50,7 @@
 <div id="out" hidden style="font-size:13px;white-space:pre-wrap;margin-top:8px"></div>
 </div>
 <script>
-var CFG={client:'Harborlight Behavioral Health',total:42,points:178,next:'Pending Client Approval',jira:'https://example.atlassian.net/browse/',stories:[
+var CFG={client:'Harborlight Behavioral Health',total:42,points:178,jira:'https://example.atlassian.net/browse/',stories:[
 {k:'HBH-12',t:'Referral: intake form creates a referral record',e:'Referral intake',g:'d',f:'Source mismatch',p:5,hot:3,
 prob:'Criterion 3 says every referral needs a diagnosis code. On the Oct 6 call Maria said the code is only required for payer referrals, and self-referrals often come in without one.',
 rec:'Change criterion 3 so the code is required only when Referral Source is Payer. That matches the later call, and the later statement is the one that governs.',
@@ -153,7 +153,7 @@ function clean(){return CFG.total-S.filter(function(s){return s.g!=='c'}).length
 function shown(){return S.filter(function(s){return $('ep').selectedIndex===0||s.e===$('ep').value})}
 function foot(){var c=0,r=0;S.forEach(function(s){if(changes(s.k))c++;if(on[s.k])r++});
 $('go').textContent=c||r?'Send '+[c?c+(c===1?' changed story':' changed stories'):'',r?r+' reviewed':''].filter(Boolean).join(' and ')+' ↗':'Send ↗';
-$('foot').textContent=c||r?[c?'Changes go to Jira when you send':'',r?r+(r===1?' story moves':' stories move')+' to '+CFG.next:''].filter(Boolean).join(' · '):'Open a story to review or edit it, and tick the ones you have reviewed'}
+$('foot').textContent=c||r?[c?'Changes go to Jira when you send':'',r?r+(r===1?' story':' stories')+' marked reviewed, staying New in Jira':''].filter(Boolean).join(' · '):'Open a story to review or edit it, and tick the ones you have reviewed'}
 function render(){var h='',all=$('ep').selectedIndex===0;['d','l','c'].forEach(function(g){var rows=shown().filter(function(s){return s.g===g});if(!rows.length)return;
 var n=g==='c'&&all?clean():rows.length;
 h+='<div class="gp"><span class="dot" style="background:'+G[g][2]+'"></span>'+G[g][0]+'<small>'+n+' · '+G[g][1]+'</small>'+(g==='c'?'<button class="sm" data-tgl="1" style="margin-left:auto;font-weight:400">'+(showC?'Hide':'Show')+'</button>':'')+'</div>';
@@ -203,7 +203,7 @@ if(v.acc)body+='\n- Go with your recommendation: '+s.rec;
 if(v.note)body+='\n- Note: '+v.note});
 if(!body&&!rev.length){$('foot').textContent='Nothing to send yet. Edit a story or tick the ones you have reviewed first.';return}
 if(body)m+='\nChanges:'+body;
-if(rev.length)m+='\nReviewed, move to '+CFG.next+': '+rev.join(', ');
+if(rev.length)m+='\nReviewed (leave the status as it is): '+rev.join(', ');
 emit(m)}
 $('cl').textContent=CFG.client;
 $('hd').textContent=CFG.total+' stories in Jira as New · '+CFG.points+' points';

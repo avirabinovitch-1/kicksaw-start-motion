@@ -43,7 +43,7 @@ The mode changes when the SC reads a story and where they change it. It never ch
 | A finding only the SC can settle (a source mismatch, a split or merge, beyond the SOW) | Shown under the story; the SC decides before it is created | Claude makes its best call, creates the story, and puts it on the review list under Needs a decision with the problem and what it would do |
 | When a story is created in Jira | When the SC approves it | In the same run, as New |
 | Where the SC changes a story | In the chat, before it is created | On the review list, editing the story in place, or in Jira |
-| What says a story is reviewed | The SC's approval in the chat | The SC ticks it on the review list and it moves to Pending Client Approval |
+| What says a story is reviewed | The SC's approval in the chat | The SC ticks it on the review list. Its row on the User stories tab is set to Reviewed by SC; its Jira status does not change |
 
 The person can switch at any point by saying so ("slow down, one at a time", "just run with the rest"). Switch from the next story on and say so in one line. Stories already in Jira stay there. Switching does not change a saved default.
 
@@ -51,7 +51,7 @@ The person can switch at any point by saying so ("slow down, one at a time", "ju
 
 Once the backlog is in Jira, show `references/review-list.html` wherever an interactive visual can be shown. Change only the `CFG` block at the top of its script; send the rest as it is.
 
-- `client`, `total` (stories created), `points` (the sum of the first estimates), `next` (the status a reviewed story moves to in this project's workflow, usually Pending Client Approval) and `jira` (the project's browse address ending in `/browse/`, so each story links to Jira; leave it empty to hide the link).
+- `client`, `total` (stories created), `points` (the sum of the first estimates) and `jira` (the project's browse address ending in `/browse/`, so each story links to Jira; leave it empty to hide the link).
 - `stories`: every story that is flagged, and the clean ones up to about thirty rows in all; the list says how many more clean stories there are. Each story: `k` (Jira key), `t` (title), `e` (epic), `g` (group), `f` (the flag in two or three words), `p` (points), `us`, `ds`, `ac` (the criteria, in order), `oq` (open questions), `rf` (the References lines), `hot` (the number of the criterion the flag is about, or 0), and for a flagged story `prob` and `rec`. Add `fix: {ac: 3, text: "..."}` when the recommendation is a new wording for one criterion, so the SC can apply it with one click.
 
 The three groups:
@@ -64,13 +64,13 @@ Write `prob` and `rec` the way a colleague would say it across the desk, in one 
 
 Say one line above the list: "All 42 are in Jira as New. Three need a decision from you and three are worth a look. Open any story to read or edit it."
 
-Save what the list was built from as stories/review-list.json in the client's Claude Project (each flagged key with its group, flag, problem and recommendation), so a later run can show the list again. The stories themselves always come fresh from Jira, and a story that is no longer New drops off the list.
+Save what the list was built from as stories/review-list.json in the client's Claude Project (each flagged key with its group, flag, problem and recommendation), so a later run can show the list again. The stories themselves always come fresh from Jira. A story drops off the list once the SC has ticked it as reviewed (its row on the User stories tab says Reviewed by SC) or it has left New in Jira.
 
 **What comes back.** The list sends one message with up to two parts:
 
 - `Changes:` per story, the lines the SC rewrote (user story, description, a criterion by number), criteria removed or added, a recommendation accepted, and a note. Read each story fresh from Jira, change only what the message names, and keep every other word. An accepted recommendation is carried out as it was written on the list (a split creates the new story with its own key and links the two; a Beyond SOW story stays marked and the PM is told that week). A note is an instruction for that story; if it is not clear, ask once. Keep the References block and the Open Questions field in step with what changed. Run the story reviewer once on the changed stories and add anything new as an open question; never hold a story back for it.
-- `Reviewed, move to ...:` move each listed story to that status, and set its row on the User stories tab to Reviewed by SC.
+- `Reviewed (leave the status as it is):` set each listed story's row on the User stories tab to Reviewed by SC, and record the key as reviewed in stories/review-list.json. Do not change its status in Jira. A tick means the SC has read the story and is happy with it; it never means the story is ready for the client. The story stays New until the SC moves it to Pending Client Approval themselves, in Jira or by asking you to, and never as a side effect of the review list.
 
-Then report in one line per story what changed, with the key, and show the list again with what is still New. When nothing is left on it, say so and name what comes next.
+Then report in one line per story what changed, with the key, and show the list again with the stories not yet reviewed. When nothing is left on it, say so, say that every story is still New in Jira, and ask whether the SC wants any of them sent to the client now.
 
 Where no visual can be shown, give the same list as text: the three groups, each flagged story with its problem and recommendation, and ask what to change and which stories are reviewed.

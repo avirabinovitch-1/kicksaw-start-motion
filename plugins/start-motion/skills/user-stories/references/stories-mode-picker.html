@@ -31,7 +31,7 @@
 <div><div style="font-size:14px;font-weight:500;margin-bottom:8px;color:var(--t-ic)">Work together</div><div id="stepsT"></div></div>
 <div><div style="font-size:14px;font-weight:500;margin-bottom:8px;color:var(--p-bd)">Run with it</div><div id="stepsR"></div></div>
 </div>
-<p style="font-size:13px;color:var(--text-secondary);line-height:1.5;margin:8px 0 0">Either way the stories are written to the same standard, checked by the same two reviewers, and nothing goes to the client until you move it to Pending Client Approval. You can switch at any point by saying so.</p>
+<p style="font-size:13px;color:var(--text-secondary);line-height:1.5;margin:8px 0 0">Either way the stories are written to the same standard, checked by the same two reviewers, and nothing goes to the client until you send it yourself. You can switch at any point by saying so.</p>
 </details>
 <label id="keepRow" style="display:flex;gap:8px;align-items:baseline;font-size:13px;color:var(--text-secondary);margin-top:14px"><input type="checkbox" id="keep"><span>Use this every time I start a backlog</span></label>
 <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap">
@@ -52,9 +52,9 @@ function emit(m){if(typeof sendPrompt==='function'){sendPrompt(m);return}var o=d
 document.getElementById('cl').textContent=CFG.client;
 document.getElementById('sc').textContent='Epic plan confirmed'+(CFG.epics?' · '+CFG.epics+(CFG.epics===1?' epic':' epics'):'')+(n?' · '+n+(n===1?' story':' stories'):'');
 document.getElementById('descT').textContent='We go one story at a time. I show you each finished story with its first estimate and anything the reviewers found, you edit or approve it, and it goes to Jira when you say so.';
-document.getElementById('descR').textContent='I finish '+all+' on my best calls, create them in Jira as New, and give you a short list of the ones that need you. You review and edit them there, and move each story on when you are happy with it.';
+document.getElementById('descR').textContent='I finish '+all+' on my best calls, create them in Jira as New, and give you a short list of the ones that need you. You review and edit them there, and tick each story off when you are happy with it.';
 steps('stepsT',[['Claude','Finishes a story and has it checked by the two reviewers.'],['You','Read it, change what you want, and approve it.'],['Claude','Creates it in Jira and moves to the next one.'],['You','Send stories to the client when the epic is ready.']]);
-steps('stepsR',[['Claude','Finishes every story, has them checked, and fixes what it can.'],['Claude','Creates the whole backlog in Jira as New, with first estimates.'],['You','Open the review list. The stories that need a decision come first.'],['You','Edit any story in place, then send your changes and mark stories reviewed.'],['Claude','Updates Jira and moves reviewed stories to Pending Client Approval.']]);
+steps('stepsR',[['Claude','Finishes every story, has them checked, and fixes what it can.'],['Claude','Creates the whole backlog in Jira as New, with first estimates.'],['You','Open the review list. The stories that need a decision come first.'],['You','Edit any story in place, then send your changes and mark stories reviewed.'],['Claude','Updates Jira and notes which stories you have reviewed. They stay New until you send them to the client.']]);
 if(!CFG.canSave)document.getElementById('keepRow').style.display='none';
 document.getElementById('optT').onclick=function(){pick('T')};
 document.getElementById('optR').onclick=function(){pick('R')};

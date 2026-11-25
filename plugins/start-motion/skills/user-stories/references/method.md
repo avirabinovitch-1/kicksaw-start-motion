@@ -13,7 +13,7 @@ Turn the signed scope into epics and stories in the client's Jira project, ready
 
 - Work together (the default): one story at a time. You read each finished story, edit or approve it, and it goes to Jira when you say so. A good fit for a first backlog with the kit, or a scope that is complex or new to you
 - Run with it: Claude finishes every story, creates the whole backlog in Jira as New, and gives you a review list with the stories that need you first. You edit in place and tick what you have reviewed. A good fit when discovery was clean
-- Either way the epic plan is confirmed first, the stories are held to the same bar, and nothing goes to the client until you move it to Pending Client Approval
+- Either way the epic plan is confirmed first, the stories are held to the same bar, and nothing goes to the client until you send it yourself: ticking a story as reviewed never changes its status in Jira
 
 ## Calls the SC makes story by story
 
