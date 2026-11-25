@@ -4,8 +4,11 @@
 
 Avi, Nov 24: the walkthrough guide should also be on the Start Motion page, with the context there for somebody to work through it.
 
-- New `/start-motion:guide`. It finds the stories behind a job, asks for the job, the reader and how the screens get captured in one message, walks the job, shows the outline before capturing, marks the screenshots, writes the guide, builds the page and the PDF, checks every instruction against the acceptance criteria, and saves the PDF and the guide's source in the client's Guides folder in Drive.
-- Three ways to capture: Claude in a browser the person is signed in to, the person's own screenshots, or a mix.
+- New `/start-motion:guide`. It finds the stories behind a job, asks for the job, the reader and the path in one message, reads the org, walks the job in the sandbox, shows the outline before capturing, marks the screenshots, writes the guide, builds the page and the PDF, checks every instruction against the acceptance criteria, and saves the PDF and the guide's source in the client's Guides folder in Drive.
+- The sandbox is required (Avi, Nov 24: "it always has to reach the sandbox otherwise it's useless"). Claude walks and captures the job itself in a browser the person is signed in to. With no browser or no sandbox the command stops and says what is needed. The person sends a picture only for a screen outside the browser.
+- It reads the org before the walk (buttons, flows, components, record types, required fields for the objects in the stories), and reads the solution design and any recorded demo for the path.
+- It asks when it does not know (Avi, Nov 24): two routes for one job, a step it cannot find, the screen and the criteria disagreeing, a choice whose meaning is not written down, a step outside the browser, an error on the way. Questions from one walk go in one message, each with what it saw, the options and its pick.
+- New section in the skill, "What it cannot do, and what helps": its limits, and the context that makes a run faster, in the order it helps.
 - The tools come from the guide written for a client in November 2026: `scripts/mark.py`, `scripts/build.py`, `scripts/build-pdf.sh`, `scripts/assets/`, and a made-up example in `references/example/` that builds end to end.
 - `scripts/refresh-page-skills.py` writes ten skill texts (adds `guideSkillText`).
 - Not run on a client. The example builds; capturing in a browser from a Cowork session has not been tried.

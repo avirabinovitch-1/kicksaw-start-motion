@@ -25,6 +25,7 @@ A new system fails on the first morning a user cannot work out what to click. Th
 
 - One job per guide. If a guide covers two jobs, split it.
 - Written and captured as the reader, never as an admin.
+- Every click in the guide is one that was made in the sandbox. Nothing is written from the stories alone, and a gap is a question for the consultant, never a guess.
 - Client-ready wording only: no story keys, no internal notes, no record links.
 - The client's branding leads. Kicksaw appears only as "Prepared by Kicksaw".
 - The overview is a real diagram, not a list.
