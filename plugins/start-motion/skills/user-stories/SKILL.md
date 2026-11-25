@@ -66,7 +66,7 @@ Save the confirmed plan as stories/epic-plan.md. Epic names and the mapping are 
 Work through the epic plan story by story, starting from each story's row on the User stories tab. For each one:
 - Check it against the signed readout and the Open items tab: what the readout decided that the draft does not reflect yet, decisions closed since the draft, open questions now answered. Fold those in; later statements override earlier ones.
 - Check it against the standard below, line by line, and fix what falls short. Check the split: a story that mixes build with data work, or is doing more than one job (a long list of criteria is the usual sign), is split now (letters on the ID); two stories that are really one behavior are merged.
-- Add the readout to the Source footer line.
+- Add the readout to the Source footer line, and check the References block against the codes the finished story uses: every S-ID, Q number, W-ID and D-ID in the story has a line, and no line is left for a code the story no longer uses.
 - Write the finished story back to its row on the User stories tab, so the sheet and what goes to Jira match.
 
 A story keeps the status Draft while you work on it. Then show the stories to the SC one at a time for review, edit and approval; when the SC approves one, set it to Reviewed by SC on the sheet. Create nothing in Jira until the SC says the story is ready. A Withdrawn story is never pushed; list it for the SC with the quote that withdrew it. Before showing the SC anything for an epic, run the two reviewers on that epic's stories ("The two reviewers" below) and act on what they find.
@@ -118,6 +118,15 @@ In order:
    - `Dependencies: {key} ({short name}), {key} ({short name})`.
    - `Priority/size: Launch · M · 5 points`: the readout's go-live priority, then the T-shirt size and points once the SC gives them (the SC and SA usually size after refinement; until then write "Launch · size after refinement"). The Jira Priority field stays Medium unless the SC says otherwise.
    - A backlog note when one applies: "BACKLOG per {name} {date}: the model works without it; build when scheduled."
+6. **References:** the last block, so the story stands on its own for the architect and the tester, who do not have the requirements list open. One line per code the story uses anywhere above or in its Open Questions (an S-ID, an open item's Q number, a W-ID, a D-ID), in the order they first appear, each listed once: the code, what it is in plain words, and what the reader does with it. The S-ID line comes from the Sessions and sources tab (the call's or document's name and date, and where it lives when it is a document); the Q line from the Open items tab (the question in a few words, who answers it, and what changes in the story once it is answered); the W-ID from the readout (the workflow's name); the D-ID from the Decisions tab (the decision in a few words). The codes stay inline where they are; this list only explains them. Example:
+
+   **References:**
+   - S-04: Discovery 3: Lead routing, call with Dana Ruiz on Oct 7 2026 (tl;dv). The quotes above are from it.
+   - S-09: Tog's data dictionary (SharePoint, shared Oct 29 2026). Check the final field labels against it.
+   - Q-50: open question to the client on the exact category labels (Open items 50, Dana Ruiz). Update the values in criterion 5 once it is answered.
+   - W-01: Lead intake, the future state workflow in the signed readout, section 8.
+
+   Never a code that is not used in the story, and never a line that repeats the Source traceability citation in full. A reader who knows the codes skips the block; a reader who does not needs nothing else.
 
 ### The Acceptance Criteria field
 
