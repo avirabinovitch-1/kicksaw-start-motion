@@ -17,7 +17,7 @@ Reference examples: the Fred Hutch CIS Solution Readout (https://claude.ai/artif
 
 Read `references/method.md` in this skill's folder at the start of every run: what the stage is for, the calls the stage asks you to make, the bar, and the link to the full method on the Start Motion page.
 
-This skill covers five moves that are five separate prompts on the page: the section plan and build, the dry run, cutting the deck, the readout call, and sign-off. Work out which one is next from where the readout stands, and propose it.
+This skill covers five moves that are five separate prompts on the page: the section plan and build (which cuts the deck), the dry run, cutting the deck again on its own when only the deck needs a change, the readout call, and sign-off. Work out which one is next from where the readout stands, and propose it.
 
 Look before you ask. The client's name comes from the request; if it is missing, that is the one thing to ask before looking anywhere. Read the Discovery documents note, the three discovery documents, the client settings in the note, and the readout files in the client's project if they exist (readout/manifest.md, readout/content.json, readout/sign-off.md). When they are not in the project (someone else is picking the readout up), take the current version from the client's Drive folder (`Readout` subfolder) and the Google Doc "Readout sign-off: [Client]", copy them into this project, and say so. Then report against the stage's readiness list, in a few lines, before doing anything else:
 
@@ -186,17 +186,19 @@ B. Link to the requirements list. The list is an input and a reference, not part
 3. Run: `python3 -I build-readout.py --template "Kicksaw Solution Readout.template.html" --content content.json --workflows "<Client> Workflows.html" --heard "<Client> What We Heard.html" --out "<Client> Solution Readout.html"`. It copies sections 02 to 04 from What we heard as they are, copies the workflows to draw from the workflow document's data (so every diagram is identical in both), and prints a CHECK line for each problem (a W-ID that does not exist, approvals that are not three, an open decision with no one to decide it, an input with no owner, em dashes, a final version the sign-off line does not name) and a NOTE listing every placeholder still to fill. Fix every CHECK in its source and run it again.
 4. Publish the page. First build: a new artifact, with the two logo files from this skill's `brand/` folder passed in `files` as `brand/primary-full-color.svg` and `brand/primary-inverse.svg`. Every rebuild after that: publish to the same URL, and add its link to the Discovery documents note. Never publish over anyone else's artifact.
 5. Save content.json back to readout/content.json in the client's Claude Project.
+6. Cut the deck (step 5) from the same content file in this run, the first time and on every rebuild after it.
 
 Writing rules for everything in the content file: plain client language, sentence case, tables over paragraphs, the client's own names for their records and teams, real numbers only from What we heard or the client's own exports, and no em dashes.
 
 ## 4b. Process the dry run
 
-When asked ("process today's [Client] readout dry run"): pull the dry run recording from tl;dv (if more than one call for the client happened that day, ask which). Propose the cuts and corrections it decided, to the section plan (what the deck keeps, what moves to the appendix, the sign-off date) and to the content file, and wait for the SC's OK. Then apply them to readout/manifest.md and readout/content.json, bump the version (v1.1), list the changes in `project.updated`, rebuild the page, and report what changed. The deck is cut only after this, so it carries exactly what the dry run kept.
+When asked ("process today's [Client] readout dry run"): pull the dry run recording from tl;dv (if more than one call for the client happened that day, ask which). Propose the cuts and corrections it decided, to the section plan (what the deck keeps, what moves to the appendix, the sign-off date) and to the content file, and wait for the SC's OK. Then apply them to readout/manifest.md and readout/content.json, bump the version (v1.1), list the changes in `project.updated`, rebuild the page, and report what changed. Then rebuild the deck from the same content file (step 5), so it carries exactly what the dry run kept.
 
 ## 5. Cut the deck
 
-The deck is cut from the readout, never built separately. It orients the client so they can digest the readout afterwards; nobody reads a document aloud.
-- Slides, in order: cover; executive summary with the three pillars and the volumes; what we heard (if included) as Theme, Today, At go-live; success measures, moved to the front; the system at a glance (Figure 1); the workflow overview; what we will build; scope boundaries; what we are asking you to approve; design choices closed; open decisions; build sequence; path to go-live or the timeline; next steps and what we need from the client; appendix link to the readout and the requirements list.
+The deck is cut from the readout, never built separately, and it is cut in the same run that builds or rebuilds the readout (steps 4, 4b, 6 and 7). Whenever the readout's phrasing, figures or solution approach change, the deck is rebuilt from the same content file in the same pass and republished over the same deck artifact, so the two never say different things; the report names the readout version the deck matches. It orients the client so they can digest the readout afterwards; nobody reads a document aloud, and nobody walks the client through each line item.
+- Short. Ten to fourteen slides. The readout page holds the rows, the requirements and the detailed workflows; the deck names the capability and the outcome. A slide that would list what a readout table already lists is cut, or collapsed to its headline.
+- Slides, in order: cover; executive summary with the three pillars and the volumes; what we heard (if included) as Theme, Today, At go-live, the three to five themes that carry the most; success measures, moved to the front; the system at a glance (Figure 1); what we will build, told as crawl, walk, run: the basic building blocks first, then what is layered on them, then what completes the launch, so the client sees complexity arriving in an order that preserves the timeline (section 06's layers and the build table's groups decide what goes where; the deck orders nothing the readout does not already order); the workflow overview, with at most two journeys; scope boundaries; what we are asking you to approve; design decisions, closed and open on one slide; how we refine from here: one slide on the refinement process, saying that the requirements and the user stories get polished with the client's product owner in refinement sessions as the build goes, what the client's part in that is, and that what they sign at the readout is the scope, not every detail; path to go-live or the timeline; next steps and what we need from the client; appendix link to the readout and the requirements list.
 - Every slide carries a header saying what it is. Detailed workflows go to the appendix when they were played back in discovery already.
 - Speaker notes on every slide: which readout section it mirrors and the one or two things to say that are not on the slide.
 - Build it as a Slides artifact on the Kicksaw brand, from the same content file, so the figures and wording match the readout. The deck is not what the client signs.
@@ -205,7 +207,7 @@ The deck is cut from the readout, never built separately. It orients the client 
 
 After the presentation:
 - Capture every client question and comment from the readout call transcript into the Open items tab with an owner (the SA takes the technical ones).
-- Draft the answers the SC and SA agree on; the two working sessions with the client lead are where they are settled. Fold them into the three documents and into content.json. Bump the version (v1.1), mark each changed row with `upd`, list the changes in `project.updated`, and rebuild.
+- Draft the answers the SC and SA agree on; the two working sessions with the client lead are where they are settled. Fold them into the three documents and into content.json. Bump the version (v1.1), mark each changed row with `upd`, list the changes in `project.updated`, and rebuild the page and the deck.
 - Anything the client asked for that is beyond the SOW goes in the requirements list with Scope set to Beyond SOW and Scope decision empty, for the PM to decide as a future phase or a change order; it never widens scope silently.
 
 ## 7. Finalize for sign-off and record it
@@ -213,7 +215,7 @@ After the presentation:
 When the SC says the review answers are in:
 - Read the Requirements tab fresh first. If any row's Status is Conflict, list those rows (ID, statement and the open item that settles each) and stop here: the readout is not finalized while a requirement is in Conflict.
 - List every Beyond SOW row with its Scope decision for the PM, and flag any whose Scope decision is still empty.
-- Then fold the answers in, bump the version, set `status` to "final", make the sign-off definition name that version and the signer, rebuild, and stop changing it. This version is the one the sign-off request names.
+- Then fold the answers in, bump the version, set `status` to "final", make the sign-off definition name that version and the signer, rebuild the page and the deck, and stop changing it. This version is the one the sign-off request names.
 - Draft the sign-off request email for the PM to send to the named sponsor (the EM/DM copied): the readout link, the version, the three approvals, and the ask for a written reply.
 
 When the written approval arrives:
@@ -227,9 +229,8 @@ When the written approval arrives:
 Three short paragraphs: what the cut includes and why, what the SC should check before the dry run (figures, numbers, the three approvals, the sign-off date), and what is still open. Then every CHECK the build printed that is not fixed, and every placeholder still to fill. No recap of steps.
 
 End with one line naming what comes next, by move:
-- after the build: the SA reviews the build, then the dry run (15 to 20 minutes, recorded); after it, `/start-motion:readout` again to process the recording
-- after the dry run is processed: `/start-motion:readout` to cut the deck
-- after the deck: present; the same day, `/start-motion:readout` to process the readout call
+- after the build: the SA reviews the build and the deck, then the dry run (15 to 20 minutes, recorded, from the deck); after it, `/start-motion:readout` again to process the recording, which rebuilds the deck
+- after the dry run is processed: present; the same day, `/start-motion:readout` to process the readout call
 - after the readout call: the two working sessions, then `/start-motion:readout` to finalize for sign-off
 - after the sign-off is recorded: `/start-motion:design` finalizes the design against the signed scope, and `/start-motion:user-stories` reads the list only after this
 
@@ -255,3 +256,4 @@ Nothing about the run depends on this; a run is never blocked by its log.
 - The SC reviews the manifest before the build and the readout before the dry run.
 - Edit the source, never the page. Keep each document's tone, structure and look when updating; add to it, never restyle it.
 - Section numbers, W-IDs and step numbers never change once given.
+- The deck is never edited on its own. A change to the deck is a change to content.json, and the page and the deck are rebuilt together.
