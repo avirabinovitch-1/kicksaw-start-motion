@@ -1,5 +1,15 @@
 # Changelog
 
+## Feedback from the Tog pilot: references, first estimates, clean quotes, the readout deck (2026-11-25, no version change)
+
+Four changes from Jon Conway's feedback in #discovery-skill-feedback. None has been run on a client's backlog yet.
+
+- **A References block on every story** (Jon, Nov 16). The Description ends with one line per code the story uses (S-ID, Q number, W-ID, D-ID): what it is in plain words and what the reader does with it. The codes stay inline and Source traceability is unchanged. `/discovery-call` writes it, `/user-stories` checks it, `/refinement` keeps it in step.
+- **A first estimate in story points on every story** (Jon, Nov 16; Avi, Nov 25: the estimate is a first draft and the people responsible review it). `/user-stories` estimates each finished story, shows it to the SC with the story, and fills the project's story points field when the story is created in Jira. The SC and SA confirm or change it when they size after refinement; `/refinement` revisits it when a session changes a story's criteria. The scale is the project's own when it has one, otherwise Fibonacci with 0.5 for a very small change, calibrated on stories already sized. Not taken from the request: a cap of 8 points with a forced split (stories are still split by behavior, a large estimate is only flagged) and a fixed 1 point for 1 hour (used only where the project says so).
+- **Quotes written into the discovery documents are lightly cleaned of filler** (Jon, Nov 10), the way story quotes already are.
+- **The readout deck is cut in the same run as the readout and kept in sync** (Jon, Nov 10; approved Nov 11): ten to fourteen slides, told as crawl, walk, run, with a slide on how refinement works.
+- The Start Motion page's skill texts need a refresh to match (`scripts/refresh-page-skills.py`).
+
 ## /refinement builds the deck straight from the pick (2026-11-14, no version change)
 
 Avi, Nov 14: refinement was still clunky because it did not create the deck automatically. Not yet run on a client's backlog.
