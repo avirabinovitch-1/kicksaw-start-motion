@@ -143,6 +143,7 @@ Rules for the changes:
 - Only the client's statements become requirements: what they said on a call or wrote in an email. A Kicksaw suggestion goes to open items marked as ours. Internal Slack, the PM bot report and Jira are context only.
 - Before adding anything as new, search the requirements list and the later sessions for the topic. If a row already covers it, add the quote to that row instead.
 - Never invent a requirement, number, name, priority, owner or quote. If it was not said, it is not written.
+- Every quote written into the four documents is lightly cleaned, the way the user stories skill cleans its quotes: take out filler words (um, uh, yeah, like, you know, repeated words, false starts), mark a cut with an ellipsis and a clarification in square brackets. Never change a word that carries meaning, never reorder, never complete a sentence the speaker did not finish; if the cleaned version would read differently from what the person meant, use more of the passage instead of cleaning it. The What we heard page is what the client reads back, so each quote there is the sentence or two that carries the point, not the whole passage. The source checker allows this cleaning and flags anything past it.
 
 ## 4. Write the changes
 
