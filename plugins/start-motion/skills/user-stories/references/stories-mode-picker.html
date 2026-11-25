@@ -1,0 +1,64 @@
+<h2 class="sr-only">Working mode picker shown by the user stories command once the epic plan is confirmed: Work together, the default, or Run with it, a collapsed explainer, an option to use the choice every time, and a Start the stories button.</h2>
+<style>
+.mp{--t-bg:#E5F1F8;--t-bd:#0072ba;--t-tx:#005485;--t-ic:#0072ba;--p-bg:#E3F6FD;--p-bd:#0A9BCB;--p-tx:#03355e;--p-ic:#08afe6;padding:.5rem 0}
+[data-mode="dark"] .mp{--t-bg:#005485;--t-bd:#85B7EB;--t-tx:#E5F1F8;--t-ic:#85B7EB;--p-bg:#03355e;--p-bd:#49c8f5;--p-tx:#E3F6FD;--p-ic:#49c8f5}
+@media (prefers-color-scheme:dark){:root:not([data-mode]) .mp{--t-bg:#005485;--t-bd:#85B7EB;--t-tx:#E5F1F8;--t-ic:#85B7EB;--p-bg:#03355e;--p-bd:#49c8f5;--p-tx:#E3F6FD;--p-ic:#49c8f5}}
+.mp-opt{border-radius:12px;padding:14px 16px;cursor:pointer;text-align:left;width:100%;display:flex;flex-direction:column;gap:8px;border:0.5px solid var(--border-strong);background:var(--surface-2);height:auto;white-space:normal;line-height:1.5;font-size:14px}
+.mp-opt.sel{border-width:2px;padding:13px 15px}
+.mp-opt.T.sel{background:var(--t-bg);border-color:var(--t-bd);color:var(--t-tx)}.mp-opt.R.sel{background:var(--p-bg);border-color:var(--p-bd);color:var(--p-tx)}
+.mp-h{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:500}
+.mp-ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex:none}
+.T .mp-ic{background:var(--t-bg);color:var(--t-ic)}.R .mp-ic{background:var(--p-bg);color:var(--p-ic)}
+.T.sel .mp-ic{background:var(--t-bd);color:var(--t-bg)}.R.sel .mp-ic{background:var(--p-bd);color:var(--p-bg)}
+.mp-pill{display:none;margin-left:auto;font-size:11px;font-weight:500;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.mp-opt.T.sel .mp-pill{display:inline-flex;background:var(--t-bd);color:var(--t-bg)}.mp-opt.R.sel .mp-pill{display:inline-flex;background:var(--p-bd);color:var(--p-bg)}
+.mp-fit{font-size:13px;display:flex;gap:6px;align-items:baseline}
+.mp summary{cursor:pointer;font-size:14px;color:var(--t-ic)}
+.mp .st{display:flex;gap:8px;align-items:baseline;font-size:14px;line-height:1.5;margin:0 0 6px}
+.mp .tag{font-size:11px;padding:1px 7px;border-radius:var(--radius);white-space:nowrap;background:var(--surface-1);color:var(--text-secondary)}
+.mp .tag.you{font-weight:500;background:var(--t-bg);color:var(--t-tx)}
+</style>
+<div class="mp">
+<div style="display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:0.5px solid var(--border);margin-bottom:14px;flex-wrap:wrap"><span style="width:10px;height:10px;border-radius:2px;background:var(--t-bd)" aria-hidden="true"></span><span id="cl" style="font-size:16px;font-weight:500"></span><code style="font-size:12px;padding:2px 7px;border-radius:var(--radius);background:var(--surface-1);color:var(--text-secondary)">/user-stories</code><span id="sc" style="margin-left:auto;font-size:13px;color:var(--text-secondary)"></span></div>
+<div style="font-size:15px;font-weight:500;margin:0 0 10px">How do you want to work on these stories?</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px">
+<button class="mp-opt T" id="optT" aria-pressed="true"><span class="mp-h"><span class="mp-ic"><i class="ti ti-users" aria-hidden="true"></i></span>Work together<span class="mp-pill">Selected</span></span><span id="descT"></span><span class="mp-fit"><i class="ti ti-check" style="font-size:14px" aria-hidden="true"></i><span>A good fit for your first backlog with the kit, or a scope that is complex or new to you.</span></span></button>
+<button class="mp-opt R" id="optR" aria-pressed="false"><span class="mp-h"><span class="mp-ic"><i class="ti ti-player-play" aria-hidden="true"></i></span>Run with it<span class="mp-pill">Selected</span></span><span id="descR"></span><span class="mp-fit"><i class="ti ti-check" style="font-size:14px" aria-hidden="true"></i><span>A good fit when discovery was clean and you want the whole backlog in Jira today.</span></span></button>
+</div>
+<details style="margin-top:12px"><summary>Need to understand better?</summary>
+<p style="font-size:14px;line-height:1.6;margin:8px 0 12px">The backlog is yours and your name is on it. Claude is the writer drafting it from discovery. In Work together you read each story as it is finished. In Run with it you get the whole backlog in Jira at once, with the stories that need you pointed out.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px">
+<div><div style="font-size:14px;font-weight:500;margin-bottom:8px;color:var(--t-ic)">Work together</div><div id="stepsT"></div></div>
+<div><div style="font-size:14px;font-weight:500;margin-bottom:8px;color:var(--p-bd)">Run with it</div><div id="stepsR"></div></div>
+</div>
+<p style="font-size:13px;color:var(--text-secondary);line-height:1.5;margin:8px 0 0">Either way the stories are written to the same standard, checked by the same two reviewers, and nothing goes to the client until you move it to Pending Client Approval. You can switch at any point by saying so.</p>
+</details>
+<label id="keepRow" style="display:flex;gap:8px;align-items:baseline;font-size:13px;color:var(--text-secondary);margin-top:14px"><input type="checkbox" id="keep"><span>Use this every time I start a backlog</span></label>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap">
+<span id="foot" style="font-size:13px;color:var(--text-secondary)"></span>
+<button id="goBtn">Start the stories ↗</button>
+</div>
+<div id="out" hidden style="font-size:13px;white-space:pre-wrap;margin-top:8px"></div>
+</div>
+<script>
+var CFG={client:'Harborlight Behavioral Health',mode:'T',epics:7,n:42,canSave:true};
+var mode=CFG.mode==='R'?'R':'T',n=CFG.n||0,all=n?(n===1?'the one story':'all '+n+' stories'):'every story';
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function steps(id,arr){document.getElementById(id).innerHTML=arr.map(function(s){return '<div class="st"><span class="tag'+(s[0]==='You'?' you':'')+'">'+s[0]+'</span><span>'+esc(s[1])+'</span></div>'}).join('')}
+function foot(){document.getElementById('foot').textContent=(mode==='T'?'Work together':'Run with it')+' · '+(document.getElementById('keep').checked?'saved as your default':'this backlog only')}
+function pick(x){mode=x;var T=document.getElementById('optT'),R=document.getElementById('optR');T.classList.toggle('sel',x==='T');R.classList.toggle('sel',x==='R');T.setAttribute('aria-pressed',x==='T');R.setAttribute('aria-pressed',x==='R');
+var b=document.getElementById('goBtn'),k=x==='T'?'t':'p';b.style.background='var(--'+k+'-bd)';b.style.color='var(--'+k+'-bg)';b.style.borderColor='var(--'+k+'-bd)';foot()}
+function emit(m){if(typeof sendPrompt==='function'){sendPrompt(m);return}var o=document.getElementById('out');o.hidden=false;o.textContent='Copy this into the chat:\n'+m}
+document.getElementById('cl').textContent=CFG.client;
+document.getElementById('sc').textContent='Epic plan confirmed'+(CFG.epics?' · '+CFG.epics+(CFG.epics===1?' epic':' epics'):'')+(n?' · '+n+(n===1?' story':' stories'):'');
+document.getElementById('descT').textContent='We go one story at a time. I show you each finished story with its first estimate and anything the reviewers found, you edit or approve it, and it goes to Jira when you say so.';
+document.getElementById('descR').textContent='I finish '+all+' on my best calls, create them in Jira as New, and give you a short list of the ones that need you. You review and edit them there, and move each story on when you are happy with it.';
+steps('stepsT',[['Claude','Finishes a story and has it checked by the two reviewers.'],['You','Read it, change what you want, and approve it.'],['Claude','Creates it in Jira and moves to the next one.'],['You','Send stories to the client when the epic is ready.']]);
+steps('stepsR',[['Claude','Finishes every story, has them checked, and fixes what it can.'],['Claude','Creates the whole backlog in Jira as New, with first estimates.'],['You','Open the review list. The stories that need a decision come first.'],['You','Edit any story in place, then send your changes and mark stories reviewed.'],['Claude','Updates Jira and moves reviewed stories to Pending Client Approval.']]);
+if(!CFG.canSave)document.getElementById('keepRow').style.display='none';
+document.getElementById('optT').onclick=function(){pick('T')};
+document.getElementById('optR').onclick=function(){pick('R')};
+document.getElementById('keep').addEventListener('change',foot);
+document.getElementById('goBtn').onclick=function(){emit('Working choice for '+CFG.client+' · /user-stories\nMode: '+(mode==='T'?'Work together':'Run with it')+'\nSave as my default: '+(CFG.canSave&&document.getElementById('keep').checked?'yes':'no'))};
+pick(mode);
+</script>

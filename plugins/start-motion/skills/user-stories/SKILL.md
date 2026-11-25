@@ -1,6 +1,6 @@
 ---
 name: user-stories
-description: Start Motion stage 2.2 (/start-motion:user-stories). Finishes, splits and pushes Kicksaw user stories and acceptance criteria from a signed scope, carrying the client's own words from the call transcripts into every story. Starts from the stories the discovery call skill already drafted on the requirements list's User stories tab, checks them against the signed solution readout and the tl;dv transcripts, proposes the epics, takes the stories to the SC one at a time, and creates them in the client's Jira project. Refinement sessions with the product owner are run with /start-motion:refinement. Use whenever someone says "write the stories for [client]", "build the backlog", "push the stories", "draft AC" or "split this story".
+description: Start Motion stage 2.2 (/start-motion:user-stories). Finishes, splits and pushes Kicksaw user stories and acceptance criteria from a signed scope, carrying the client's own words from the call transcripts into every story. Starts from the stories the discovery call skill already drafted on the requirements list's User stories tab, checks them against the signed solution readout and the tl;dv transcripts, proposes the epics, then works the way the SC picks: Work together (one story at a time, each approved before it goes to Jira) or Run with it (the whole backlog created in Jira as a first draft, with a review list of the stories that need the SC). Creates the stories in the client's Jira project either way. Refinement sessions with the product owner are run with /start-motion:refinement. Use whenever someone says "write the stories for [client]", "build the backlog", "push the stories", "draft AC" or "split this story".
 ---
 
 # Kicksaw user stories
@@ -13,7 +13,7 @@ A story is read by three people at once: the client product owner, who approves 
 
 Read `references/method.md` in this skill's folder at the start of every run: what the stage is for, the calls the stage asks you to make, the bar, and the link to the full method on the Start Motion page.
 
-This skill covers three steps that are three separate prompts on the page: proposing the epics, finishing the stories epic by epic, and pushing approved stories to Jira. Refinement sessions are run with `/start-motion:refinement`. Work out which one is next from what exists, and propose it.
+This skill covers three steps that are three separate prompts on the page: proposing the epics, finishing the stories, and creating them in Jira. How the last two run depends on the way of working the SC picks once the epic plan is confirmed (section 1b): Work together or Run with it. Refinement sessions are run with `/start-motion:refinement`. Work out which one is next from what exists, and propose it.
 
 Look before you ask. The client's name comes from the request; if it is missing, that is the one thing to ask before looking anywhere. Then report what you found against the stage's readiness list, in a few lines, before doing anything else: written sign-off on a named readout version (recorded, or not); the requirements list (how many approved, how many still heard or confirmed, whether the User stories tab exists and how many drafts it holds); every discovery call on Sessions and sources with its tl;dv link (any missing); the client's Jira project and its key (and what is already in it); the product owner (named in the note or not); the solution design (shared, draft, or none); refinement sessions on the calendar or not; and the epic plan (stories/epic-plan.md exists or not, and which epics are finished, pushed or refined). For example: "Tog. Sign-off recorded Dec 4 on readout v1.2. Requirements: 38 approved, 5 confirmed (stay on the sheet). User stories tab: 41 drafts. Calls: all nine linked. Jira: TOG, empty. Product owner: Dana Ruiz. Design: shared Dec 3. Epic plan: none yet. Next: propose the epics."
 
@@ -23,7 +23,7 @@ If the readout is not signed, or there are no approved requirements, say so and 
 
 Ask once, in one message, and only for what the Start did not find: the epic to finish next when more than one is open and the request did not name it; the product owner when the note does not name them; and the Jira project key when none is found. Everything else comes from the documents.
 
-Then read back what you heard in one line and run: "Finishing the Tog stories for the Lead intake epic, six drafts, one at a time for your review."
+Then read back what you heard in one line and run: "Finishing the Tog stories for the Lead intake epic, six drafts, one at a time for your review." In Run with it: "Finishing all 41 Tog stories and creating them in Jira as New. You get a review list when they are in."
 
 ## 0. Load the signed scope, the drafts and the calls
 
@@ -61,7 +61,18 @@ Before finishing any story, produce a one-page epic plan and wait for the SC to 
 
 Save the confirmed plan as stories/epic-plan.md. Epic names and the mapping are stable from here; a story's source line depends on them.
 
-## 2. Finish the stories, one at a time
+## 1b. How the SC wants to work
+
+Once the epic plan is confirmed and before any story is finished, the SC picks how to work, in the chat: Work together or Run with it. `references/stories-mode.md` has the whole of it. In short:
+
+- Look for the person's saved default first. If there is one, say what you are using in one line and start.
+- Otherwise show the mode picker (`references/stories-mode-picker.html`, only its `CFG` line changed) wherever the session can show an interactive visual. Claude chat and Cowork both can. Plain text only where no visual can be shown.
+- **Work together** (the default): one story at a time. The SC reads each finished story with its estimate and the reviewers' findings, edits or approves it, and it is created in Jira when they say so.
+- **Run with it:** you finish every story on your best calls, create the whole backlog in Jira as New, and give the SC a review list: the stories that need a decision first, then the ones worth a look, then the clean ones. The SC edits any story in place on the list and ticks the ones they have reviewed.
+
+Both modes write the same stories to the same standard, run the same two reviewers and fill the same Jira fields. The mode changes when the SC reads a story and where they change it, nothing else.
+
+## 2. Finish the stories
 
 Work through the epic plan story by story, starting from each story's row on the User stories tab. For each one:
 - Check it against the signed readout and the Open items tab: what the readout decided that the draft does not reflect yet, decisions closed since the draft, open questions now answered. Fold those in; later statements override earlier ones.
@@ -77,7 +88,9 @@ Work through the epic plan story by story, starting from each story's row on the
 - A large estimate is a reason to look at the split again, never a reason to split by itself: stories are split by behavior, not by hours. If the story is one behavior, keep it whole and tell the SC it is large.
 - Estimate the work, never the budget. A story is not sized down to fit the hours sold; if the work looks bigger than the hours, that is for the SC and PM to see, not for the estimate to hide.
 
-A story keeps the status Draft while you work on it. Then show the stories to the SC one at a time for review, edit and approval; when the SC approves one, set it to Reviewed by SC on the sheet. Create nothing in Jira until the SC says the story is ready. A Withdrawn story is never pushed; list it for the SC with the quote that withdrew it. Before showing the SC anything for an epic, run the two reviewers on that epic's stories ("The two reviewers" below) and act on what they find.
+A story keeps the status Draft while you work on it. A Withdrawn story is never pushed; list it for the SC with the quote that withdrew it. Before a story is shown to the SC or created in Jira, run the two reviewers on its epic's stories ("The two reviewers" below) and act on what they find. What happens next depends on the mode (section 1b):
+- **Work together:** show the stories to the SC one at a time for review, edit and approval; when the SC approves one, set it to Reviewed by SC on the sheet. Create nothing in Jira until the SC says the story is ready.
+- **Run with it:** do not stop between stories. Finish every story in the epic plan, then create them all in Jira (section 3) and show the review list. The SC's review happens there.
 
 ### The two reviewers
 
@@ -93,11 +106,11 @@ Start both reviewers at the same time; neither waits for the other. Apply the so
 What to do with the findings:
 - Fix what is plainly wrong and what the sources settle: a quote that differs from the transcript is replaced with the transcript's words; a wrong timestamp or speaker is corrected; a criterion with no trigger gets the trigger the client stated; a quote inside the criteria moves to the Description; Given/When/Then is rewritten as plain behavior.
 - Never settle a finding by guessing. A criterion that is not exact because the client never gave the value becomes an open question on the story and on the Open items tab.
-- A story the source checker found narrower or broader than what the client said, or contradicted by a later call, is not reworded on your own. Show the SC the row and the source lines side by side; they fix the wording, ask the client, or mark the point as Kicksaw's recommendation so nobody reads it as something the client asked for.
-- A finding that a story should be split or merged is the SC's call; list it.
+- A story the source checker found narrower or broader than what the client said, or contradicted by a later call, is not reworded on your own. In Work together, show the SC the row and the source lines side by side; they fix the wording, ask the client, or mark the point as Kicksaw's recommendation so nobody reads it as something the client asked for. In Run with it, the story is created as it stands and goes on the review list under Needs a decision, with the problem in plain words and the wording you would change it to.
+- A finding that a story should be split or merged is the SC's call. In Work together, list it. In Run with it, make your best call, create the story that way, and put it on the review list with what you did and what you would do.
 - The same fixes apply to a story the SC has already edited or reviewed. Read it fresh first, change only what the finding names, keep every other word of the SC's, tell the SC what changed in one line per story, and set a reviewed story back to Draft.
 - Run each reviewer once, fix, and run it once more on the stories that changed. Two passes at most. Whatever is still flagged goes to the SC as it is.
-- When you show the SC a story, show its open findings under it, each in one line: the gaps first, each with the question to ask; then source findings with the source line and the few words that would fix it; wording points last, in one line together. A story with none says "Both reviewers passed".
+- When you show the SC a story in Work together, show its open findings under it, each in one line: the gaps first, each with the question to ask; then source findings with the source line and the few words that would fix it; wording points last, in one line together. A story with none says "Both reviewers passed".
 
 ### The title
 
@@ -174,9 +187,13 @@ Build/Solution Details, Metadata, Test Steps and build or QA sub-tasks belong to
 
 ## 3. Create the stories in Jira
 
-When the SC approves a story, create it in the client's Jira project under its epic (create the epic first if it is not there): Summary from the Title, and User Story, Description, Acceptance Criteria and Open Questions in their own fields, Priority Medium unless the SC says otherwise, the first estimate in the project's story points field (find it in the issue type's fields; if the project has none, the estimate stays in the Priority/size line and you tell the SC), T-Shirt Size when the SC has sized it, unassigned, the story ID as its label. Status New, with or without open questions. Link dependencies with "blocks". A story the SC edited after the reviewers ran goes through the story reviewer once more before it is created. Show the SC anything new in one line and create the story either way, unless the SC says to wait: a gap nobody has answered goes into Jira as an open question on the story, so the product owner sees it. Read the issue back to confirm the custom fields landed. Then confirm the key to the SC, add it to stories/epic-plan.md, and on the requirements list set the story's row on the User stories tab to In Jira with its key, and write the key in the Jira column of every requirement the story covers.
+In Work together, a story is created when the SC approves it; in Run with it, every finished story is created in the same run, in epic order, without waiting. Either way, create it in the client's Jira project under its epic (create the epic first if it is not there): Summary from the Title, and User Story, Description, Acceptance Criteria and Open Questions in their own fields, Priority Medium unless the SC says otherwise, the first estimate in the project's story points field (find it in the issue type's fields; if the project has none, the estimate stays in the Priority/size line and you tell the SC), T-Shirt Size when the SC has sized it, unassigned, the story ID as its label. Status New, with or without open questions. Link dependencies with "blocks". A story the SC edited after the reviewers ran goes through the story reviewer once more before it is created. Show the SC anything new in one line and create the story either way, unless the SC says to wait: a gap nobody has answered goes into Jira as an open question on the story, so the product owner sees it. Read the issue back to confirm the custom fields landed. Then confirm the key to the SC, add it to stories/epic-plan.md, and on the requirements list set the story's row on the User stories tab to In Jira with its key, and write the key in the Jira column of every requirement the story covers.
 
 From here Jira is the story's home: refinement changes go to Jira, and the sheet row keeps the key and status.
+
+**Run with it: if the run stops partway.** The User stories tab records which stories are In Jira with their keys. Start again from the first story that is not, and never create a story that already has a key.
+
+**Run with it: the review list.** When every story is in Jira, show the review list (`references/review-list.html`, only its `CFG` block changed; `references/stories-mode.md`, section 4, says what goes in it and how to act on what comes back). It groups the stories into Needs a decision, Worth a look and Clean. Every row opens to the problem, what you would do about it, and the full story, which the SC edits in place. One button sends the SC's changes and the stories they have reviewed. Apply the changes in Jira, move the reviewed stories to Pending Client Approval (or the status the project uses), report what changed in one line per story, and show the list again with what is still New. Running `/start-motion:user-stories` again later shows the list for whatever is still New.
 
 The first pass is the whole signed scope in Jira, gaps and all. Discovery never covers every detail; refinement is where the details get closed.
 
@@ -188,9 +205,9 @@ Stories then flow: New, Pending Client Approval, Refined, Build Ready, In Progre
 
 ## 5. Report back
 
-Three short paragraphs: what was finished or changed and under which epics, what the SC needs to check or decide, and what is still open with the client. Then a short list of every story waiting for review, each with the reviewers' findings still open on it, and one line on how the reviewers ran (as separate agents, or as a second pass in this conversation). No recap of steps.
+Three short paragraphs: what was finished or changed and under which epics, what the SC needs to check or decide, and what is still open with the client. Then a short list of every story waiting for review, each with the reviewers' findings still open on it (in Run with it the review list is that list; do not repeat it as text), and one line on how the reviewers ran (as separate agents, or as a second pass in this conversation). No recap of steps.
 
-End with one line naming what comes next, by move: after the epic plan, `/start-motion:user-stories` finishes the stories epic by epic; after the SC approves a story, `/start-motion:user-stories` creates it in Jira; before each refinement session, `/start-motion:refinement` preps it and builds the deck; the same day after it, `/start-motion:refinement` folds the answers in; once sprint 1 is refined, the SA adds build details and sizes the stories with the SC, and the PM loads the sprint.
+End with one line naming what comes next, by move: after the epic plan, `/start-motion:user-stories` finishes the stories epic by epic; after the SC approves a story, `/start-motion:user-stories` creates it in Jira; in Run with it, once the review list is empty, the backlog is with the client; before each refinement session, `/start-motion:refinement` preps it and builds the deck; the same day after it, `/start-motion:refinement` folds the answers in; once sprint 1 is refined, the SA adds build details and sizes the stories with the SC, and the PM loads the sprint.
 
 ## Log the run
 

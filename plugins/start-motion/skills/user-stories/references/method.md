@@ -9,6 +9,12 @@ Turn the signed scope into epics and stories in the client's Jira project, ready
 - Gaps are normal: discovery covers the workflow, not every value and exception. Each gap becomes an open question on the story it affects, never a vague criterion
 - A refinement answer that widens a story past the signed scope goes on the scope watch list with the quote, and the PM hears about it that week
 
+## Two ways to work
+
+- Work together (the default): one story at a time. You read each finished story, edit or approve it, and it goes to Jira when you say so. A good fit for a first backlog with the kit, or a scope that is complex or new to you
+- Run with it: Claude finishes every story, creates the whole backlog in Jira as New, and gives you a review list with the stories that need you first. You edit in place and tick what you have reviewed. A good fit when discovery was clean
+- Either way the epic plan is confirmed first, the stories are held to the same bar, and nothing goes to the client until you move it to Pending Client Approval
+
 ## Calls the SC makes story by story
 
 - How fine to split? One story is one behavior a tester can sign off in one sitting. Two roles in the sentence, or two jobs, means two stories

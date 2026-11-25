@@ -1,0 +1,213 @@
+<h2 class="sr-only">Review list for a backlog created in Jira in Run with it. Stories are grouped into needs a decision, worth a look and clean. Each row opens to show the problem, the recommendation and the full story, which can be edited in place. Tick boxes mark stories reviewed, and one button sends every change.</h2>
+<style>
+.rl{--k:#0072ba;--kn:#03355e;--kt:#E5F1F8;--am:#BA7517;--gr:#3B6D11;padding:.5rem 0}
+[data-mode="dark"] .rl{--k:#49c8f5;--kn:#B5D4F4;--kt:#005485;--am:#EF9F27;--gr:#97C459}
+@media (prefers-color-scheme:dark){:root:not([data-mode]) .rl{--k:#49c8f5;--kn:#B5D4F4;--kt:#005485;--am:#EF9F27;--gr:#97C459}}
+.rl .rw{display:grid;grid-template-columns:20px 18px 76px minmax(0,1fr) auto 50px;gap:10px;align-items:center;padding:10px 4px;border-bottom:0.5px solid var(--border);cursor:pointer}
+.rl .rw:hover{background:var(--surface-1)}
+.rl .cv{font-size:16px;color:var(--text-secondary);transition:transform .15s}.rl .op .cv{transform:rotate(90deg);color:var(--k)}
+.rl .ky{font-family:var(--font-mono);font-size:13px;color:var(--k)}
+.rl .nm{font-size:14px;line-height:1.35}.rl .mt{font-size:12px;color:var(--text-muted);margin-top:2px}
+.rl .pl{font-size:12px;padding:3px 10px;border-radius:var(--radius);white-space:nowrap}
+.rl .pl.d{background:var(--bg-warning);color:var(--text-warning)}.rl .pl.l,.rl .pl.e{background:var(--kt);color:var(--kn)}.rl .pl.c{background:var(--bg-success);color:var(--text-success)}
+.rl .pt{font-size:13px;color:var(--text-secondary);text-align:right}
+.rl .gp{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:500;padding:18px 4px 6px}
+.rl .gp small{font-size:12px;font-weight:400;color:var(--text-secondary)}
+.rl .dot{width:8px;height:8px;border-radius:50%;flex:none}
+.rl .dt{padding:14px 16px 16px 52px;border-bottom:0.5px solid var(--border);background:var(--surface-1)}
+.rl .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.rl .bx{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.55}
+.rl .lb{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;margin-bottom:4px}
+.rl .sm{font-size:13px;padding:5px 12px;height:auto}
+.rl .pri{background:var(--k);border-color:var(--k);color:var(--surface-2)}
+.rl .lk{border:0;background:none;padding:0;height:auto;font-size:13px;color:var(--k);cursor:pointer;text-decoration:none}
+.rl .st{margin-top:10px;padding:14px 16px 16px}
+.rl .fl{font-size:12px;font-weight:500;color:var(--k);margin:14px 0 2px}
+.rl .cr{display:grid;grid-template-columns:20px minmax(0,1fr) 24px;gap:4px;align-items:start;font-size:14px;line-height:1.55}
+.rl .n{color:var(--text-secondary);padding-top:5px}
+.rl .tx{padding:5px 8px;margin-left:-8px;border-radius:var(--radius);cursor:text;outline:none;transition:background .12s}
+.rl .tx:hover{background:var(--surface-1)}.rl .tx.hot{background:var(--bg-warning)}
+.rl .tx:focus{background:var(--kt);box-shadow:0 0 0 1.5px var(--k);color:var(--text-primary)}
+.rl .rm{visibility:hidden;border:0;background:none;padding:6px 4px;height:auto;color:var(--text-muted);cursor:pointer}
+.rl .cr:hover .rm{visibility:visible}.rl .rm:hover{color:var(--text-danger)}
+.rl .chg{display:inline-block;font-size:11px;font-weight:500;padding:1px 8px;border-radius:999px;background:var(--kt);color:var(--kn);white-space:nowrap}
+.rl .was{font-size:12px;color:var(--text-muted);text-decoration:line-through;padding:0 0 4px}
+.rl .gone .tx{text-decoration:line-through;color:var(--text-muted)}
+.rl .ft{font-size:12px;color:var(--text-secondary);line-height:1.6}
+</style>
+<div class="rl" id="rl">
+<div style="display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:0.5px solid var(--border);flex-wrap:wrap"><span style="width:10px;height:10px;border-radius:2px;background:var(--k)" aria-hidden="true"></span><span id="cl" style="font-size:16px;font-weight:500"></span><code style="font-size:12px;padding:2px 7px;border-radius:var(--radius);background:var(--surface-1);color:var(--text-secondary)">/user-stories</code><span id="hd" style="margin-left:auto;font-size:13px;color:var(--text-secondary)"></span></div>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0 6px" id="tiles"></div>
+<div style="display:flex;gap:8px;align-items:center;padding:8px 0 0;flex-wrap:wrap">
+<button class="sm" id="all">Check all shown</button><button class="sm" id="none">Uncheck all</button>
+<select id="ep" style="width:auto;min-width:190px;margin-left:auto" aria-label="Filter by epic"></select>
+</div>
+<div id="list"></div>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap">
+<span id="foot" style="font-size:13px;color:var(--text-secondary)" role="status"></span>
+<button id="go" class="pri">Send ↗</button>
+</div>
+<div id="out" hidden style="font-size:13px;white-space:pre-wrap;margin-top:8px"></div>
+</div>
+<script>
+var CFG={client:'Harborlight Behavioral Health',total:42,points:178,next:'Pending Client Approval',jira:'https://example.atlassian.net/browse/',stories:[
+{k:'HBH-12',t:'Referral: intake form creates a referral record',e:'Referral intake',g:'d',f:'Source mismatch',p:5,hot:3,
+prob:'Criterion 3 says every referral needs a diagnosis code. On the Oct 6 call Maria said the code is only required for payer referrals, and self-referrals often come in without one.',
+rec:'Change criterion 3 so the code is required only when Referral Source is Payer. That matches the later call, and the later statement is the one that governs.',
+fix:{ac:3,text:'When Referral Source = Payer, a referral cannot be saved without a diagnosis code. For every other source the diagnosis code is optional.'},
+us:'As an intake coordinator, I should have the ability to receive every web referral as a referral record the moment the form is submitted, so that no referral waits on someone retyping it.',
+ds:'Today referrals arrive by web form, fax and phone, and the coordinator retypes each one. This story covers the web form. Fax and phone are HBH-13.',
+ac:['When the referral form is submitted, a referral record is created with Status = New.','The referral shows the client\'s name, date of birth, program requested and referral source from the form.','A referral cannot be saved without a diagnosis code.','When the form is submitted without a required field, the person sees which field is missing and nothing is created.'],
+oq:['Diagnosis code: required for every referral, or only payer referrals? Open items 14. Affects AC 3.'],
+rf:['S-03: Discovery 2: referral intake, call with Maria Ortiz on Oct 1 2026.','S-05: Discovery 4: payers and billing, call on Oct 6 2026. The later statement on diagnosis codes is from it.','Q-14: open question on when a diagnosis code is required.']},
+{k:'HBH-19',t:'Waitlist: client placed by program and priority',e:'Waitlist',g:'d',f:'Split call',p:13,hot:3,
+prob:'This story covers placing a client on the waitlist and a program manager reordering it. I kept them together because both change the same list, but at 13 points it is the largest story in the backlog.',
+rec:'Split reordering into its own story (HBH-19b, about 5 points). Placement can then be built and tested first, and reordering does not hold it up.',
+us:'As a program manager, I should have the ability to see every waiting client in order for my program, so that the next open slot goes to the right person.',
+ds:'Each program keeps its own spreadsheet today, and priority is decided from memory. Admitting a client from the list is HBH-14.',
+ac:['When a referral\'s Status changes to Accepted and no slot is open, the client is added to the waitlist for the program requested.','The waitlist is ordered by Priority (Urgent, High, Standard), then by the date the referral was accepted.','A program manager can move a client up or down within their own program\'s list, and must give a reason.','Every manual move is recorded with who made it, when and the reason.','A program manager sees only the waitlist for programs they manage.'],
+oq:[],rf:['S-04: Discovery 3: waitlist and admissions, call with Devon Price on Oct 3 2026.','W-03: Waitlist to admission, the future state workflow in the signed readout, section 8.']},
+{k:'HBH-27',t:'Reporting: weekly census by program',e:'Reporting',g:'d',f:'Beyond SOW',p:5,hot:0,
+prob:'The SOW covers three dashboards: referrals, waitlist and consent. Devon asked for a weekly census on the Oct 8 call, which would be a fourth.',
+rec:'Leave the story in Jira marked Beyond SOW and send it to the PM to decide between a change order and a later phase. Keep it out of sprint planning until then.',
+us:'As a program manager, I should have the ability to see how many clients each program is serving this week, so that I can report census to the board without counting by hand.',
+ds:'Census is counted by hand from each program\'s roster every Friday.',
+ac:['The report shows one row per program with the number of clients whose Enrollment Status = Active on the last day of the week.','The report can be run for any past week and gives the same number each time it is run.','A program manager sees only their own programs. The executive director sees all of them.'],
+oq:['Which day does the census week end on? Open items 31. Affects AC 1.'],
+rf:['S-06: Discovery 5: reporting, call with Devon Price on Oct 8 2026.','Q-31: open question on the census week.']},
+{k:'HBH-08',t:'Referral: duplicate client warning before saving',e:'Referral intake',g:'l',f:'3 open questions',p:3,hot:0,
+prob:'Three questions are still open with Harborlight, so criteria 1 and 3 may change in refinement.',
+rec:'Nothing to change now. Read it before it goes to the client, and take the three questions to the first refinement session.',
+us:'As an intake coordinator, I should have the ability to see when a referral looks like an existing client before I save it, so that one person does not end up with two records.',
+ds:'Duplicates are found weeks later, when two clinicians realize they are seeing the same person.',
+ac:['When a referral is saved with the same last name and date of birth as an existing client, the coordinator is shown the matching clients before the record is created.','The coordinator can link the referral to a matching client or continue as a new client.','When the coordinator continues as a new client, a reason is required.'],
+oq:['Should a match on phone number alone also warn? Open items 9. Affects AC 1.','Who can merge two clients found later? Open items 10.','Is the reason required or optional? Open items 11. Affects AC 3.'],
+rf:['S-03: Discovery 2: referral intake, call with Maria Ortiz on Oct 1 2026.']},
+{k:'HBH-21',t:'Waitlist: clinician notified when a slot opens',e:'Waitlist',g:'l',f:'Large estimate',p:8,hot:0,
+prob:'This is one behavior, so I left it whole. The estimate is high because the notification depends on the scheduling integration, which is not designed yet.',
+rec:'Keep it as one story, and have the SA confirm the estimate once the integration design is done.',
+us:'As a clinician, I should have the ability to be told when a slot opens in my program, so that the next waiting client is contacted the same day.',
+ds:'Clinicians hear about openings in the weekly team meeting, so a slot can sit empty for days.',
+ac:['When a slot\'s Status changes to Open, the clinicians assigned to that program are notified within 15 minutes.','The notification names the program, the slot\'s day and time, and the next client on the waitlist.','When the waitlist for that program is empty, no notification is sent.'],
+oq:[],rf:['S-04: Discovery 3: waitlist and admissions, call with Devon Price on Oct 3 2026.','D-02: the decision that scheduling stays in the current system and is integrated.']},
+{k:'HBH-31',t:'Consent: expiry reminder 30 days before the end date',e:'Consent',g:'l',f:'Merged two drafts',p:3,hot:1,
+prob:'Two drafts described the same reminder, one from the Oct 1 call and one from the Oct 8 call. I merged them into this story and kept both quotes.',
+rec:'Nothing to change. Check that 30 days is right in criterion 1, since the Oct 1 call only said "about a month".',
+us:'As a compliance lead, I should have the ability to know which consents are about to expire, so that no client is treated on an expired consent.',
+ds:'Expired consents are found during audits, after the fact.',
+ac:['When a consent\'s End Date is 30 days away, the client\'s primary clinician and the compliance lead are notified.','The consent shows on the Expiring Consents list until a new consent is signed or the client is discharged.','When a new consent is signed, the reminder for the old one is cleared.'],
+oq:[],rf:['S-03: Discovery 2: referral intake, call on Oct 1 2026.','S-06: Discovery 5: reporting, call on Oct 8 2026.']},
+{k:'HBH-05',t:'Referral: source captured on every referral',e:'Referral intake',g:'c',f:'Reviewers passed',p:2,hot:0,
+us:'As an intake coordinator, I should have the ability to record where each referral came from, so that we know which sources send us the most clients.',
+ds:'Referral source is written in a notes field today, so it cannot be counted.',
+ac:['A referral cannot be saved without a Referral Source.','Referral Source offers Self, Family, Payer, Hospital, School and Other.','When Other is chosen, a description is required.'],oq:[],rf:['S-03: Discovery 2: referral intake, call on Oct 1 2026.']},
+{k:'HBH-06',t:'Referral: assigned to the intake coordinator by region',e:'Referral intake',g:'c',f:'Reviewers passed',p:3,hot:0,
+us:'As an intake supervisor, I should have the ability to have each new referral assigned to the coordinator for the client\'s region, so that nobody has to hand them out each morning.',
+ds:'The supervisor assigns referrals by hand at the start of each day.',
+ac:['When a referral is created, it is assigned to the intake coordinator for the client\'s county.','When the county has no coordinator, the referral is assigned to the intake supervisor.','The assigned coordinator is notified when the referral is assigned.'],oq:[],rf:['S-03: Discovery 2: referral intake, call on Oct 1 2026.']},
+{k:'HBH-14',t:'Waitlist: client removed when admitted',e:'Waitlist',g:'c',f:'Reviewers passed',p:2,hot:0,
+us:'As a program manager, I should have the ability to have a client leave the waitlist when they are admitted, so that the list only shows people still waiting.',
+ds:'Admitted clients stay on the spreadsheet until someone remembers to delete the row.',
+ac:['When a client\'s Enrollment Status changes to Active, they are removed from that program\'s waitlist.','The client stays on the waitlist of any other program they are waiting for.','The removal is recorded with the date and the admission it came from.'],oq:[],rf:['S-04: Discovery 3: waitlist and admissions, call on Oct 3 2026.']},
+{k:'HBH-30',t:'Consent: signed form attached to the client record',e:'Consent',g:'c',f:'Reviewers passed',p:3,hot:0,
+us:'As a clinician, I should have the ability to find a client\'s signed consent on their record, so that I do not have to ask the front desk for it.',
+ds:'Signed consents are kept in a filing cabinet at each site.',
+ac:['When a consent is signed, the signed form is attached to the client\'s record.','The consent shows who signed it, the date signed and the End Date.','Only clinicians assigned to the client and the compliance lead can open the form.'],oq:[],rf:['S-06: Discovery 5: reporting, call on Oct 8 2026.']}
+]};
+var S=CFG.stories,G={d:['Needs a decision','Only you can settle these','var(--am)'],l:['Worth a look','My call, flagged so you can check it','var(--k)'],c:['Clean','Both reviewers passed','var(--gr)']},on={},open={},full={},ST={},showC=false;
+function $(i){return document.getElementById(i)}
+function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
+function get(k){return S.filter(function(x){return x.k===k})[0]}
+function fresh(s){return{us:s.us,ds:s.ds,ac:s.ac.map(function(t){return{t:t,o:t,x:false}}),note:'',acc:false}}
+function st(k){return ST[k]||(ST[k]=fresh(get(k)))}
+function live(a){return!(a.o===null&&!a.t)}
+function changes(k){if(!ST[k])return 0;var s=get(k),v=ST[k],n=(v.us!==s.us?1:0)+(v.ds!==s.ds?1:0)+(v.acc?1:0)+(v.note?1:0);v.ac.forEach(function(a){if(live(a)&&(a.x||a.o===null||a.t!==a.o))n++});return n}
+function fixed(k){var s=get(k);if(!s.fix)return false;var a=st(k).ac[s.fix.ac-1];return!!a&&!a.x&&a.t===s.fix.text}
+function tag(a,i,k){return a.x?'<span class="chg">Removed</span> <button class="lk" data-back="'+i+'" data-s="'+k+'">Put it back</button>':a.o===null?'<span class="chg">New</span>':a.t!==a.o?'<span class="chg">Changed</span><div class="was">'+esc(a.o)+'</div>':''}
+function ftag(now,was){return now!==was?'<span class="chg">Changed</span><div class="was">'+esc(was)+'</div>':''}
+function pill(s){var n=changes(s.k);return n?['e','Changed, not sent yet']:[s.g,s.f]}
+function story(s){var v=st(s.k),k=s.k,num=0,h='<div class="bx st"><div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-secondary)"><i class="ti ti-pencil" style="font-size:14px" aria-hidden="true"></i>Click any line to edit it. Press Enter when you are done.'+(changes(k)?'<button class="lk" data-undo="'+k+'" style="margin-left:auto">Undo my changes</button>':'')+'</div>'
++'<div class="fl">User story</div><div class="tx" contenteditable="true" role="textbox" aria-label="User story" data-s="'+k+'" data-f="us">'+esc(v.us)+'</div><div class="tg">'+ftag(v.us,s.us)+'</div>'
++'<div class="fl">Description</div><div class="tx" contenteditable="true" role="textbox" aria-label="Description" data-s="'+k+'" data-f="ds">'+esc(v.ds)+'</div><div class="tg">'+ftag(v.ds,s.ds)+'</div>'
++'<div class="fl">Acceptance criteria</div>';
+v.ac.forEach(function(a,i){if(!live(a))return;if(!a.x)num++;
+h+='<div class="cr'+(a.x?' gone':'')+'"><span class="n">'+(a.x?'':num+'.')+'</span><div><div class="tx'+(s.hot===i+1&&a.t===a.o&&!a.x?' hot':'')+'"'+(a.x?'':' contenteditable="true" role="textbox" aria-label="Criterion '+num+'"')+' data-s="'+k+'" data-f="ac" data-i="'+i+'">'+esc(a.t)+'</div><div class="tg">'+tag(a,i,k)+'</div></div>'+(a.x?'<span></span>':'<button class="rm" data-rm="'+i+'" data-s="'+k+'" aria-label="Remove criterion '+num+'"><i class="ti ti-trash" style="font-size:15px" aria-hidden="true"></i></button>')+'</div>'});
+h+='<button class="lk" data-add="'+k+'" style="margin:6px 0 0 16px"><i class="ti ti-plus" style="font-size:14px;vertical-align:-2px" aria-hidden="true"></i> Add a criterion</button><div class="ft er" style="color:var(--text-danger)" role="status"></div>';
+if(s.oq&&s.oq.length){h+='<div class="fl">Open questions</div>';s.oq.forEach(function(q,i){h+='<div class="ft" style="font-size:14px;color:var(--text-primary)">'+(i+1)+'. '+esc(q)+'</div>'})}
+if(s.rf&&s.rf.length){h+='<div class="fl">References</div>';s.rf.forEach(function(r){h+='<div class="ft">'+esc(r)+'</div>'})}
+return h+'<div class="ft" style="margin-top:12px;padding-top:10px;border-top:0.5px solid var(--border)">Priority/size: Launch · '+s.p+' points (first estimate) · Status: New</div>'
++'<div class="fl">Anything else for Claude on this story</div><input type="text" data-note="'+k+'" value="'+esc(v.note)+'" placeholder="Split the error handling into its own story" style="margin-top:4px"></div>'}
+function jira(k){return CFG.jira?'<a class="lk" href="'+esc(CFG.jira+k)+'" style="align-self:center">Open in Jira</a>':''}
+function detail(s){var k=s.k,v=st(k),h='<div class="dt">';
+if(s.g==='c')return h+'<div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-secondary)"><span><i class="ti ti-circle-check" style="font-size:16px;vertical-align:-3px;color:var(--gr)" aria-hidden="true"></i> Both reviewers passed. Nothing is flagged on this story.</span><span style="margin-left:auto">'+jira(k)+'</span></div>'+story(s)+'</div>';
+var c=s.g==='d'?'var(--am)':'var(--k)',act;
+if(s.g==='l')act='<button class="sm pri" data-ok="'+k+'">Looks right</button>';
+else if(s.fix)act=fixed(k)?'<span class="chg">Applied to criterion '+s.fix.ac+'</span>':'<button class="sm pri" data-ap="'+k+'">Apply the recommendation</button>';
+else act=v.acc?'<span class="chg">Accepted</span> <button class="lk" data-acc="'+k+'">Undo</button>':'<button class="sm pri" data-acc="'+k+'">Go with the recommendation</button>';
+h+='<div class="two"><div class="bx"><div class="lb" style="color:'+c+'"><i class="ti ti-'+(s.g==='d'?'alert-triangle':'eye')+'" style="font-size:16px" aria-hidden="true"></i>'+(s.g==='d'?'The problem':'Why it is flagged')+'</div>'+esc(s.prob)+'</div>'
++'<div class="bx"><div class="lb" style="color:var(--k)"><i class="ti ti-bulb" style="font-size:16px" aria-hidden="true"></i>What I would do</div>'+esc(s.rec)+'<div style="margin-top:10px">'+act+'</div></div></div>'
++'<div style="display:flex;gap:14px;margin-top:12px;align-items:center;flex-wrap:wrap"><button class="sm" data-fs="'+k+'"><i class="ti ti-chevron-'+(full[k]?'down':'right')+'" style="font-size:14px;vertical-align:-2px" aria-hidden="true"></i> '+(full[k]?'Hide the full story':'Read or edit the full story')+'</button>'+jira(k)+'</div>';
+if(full[k])h+=story(s);
+return h+'</div>'}
+function clean(){return CFG.total-S.filter(function(s){return s.g!=='c'}).length}
+function shown(){return S.filter(function(s){return $('ep').selectedIndex===0||s.e===$('ep').value})}
+function foot(){var c=0,r=0;S.forEach(function(s){if(changes(s.k))c++;if(on[s.k])r++});
+$('go').textContent=c||r?'Send '+[c?c+(c===1?' changed story':' changed stories'):'',r?r+' reviewed':''].filter(Boolean).join(' and ')+' ↗':'Send ↗';
+$('foot').textContent=c||r?[c?'Changes go to Jira when you send':'',r?r+(r===1?' story moves':' stories move')+' to '+CFG.next:''].filter(Boolean).join(' · '):'Open a story to review or edit it, and tick the ones you have reviewed'}
+function render(){var h='',all=$('ep').selectedIndex===0;['d','l','c'].forEach(function(g){var rows=shown().filter(function(s){return s.g===g});if(!rows.length)return;
+var n=g==='c'&&all?clean():rows.length;
+h+='<div class="gp"><span class="dot" style="background:'+G[g][2]+'"></span>'+G[g][0]+'<small>'+n+' · '+G[g][1]+'</small>'+(g==='c'?'<button class="sm" data-tgl="1" style="margin-left:auto;font-weight:400">'+(showC?'Hide':'Show')+'</button>':'')+'</div>';
+if(g==='c'&&!showC)return;
+rows.forEach(function(s){var p=pill(s);h+='<div class="rw'+(open[s.k]?' op':'')+'" data-r="'+s.k+'" role="button" aria-expanded="'+(!!open[s.k])+'"><input type="checkbox" data-k="'+s.k+'"'+(on[s.k]?' checked':'')+' aria-label="Reviewed '+s.k+'"><i class="ti ti-chevron-right cv" aria-hidden="true"></i><span class="ky">'+s.k+'</span><span><div class="nm">'+esc(s.t)+'</div><div class="mt">'+esc(s.e)+'</div></span><span class="pl '+p[0]+'" id="pl-'+s.k+'">'+esc(p[1])+'</span><span class="pt">'+s.p+' pts</span></div>';
+if(open[s.k])h+=detail(s)});
+if(g==='c'&&all&&n>rows.length)h+='<div class="mt" style="padding:8px 4px">and '+(n-rows.length)+' more clean stories, in Jira as New</div>'});
+$('list').innerHTML=h;foot()}
+function emit(m){if(typeof sendPrompt==='function'){sendPrompt(m);return}var o=$('out');o.hidden=false;o.textContent='Copy this into the chat:\n'+m}
+var root=$('rl');
+root.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.classList&&e.target.classList.contains('tx')){e.preventDefault();e.target.blur()}});
+root.addEventListener('paste',function(e){if(e.target.classList&&e.target.classList.contains('tx')){e.preventDefault();var t=(e.clipboardData||window.clipboardData).getData('text').replace(/\s+/g,' ');document.execCommand('insertText',false,t)}});
+root.addEventListener('input',function(e){var k=e.target.dataset&&e.target.dataset.note;if(k){st(k).note=e.target.value.trim();touch(k)}});
+function touch(k){var s=get(k),p=pill(s),el=$('pl-'+k);if(el){el.className='pl '+p[0];el.textContent=p[1]}foot()}
+root.addEventListener('focusout',function(e){var t=e.target;if(!t.classList||!t.classList.contains('tx')||t.getAttribute('contenteditable')!=='true')return;
+var d=t.dataset,k=d.s,s=get(k),v=st(k),val=t.textContent.replace(/\s+/g,' ').trim(),tg=t.nextElementSibling,er=t.closest('.st').querySelector('.er');er.textContent='';
+if(d.f==='us'||d.f==='ds'){if(!val){t.textContent=v[d.f];er.textContent='That line cannot be empty, so I put it back.'}else{v[d.f]=val;t.textContent=val;tg.innerHTML=ftag(val,s[d.f])}touch(k);return}
+var a=v.ac[+d.i];if(!a)return;
+if(!val){if(a.o===null){a.t='';t.closest('.cr').style.display='none'}else{t.textContent=a.t;er.textContent='A criterion cannot be empty. Use the bin to remove it instead.'}}
+else{a.t=val;t.textContent=val;tg.innerHTML=tag(a,+d.i,k);if(a.t!==a.o)t.classList.remove('hot')}
+touch(k)});
+root.addEventListener('click',function(e){var t=e.target.closest('button,input,a,.tx,.rw');if(!t||t.tagName==='A'||t.classList.contains('tx'))return;var d=t.dataset,k;
+if(d.note!==undefined)return;
+if(d.tgl){showC=!showC}
+else if(d.k){on[d.k]=t.checked}
+else if(d.fs){full[d.fs]=!full[d.fs]}
+else if(d.ok){on[d.ok]=true;open[d.ok]=false}
+else if(d.acc){k=d.acc;st(k).acc=!st(k).acc}
+else if(d.ap){k=d.ap;var s=get(k),a=st(k).ac[s.fix.ac-1];if(a){a.t=s.fix.text;a.x=false}full[k]=true}
+else if(d.rm){k=d.s;var r=st(k).ac[+d.rm];if(r.o===null)r.t='';else r.x=true}
+else if(d.back){st(d.s).ac[+d.back].x=false}
+else if(d.undo){ST[d.undo]=fresh(get(d.undo))}
+else if(d.add){k=d.add;st(k).ac.push({t:' ',o:null,x:false});render();var c=root.querySelectorAll('.tx[data-s="'+k+'"][data-f="ac"]');var last=c[c.length-1];if(last){last.textContent='';last.focus()}return}
+else if(t.id==='all'){shown().forEach(function(s){if(s.g!=='c'||showC)on[s.k]=true})}
+else if(t.id==='none'){on={}}
+else if(t.id==='go'){send();return}
+else if(d.r){open[d.r]=!open[d.r];if(open[d.r]&&get(d.r).g==='c')full[d.r]=true}
+else return;
+render()});
+$('ep').addEventListener('change',render);
+function send(){var m='Review for '+CFG.client+' · /user-stories',body='',rev=[];
+S.forEach(function(s){if(on[s.k])rev.push(s.k);if(!changes(s.k))return;var v=ST[s.k],n=0;body+='\n'+s.k+' '+s.t+':';
+if(v.us!==s.us)body+='\n- User story now reads: '+v.us;
+if(v.ds!==s.ds)body+='\n- Description now reads: '+v.ds;
+v.ac.forEach(function(a){if(!live(a))return;if(!a.x)n++;if(a.x)body+='\n- Remove the criterion: '+a.o;else if(a.o===null)body+='\n- New AC '+n+': '+a.t;else if(a.t!==a.o)body+='\n- AC '+n+' now reads: '+a.t});
+if(v.acc)body+='\n- Go with your recommendation: '+s.rec;
+if(v.note)body+='\n- Note: '+v.note});
+if(!body&&!rev.length){$('foot').textContent='Nothing to send yet. Edit a story or tick the ones you have reviewed first.';return}
+if(body)m+='\nChanges:'+body;
+if(rev.length)m+='\nReviewed, move to '+CFG.next+': '+rev.join(', ');
+emit(m)}
+$('cl').textContent=CFG.client;
+$('hd').textContent=CFG.total+' stories in Jira as New · '+CFG.points+' points';
+['All epics'].concat(S.map(function(s){return s.e}).filter(function(v,i,a){return a.indexOf(v)===i})).forEach(function(v){var o=document.createElement('option');o.textContent=v;$('ep').appendChild(o)});
+$('tiles').innerHTML=['d','l','c'].map(function(g){var n=g==='c'?clean():S.filter(function(s){return s.g===g}).length;return '<div style="background:var(--bg-neutral);border-radius:var(--radius);padding:10px 14px"><div style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary)"><span class="dot" style="background:'+G[g][2]+'"></span>'+G[g][0]+'</div><div style="font-size:24px;font-weight:500">'+n+'</div></div>'}).join('');
+render();
+</script>

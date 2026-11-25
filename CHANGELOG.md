@@ -1,5 +1,17 @@
 # Changelog
 
+## /user-stories: Work together or Run with it (2026-11-25, no version change)
+
+Avi, Nov 25: start taking the story-by-story stop out of the stories stage, so the backlog is a first draft and the people responsible review it. The Google Sheet stays the working place through discovery; once the scope is signed, the SC can have everything go straight to Jira. Not yet run on a client's backlog; the first run is with Avi.
+
+- Once the epic plan is confirmed, the SC picks how to work on a mode picker in the chat (`references/stories-mode-picker.html`), in Kicksaw blue: **Work together** (the default, today's flow: one story at a time, created in Jira when the SC approves it) or **Run with it**. The choice can be saved as the person's default and changed at any point. `references/stories-mode.md` holds the whole of it.
+- **Run with it:** Claude finishes every story on its best calls, runs the two reviewers, creates the whole backlog in Jira as New in one run, and shows a review list (`references/review-list.html`). A run that stops partway picks up from the first story without a key.
+- **The review list** groups the stories into Needs a decision, Worth a look and Clean. Every row opens with a caret to the problem, what Claude would do about it, and the full story. A wording recommendation is applied with one click. Any line of the story (user story, description, each criterion) is edited where it sits, with what changed marked and the old wording kept underneath; criteria can be added and removed; a note box takes anything that is not wording, such as a split. One button sends every changed story and every story ticked as reviewed.
+- Status is the review marker: New is a first draft, and a story the SC ticks as reviewed moves to Pending Client Approval. No new label or field.
+- In Run with it, a finding only the SC can settle (a source mismatch, a split or merge, a story beyond the SOW) no longer waits: Claude makes its best call, creates the story, and flags it on the list. Reviewer findings stay on the list, never in Jira.
+- Unattended with no saved default, the stories are finished on the sheet and nothing is created in Jira.
+- `references/method.md` names the two ways of working. The Start Motion page's User stories stage needs the same.
+
 ## Feedback from the Tog pilot: references, first estimates, clean quotes, the readout deck (2026-11-25, no version change)
 
 Four changes from Jon Conway's feedback in #discovery-skill-feedback. None has been run on a client's backlog yet.
